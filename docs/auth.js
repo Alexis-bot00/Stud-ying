@@ -1,5 +1,5 @@
 (() => {
-  const AUTH_API_BASE = "http://localhost:5000";
+ const AUTH_API_BASE = "https://stud-ying-production.up.railway.app";
 
   const studyingToken =
     localStorage.getItem("studyingToken");
