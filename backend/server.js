@@ -16,7 +16,15 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "llama3.2";
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
+const GEMINI_MODEL = String(
+  process.env.GEMINI_MODEL ||
+  "gemini-2.5-flash-lite"
+)
+  .trim()
+  .replace(/^GEMINI_MODEL\s*=\s*/i, "")
+  .replace(/^["']|["']$/g, "")
+  .replace(/^models\//i, "")
+  .trim();
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
@@ -945,6 +953,24 @@ async function askOllama(
     .trim();
 }
 
+
+function validateGeminiModel(model) {
+  const cleaned = String(model || "").trim();
+
+  if (
+    !/^gemini-[a-z0-9.-]+$/i.test(cleaned)
+  ) {
+    console.warn(
+      "Invalid GEMINI_MODEL value detected:",
+      JSON.stringify(cleaned)
+    );
+
+    return "gemini-2.5-flash-lite";
+  }
+
+  return cleaned;
+}
+
 async function askGemini(
   prompt,
   apiKeyOrJsonMode = false,
@@ -982,7 +1008,7 @@ async function askGemini(
 
     const response =
       await ai.models.generateContent({
-        model: GEMINI_MODEL,
+        model: validateGeminiModel(GEMINI_MODEL),
         contents: prompt,
         config
       });
@@ -2873,7 +2899,7 @@ app.listen(
       `Library: http://localhost:${PORT}/api/library`
     );
     console.log(
-      `Gemini: ${GEMINI_MODEL}`
+      `Gemini: ${validateGeminiModel(GEMINI_MODEL)}`
     );
     console.log(
       `Ollama: ${OLLAMA_MODEL}`
