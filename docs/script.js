@@ -83,6 +83,11 @@ const confirmSaveAIFlashcards = $("confirmSaveAIFlashcards");
 const question = $("question");
 const askButton = $("askButton");
 const aiMessages = $("aiMessages");
+const newChatButton = $("newChatButton");
+const chatHistoryList = $("chatHistoryList");
+
+let activeChatId = null;
+let chatHistory = [];
 
 const logoutButton = $("logoutButton");
 
@@ -1808,130 +1813,496 @@ question.addEventListener(
   }
 );
 
+
 async function sendQuestion() {
-  const text =
-    question.value.trim();
+    const text =
+        question.value.trim();
 
-  if (!text) return;
-
-  
-
-  const provider = getProvider();
-
-  addMessage(
-    text,
-    "user"
-  );
-
-  question.value = "";
-  askButton.disabled = true;
-
-  const loading =
-    addMessage(
-      "Studying AI is thinking...",
-      "assistant"
-    );
-
-  const formData =
-    new FormData();
-
-  if (activeLibraryId) {
-    formData.append(
-      "libraryId",
-      activeLibraryId
-    );
-  } else if (uploadedFile) {
-    formData.append(
-      "file",
-      uploadedFile,
-      uploadedFile.name
-    );
-  }
-
-  formData.append(
-    "question",
-    text
-  );
-
-  formData.append("provider", "gemini");
-
-  try {
-    const response = await fetch(
-      `${API_BASE}/api/chat`,
-      {
-        method: "POST",
-        body: formData
-      }
-    );
-
-    const data = await readResponse(
-      response
-    );
-
-    if (
-      !response.ok ||
-      !data.success
-    ) {
-      throw new Error(
-        data.message ||
-        "Could not answer."
-      );
+    if (!text) {
+        return;
     }
 
-    loading
-      .querySelector(
-        ".message-text"
-      )
-      .textContent =
-        cleanAIAnswer(data.answer);
-  } catch (error) {
-    loading
-      .querySelector(
-        ".message-text"
-      )
-      .textContent =
-        `⚠️ ${error.message}`;
-  } finally {
-    askButton.disabled = false;
-  }
-}
-
-function addMessage(text, role) {
-  const message =
-    document.createElement(
-      "div"
+    addMessage(
+        text,
+        "user"
     );
 
-  message.className =
-    `message ${role}`;
+    question.value = "";
+    askButton.disabled = true;
 
-  if (role === "assistant") {
-    message.innerHTML = `
-      <span class="message-avatar">
-        🤖
-      </span>
+    const loading =
+        addMessage(
+            "STUDYante AI is thinking...",
+            "assistant"
+        );
 
-      <div class="message-text"></div>
-    `;
-  } else {
-    message.innerHTML = `
-      <div class="message-text"></div>
-    `;
-  }
+    const formData =
+        new FormData();
 
-  message
-    .querySelector(
-      ".message-text"
-    )
-    .textContent = text;
+    if (activeLibraryId) {
+        formData.append(
+            "libraryId",
+            activeLibraryId
+        );
+    } else if (uploadedFile) {
+        formData.append(
+            "file",
+            uploadedFile,
+            uploadedFile.name
+        );
+    }
 
-  aiMessages.appendChild(message);
+    formData.append(
+        "question",
+        text
+    );
 
-  aiMessages.scrollTop =
-    aiMessages.scrollHeight;
+    formData.append(
+        "provider",
+        getProvider()
+    );
 
-  return message;
+    if (activeChatId) {
+        formData.append(
+            "chatId",
+            activeChatId
+        );
+    }
+
+    try {
+        const response =
+            await fetch(
+                `${API_BASE}/api/chat`,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+        const data =
+            await readResponse(
+                response
+            );
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+            throw new Error(
+                data.message ||
+                "Could not get an answer."
+            );
+        }
+
+        activeChatId =
+            data.chatId ||
+            activeChatId;
+
+        loading
+            .querySelector(
+                ".message-text"
+            )
+            .textContent =
+                data.answer;
+
+        await loadChatHistory();
+
+    } catch (error) {
+        loading
+            .querySelector(
+                ".message-text"
+            )
+            .textContent =
+                "⚠️ " +
+                error.message;
+
+    } finally {
+        askButton.disabled =
+            false;
+
+        question.focus();
+    }
 }
+
+
+function addMessage(
+    text,
+    role
+) {
+    const message =
+        document.createElement(
+            "div"
+        );
+
+    message.className =
+        `message ${role}`;
+
+    if (
+        role ===
+        "assistant"
+    ) {
+        message.innerHTML = `
+            <span class="message-avatar">
+                🤖
+            </span>
+
+            <div class="message-text"></div>
+        `;
+    } else {
+        message.innerHTML = `
+            <div class="message-text"></div>
+        `;
+    }
+
+    message
+        .querySelector(
+            ".message-text"
+        )
+        .textContent =
+            text;
+
+    aiMessages.appendChild(
+        message
+    );
+
+    aiMessages.scrollTop =
+        aiMessages.scrollHeight;
+
+    return message;
+}
+
+
+function startNewChat() {
+    activeChatId = null;
+
+    aiMessages.innerHTML = "";
+
+    addMessage(
+        "Hi! Start a new conversation with STUDYante AI.",
+        "assistant"
+    );
+
+    renderChatHistory();
+
+    question.focus();
+}
+
+
+async function loadChatHistory() {
+    if (!chatHistoryList) {
+        return;
+    }
+
+    try {
+        const response =
+            await fetch(
+                `${API_BASE}/api/chats`
+            );
+
+        const data =
+            await readResponse(
+                response
+            );
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+            throw new Error(
+                data.message ||
+                "Could not load chat history."
+            );
+        }
+
+        chatHistory =
+            Array.isArray(
+                data.chats
+            )
+                ? data.chats
+                : [];
+
+        renderChatHistory();
+
+    } catch (error) {
+        chatHistoryList.innerHTML =
+            "";
+
+        const notice =
+            document.createElement(
+                "div"
+            );
+
+        notice.className =
+            "chat-empty-history";
+
+        notice.textContent =
+            error.message;
+
+        chatHistoryList.appendChild(
+            notice
+        );
+    }
+}
+
+
+function renderChatHistory() {
+    if (!chatHistoryList) {
+        return;
+    }
+
+    chatHistoryList.innerHTML =
+        "";
+
+    if (
+        chatHistory.length === 0
+    ) {
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+        empty.className =
+            "chat-empty-history";
+
+        empty.textContent =
+            "No saved chats yet.";
+
+        chatHistoryList.appendChild(
+            empty
+        );
+
+        return;
+    }
+
+    chatHistory.forEach(
+        chat => {
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "chat-history-item";
+
+            if (
+                chat.id ===
+                activeChatId
+            ) {
+                row.classList.add(
+                    "active"
+                );
+            }
+
+            const openButton =
+                document.createElement(
+                    "button"
+                );
+
+            openButton.type =
+                "button";
+
+            openButton.className =
+                "chat-history-open";
+
+            openButton.textContent =
+                chat.title ||
+                "New Chat";
+
+            openButton.addEventListener(
+                "click",
+                () =>
+                    openChat(
+                        chat.id
+                    )
+            );
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.type =
+                "button";
+
+            deleteButton.className =
+                "chat-history-delete";
+
+            deleteButton.textContent =
+                "🗑";
+
+            deleteButton.title =
+                "Delete chat";
+
+            deleteButton.addEventListener(
+                "click",
+                event => {
+                    event.stopPropagation();
+
+                    deleteChat(
+                        chat
+                    );
+                }
+            );
+
+            row.appendChild(
+                openButton
+            );
+
+            row.appendChild(
+                deleteButton
+            );
+
+            chatHistoryList.appendChild(
+                row
+            );
+        }
+    );
+}
+
+
+async function openChat(
+    chatId
+) {
+    try {
+        const response =
+            await fetch(
+                `${API_BASE}/api/chats/${encodeURIComponent(
+                    chatId
+                )}`
+            );
+
+        const data =
+            await readResponse(
+                response
+            );
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+            throw new Error(
+                data.message ||
+                "Could not open chat."
+            );
+        }
+
+        activeChatId =
+            data.chat.id;
+
+        aiMessages.innerHTML =
+            "";
+
+        const messages =
+            Array.isArray(
+                data.chat.messages
+            )
+                ? data.chat.messages
+                : [];
+
+        if (
+            messages.length === 0
+        ) {
+            addMessage(
+                "Start this conversation.",
+                "assistant"
+            );
+        } else {
+            messages.forEach(
+                message => {
+                    addMessage(
+                        message.content,
+                        message.role ===
+                        "user"
+                            ? "user"
+                            : "assistant"
+                    );
+                }
+            );
+        }
+
+        renderChatHistory();
+
+        question.focus();
+
+    } catch (error) {
+        alert(
+            error.message
+        );
+    }
+}
+
+
+async function deleteChat(
+    chat
+) {
+    const confirmed =
+        confirm(
+            'Delete "' +
+            (
+                chat.title ||
+                "this chat"
+            ) +
+            '"?'
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const response =
+            await fetch(
+                `${API_BASE}/api/chats/${encodeURIComponent(
+                    chat.id
+                )}`,
+                {
+                    method:
+                        "DELETE"
+                }
+            );
+
+        const data =
+            await readResponse(
+                response
+            );
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+            throw new Error(
+                data.message ||
+                "Could not delete chat."
+            );
+        }
+
+        if (
+            activeChatId ===
+            chat.id
+        ) {
+            startNewChat();
+        }
+
+        await loadChatHistory();
+
+    } catch (error) {
+        alert(
+            error.message
+        );
+    }
+}
+
+
+if (newChatButton) {
+    newChatButton.addEventListener(
+        "click",
+        startNewChat
+    );
+}
+
+
+loadChatHistory();
+
 
 document
   .querySelectorAll(

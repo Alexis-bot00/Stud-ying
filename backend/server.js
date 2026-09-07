@@ -140,6 +140,112 @@ function createToken(user) {
   );
 }
 
+
+const chatsFile = path.join(
+    libraryFolder,
+    "chats.json"
+);
+
+if (!fs.existsSync(chatsFile)) {
+    fs.writeFileSync(
+        chatsFile,
+        JSON.stringify(
+            [],
+            null,
+            2
+        ),
+        "utf8"
+    );
+}
+
+
+function readChats() {
+    try {
+        const chats =
+            JSON.parse(
+                fs.readFileSync(
+                    chatsFile,
+                    "utf8"
+                )
+            );
+
+        return Array.isArray(
+            chats
+        )
+            ? chats
+            : [];
+
+    } catch {
+        return [];
+    }
+}
+
+
+function writeChats(
+    chats
+) {
+    fs.writeFileSync(
+        chatsFile,
+        JSON.stringify(
+            chats,
+            null,
+            2
+        ),
+        "utf8"
+    );
+}
+
+
+function makeChatId() {
+    return (
+        "chat_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random()
+            .toString(36)
+            .slice(2, 10)
+    );
+}
+
+
+function makeMessageId() {
+    return (
+        "msg_" +
+        Date.now().toString(36) +
+        "_" +
+        Math.random()
+            .toString(36)
+            .slice(2, 10)
+    );
+}
+
+
+function makeChatTitle(
+    text
+) {
+    const title =
+        String(
+            text || ""
+        )
+            .replace(
+                /\s+/g,
+                " "
+            )
+            .trim();
+
+    if (!title) {
+        return "New Chat";
+    }
+
+    return title.length > 45
+        ? title.slice(
+            0,
+            45
+        ) + "..."
+        : title;
+}
+
+
 function requireAuth(
   req,
   res,
@@ -629,7 +735,7 @@ function buildPrompt(
   count
 ) {
   const rules = `
-You are Studying AI.
+You are STUDYante AI.
 
 Use ONLY the information contained in the lesson.
 
@@ -802,7 +908,7 @@ function buildChatPrompt(
 
   if (material) {
     return `
-You are Studying AI.
+You are STUDYante AI.
 
 Answer using only the study material below.
 
@@ -838,7 +944,7 @@ ${material}
   }
 
   return `
-You are Studying AI, a helpful study assistant.
+You are STUDYante AI, a helpful study assistant.
 
 Answer the student's question clearly.
 Use simple student-friendly words.
@@ -2721,111 +2827,402 @@ app.post(
   }
 );
 
-app.post(
-  "/api/chat",
-  requireAuth,
-  upload.single(
-    "file"
-  ),
-  async (
-    req,
-    res
-  ) => {
-    const temporaryPath =
-      req.file?.path;
 
-    try {
-      const question =
-        String(
-          req.body.question ||
-          ""
-        ).trim();
+app.get(
+    "/api/chats",
+    requireAuth,
+    (req, res) => {
+        const chats =
+            readChats()
+                .filter(
+                    chat =>
+                        chat.userId ===
+                        req.user.id
+                )
+                .sort(
+                    (a, b) =>
+                        String(
+                            b.updatedAt ||
+                            ""
+                        ).localeCompare(
+                            String(
+                                a.updatedAt ||
+                                ""
+                            )
+                        )
+                )
+                .map(
+                    chat => ({
+                        id:
+                            chat.id,
 
-      const provider =
-        String(
-          req.body.provider ||
-          "gemini"
-        )
-          .trim()
-          .toLowerCase();
+                        title:
+                            chat.title,
 
-      const apiKey = "";
+                        createdAt:
+                            chat.createdAt,
 
-      if (
-        !question
-      ) {
-        return res
-          .status(400)
-          .json({
-            success:
-              false,
+                        updatedAt:
+                            chat.updatedAt
+                    })
+                );
 
-            message:
-              "Please enter a question."
-          });
-      }
+        res.json({
+            success: true,
+            chats
+        });
+    }
+);
 
-      let lesson =
-        "";
 
-      const libraryId =
-        String(
-          req.body.libraryId ||
-          ""
-        ).trim();
+app.get(
+    "/api/chats/:id",
+    requireAuth,
+    (req, res) => {
+        const chat =
+            readChats()
+                .find(
+                    item =>
+                        item.id ===
+                        req.params.id &&
+                        item.userId ===
+                        req.user.id
+                );
 
-      if (
-        libraryId ||
-        req.file
-      ) {
-        const source =
-          await getLesson(
-            req
-          );
+        if (!chat) {
+            return res
+                .status(404)
+                .json({
+                    success:
+                        false,
 
-        lesson =
-          source.lesson;
-      }
+                    message:
+                        "Chat not found."
+                });
+        }
 
-      const answer =
-        await askProvider(
-          provider,
-          buildChatPrompt(
-            question,
-            lesson
-          ),
-          apiKey,
-          false
+        res.json({
+            success: true,
+            chat
+        });
+    }
+);
+
+
+app.delete(
+    "/api/chats/:id",
+    requireAuth,
+    (req, res) => {
+        const chats =
+            readChats();
+
+        const index =
+            chats.findIndex(
+                chat =>
+                    chat.id ===
+                    req.params.id &&
+                    chat.userId ===
+                    req.user.id
+            );
+
+        if (
+            index === -1
+        ) {
+            return res
+                .status(404)
+                .json({
+                    success:
+                        false,
+
+                    message:
+                        "Chat not found."
+                });
+        }
+
+        chats.splice(
+            index,
+            1
         );
 
-      res.json({
-        success:
-          true,
+        writeChats(
+            chats
+        );
 
-        answer:
-          answer.trim()
-      });
-
-    } catch (
-      error
-    ) {
-      res
-        .status(500)
-        .json({
-          success:
-            false,
-
-          message:
-            error.message
+        res.json({
+            success: true
         });
-
-    } finally {
-      removeFile(
-        temporaryPath
-      );
     }
-  }
 );
+
+
+app.post(
+    "/api/chat",
+    requireAuth,
+    upload.single(
+        "file"
+    ),
+    async (
+        req,
+        res
+    ) => {
+        const temporaryPath =
+            req.file?.path;
+
+        try {
+            const question =
+                String(
+                    req.body.question ||
+                    ""
+                ).trim();
+
+            const provider =
+                String(
+                    req.body.provider ||
+                    "gemini"
+                )
+                    .trim()
+                    .toLowerCase();
+
+            if (!question) {
+                return res
+                    .status(400)
+                    .json({
+                        success:
+                            false,
+
+                        message:
+                            "Please enter a question."
+                    });
+            }
+
+
+            let lesson = "";
+
+            const libraryId =
+                String(
+                    req.body.libraryId ||
+                    ""
+                ).trim();
+
+            if (
+                libraryId ||
+                req.file
+            ) {
+                const source =
+                    await getLesson(
+                        req
+                    );
+
+                lesson =
+                    source.lesson ||
+                    "";
+            }
+
+
+            const chats =
+                readChats();
+
+            const requestedChatId =
+                String(
+                    req.body.chatId ||
+                    ""
+                ).trim();
+
+
+            let chat =
+                requestedChatId
+                    ? chats.find(
+                        item =>
+                            item.id ===
+                            requestedChatId &&
+                            item.userId ===
+                            req.user.id
+                    )
+                    : null;
+
+
+            const now =
+                new Date()
+                    .toISOString();
+
+
+            if (!chat) {
+                chat = {
+                    id:
+                        makeChatId(),
+
+                    userId:
+                        req.user.id,
+
+                    title:
+                        makeChatTitle(
+                            question
+                        ),
+
+                    messages:
+                        [],
+
+                    createdAt:
+                        now,
+
+                    updatedAt:
+                        now
+                };
+
+                chats.push(
+                    chat
+                );
+            }
+
+
+            const oldMessages =
+                Array.isArray(
+                    chat.messages
+                )
+                    ? chat.messages
+                        .slice(-16)
+                    : [];
+
+
+            const history =
+                oldMessages
+                    .map(
+                        message => {
+                            const speaker =
+                                message.role ===
+                                "user"
+                                    ? "Student"
+                                    : "STUDYante AI";
+
+                            return (
+                                speaker +
+                                ": " +
+                                message.content
+                            );
+                        }
+                    )
+                    .join(
+                        "\n\n"
+                    );
+
+
+            const finalQuestion =
+                history
+                    ? (
+                        "Continue this conversation using the previous messages as context.\n\n" +
+                        "Previous conversation:\n\n" +
+                        history +
+                        "\n\nNew student message:\n\n" +
+                        question
+                    )
+                    : question;
+
+
+            const answer =
+                await askProvider(
+                    provider,
+                    buildChatPrompt(
+                        finalQuestion,
+                        lesson
+                    ),
+                    "",
+                    false
+                );
+
+
+            if (
+                !Array.isArray(
+                    chat.messages
+                )
+            ) {
+                chat.messages =
+                    [];
+            }
+
+
+            chat.messages.push(
+                {
+                    id:
+                        makeMessageId(),
+
+                    role:
+                        "user",
+
+                    content:
+                        question,
+
+                    createdAt:
+                        now
+                },
+
+                {
+                    id:
+                        makeMessageId(),
+
+                    role:
+                        "assistant",
+
+                    content:
+                        String(answer)
+                            .trim(),
+
+                    createdAt:
+                        new Date()
+                            .toISOString()
+                }
+            );
+
+
+            chat.updatedAt =
+                new Date()
+                    .toISOString();
+
+
+            writeChats(
+                chats
+            );
+
+
+            res.json({
+                success:
+                    true,
+
+                answer:
+                    String(answer)
+                        .trim(),
+
+                chatId:
+                    chat.id,
+
+                title:
+                    chat.title
+            });
+
+        } catch (error) {
+            console.error(
+                "Chat error:",
+                error
+            );
+
+            res
+                .status(500)
+                .json({
+                    success:
+                        false,
+
+                    message:
+                        error.message ||
+                        "Could not answer."
+                });
+
+        } finally {
+            removeFile(
+                temporaryPath
+            );
+        }
+    }
+);
+
 
 app.use(
   (
