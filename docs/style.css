@@ -1161,4 +1161,48 @@ aside .studyante-logo {
     }
 
 }
+/* ===== FINAL STUDYante SIDEBAR LOGO FIX ===== */
 
+.sidebar .studyante-brand {
+    width: 100% !important;
+    height: 55px !important;
+    margin: 0 0 35px 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    overflow: hidden !important;
+}
+
+.sidebar .studyante-brand .studyante-logo {
+    display: block !important;
+
+    width: auto !important;
+    height: 48px !important;
+
+    max-width: 190px !important;
+    max-height: 48px !important;
+
+    object-fit: contain !important;
+    object-position: left center !important;
+
+    position: static !important;
+    transform: none !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 800px) {
+    .sidebar .studyante-brand {
+        width: 190px !important;
+        height: 48px !important;
+        margin-bottom: 15px !important;
+    }
+
+    .sidebar .studyante-brand .studyante-logo {
+        height: 42px !important;
+        max-width: 175px !important;
+        max-height: 42px !important;
+    }
+}
