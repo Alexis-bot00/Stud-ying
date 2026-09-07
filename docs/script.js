@@ -71,20 +71,11 @@ const aiMessages = $("aiMessages");
 const logoutButton = $("logoutButton");
 
 function getProvider() {
-  return (
-    document.querySelector(
-      'input[name="provider"]:checked'
-    )?.value || "gemini"
-  );
+  return "gemini";
 }
 
 function updateProviderUI() {
-  const provider = getProvider();
-
-  if (ollamaNotice) {
-    ollamaNotice.hidden =
-      provider !== "ollama";
-  }
+  return;
 }
 
 document
@@ -1283,10 +1274,7 @@ async function generateMaterial(type) {
     type
   );
 
-  formData.append(
-    "provider",
-    provider
-  );
+  formData.append("provider", "gemini");
 
   if (type === "flashcards") {
     formData.append(
@@ -1858,10 +1846,7 @@ async function sendQuestion() {
     text
   );
 
-  formData.append(
-    "provider",
-    provider
-  );
+  formData.append("provider", "gemini");
 
   try {
     const response = await fetch(

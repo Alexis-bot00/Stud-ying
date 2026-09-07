@@ -15,6 +15,23 @@
     rel="stylesheet"
     href="style.css"
   >
+<style id="studying-hide-ai-provider">
+#providerSection,
+#providerSettings,
+#aiProvider,
+#aiProviderSection,
+#geminiSettings,
+#ollamaNotice,
+.provider-section,
+.provider-settings,
+.provider-selector,
+.ai-provider,
+.ai-provider-section,
+.ai-options,
+.provider-options {
+  display: none !important;
+}
+</style>
 </head>
 
 <body>
@@ -85,106 +102,7 @@
     </header>
 
 
-    <section
-      id="dashboard"
-      class="hero"
-    >
-
-      <div>
-
-        <span class="tag">
-          STUDY SMARTER
-        </span>
-
-        <h1>
-          Turn Your Lessons Into Something Easier.
-        </h1>
-
-        <p>
-          Upload your lessons and create notes,
-          flashcards, practice tests, study games,
-          and ask Studying AI.
-        </p>
-
-        <a
-          href="#upload"
-          class="primary-btn hero-btn"
-        >
-          Start Studying
-        </a>
-
-      </div>
-
-      <div class="hero-icon">
-        📚
-      </div>
-
-    </section>
-
-
-    <section class="panel">
-
-      <div class="section-title">
-        <h2>Choose AI</h2>
-        <p>
-          Select how Studying analyzes your lesson.
-        </p>
-      </div>
-
-      <div class="provider-grid">
-
-        <label class="provider-card">
-
-          <input
-            type="radio"
-            name="provider"
-            value="gemini"
-            checked
-          >
-
-          <span class="provider-icon">
-            ✨
-          </span>
-
-          <div>
-            <strong>Google Gemini</strong>
-            <small>Cloud AI</small>
-          </div>
-
-        </label>
-
-
-        <label class="provider-card">
-
-          <input
-            type="radio"
-            name="provider"
-            value="ollama"
-          >
-
-          <span class="provider-icon">
-            🖥
-          </span>
-
-          <div>
-            <strong>Ollama</strong>
-            <small>Free + Local</small>
-          </div>
-
-        </label>
-
-      </div>
-
-
-      <div
-        id="ollamaNotice"
-        class="notice"
-        hidden
-      >
-        🖥 Make sure Ollama is running.
-      </div>
-
-    </section>
+    
 
 
     <section
