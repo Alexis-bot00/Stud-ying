@@ -32,30 +32,32 @@
   display: none !important;
 }
 </style>
-    <link rel="icon" type="image/png" href="assets/studyante-logo.png">
+  <link rel="icon" type="image/png" href="assets/studyante-logo.png">
 </head>
 
 <body>
 
   <aside class="sidebar">
 
-    <div class="studyante-brand">
-    <img
-        src="assets/studyante-logo.png"
-        alt="STUDYante"
-        class="studyante-logo"
-    >
-</div>
+    <div class="studyante-brand"><img src="assets/studyante-logo.png" alt="STUDYante" class="studyante-logo"></div>
 
     <nav>
 
-      <a href="#dashboard">&#x1F3E0; Dashboard</a>
+      <a href="#dashboard">
+        🏠 Dashboard
+      </a>
 
-      <a href="#upload">&#x1F4E4; Upload Material</a>
+      <a href="#upload">
+        📤 Upload Material
+      </a>
 
-      <a href="#library">&#x1F4DA; My Library</a>
+      <a href="#library">
+        📚 My Library
+      </a>
 
-      <a href="#ai">&#x1F916; STUDYante AI</a>
+      <a href="#ai">
+        🤖 STUDYante AI
+      </a>
 
     </nav>
 
@@ -67,7 +69,7 @@
     <header class="topbar">
 
       <div>
-        <h3>Welcome back &#x1F44B;</h3>
+        <h3>Welcome back 👋</h3>
         <p>What are we studying today?</p>
       </div>
 
@@ -108,7 +110,590 @@
     >
 
       <div class="section-title">
-        <h2>&#x1F4BE; Save Flashcards</h2>
+        <h2>Upload Study Material</h2>
+        <p>
+          PDF, DOCX, PPTX or TXT • Maximum 20 MB
+        </p>
+      </div>
+
+
+      <div
+        id="dropArea"
+        class="drop-area"
+      >
+
+        <div class="big-icon">
+          📄
+        </div>
+
+        <h3>
+          Drop your lesson here
+        </h3>
+
+        <p>
+          or choose a file from your computer
+        </p>
+
+        <button
+          id="chooseFileButton"
+          class="primary-btn"
+          type="button"
+        >
+          Choose File
+        </button>
+
+        <input
+          id="fileInput"
+          type="file"
+          accept=".pdf,.docx,.pptx,.txt"
+          hidden
+        >
+
+      </div>
+
+
+      <div
+        id="selectedFile"
+        class="selected-file"
+        hidden
+      >
+
+        <span class="file-icon">
+          📄
+        </span>
+
+        <div>
+          <strong id="fileName"></strong>
+          <small id="fileSize"></small>
+        </div>
+
+        <button
+          id="removeFile"
+          type="button"
+          class="icon-btn"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <div
+        id="generateSection"
+        class="generate-section"
+        hidden
+      >
+
+        <div class="generate-heading">
+
+          <div>
+            <h3>
+              What do you want to create?
+            </h3>
+
+            <p>
+              Choose a study tool.
+            </p>
+          </div>
+
+
+          <div class="generation-counts">
+
+            <div class="flashcard-count">
+
+              <label>
+                Flashcards
+              </label>
+
+              <select id="flashcardCount">
+
+                <option value="10">
+                  10
+                </option>
+
+                <option value="20">
+                  20
+                </option>
+
+                <option value="30">
+                  30
+                </option>
+
+                <option value="40">
+                  40
+                </option>
+
+                <option
+                  value="50"
+                  selected
+                >
+                  50
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="flashcard-count">
+
+              <label>
+                Test / Game Questions
+              </label>
+
+              <select id="questionCount">
+
+                <option value="10">
+                  10
+                </option>
+
+                <option
+                  value="20"
+                  selected
+                >
+                  20
+                </option>
+
+                <option value="30">
+                  30
+                </option>
+
+                <option value="40">
+                  40
+                </option>
+
+                <option value="50">
+                  50
+                </option>
+
+                <option value="60">
+                  60
+                </option>
+
+                <option value="70">
+                  70
+                </option>
+
+                <option value="80">
+                  80
+                </option>
+
+                <option value="90">
+                  90
+                </option>
+
+                <option value="100">
+                  100
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="generate-grid">
+
+          <button
+            class="generate-card"
+            data-type="notes"
+            type="button"
+          >
+            <span>📝</span>
+            <strong>Notes</strong>
+            <small>Easy study notes</small>
+          </button>
+
+
+          <button
+            class="generate-card"
+            data-type="flashcards"
+            type="button"
+          >
+            <span>🧠</span>
+            <strong>Flashcards</strong>
+            <small>Up to 50 cards</small>
+          </button>
+
+
+          <button
+            class="generate-card"
+            data-type="test"
+            type="button"
+          >
+            <span>✅</span>
+            <strong>Practice Test</strong>
+            <small>Up to 100 questions</small>
+          </button>
+
+
+          <button
+            class="generate-card"
+            data-type="game"
+            type="button"
+          >
+            <span>🎮</span>
+            <strong>Study Game</strong>
+            <small>Up to 100 questions</small>
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="generatedContent"
+        class="generated-content"
+        hidden
+      >
+
+        <div class="generated-header">
+
+          <span id="generatedIcon">
+            ✨
+          </span>
+
+          <div>
+            <h2 id="generatedTitle">
+              Generated Material
+            </h2>
+
+            <p>
+              Created from your study material.
+            </p>
+          </div>
+
+        </div>
+
+        <div id="generatedBody"></div>
+
+      </div>
+
+    </section>
+
+
+    <section
+      id="library"
+      class="panel"
+    >
+
+      <div class="library-header">
+
+        <div class="section-title">
+
+          <h2>
+            📚 My Library
+          </h2>
+
+          <p>
+            Organize your files and flashcards into folders.
+          </p>
+
+        </div>
+
+
+        <div class="library-header-buttons">
+
+          <button
+            id="newFolderButton"
+            type="button"
+            class="secondary-btn"
+          >
+            📁 + New Folder
+          </button>
+
+          <button
+            id="createFlashcardsButton"
+            type="button"
+            class="primary-btn"
+          >
+            🧠 + Create Flashcards
+          </button>
+
+          <button
+            id="refreshLibrary"
+            type="button"
+            class="secondary-btn"
+          >
+            ↻ Refresh
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="library-filter">
+
+        <button
+          class="folder-filter active"
+          data-folder=""
+          type="button"
+        >
+          All
+        </button>
+
+        <button
+          class="folder-filter"
+          data-folder="uncategorized"
+          type="button"
+        >
+          Uncategorized
+        </button>
+
+        <div id="folderFilters"></div>
+
+      </div>
+
+
+      <div
+        id="libraryStatus"
+        class="library-status"
+      >
+        Loading your library...
+      </div>
+
+
+      <div
+        id="libraryGrid"
+        class="library-grid"
+      ></div>
+
+    </section>
+
+
+    <section
+      id="ai"
+      class="panel"
+    >
+
+      <div class="section-title">
+        <h2>🤖 STUDYante AI</h2>
+        <p>
+          Ask questions about any topic, or select a lesson for file-based answers.
+        </p>
+      </div>
+
+      <div
+        id="aiMessages"
+        class="chat-messages"
+      >
+
+        <div class="message assistant">
+
+          <span class="message-avatar">
+            🤖
+          </span>
+
+          <div>
+            Hi! Ask me any study question, or upload a lesson if you want answers based only on your material.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="chat-input">
+
+        <textarea
+          id="question"
+          placeholder="Ask STUDYante AI..."
+        ></textarea>
+
+        <button
+          id="askButton"
+          class="send-btn"
+          type="button"
+        >
+          Send ➤
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <div
+    id="folderModal"
+    class="modal"
+    hidden
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <div>
+          <h2>📁 New Folder</h2>
+          <p>
+            Create a folder for your study materials.
+          </p>
+        </div>
+
+        <button
+          class="modal-close"
+          data-close="folderModal"
+          type="button"
+        >
+          ✕
+        </button>
+
+      </div>
+
+      <label class="field-label">
+        Folder Name
+      </label>
+
+      <input
+        id="folderName"
+        class="full-input"
+        placeholder="Example: Programming"
+      >
+
+      <div class="modal-actions">
+
+        <button
+          class="secondary-btn"
+          data-close="folderModal"
+          type="button"
+        >
+          Cancel
+        </button>
+
+        <button
+          id="saveFolderButton"
+          class="primary-btn"
+          type="button"
+        >
+          Create Folder
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="flashcardModal"
+    class="modal"
+    hidden
+  >
+
+    <div class="modal-card large-modal">
+
+      <div class="modal-header">
+
+        <div>
+          <h2>🧠 Create Flashcards</h2>
+          <p>
+            Make your own flashcard set.
+          </p>
+        </div>
+
+        <button
+          class="modal-close"
+          data-close="flashcardModal"
+          type="button"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <div class="two-fields">
+
+        <div>
+          <label class="field-label">
+            Set Name
+          </label>
+
+          <input
+            id="manualSetName"
+            class="full-input"
+            placeholder="Example: Java Review"
+          >
+        </div>
+
+        <div>
+          <label class="field-label">
+            Save to Folder
+          </label>
+
+          <select
+            id="manualFolder"
+            class="full-input"
+          >
+            <option value="">
+              Uncategorized
+            </option>
+          </select>
+        </div>
+
+      </div>
+
+
+      <div
+        id="manualCards"
+        class="manual-cards"
+      ></div>
+
+
+      <button
+        id="addManualCard"
+        class="secondary-btn"
+        type="button"
+      >
+        + Add Another Card
+      </button>
+
+
+      <div class="modal-actions">
+
+        <button
+          class="secondary-btn"
+          data-close="flashcardModal"
+          type="button"
+        >
+          Cancel
+        </button>
+
+        <button
+          id="saveManualFlashcards"
+          class="primary-btn"
+          type="button"
+        >
+          Save Flashcards
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="saveAIFlashcardsModal"
+    class="modal"
+    hidden
+  >
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <div>
+          <h2>💾 Save Flashcards</h2>
           <p>
             Save your AI-generated flashcards to My Library.
           </p>
@@ -118,7 +703,9 @@
           class="modal-close"
           data-close="saveAIFlashcardsModal"
           type="button"
-        >&#x2715;</button>
+        >
+          ✕
+        </button>
 
       </div>
 
@@ -175,110 +762,6 @@
 <script src="auth.js"></script> 
   <script src="script.js"></script>
 
-    <script src="brand.js"></script>
-
-<script id="studyante-brand-fix">
-document.addEventListener("DOMContentLoaded", function () {
-
-    const selectors = [
-        ".brand",
-        ".logo",
-        ".brand-name",
-        ".sidebar-brand",
-        ".sidebar-logo",
-        ".navbar-brand",
-        ".app-brand",
-        ".login-brand",
-        ".auth-brand"
-    ];
-
-    function cleanText(element) {
-        return (element.textContent || "")
-            .replace(/\s+/g, "")
-            .toLowerCase();
-    }
-
-    let found = false;
-
-    selectors.forEach(function (selector) {
-
-        document
-            .querySelectorAll(selector)
-            .forEach(function (element) {
-
-                if (found) {
-                    return;
-                }
-
-                const text =
-                    cleanText(element);
-
-                if (
-                    text === "studying"
-                ) {
-
-                    element.innerHTML =
-                        '<img src="assets/studyante-logo.png" ' +
-                        'alt="STUDYante" ' +
-                        'class="studyante-logo">';
-
-                    element.classList.add(
-                        "studyante-brand"
-                    );
-
-                    found = true;
-                }
-            });
-    });
-
-
-    if (!found) {
-
-        const elements =
-            document.querySelectorAll(
-                "h1,h2,a,div"
-            );
-
-        elements.forEach(
-            function (element) {
-
-                if (found) {
-                    return;
-                }
-
-                const text =
-                    cleanText(element);
-
-                const rect =
-                    element
-                        .getBoundingClientRect();
-
-                if (
-                    text === "studying" &&
-                    rect.top < 180
-                ) {
-
-                    element.innerHTML =
-                        '<img src="assets/studyante-logo.png" ' +
-                        'alt="STUDYante" ' +
-                        'class="studyante-logo">';
-
-                    element.classList.add(
-                        "studyante-brand"
-                    );
-
-                    found = true;
-                }
-            }
-        );
-    }
-
-});
-</script>
-
 </body>
 
 </html>
-
-
-
