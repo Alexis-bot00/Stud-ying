@@ -1206,3 +1206,28 @@ aside .studyante-logo {
         max-height: 42px !important;
     }
 }
+
+/* =========================================================
+   STUDYante APP PAGE TRANSITION
+========================================================= */
+
+.studyante-page-active {
+    animation: studyantePageIn 0.22s ease;
+}
+
+@keyframes studyantePageIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+[hidden] {
+    display: none !important;
+}
+

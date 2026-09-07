@@ -2445,3 +2445,269 @@ function setStudyingThinking(show) {
     input.disabled = show;
   }
 }
+
+/* =========================================================
+   STUDYante APP-STYLE PAGE NAVIGATION
+   Dashboard / Upload Material / Library / STUDYante AI
+========================================================= */
+
+(function () {
+    function getPageTarget(element) {
+        if (!element) return "";
+
+        const explicitTarget =
+            element.getAttribute("data-page") ||
+            element.getAttribute("data-section") ||
+            element.getAttribute("data-target");
+
+        if (explicitTarget) {
+            return explicitTarget.replace(/^#/, "");
+        }
+
+        const href =
+            element.getAttribute("href");
+
+        if (
+            href &&
+            href.startsWith("#")
+        ) {
+            return href.substring(1);
+        }
+
+        return "";
+    }
+
+    function findPageSection(target) {
+        if (!target) return null;
+
+        return (
+            document.getElementById(target) ||
+            document.querySelector(
+                `[data-page-section="${target}"]`
+            )
+        );
+    }
+
+    function getAppSections() {
+        const knownIds = [
+            "dashboard",
+            "home",
+            "upload",
+            "library",
+            "ai"
+        ];
+
+        const sections = [];
+
+        knownIds.forEach(id => {
+            const element =
+                document.getElementById(id);
+
+            if (
+                element &&
+                !sections.includes(element)
+            ) {
+                sections.push(element);
+            }
+        });
+
+        document
+            .querySelectorAll(
+                "[data-page-section]"
+            )
+            .forEach(element => {
+                if (
+                    !sections.includes(element)
+                ) {
+                    sections.push(element);
+                }
+            });
+
+        return sections;
+    }
+
+    function showStudyantePage(target) {
+        const selected =
+            findPageSection(target);
+
+        if (!selected) {
+            return false;
+        }
+
+        const sections =
+            getAppSections();
+
+        sections.forEach(section => {
+            const isSelected =
+                section === selected;
+
+            section.hidden =
+                !isSelected;
+
+            section.classList.toggle(
+                "studyante-page-active",
+                isSelected
+            );
+        });
+
+        document
+            .querySelectorAll(
+                ".sidebar a, .sidebar button, [data-page], [data-section], [data-target]"
+            )
+            .forEach(item => {
+                const itemTarget =
+                    getPageTarget(item);
+
+                const isActive =
+                    itemTarget === target;
+
+                item.classList.toggle(
+                    "active",
+                    isActive
+                );
+
+                if (isActive) {
+                    item.setAttribute(
+                        "aria-current",
+                        "page"
+                    );
+                } else {
+                    item.removeAttribute(
+                        "aria-current"
+                    );
+                }
+            });
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+        try {
+            history.replaceState(
+                null,
+                "",
+                "#" + target
+            );
+        } catch {}
+
+        return true;
+    }
+
+    document.addEventListener(
+        "click",
+        event => {
+            const navigation =
+                event.target.closest(
+                    ".sidebar a, .sidebar button, [data-page], [data-section], [data-target]"
+                );
+
+            if (!navigation) {
+                return;
+            }
+
+            const target =
+                getPageTarget(
+                    navigation
+                );
+
+            if (
+                !findPageSection(target)
+            ) {
+                return;
+            }
+
+            event.preventDefault();
+
+            showStudyantePage(
+                target
+            );
+        },
+        true
+    );
+
+    window.showStudyantePage =
+        showStudyantePage;
+
+    function openInitialPage() {
+        const hash =
+            window.location.hash
+                .replace("#", "")
+                .trim();
+
+        if (
+            hash &&
+            findPageSection(hash)
+        ) {
+            showStudyantePage(hash);
+            return;
+        }
+
+        const activeNavigation =
+            document.querySelector(
+                ".sidebar .active"
+            );
+
+        const activeTarget =
+            getPageTarget(
+                activeNavigation
+            );
+
+        if (
+            activeTarget &&
+            findPageSection(activeTarget)
+        ) {
+            showStudyantePage(
+                activeTarget
+            );
+            return;
+        }
+
+        const fallback =
+            document.getElementById(
+                "dashboard"
+            )
+                ? "dashboard"
+                : document.getElementById(
+                    "home"
+                )
+                    ? "home"
+                    : "upload";
+
+        showStudyantePage(
+            fallback
+        );
+    }
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+        document.addEventListener(
+            "DOMContentLoaded",
+            openInitialPage
+        );
+    } else {
+        openInitialPage();
+    }
+
+    window.addEventListener(
+        "hashchange",
+        () => {
+            const target =
+                window.location.hash
+                    .replace("#", "")
+                    .trim();
+
+            if (
+                target &&
+                findPageSection(target)
+            ) {
+                showStudyantePage(
+                    target
+                );
+            }
+        }
+    );
+})();
+
