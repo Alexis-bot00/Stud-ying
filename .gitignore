@@ -7,3 +7,6 @@ backend/library/
 .DS_Store
 Thumbs.db
 node_modules/
+
+*.backup
+*.before-*
