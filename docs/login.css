@@ -588,3 +588,141 @@ button {
     font-size: 27px;
   }
 }
+/* =========================================================
+   STUDYante LOGO
+   ========================================================= */
+
+.studyante-logo-container {
+    display: flex !important;
+    align-items: center !important;
+    width: auto !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+}
+
+.studyante-logo {
+    display: block !important;
+    width: auto !important;
+    object-fit: contain !important;
+    object-position: left center !important;
+}
+
+/* Login page logo */
+
+.studyante-login-logo {
+    height: 64px !important;
+    max-width: 300px !important;
+}
+
+/* Dashboard sidebar logo */
+
+.studyante-sidebar-logo {
+    height: 48px !important;
+    max-width: 190px !important;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+
+    .studyante-login-logo {
+        height: 52px !important;
+        max-width: 250px !important;
+    }
+
+    .studyante-sidebar-logo {
+        height: 42px !important;
+        max-width: 165px !important;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .studyante-login-logo {
+        height: 46px !important;
+        max-width: 220px !important;
+    }
+
+    .studyante-sidebar-logo {
+        height: 38px !important;
+        max-width: 150px !important;
+    }
+}
+
+
+
+/* ==========================================================
+   STUDYante BRAND
+   ========================================================== */
+
+.studyante-brand {
+    display: flex !important;
+    align-items: center !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 100% !important;
+
+    padding: 0 !important;
+
+    overflow: visible !important;
+}
+
+.studyante-logo {
+    display: block !important;
+
+    width: auto !important;
+    height: 50px !important;
+
+    max-width: 200px !important;
+
+    object-fit: contain !important;
+    object-position: left center !important;
+}
+
+
+/* LOGIN PAGE */
+
+.login-page .studyante-logo,
+.auth-page .studyante-logo,
+.login-container .studyante-logo {
+    height: 64px !important;
+    max-width: 280px !important;
+}
+
+
+/* SIDEBAR */
+
+.sidebar .studyante-logo,
+aside .studyante-logo {
+    height: 48px !important;
+    max-width: 190px !important;
+}
+
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+    .studyante-logo {
+        height: 44px !important;
+        max-width: 180px !important;
+    }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .studyante-logo {
+        height: 40px !important;
+        max-width: 160px !important;
+    }
+
+}
+
