@@ -694,6 +694,48 @@
               hidden
             >
 
+            <div
+              id="aiCameraModal"
+              class="ai-camera-modal"
+              hidden
+            >
+              <div class="ai-camera-box">
+
+                <div class="ai-camera-header">
+                  <strong>Take Photo</strong>
+
+                  <button
+                    id="closeAICamera"
+                    type="button"
+                    class="ai-camera-close"
+                  >
+                    &#x2715;
+                  </button>
+                </div>
+
+                <video
+                  id="aiCameraVideo"
+                  autoplay
+                  playsinline
+                  muted
+                ></video>
+
+                <canvas
+                  id="aiCameraCanvas"
+                  hidden
+                ></canvas>
+
+                <button
+                  id="captureAIPhoto"
+                  type="button"
+                  class="primary-btn ai-capture-btn"
+                >
+                  &#x1F4F7; Take Photo
+                </button>
+
+              </div>
+            </div>
+
             <div class="ai-media-buttons">
               <button
                 id="aiCameraButton"

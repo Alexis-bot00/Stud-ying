@@ -95,6 +95,8 @@ const removeAIImage = $("removeAIImage");
 
 let selectedAIImage = null;
 let selectedAIImageURL = "";
+
+let aiCameraStream = null;
 const newChatButton = $("newChatButton");
 const chatHistoryList = $("chatHistoryList");
 
@@ -1867,6 +1869,140 @@ question.addEventListener(
 
 
 
+function stopAICamera() {
+
+    if (aiCameraStream) {
+
+        aiCameraStream
+            .getTracks()
+            .forEach(
+                track => track.stop()
+            );
+
+        aiCameraStream = null;
+    }
+
+    if (aiCameraVideo) {
+        aiCameraVideo.srcObject = null;
+    }
+
+    if (aiCameraModal) {
+        aiCameraModal.hidden = true;
+    }
+}
+
+
+async function openAICamera() {
+
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+
+        alert(
+            "Camera is not supported by this browser. Please use Upload Image instead."
+        );
+
+        return;
+    }
+
+    try {
+
+        aiCameraStream =
+            await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: {
+                        ideal: "environment"
+                    }
+                },
+                audio: false
+            });
+
+        aiCameraVideo.srcObject =
+            aiCameraStream;
+
+        aiCameraModal.hidden = false;
+
+        await aiCameraVideo.play();
+
+    } catch (error) {
+
+        console.error(
+            "Camera error:",
+            error
+        );
+
+        alert(
+            "Camera access was denied or unavailable. Please allow camera permission and try again."
+        );
+
+        stopAICamera();
+    }
+}
+
+
+function captureAIPhoto() {
+
+    if (!aiCameraVideo ||
+        !aiCameraVideo.videoWidth) {
+
+        alert(
+            "Camera is not ready yet."
+        );
+
+        return;
+    }
+
+    const canvas =
+        aiCameraCanvas;
+
+    canvas.width =
+        aiCameraVideo.videoWidth;
+
+    canvas.height =
+        aiCameraVideo.videoHeight;
+
+    const context =
+        canvas.getContext("2d");
+
+    context.drawImage(
+        aiCameraVideo,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    canvas.toBlob(
+        blob => {
+
+            if (!blob) {
+                alert(
+                    "Could not capture the photo."
+                );
+
+                return;
+            }
+
+            const file =
+                new File(
+                    [blob],
+                    "camera-photo.jpg",
+                    {
+                        type:
+                            "image/jpeg"
+                    }
+                );
+
+            setAIImage(file);
+
+            stopAICamera();
+
+        },
+        "image/jpeg",
+        0.9
+    );
+}
+
+
 function clearAIImage() {
     selectedAIImage = null;
 
@@ -1948,8 +2084,54 @@ function setAIImage(file) {
 if (aiCameraButton) {
     aiCameraButton.addEventListener(
         "click",
-        () => {
-            aiCameraInput.click();
+        openAICamera
+    );
+}
+
+const aiCameraModal =
+    $("aiCameraModal");
+
+const aiCameraVideo =
+    $("aiCameraVideo");
+
+const aiCameraCanvas =
+    $("aiCameraCanvas");
+
+const captureAIPhotoButton =
+    $("captureAIPhoto");
+
+const closeAICamera =
+    $("closeAICamera");
+
+
+if (captureAIPhotoButton) {
+    captureAIPhotoButton.addEventListener(
+        "click",
+        captureAIPhoto
+    );
+}
+
+
+if (closeAICamera) {
+    closeAICamera.addEventListener(
+        "click",
+        stopAICamera
+    );
+}
+
+
+if (aiCameraModal) {
+
+    aiCameraModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                aiCameraModal
+            ) {
+                stopAICamera();
+            }
         }
     );
 }
