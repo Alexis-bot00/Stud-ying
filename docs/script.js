@@ -1,3 +1,19 @@
+let studyingChatBusy = false;
+
+function cleanAIAnswer(text) {
+  return String(text || "")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\*\*/g, "")
+    .replace(/__/g, "")
+    .replace(/\*/g, "")
+    .replace(/`{1,3}/g, "")
+    .replace(/^>\s?/gm, "")
+    .replace(/^\s*[-+]\s+/gm, "")
+    .replace(/\s+([.,!?;:])/g, "$1")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 const API_BASE = "https://stud-ying-production.up.railway.app";
 
 let uploadedFile = null;
@@ -1239,16 +1255,7 @@ document
   });
 
 async function generateMaterial(type) {
-  if (
-    !uploadedFile &&
-    !activeLibraryId
-  ) {
-    alert(
-      "Upload a file or choose one from My Library."
-    );
-
-    return;
-  }
+  
 
   const provider = getProvider();
 
@@ -1261,7 +1268,7 @@ async function generateMaterial(type) {
       "libraryId",
       activeLibraryId
     );
-  } else {
+  } else if (uploadedFile) {
     formData.append(
       "file",
       uploadedFile,
@@ -1876,7 +1883,7 @@ async function sendQuestion() {
         ".message-text"
       )
       .textContent =
-        data.answer;
+        cleanAIAnswer(data.answer);
   } catch (error) {
     loading
       .querySelector(
@@ -2038,3 +2045,32 @@ function escapeHTML(value) {
 
 updateProviderUI();
 loadLibrary();
+
+function setStudyingThinking(show) {
+  const sendButton =
+    document.getElementById("sendQuestion") ||
+    document.getElementById("sendChat") ||
+    document.getElementById("chatSend");
+
+  const input =
+    document.getElementById("chatInput") ||
+    document.getElementById("questionInput");
+
+  if (sendButton) {
+    sendButton.disabled = show;
+
+    if (!sendButton.dataset.originalText) {
+      sendButton.dataset.originalText =
+        sendButton.textContent;
+    }
+
+    sendButton.textContent =
+      show
+        ? "Thinking..."
+        : sendButton.dataset.originalText;
+  }
+
+  if (input) {
+    input.disabled = show;
+  }
+}

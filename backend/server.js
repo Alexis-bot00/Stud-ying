@@ -20,7 +20,7 @@ const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
-const MAX_TEXT_LENGTH = 120000;
+const MAX_TEXT_LENGTH = 60000;
 const MAX_FLASHCARDS = 50;
 const MAX_QUESTIONS = 100;
 
@@ -795,77 +795,74 @@ function buildChatPrompt(
   question,
   lesson = ""
 ) {
-  const cleanLesson =
-    String(
-      lesson || ""
-    ).trim();
+  const material = String(
+    lesson || ""
+  ).trim();
 
-  if (
-    cleanLesson
-  ) {
+  if (material) {
     return `
 You are Studying AI.
 
-The student selected or uploaded a study material.
+Answer using only the study material below.
 
-Answer the student's question using ONLY the uploaded lesson.
+Be clear and accurate.
+Use simple student-friendly words.
+Make the answer easy to understand.
+Keep explanations organized.
 
-You may:
-- Answer questions from the lesson
-- Explain concepts from the lesson
-- Generate review questions from the lesson
-- Generate multiple-choice questions from the lesson
-- Create quizzes from the lesson
-- Create flashcards from the lesson
-- Make notes from the lesson
-- Summarize the lesson
+Use plain text only.
+Do not use Markdown formatting.
+Do not use asterisks.
+Do not use **.
+Do not use #.
+Do not use underscores for formatting.
+Do not use backticks.
+Do not use Markdown bullet symbols.
 
-Do not invent information that is not contained in the lesson.
+You may use:
+Normal headings
+Numbered lists
+Short paragraphs
+Simple examples
 
-If the answer cannot be found in the lesson, say:
-
+If the answer is not in the material, say:
 "The answer is not found in the uploaded lesson."
 
-QUESTION:
-
+Question:
 ${question}
 
-LESSON:
-
-${cleanLesson}
+Study material:
+${material}
 `;
   }
 
   return `
-You are Studying AI, a helpful AI study assistant.
+You are Studying AI, a helpful study assistant.
 
-There is currently no uploaded or selected study material.
+Answer the student's question clearly.
+Use simple student-friendly words.
+Make difficult topics easier to understand.
+Give step-by-step explanations when useful.
+Give examples when they help.
 
-Answer the student's question using your general knowledge.
+If asked to create questions, quizzes, notes,
+flashcards, or examples, follow the requested amount.
 
-You can:
-- Answer academic questions
-- Explain difficult topics
-- Simplify lessons
-- Generate questions
-- Generate multiple-choice questions
-- Generate quizzes
-- Create flashcards
-- Create study notes
-- Give examples
-- Review answers
-- Help students understand programming
-- Help students understand mathematics
-- Help students study for exams
-- Solve problems step by step when appropriate
+Use plain text only.
+Do not use Markdown formatting.
+Do not use asterisks.
+Do not use **.
+Do not use #.
+Do not use underscores for formatting.
+Do not use backticks.
+Do not use Markdown bullet symbols.
 
-Use clear and student-friendly language.
+You may use:
+Normal headings
+Numbered lists
+Short paragraphs
 
-When the student asks for a specific number of questions,
-flashcards, examples, or items, follow that number when possible.
-
-QUESTION:
-
+Question:
 ${question}
 `;
 }
@@ -956,105 +953,85 @@ async function askGemini(
   let jsonMode = false;
 
   if (
-    typeof apiKeyOrJsonMode ===
-    "boolean"
+    typeof apiKeyOrJsonMode === "boolean"
   ) {
-    jsonMode =
-      apiKeyOrJsonMode;
+    jsonMode = apiKeyOrJsonMode;
   } else {
-    jsonMode =
-      possibleJsonMode;
+    jsonMode = possibleJsonMode;
   }
 
-  if (
-    !GEMINI_API_KEY
-  ) {
+  if (!GEMINI_API_KEY) {
     throw new Error(
       "Gemini API key is not configured on the server."
     );
   }
 
   try {
-    const ai =
-      new GoogleGenAI({
-        apiKey:
-          GEMINI_API_KEY
-      });
+    const ai = new GoogleGenAI({
+      apiKey: GEMINI_API_KEY
+    });
 
     const config = {
-      temperature:
-        0.25
+      temperature: 0.2,
+      maxOutputTokens: jsonMode ? 8192 : 2048
     };
 
-    if (
-      jsonMode
-    ) {
+    if (jsonMode) {
       config.responseMimeType =
         "application/json";
     }
 
     const response =
-      await ai.models
-        .generateContent({
-          model:
-            GEMINI_MODEL,
+      await ai.models.generateContent({
+        model: GEMINI_MODEL,
+        contents: prompt,
+        config
+      });
 
-          contents:
-            prompt,
+    const text =
+      response.text?.trim();
 
-          config
-        });
-
-    if (
-      !response.text?.trim()
-    ) {
+    if (!text) {
       throw new Error(
         "Gemini returned an empty response."
       );
     }
 
-    return response
-      .text
-      .trim();
+    return text;
 
-  } catch (
-    error
-  ) {
+  } catch (error) {
     const message =
       error?.message ||
       String(error);
 
     if (
-      message.includes(
-        "429"
-      ) ||
-      message
-        .toLowerCase()
-        .includes(
-          "quota"
-        )
+      message.includes("429") ||
+      message.toLowerCase().includes("quota")
     ) {
       throw new Error(
-        "Gemini free-tier limit reached. Please try again later."
+        "Gemini limit reached. Please try again shortly."
       );
     }
 
     if (
-      message.includes(
-        "401"
-      ) ||
-      message.includes(
-        "403"
-      )
+      message.includes("API_KEY_INVALID") ||
+      message.includes("API key not valid")
     ) {
       throw new Error(
-        "The Gemini API key configured on the server is invalid or does not have access."
+        "The Gemini API key configured in Railway is invalid."
       );
     }
 
-    throw new Error(
-      message
-    );
+    if (
+      message.includes("401") ||
+      message.includes("403")
+    ) {
+      throw new Error(
+        "Gemini authentication failed."
+      );
+    }
+
+    throw new Error(message);
   }
 }
 
@@ -1064,27 +1041,9 @@ async function askProvider(
   apiKey,
   jsonMode = false
 ) {
-  if (
-    provider === "ollama"
-  ) {
-    return askOllama(
-      prompt,
-      jsonMode
-    );
-  }
-
-  if (
-    provider === "gemini"
-  ) {
-    return askGemini(
-      prompt,
-      apiKey,
-      jsonMode
-    );
-  }
-
-  throw new Error(
-    "Invalid AI provider."
+  return askGemini(
+    prompt,
+    jsonMode
   );
 }
 
@@ -2776,11 +2735,7 @@ app.post(
           .trim()
           .toLowerCase();
 
-      const apiKey =
-        String(
-          req.body.apiKey ||
-          ""
-        ).trim();
+      const apiKey = "";
 
       if (
         !question
