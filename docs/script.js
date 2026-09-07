@@ -2447,237 +2447,270 @@ function setStudyingThinking(show) {
 }
 
 /* =========================================================
-   STUDYante APP-STYLE PAGE NAVIGATION
-   Dashboard / Upload Material / Library / STUDYante AI
+   STUDYante SINGLE-PAGE NAVIGATION
 ========================================================= */
 
 (function () {
-    function getPageTarget(element) {
-        if (!element) return "";
 
-        const explicitTarget =
-            element.getAttribute("data-page") ||
-            element.getAttribute("data-section") ||
-            element.getAttribute("data-target");
+    const STUDYANTE_PAGES = [
+        "dashboard",
+        "upload",
+        "library",
+        "ai"
+    ];
 
-        if (explicitTarget) {
-            return explicitTarget.replace(/^#/, "");
-        }
 
-        const href =
-            element.getAttribute("href");
-
+    function showStudyantePage(
+        pageId,
+        updateHash = true
+    ) {
         if (
-            href &&
-            href.startsWith("#")
+            !STUDYANTE_PAGES.includes(
+                pageId
+            )
         ) {
-            return href.substring(1);
+            pageId =
+                "dashboard";
         }
 
-        return "";
-    }
-
-    function findPageSection(target) {
-        if (!target) return null;
-
-        return (
-            document.getElementById(target) ||
-            document.querySelector(
-                `[data-page-section="${target}"]`
-            )
-        );
-    }
-
-    function getAppSections() {
-        const knownIds = [
-            "dashboard",
-            "home",
-            "upload",
-            "library",
-            "ai"
-        ];
-
-        const sections = [];
-
-        knownIds.forEach(id => {
-            const element =
-                document.getElementById(id);
-
-            if (
-                element &&
-                !sections.includes(element)
-            ) {
-                sections.push(element);
-            }
-        });
-
-        document
-            .querySelectorAll(
-                "[data-page-section]"
-            )
-            .forEach(element => {
-                if (
-                    !sections.includes(element)
-                ) {
-                    sections.push(element);
-                }
-            });
-
-        return sections;
-    }
-
-    function showStudyantePage(target) {
-        const selected =
-            findPageSection(target);
-
-        if (!selected) {
-            return false;
-        }
-
-        const sections =
-            getAppSections();
-
-        sections.forEach(section => {
-            const isSelected =
-                section === selected;
-
-            section.hidden =
-                !isSelected;
-
-            section.classList.toggle(
-                "studyante-page-active",
-                isSelected
+        const selectedPage =
+            document.getElementById(
+                pageId
             );
-        });
+
+        if (!selectedPage) {
+            console.warn(
+                "STUDYante page not found:",
+                pageId
+            );
+
+            return;
+        }
+
+
+        STUDYANTE_PAGES.forEach(
+            id => {
+                const page =
+                    document.getElementById(
+                        id
+                    );
+
+                if (!page) {
+                    return;
+                }
+
+                const active =
+                    id === pageId;
+
+                page.hidden =
+                    !active;
+
+                page.style.display =
+                    active
+                        ? ""
+                        : "none";
+
+                page.classList.toggle(
+                    "studyante-page-active",
+                    active
+                );
+            }
+        );
+
 
         document
             .querySelectorAll(
-                ".sidebar a, .sidebar button, [data-page], [data-section], [data-target]"
+                ".sidebar nav a"
             )
-            .forEach(item => {
-                const itemTarget =
-                    getPageTarget(item);
+            .forEach(link => {
 
-                const isActive =
-                    itemTarget === target;
+                const target =
+                    (
+                        link.dataset.page ||
+                        link
+                            .getAttribute(
+                                "href"
+                            ) ||
+                        ""
+                    )
+                        .replace(
+                            "#",
+                            ""
+                        )
+                        .trim();
 
-                item.classList.toggle(
+                const active =
+                    target ===
+                    pageId;
+
+                link.classList.toggle(
                     "active",
-                    isActive
+                    active
                 );
 
-                if (isActive) {
-                    item.setAttribute(
+                if (active) {
+                    link.setAttribute(
                         "aria-current",
                         "page"
                     );
                 } else {
-                    item.removeAttribute(
+                    link.removeAttribute(
                         "aria-current"
                     );
                 }
             });
+
+
+        if (
+            updateHash &&
+            window.location.hash !==
+                "#" + pageId
+        ) {
+            history.pushState(
+                null,
+                "",
+                "#" + pageId
+            );
+        }
+
 
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });
 
-        try {
-            history.replaceState(
-                null,
-                "",
-                "#" + target
-            );
-        } catch {}
 
-        return true;
+        if (
+            pageId ===
+            "library" &&
+            typeof loadLibrary ===
+            "function"
+        ) {
+            loadLibrary();
+        }
+
+
+        if (
+            pageId ===
+            "ai" &&
+            typeof loadChatHistory ===
+            "function"
+        ) {
+            loadChatHistory();
+        }
     }
+
 
     document.addEventListener(
         "click",
         event => {
-            const navigation =
+
+            const link =
                 event.target.closest(
-                    ".sidebar a, .sidebar button, [data-page], [data-section], [data-target]"
+                    ".sidebar nav a"
                 );
 
-            if (!navigation) {
+            if (!link) {
                 return;
             }
 
-            const target =
-                getPageTarget(
-                    navigation
-                );
+            const pageId =
+                (
+                    link.dataset.page ||
+                    link
+                        .getAttribute(
+                            "href"
+                        ) ||
+                    ""
+                )
+                    .replace(
+                        "#",
+                        ""
+                    )
+                    .trim();
+
 
             if (
-                !findPageSection(target)
+                !STUDYANTE_PAGES.includes(
+                    pageId
+                )
             ) {
                 return;
             }
 
+
             event.preventDefault();
 
             showStudyantePage(
-                target
+                pageId
             );
         },
         true
     );
 
+
+    function openInitialPage() {
+
+        let pageId =
+            window.location.hash
+                .replace(
+                    "#",
+                    ""
+                )
+                .trim();
+
+
+        if (
+            !STUDYANTE_PAGES.includes(
+                pageId
+            )
+        ) {
+            pageId =
+                "dashboard";
+        }
+
+
+        showStudyantePage(
+            pageId,
+            false
+        );
+    }
+
+
+    window.addEventListener(
+        "popstate",
+        () => {
+
+            let pageId =
+                window.location.hash
+                    .replace(
+                        "#",
+                        ""
+                    )
+                    .trim();
+
+
+            if (
+                !STUDYANTE_PAGES.includes(
+                    pageId
+                )
+            ) {
+                pageId =
+                    "dashboard";
+            }
+
+
+            showStudyantePage(
+                pageId,
+                false
+            );
+        }
+    );
+
+
     window.showStudyantePage =
         showStudyantePage;
 
-    function openInitialPage() {
-        const hash =
-            window.location.hash
-                .replace("#", "")
-                .trim();
-
-        if (
-            hash &&
-            findPageSection(hash)
-        ) {
-            showStudyantePage(hash);
-            return;
-        }
-
-        const activeNavigation =
-            document.querySelector(
-                ".sidebar .active"
-            );
-
-        const activeTarget =
-            getPageTarget(
-                activeNavigation
-            );
-
-        if (
-            activeTarget &&
-            findPageSection(activeTarget)
-        ) {
-            showStudyantePage(
-                activeTarget
-            );
-            return;
-        }
-
-        const fallback =
-            document.getElementById(
-                "dashboard"
-            )
-                ? "dashboard"
-                : document.getElementById(
-                    "home"
-                )
-                    ? "home"
-                    : "upload";
-
-        showStudyantePage(
-            fallback
-        );
-    }
 
     if (
         document.readyState ===
@@ -2691,23 +2724,4 @@ function setStudyingThinking(show) {
         openInitialPage();
     }
 
-    window.addEventListener(
-        "hashchange",
-        () => {
-            const target =
-                window.location.hash
-                    .replace("#", "")
-                    .trim();
-
-            if (
-                target &&
-                findPageSection(target)
-            ) {
-                showStudyantePage(
-                    target
-                );
-            }
-        }
-    );
 })();
-
