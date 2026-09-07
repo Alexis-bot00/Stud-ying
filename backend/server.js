@@ -16,7 +16,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "llama3.2";
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
