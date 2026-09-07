@@ -16,15 +16,8 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "llama3.2";
-const GEMINI_MODEL = String(
-  process.env.GEMINI_MODEL ||
-  "gemini-2.5-flash-lite"
-)
-  .trim()
-  .replace(/^GEMINI_MODEL\s*=\s*/i, "")
-  .replace(/^["']|["']$/g, "")
-  .replace(/^models\//i, "")
-  .trim();
+const GEMINI_MODEL = "gemini-3.5-flash-lite";
+
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
@@ -954,23 +947,6 @@ async function askOllama(
 }
 
 
-function validateGeminiModel(model) {
-  const cleaned = String(model || "").trim();
-
-  if (
-    !/^gemini-[a-z0-9.-]+$/i.test(cleaned)
-  ) {
-    console.warn(
-      "Invalid GEMINI_MODEL value detected:",
-      JSON.stringify(cleaned)
-    );
-
-    return "gemini-2.5-flash-lite";
-  }
-
-  return cleaned;
-}
-
 async function askGemini(
   prompt,
   apiKeyOrJsonMode = false,
@@ -997,24 +973,28 @@ async function askGemini(
       apiKey: GEMINI_API_KEY
     });
 
-    const config = {
-      maxOutputTokens: jsonMode ? 8192 : 1200
-    };
+    let finalPrompt = prompt;
 
     if (jsonMode) {
-      config.responseMimeType =
-        "application/json";
+      finalPrompt =
+        prompt +
+        "\n\nIMPORTANT: Return only valid JSON. " +
+        "Do not include markdown code fences.";
     }
 
-    const response =
-      await ai.models.generateContent({
-        model: validateGeminiModel(GEMINI_MODEL),
-        contents: prompt,
-        config
+    const interaction =
+      await ai.interactions.create({
+        model: GEMINI_MODEL,
+        input: finalPrompt,
+        store: false
       });
 
     const text =
-      response.text?.trim();
+      String(
+        interaction.outputText ||
+        interaction.output_text ||
+        ""
+      ).trim();
 
     if (!text) {
       throw new Error(
@@ -1029,18 +1009,27 @@ async function askGemini(
       error?.message ||
       String(error);
 
+    console.error(
+      "Gemini Interactions API error:",
+      message
+    );
+
     if (
       message.includes("429") ||
-      message.toLowerCase().includes("quota")
+      message
+        .toLowerCase()
+        .includes("quota")
     ) {
       throw new Error(
-        "Gemini limit reached. Please try again shortly."
+        "Gemini free limit reached. Please try again shortly."
       );
     }
 
     if (
       message.includes("API_KEY_INVALID") ||
-      message.includes("API key not valid")
+      message.includes(
+        "API key not valid"
+      )
     ) {
       throw new Error(
         "The Gemini API key configured in Railway is invalid."
@@ -2899,7 +2888,7 @@ app.listen(
       `Library: http://localhost:${PORT}/api/library`
     );
     console.log(
-      `Gemini: ${validateGeminiModel(GEMINI_MODEL)}`
+      `Gemini: ${GEMINI_MODEL}`
     );
     console.log(
       `Ollama: ${OLLAMA_MODEL}`
