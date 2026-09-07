@@ -588,3 +588,28 @@ button {
     font-size: 27px;
   }
 }
+/* STUDYante website branding */
+.site-brand-logo {
+    display: block;
+    width: min(260px, 44vw);
+    height: auto;
+    object-fit: contain;
+}
+
+.auth-brand-logo {
+    display: block;
+    width: min(320px, 72vw);
+    height: auto;
+    margin: 0 auto 18px;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .site-brand-logo {
+        width: min(210px, 58vw);
+    }
+
+    .auth-brand-logo {
+        width: min(260px, 78vw);
+    }
+}
