@@ -17,9 +17,6 @@ let currentFlashcardSetName = "";
 
 let manualCardCount = 0;
 
-let timerSeconds = 25 * 60;
-let timerInterval = null;
-
 const $ = id => document.getElementById(id);
 
 const fileInput = $("fileInput");
@@ -38,9 +35,6 @@ const generatedIcon = $("generatedIcon");
 const generatedTitle = $("generatedTitle");
 const generatedBody = $("generatedBody");
 
-const geminiSettings = $("geminiSettings");
-const geminiKey = $("geminiKey");
-const toggleGeminiKey = $("toggleGeminiKey");
 const ollamaNotice = $("ollamaNotice");
 
 const flashcardCount = $("flashcardCount");
@@ -74,10 +68,6 @@ const question = $("question");
 const askButton = $("askButton");
 const aiMessages = $("aiMessages");
 
-const timerDisplay = $("timerDisplay");
-const startTimer = $("startTimer");
-const resetTimer = $("resetTimer");
-
 const logoutButton = $("logoutButton");
 
 function getProvider() {
@@ -91,11 +81,10 @@ function getProvider() {
 function updateProviderUI() {
   const provider = getProvider();
 
-  geminiSettings.hidden =
-    provider !== "gemini";
-
-  ollamaNotice.hidden =
-    provider !== "ollama";
+  if (ollamaNotice) {
+    ollamaNotice.hidden =
+      provider !== "ollama";
+  }
 }
 
 document
@@ -109,28 +98,12 @@ document
     );
   });
 
-toggleGeminiKey.addEventListener(
-  "click",
-  () => {
-    const hidden =
-      geminiKey.type === "password";
-
-    geminiKey.type =
-      hidden ? "text" : "password";
-
-    toggleGeminiKey.textContent =
-      hidden ? "Hide" : "Show";
-  }
-);
-
 logoutButton.addEventListener(
   "click",
   () => {
     if (!confirm("Do you want to log out?")) {
       return;
     }
-
-    geminiKey.value = "";
     uploadedFile = null;
     activeLibraryId = null;
 
@@ -1288,17 +1261,6 @@ async function generateMaterial(type) {
 
   const provider = getProvider();
 
-  if (
-    provider === "gemini" &&
-    !geminiKey.value.trim()
-  ) {
-    alert(
-      "Please enter your Gemini API key."
-    );
-
-    return;
-  }
-
   showLoading(type);
 
   const formData = new FormData();
@@ -1342,13 +1304,6 @@ async function generateMaterial(type) {
       questionCount
         ? questionCount.value
         : "20"
-    );
-  }
-
-  if (provider === "gemini") {
-    formData.append(
-      "apiKey",
-      geminiKey.value.trim()
     );
   }
 
@@ -1864,29 +1819,9 @@ async function sendQuestion() {
 
   if (!text) return;
 
-  if (
-    !uploadedFile &&
-    !activeLibraryId
-  ) {
-    alert(
-      "Upload or select a lesson first."
-    );
-
-    return;
-  }
+  
 
   const provider = getProvider();
-
-  if (
-    provider === "gemini" &&
-    !geminiKey.value.trim()
-  ) {
-    alert(
-      "Please enter your Gemini API key."
-    );
-
-    return;
-  }
 
   addMessage(
     text,
@@ -1910,7 +1845,7 @@ async function sendQuestion() {
       "libraryId",
       activeLibraryId
     );
-  } else {
+  } else if (uploadedFile) {
     formData.append(
       "file",
       uploadedFile,
@@ -1927,13 +1862,6 @@ async function sendQuestion() {
     "provider",
     provider
   );
-
-  if (provider === "gemini") {
-    formData.append(
-      "apiKey",
-      geminiKey.value.trim()
-    );
-  }
 
   try {
     const response = await fetch(
@@ -2012,82 +1940,6 @@ function addMessage(text, role) {
 
   return message;
 }
-
-function updateTimer() {
-  const minutes =
-    Math.floor(
-      timerSeconds / 60
-    );
-
-  const seconds =
-    timerSeconds % 60;
-
-  timerDisplay.textContent =
-    `${String(minutes).padStart(
-      2,
-      "0"
-    )}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
-}
-
-startTimer.addEventListener(
-  "click",
-  () => {
-    if (timerInterval) {
-      clearInterval(timerInterval);
-
-      timerInterval = null;
-
-      startTimer.textContent =
-        "Start";
-
-      return;
-    }
-
-    startTimer.textContent =
-      "Pause";
-
-    timerInterval =
-      setInterval(() => {
-        if (timerSeconds > 0) {
-          timerSeconds--;
-
-          updateTimer();
-        } else {
-          clearInterval(
-            timerInterval
-          );
-
-          timerInterval = null;
-
-          startTimer.textContent =
-            "Start";
-
-          alert(
-            "Study session finished! 🎉"
-          );
-        }
-      }, 1000);
-  }
-);
-
-resetTimer.addEventListener(
-  "click",
-  () => {
-    clearInterval(timerInterval);
-
-    timerInterval = null;
-
-    timerSeconds = 25 * 60;
-
-    startTimer.textContent =
-      "Start";
-
-    updateTimer();
-  }
-);
 
 document
   .querySelectorAll(
@@ -2200,5 +2052,4 @@ function escapeHTML(value) {
 }
 
 updateProviderUI();
-updateTimer();
 loadLibrary();

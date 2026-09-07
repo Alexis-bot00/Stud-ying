@@ -756,27 +756,6 @@ textarea:focus {
   background: var(--red-soft);
 }
 
-.timer-panel {
-  text-align: center;
-}
-
-.timer-panel .section-title {
-  text-align: left;
-}
-
-.timer-display {
-  margin: 20px 0 25px;
-  color: var(--blue);
-  font-size: clamp(60px, 8vw, 95px);
-  font-weight: 900;
-}
-
-.timer-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
 .chat-messages {
   min-height: 220px;
   max-height: 500px;

@@ -17,6 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "llama3.2";
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
 const MAX_TEXT_LENGTH = 120000;
@@ -792,14 +793,36 @@ answer:
 
 function buildChatPrompt(
   question,
-  lesson
+  lesson = ""
 ) {
-  return `
+  const cleanLesson =
+    String(
+      lesson || ""
+    ).trim();
+
+  if (
+    cleanLesson
+  ) {
+    return `
 You are Studying AI.
+
+The student selected or uploaded a study material.
 
 Answer the student's question using ONLY the uploaded lesson.
 
-If the answer is not found in the lesson, say:
+You may:
+- Answer questions from the lesson
+- Explain concepts from the lesson
+- Generate review questions from the lesson
+- Generate multiple-choice questions from the lesson
+- Create quizzes from the lesson
+- Create flashcards from the lesson
+- Make notes from the lesson
+- Summarize the lesson
+
+Do not invent information that is not contained in the lesson.
+
+If the answer cannot be found in the lesson, say:
 
 "The answer is not found in the uploaded lesson."
 
@@ -809,7 +832,41 @@ ${question}
 
 LESSON:
 
-${lesson}
+${cleanLesson}
+`;
+  }
+
+  return `
+You are Studying AI, a helpful AI study assistant.
+
+There is currently no uploaded or selected study material.
+
+Answer the student's question using your general knowledge.
+
+You can:
+- Answer academic questions
+- Explain difficult topics
+- Simplify lessons
+- Generate questions
+- Generate multiple-choice questions
+- Generate quizzes
+- Create flashcards
+- Create study notes
+- Give examples
+- Review answers
+- Help students understand programming
+- Help students understand mathematics
+- Help students study for exams
+- Solve problems step by step when appropriate
+
+Use clear and student-friendly language.
+
+When the student asks for a specific number of questions,
+flashcards, examples, or items, follow that number when possible.
+
+QUESTION:
+
+${question}
 `;
 }
 
@@ -893,21 +950,35 @@ async function askOllama(
 
 async function askGemini(
   prompt,
-  apiKey,
-  jsonMode = false
+  apiKeyOrJsonMode = false,
+  possibleJsonMode = false
 ) {
+  let jsonMode = false;
+
   if (
-    !apiKey
+    typeof apiKeyOrJsonMode ===
+    "boolean"
+  ) {
+    jsonMode =
+      apiKeyOrJsonMode;
+  } else {
+    jsonMode =
+      possibleJsonMode;
+  }
+
+  if (
+    !GEMINI_API_KEY
   ) {
     throw new Error(
-      "Please enter your Gemini API key."
+      "Gemini API key is not configured on the server."
     );
   }
 
   try {
     const ai =
       new GoogleGenAI({
-        apiKey
+        apiKey:
+          GEMINI_API_KEY
       });
 
     const config = {
@@ -977,7 +1048,7 @@ async function askGemini(
       )
     ) {
       throw new Error(
-        "Your Gemini API key is invalid or does not have access."
+        "The Gemini API key configured on the server is invalid or does not have access."
       );
     }
 
@@ -2725,12 +2796,27 @@ app.post(
           });
       }
 
-      const {
-        lesson
-      } =
-        await getLesson(
-          req
-        );
+      let lesson =
+        "";
+
+      const libraryId =
+        String(
+          req.body.libraryId ||
+          ""
+        ).trim();
+
+      if (
+        libraryId ||
+        req.file
+      ) {
+        const source =
+          await getLesson(
+            req
+          );
+
+        lesson =
+          source.lesson;
+      }
 
       const answer =
         await askProvider(
