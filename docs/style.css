@@ -1231,3 +1231,1292 @@ aside .studyante-logo {
     display: none !important;
 }
 
+
+/* =========================================================
+   STUDYante UNIVERSAL RESPONSIVE LAYOUT
+   Desktop / Laptop / Tablet / Mobile
+========================================================= */
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+    max-width: 100%;
+}
+
+main {
+    width: auto;
+    min-width: 0;
+}
+
+.studyante-page,
+.panel,
+.hero,
+.generated-content,
+.library-card,
+.question-card,
+.chat-history-panel,
+.ai-chat-layout {
+    min-width: 0;
+}
+
+input,
+textarea,
+select,
+button {
+    max-width: 100%;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.library-card,
+.question-card,
+.message-text,
+.generated-content {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+
+/* =========================
+   LARGE DESKTOP
+========================= */
+
+@media (min-width: 1501px) {
+
+    main {
+        max-width: none;
+        padding-left: 48px;
+        padding-right: 48px;
+    }
+
+}
+
+
+/* =========================
+   LAPTOP
+========================= */
+
+@media (max-width: 1200px) and (min-width: 801px) {
+
+    main {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .panel {
+        padding: 24px;
+    }
+
+    .hero {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .library-grid,
+    .generate-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================
+   TABLET + PHONE
+========================= */
+
+@media (max-width: 800px) {
+
+    body {
+        display: block;
+    }
+
+    /*
+       Mobile/tablet navigation.
+       Sidebar becomes a top navigation area.
+    */
+
+    .sidebar {
+        position: sticky !important;
+        top: 0;
+        left: auto;
+        z-index: 1000;
+
+        width: 100% !important;
+        height: auto !important;
+
+        padding: 10px 16px 12px !important;
+
+        border-right: 0 !important;
+        border-bottom: 1px solid var(--border);
+
+        background: white;
+    }
+
+    .sidebar .studyante-brand {
+        width: 100% !important;
+        height: 42px !important;
+        margin: 0 0 8px 0 !important;
+
+        justify-content: center !important;
+    }
+
+    .sidebar .studyante-brand .studyante-logo {
+        height: 38px !important;
+        max-height: 38px !important;
+        max-width: 160px !important;
+    }
+
+    .sidebar nav {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+        gap: 6px;
+
+        overflow: visible !important;
+    }
+
+    .sidebar nav a {
+        min-width: 0;
+
+        padding: 9px 5px !important;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+        white-space: normal !important;
+
+        font-size: 12px;
+        line-height: 1.25;
+    }
+
+    main {
+        width: 100%;
+        max-width: none;
+
+        margin-left: 0 !important;
+        padding: 0 18px 50px !important;
+    }
+
+    .topbar {
+        min-height: auto;
+        padding: 16px 0 !important;
+        gap: 12px;
+    }
+
+    .topbar h1 {
+        font-size: clamp(21px, 5vw, 28px);
+    }
+
+    .topbar-right {
+        gap: 10px;
+    }
+
+    .hero {
+        padding: 28px 22px !important;
+        border-radius: 18px;
+    }
+
+    .hero h1,
+    .hero h2 {
+        font-size: clamp(24px, 6vw, 34px);
+    }
+
+    .panel {
+        padding: 20px !important;
+        margin-bottom: 18px;
+        border-radius: 16px;
+    }
+
+    .library-grid,
+    .generate-grid,
+    .provider-grid,
+    .two-fields {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .library-header {
+        gap: 14px;
+    }
+
+    .library-header-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .library-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .library-actions button,
+    .library-actions select {
+        min-width: 0;
+    }
+
+    /*
+       AI
+    */
+
+    .ai-chat-layout {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .chat-history-panel {
+        max-width: 100%;
+    }
+
+    .chat-input {
+        width: 100%;
+    }
+
+    .chat-input textarea {
+        min-width: 0;
+    }
+
+    /*
+       Modals
+    */
+
+    .modal {
+        padding: 16px !important;
+    }
+
+    .modal-card,
+    .large-modal {
+        width: min(100%, 700px) !important;
+        max-width: 100% !important;
+        max-height: calc(100dvh - 32px);
+        overflow-y: auto;
+        margin: auto;
+    }
+
+}
+
+
+/* =========================
+   PHONE
+========================= */
+
+@media (max-width: 600px) {
+
+    .sidebar {
+        padding:
+            8px 10px 10px !important;
+    }
+
+    .sidebar .studyante-brand {
+        height: 38px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .sidebar .studyante-brand .studyante-logo {
+        height: 34px !important;
+        max-height: 34px !important;
+        max-width: 145px !important;
+    }
+
+    .sidebar nav {
+        gap: 4px;
+    }
+
+    .sidebar nav a {
+        padding: 8px 3px !important;
+        font-size: 10px;
+        border-radius: 8px;
+    }
+
+    main {
+        padding:
+            0 12px 40px !important;
+    }
+
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .topbar-right {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start !important;
+    }
+
+    .profile {
+        min-width: 0;
+    }
+
+    .hero {
+        padding: 23px 17px !important;
+        border-radius: 15px;
+    }
+
+    .panel {
+        padding: 16px !important;
+        border-radius: 14px;
+    }
+
+    .section-title h2 {
+        font-size: 21px;
+    }
+
+    /*
+       One card per row on phones
+    */
+
+    .library-grid,
+    .generate-grid,
+    .provider-grid,
+    .two-fields {
+        grid-template-columns:
+            minmax(0, 1fr) !important;
+    }
+
+    .library-card {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .library-header-buttons {
+        width: 100%;
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    .library-header-buttons button {
+        width: 100%;
+    }
+
+    .library-actions {
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    .library-actions button,
+    .library-actions select {
+        width: 100%;
+    }
+
+    /*
+       Forms / Upload
+    */
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .delete-btn,
+    .send-btn {
+        min-height: 44px;
+    }
+
+    /*
+       AI mobile layout
+    */
+
+    .ai-chat-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .chat-history-panel {
+        width: 100%;
+        max-height: 220px;
+        overflow-y: auto;
+    }
+
+    .chat-input {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .chat-input textarea,
+    .chat-input .send-btn {
+        width: 100% !important;
+    }
+
+    .message {
+        max-width: 100%;
+    }
+
+    .message-text {
+        max-width: 100%;
+    }
+
+    /*
+       Flashcards / generated content
+    */
+
+    .generated-content {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .question-card {
+        width: 100%;
+    }
+
+    /*
+       Modal becomes phone friendly
+    */
+
+    .modal {
+        align-items: flex-start !important;
+        padding: 10px !important;
+        overflow-y: auto;
+    }
+
+    .modal-card,
+    .large-modal {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: calc(100dvh - 20px);
+        padding: 18px !important;
+        border-radius: 14px;
+    }
+
+    .modal-header {
+        gap: 10px;
+    }
+
+    .modal-actions {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .modal-actions button {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================
+   SMALL PHONE
+========================= */
+
+@media (max-width: 400px) {
+
+    main {
+        padding:
+            0 9px 32px !important;
+    }
+
+    .sidebar {
+        padding:
+            7px 7px 8px !important;
+    }
+
+    .sidebar nav a {
+        padding: 7px 2px !important;
+        font-size: 9px;
+    }
+
+    .panel {
+        padding: 13px !important;
+    }
+
+    .hero {
+        padding: 19px 14px !important;
+    }
+
+    .modal-card,
+    .large-modal {
+        padding: 14px !important;
+    }
+
+}
+
+
+/* =========================
+   LANDSCAPE PHONE
+========================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .sidebar {
+        position: static !important;
+    }
+
+    .sidebar .studyante-brand {
+        display: none !important;
+    }
+
+    .modal-card,
+    .large-modal {
+        max-height: calc(100dvh - 16px);
+    }
+
+}
+
+
+/* =========================
+   TOUCH DEVICES
+========================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+    button,
+    select,
+    .sidebar nav a {
+        min-height: 42px;
+    }
+
+}
+
+
+/* =========================
+   PREVENT PAGE ELEMENTS
+   FROM BREAKING SCREEN WIDTH
+========================= */
+
+.studyante-page {
+    width: 100%;
+    max-width: 100%;
+}
+
+.studyante-page-active {
+    width: 100%;
+}
+
+
+/* =========================================================
+   STUDYante UNIVERSAL RESPONSIVE LAYOUT
+   Desktop / Laptop / Tablet / Mobile
+========================================================= */
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+    max-width: 100%;
+}
+
+main {
+    width: auto;
+    min-width: 0;
+}
+
+.studyante-page,
+.panel,
+.hero,
+.generated-content,
+.library-card,
+.question-card,
+.chat-history-panel,
+.ai-chat-layout {
+    min-width: 0;
+}
+
+input,
+textarea,
+select,
+button {
+    max-width: 100%;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.library-card,
+.question-card,
+.message-text,
+.generated-content {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+
+/* =========================
+   LARGE DESKTOP
+========================= */
+
+@media (min-width: 1501px) {
+
+    main {
+        max-width: none;
+        padding-left: 48px;
+        padding-right: 48px;
+    }
+
+}
+
+
+/* =========================
+   LAPTOP
+========================= */
+
+@media (max-width: 1200px) and (min-width: 801px) {
+
+    main {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .panel {
+        padding: 24px;
+    }
+
+    .hero {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .library-grid,
+    .generate-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================
+   TABLET + PHONE
+========================= */
+
+@media (max-width: 800px) {
+
+    body {
+        display: block;
+    }
+
+    /*
+       Mobile/tablet navigation.
+       Sidebar becomes a top navigation area.
+    */
+
+    .sidebar {
+        position: sticky !important;
+        top: 0;
+        left: auto;
+        z-index: 1000;
+
+        width: 100% !important;
+        height: auto !important;
+
+        padding: 10px 16px 12px !important;
+
+        border-right: 0 !important;
+        border-bottom: 1px solid var(--border);
+
+        background: white;
+    }
+
+    .sidebar .studyante-brand {
+        width: 100% !important;
+        height: 42px !important;
+        margin: 0 0 8px 0 !important;
+
+        justify-content: center !important;
+    }
+
+    .sidebar .studyante-brand .studyante-logo {
+        height: 38px !important;
+        max-height: 38px !important;
+        max-width: 160px !important;
+    }
+
+    .sidebar nav {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+        gap: 6px;
+
+        overflow: visible !important;
+    }
+
+    .sidebar nav a {
+        min-width: 0;
+
+        padding: 9px 5px !important;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+        white-space: normal !important;
+
+        font-size: 12px;
+        line-height: 1.25;
+    }
+
+    main {
+        width: 100%;
+        max-width: none;
+
+        margin-left: 0 !important;
+        padding: 0 18px 50px !important;
+    }
+
+    .topbar {
+        min-height: auto;
+        padding: 16px 0 !important;
+        gap: 12px;
+    }
+
+    .topbar h1 {
+        font-size: clamp(21px, 5vw, 28px);
+    }
+
+    .topbar-right {
+        gap: 10px;
+    }
+
+    .hero {
+        padding: 28px 22px !important;
+        border-radius: 18px;
+    }
+
+    .hero h1,
+    .hero h2 {
+        font-size: clamp(24px, 6vw, 34px);
+    }
+
+    .panel {
+        padding: 20px !important;
+        margin-bottom: 18px;
+        border-radius: 16px;
+    }
+
+    .library-grid,
+    .generate-grid,
+    .provider-grid,
+    .two-fields {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .library-header {
+        gap: 14px;
+    }
+
+    .library-header-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .library-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .library-actions button,
+    .library-actions select {
+        min-width: 0;
+    }
+
+    /*
+       AI
+    */
+
+    .ai-chat-layout {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .chat-history-panel {
+        max-width: 100%;
+    }
+
+    .chat-input {
+        width: 100%;
+    }
+
+    .chat-input textarea {
+        min-width: 0;
+    }
+
+    /*
+       Modals
+    */
+
+    .modal {
+        padding: 16px !important;
+    }
+
+    .modal-card,
+    .large-modal {
+        width: min(100%, 700px) !important;
+        max-width: 100% !important;
+        max-height: calc(100dvh - 32px);
+        overflow-y: auto;
+        margin: auto;
+    }
+
+}
+
+
+/* =========================
+   PHONE
+========================= */
+
+@media (max-width: 600px) {
+
+    .sidebar {
+        padding:
+            8px 10px 10px !important;
+    }
+
+    .sidebar .studyante-brand {
+        height: 38px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .sidebar .studyante-brand .studyante-logo {
+        height: 34px !important;
+        max-height: 34px !important;
+        max-width: 145px !important;
+    }
+
+    .sidebar nav {
+        gap: 4px;
+    }
+
+    .sidebar nav a {
+        padding: 8px 3px !important;
+        font-size: 10px;
+        border-radius: 8px;
+    }
+
+    main {
+        padding:
+            0 12px 40px !important;
+    }
+
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .topbar-right {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start !important;
+    }
+
+    .profile {
+        min-width: 0;
+    }
+
+    .hero {
+        padding: 23px 17px !important;
+        border-radius: 15px;
+    }
+
+    .panel {
+        padding: 16px !important;
+        border-radius: 14px;
+    }
+
+    .section-title h2 {
+        font-size: 21px;
+    }
+
+    /*
+       One card per row on phones
+    */
+
+    .library-grid,
+    .generate-grid,
+    .provider-grid,
+    .two-fields {
+        grid-template-columns:
+            minmax(0, 1fr) !important;
+    }
+
+    .library-card {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .library-header-buttons {
+        width: 100%;
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    .library-header-buttons button {
+        width: 100%;
+    }
+
+    .library-actions {
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    .library-actions button,
+    .library-actions select {
+        width: 100%;
+    }
+
+    /*
+       Forms / Upload
+    */
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .delete-btn,
+    .send-btn {
+        min-height: 44px;
+    }
+
+    /*
+       AI mobile layout
+    */
+
+    .ai-chat-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .chat-history-panel {
+        width: 100%;
+        max-height: 220px;
+        overflow-y: auto;
+    }
+
+    .chat-input {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .chat-input textarea,
+    .chat-input .send-btn {
+        width: 100% !important;
+    }
+
+    .message {
+        max-width: 100%;
+    }
+
+    .message-text {
+        max-width: 100%;
+    }
+
+    /*
+       Flashcards / generated content
+    */
+
+    .generated-content {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .question-card {
+        width: 100%;
+    }
+
+    /*
+       Modal becomes phone friendly
+    */
+
+    .modal {
+        align-items: flex-start !important;
+        padding: 10px !important;
+        overflow-y: auto;
+    }
+
+    .modal-card,
+    .large-modal {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: calc(100dvh - 20px);
+        padding: 18px !important;
+        border-radius: 14px;
+    }
+
+    .modal-header {
+        gap: 10px;
+    }
+
+    .modal-actions {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .modal-actions button {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================
+   SMALL PHONE
+========================= */
+
+@media (max-width: 400px) {
+
+    main {
+        padding:
+            0 9px 32px !important;
+    }
+
+    .sidebar {
+        padding:
+            7px 7px 8px !important;
+    }
+
+    .sidebar nav a {
+        padding: 7px 2px !important;
+        font-size: 9px;
+    }
+
+    .panel {
+        padding: 13px !important;
+    }
+
+    .hero {
+        padding: 19px 14px !important;
+    }
+
+    .modal-card,
+    .large-modal {
+        padding: 14px !important;
+    }
+
+}
+
+
+/* =========================
+   LANDSCAPE PHONE
+========================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .sidebar {
+        position: static !important;
+    }
+
+    .sidebar .studyante-brand {
+        display: none !important;
+    }
+
+    .modal-card,
+    .large-modal {
+        max-height: calc(100dvh - 16px);
+    }
+
+}
+
+
+/* =========================
+   TOUCH DEVICES
+========================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+    button,
+    select,
+    .sidebar nav a {
+        min-height: 42px;
+    }
+
+}
+
+
+/* =========================
+   PREVENT PAGE ELEMENTS
+   FROM BREAKING SCREEN WIDTH
+========================= */
+
+.studyante-page {
+    width: 100%;
+    max-width: 100%;
+}
+
+.studyante-page-active {
+    width: 100%;
+}
+
+
+
+
+/* =========================================================
+   STUDYante AI CAMERA
+========================================================= */
+
+.ai-media-buttons {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.ai-media-btn {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: white;
+    color: var(--text);
+
+    font-size: 20px;
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+}
+
+.ai-media-btn:hover {
+    background: var(--blue-soft);
+    transform: translateY(-1px);
+}
+
+.ai-image-preview {
+    margin-top: 12px;
+    margin-bottom: 10px;
+}
+
+.ai-image-preview-card {
+    width: min(100%, 360px);
+
+    padding: 10px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: white;
+}
+
+.ai-image-preview-card img {
+    display: block;
+
+    width: 100%;
+    max-height: 240px;
+
+    object-fit: contain;
+
+    border-radius: 10px;
+}
+
+.ai-image-preview-info {
+    margin-top: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    font-size: 13px;
+}
+
+.ai-image-preview-info span {
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ai-image-remove {
+    flex-shrink: 0;
+
+    border: 0;
+    background: transparent;
+
+    color: var(--red);
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+
+    .ai-media-buttons {
+        width: 100%;
+    }
+
+    .ai-media-btn {
+        flex: 1;
+    }
+
+    .ai-image-preview-card {
+        width: 100%;
+    }
+}
+

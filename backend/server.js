@@ -538,6 +538,48 @@ const upload =
     }
   });
 
+
+const imageUpload =
+  multer({
+    storage,
+
+    limits: {
+      fileSize:
+        10 * 1024 * 1024
+    },
+
+    fileFilter(
+      req,
+      file,
+      callback
+    ) {
+      const allowedImageTypes =
+        new Set([
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ]);
+
+      if (
+        !allowedImageTypes.has(
+          file.mimetype
+        )
+      ) {
+        return callback(
+          new Error(
+            "Only JPG, PNG and WEBP images are allowed."
+          )
+        );
+      }
+
+      callback(
+        null,
+        true
+      );
+    }
+  });
+
+
 async function extractText(
   filePath,
   originalName
@@ -1154,6 +1196,81 @@ async function askGemini(
     throw new Error(message);
   }
 }
+
+
+async function askGeminiWithImage(
+  prompt,
+  imagePath,
+  mimeType
+) {
+  if (!GEMINI_API_KEY) {
+    throw new Error(
+      "Gemini API key is not configured on the server."
+    );
+  }
+
+  const ai =
+    new GoogleGenAI({
+      apiKey:
+        GEMINI_API_KEY
+    });
+
+  const base64Image =
+    fs.readFileSync(
+      imagePath,
+      {
+        encoding:
+          "base64"
+      }
+    );
+
+  const interaction =
+    await ai.interactions.create({
+      model:
+        GEMINI_MODEL,
+
+      input: [
+        {
+          type:
+            "text",
+
+          text:
+            prompt
+        },
+
+        {
+          type:
+            "image",
+
+          data:
+            base64Image,
+
+          mime_type:
+            mimeType ||
+            "image/jpeg"
+        }
+      ],
+
+      store:
+        false
+    });
+
+  const text =
+    String(
+      interaction.outputText ||
+      interaction.output_text ||
+      ""
+    ).trim();
+
+  if (!text) {
+    throw new Error(
+      "Gemini returned an empty response."
+    );
+  }
+
+  return text;
+}
+
 
 async function askProvider(
   provider,
@@ -2958,15 +3075,38 @@ app.delete(
 app.post(
     "/api/chat",
     requireAuth,
-    upload.single(
-        "file"
-    ),
+    imageUpload.fields([
+        {
+            name: "file",
+            maxCount: 1
+        },
+        {
+            name: "image",
+            maxCount: 1
+        }
+    ]),
     async (
         req,
         res
     ) => {
+        const lessonFile =
+            req.files?.file?.[0] ||
+            null;
+
+        const imageFile =
+            req.files?.image?.[0] ||
+            null;
+
+        if (lessonFile) {
+            req.file =
+                lessonFile;
+        }
+
         const temporaryPath =
-            req.file?.path;
+            lessonFile?.path;
+
+        const temporaryImagePath =
+            imageFile?.path;
 
         try {
             const question =
@@ -3118,16 +3258,25 @@ app.post(
                     : question;
 
 
-            const answer =
-                await askProvider(
-                    provider,
-                    buildChatPrompt(
-                        finalQuestion,
-                        lesson
-                    ),
-                    "",
-                    false
+            const chatPrompt =
+                buildChatPrompt(
+                    finalQuestion,
+                    lesson
                 );
+
+            const answer =
+                imageFile
+                    ? await askGeminiWithImage(
+                        chatPrompt,
+                        imageFile.path,
+                        imageFile.mimetype
+                    )
+                    : await askProvider(
+                        provider,
+                        chatPrompt,
+                        "",
+                        false
+                    );
 
 
             if (
@@ -3218,6 +3367,10 @@ app.post(
         } finally {
             removeFile(
                 temporaryPath
+            );
+
+            removeFile(
+                temporaryImagePath
             );
         }
     }

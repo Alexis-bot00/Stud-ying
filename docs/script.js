@@ -83,6 +83,18 @@ const confirmSaveAIFlashcards = $("confirmSaveAIFlashcards");
 const question = $("question");
 const askButton = $("askButton");
 const aiMessages = $("aiMessages");
+
+const aiImageInput = $("aiImageInput");
+const aiCameraInput = $("aiCameraInput");
+const aiCameraButton = $("aiCameraButton");
+const aiImageButton = $("aiImageButton");
+const aiImagePreview = $("aiImagePreview");
+const aiImagePreviewImg = $("aiImagePreviewImg");
+const aiImageName = $("aiImageName");
+const removeAIImage = $("removeAIImage");
+
+let selectedAIImage = null;
+let selectedAIImageURL = "";
 const newChatButton = $("newChatButton");
 const chatHistoryList = $("chatHistoryList");
 
@@ -1854,16 +1866,160 @@ question.addEventListener(
 );
 
 
-async function sendQuestion() {
-    const text =
-        question.value.trim();
 
-    if (!text) {
+function clearAIImage() {
+    selectedAIImage = null;
+
+    if (selectedAIImageURL) {
+        URL.revokeObjectURL(
+            selectedAIImageURL
+        );
+
+        selectedAIImageURL = "";
+    }
+
+    if (aiImageInput) {
+        aiImageInput.value = "";
+    }
+
+    if (aiCameraInput) {
+        aiCameraInput.value = "";
+    }
+
+    if (aiImagePreviewImg) {
+        aiImagePreviewImg.removeAttribute(
+            "src"
+        );
+    }
+
+    if (aiImagePreview) {
+        aiImagePreview.hidden = true;
+    }
+}
+
+
+function setAIImage(file) {
+    if (!file) {
         return;
     }
 
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+        alert(
+            "Please select a JPG, PNG or WEBP image."
+        );
+
+        return;
+    }
+
+    const maxSize =
+        10 * 1024 * 1024;
+
+    if (file.size > maxSize) {
+        alert(
+            "The image must be 10 MB or smaller."
+        );
+
+        return;
+    }
+
+    clearAIImage();
+
+    selectedAIImage = file;
+
+    selectedAIImageURL =
+        URL.createObjectURL(file);
+
+    aiImagePreviewImg.src =
+        selectedAIImageURL;
+
+    aiImageName.textContent =
+        file.name || "Camera photo";
+
+    aiImagePreview.hidden = false;
+}
+
+
+if (aiCameraButton) {
+    aiCameraButton.addEventListener(
+        "click",
+        () => {
+            aiCameraInput.click();
+        }
+    );
+}
+
+
+if (aiImageButton) {
+    aiImageButton.addEventListener(
+        "click",
+        () => {
+            aiImageInput.click();
+        }
+    );
+}
+
+
+if (aiCameraInput) {
+    aiCameraInput.addEventListener(
+        "change",
+        event => {
+            setAIImage(
+                event.target.files?.[0]
+            );
+        }
+    );
+}
+
+
+if (aiImageInput) {
+    aiImageInput.addEventListener(
+        "change",
+        event => {
+            setAIImage(
+                event.target.files?.[0]
+            );
+        }
+    );
+}
+
+
+if (removeAIImage) {
+    removeAIImage.addEventListener(
+        "click",
+        clearAIImage
+    );
+}
+
+
+async function sendQuestion() {
+    let text =
+        question.value.trim();
+
+    if (!text && !selectedAIImage) {
+        return;
+    }
+
+    if (!text && selectedAIImage) {
+        text =
+            "Please analyze this image and explain what it shows.";
+    }
+
+    const imageForRequest =
+        selectedAIImage;
+
+    const displayedText =
+        imageForRequest
+            ? "📷 " + text
+            : text;
+
     addMessage(
-        text,
+        displayedText,
         "user"
     );
 
@@ -1879,7 +2035,14 @@ async function sendQuestion() {
     const formData =
         new FormData();
 
-    if (activeLibraryId) {
+    if (imageForRequest) {
+        formData.append(
+            "image",
+            imageForRequest,
+            imageForRequest.name ||
+                "camera-image.jpg"
+        );
+    } else if (activeLibraryId) {
         formData.append(
             "libraryId",
             activeLibraryId
@@ -1945,6 +2108,10 @@ async function sendQuestion() {
             .textContent =
                 data.answer;
 
+        if (imageForRequest) {
+            clearAIImage();
+        }
+
         await loadChatHistory();
 
     } catch (error) {
@@ -1953,7 +2120,7 @@ async function sendQuestion() {
                 ".message-text"
             )
             .textContent =
-                "⚠️ " +
+                "Error: " +
                 error.message;
 
     } finally {
@@ -1963,7 +2130,6 @@ async function sendQuestion() {
         question.focus();
     }
 }
-
 
 function addMessage(
     text,

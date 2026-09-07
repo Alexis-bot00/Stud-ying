@@ -649,7 +649,72 @@
           </div>
 
 
+          <div
+            id="aiImagePreview"
+            class="ai-image-preview"
+            hidden
+          >
+            <div class="ai-image-preview-card">
+              <img
+                id="aiImagePreviewImg"
+                alt="Selected image preview"
+              >
+
+              <div class="ai-image-preview-info">
+                <span id="aiImageName">
+                  Selected image
+                </span>
+
+                <button
+                  id="removeAIImage"
+                  class="ai-image-remove"
+                  type="button"
+                  aria-label="Remove selected image"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div class="chat-input">
+
+            <input
+              id="aiImageInput"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              hidden
+            >
+
+            <input
+              id="aiCameraInput"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              capture="environment"
+              hidden
+            >
+
+            <div class="ai-media-buttons">
+              <button
+                id="aiCameraButton"
+                class="ai-media-btn"
+                type="button"
+                title="Take a photo"
+                aria-label="Take a photo"
+              >
+                &#x1F4F7;
+              </button>
+
+              <button
+                id="aiImageButton"
+                class="ai-media-btn"
+                type="button"
+                title="Upload an image"
+                aria-label="Upload an image"
+              >
+                &#x1F5BC;
+              </button>
+            </div>
 
             <textarea
               id="question"
