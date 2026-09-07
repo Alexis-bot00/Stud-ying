@@ -16,11 +16,11 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "llama3.2";
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
-const MAX_TEXT_LENGTH = 60000;
+const MAX_TEXT_LENGTH = 40000;
 const MAX_FLASHCARDS = 50;
 const MAX_QUESTIONS = 100;
 
@@ -972,8 +972,7 @@ async function askGemini(
     });
 
     const config = {
-      temperature: 0.2,
-      maxOutputTokens: jsonMode ? 8192 : 2048
+      maxOutputTokens: jsonMode ? 8192 : 1200
     };
 
     if (jsonMode) {
