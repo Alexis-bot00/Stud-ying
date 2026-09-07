@@ -1690,22 +1690,62 @@ function renderFlashcard(
 }
 
 function openSavedFlashcards(set) {
-  flashcards = [
-    ...set.flashcards
-  ];
+  flashcards = Array.isArray(set.flashcards)
+    ? [...set.flashcards]
+    : [];
 
   currentFlashcard = 0;
 
+  if (flashcards.length === 0) {
+    alert("This flashcard set is empty.");
+    return;
+  }
+
+  /*
+   * Saved flashcards use the existing generated-content viewer.
+   * That viewer is inside the Upload Material page, so switch to
+   * that page before displaying the saved set.
+   */
+  if (
+    typeof window.showStudyantePage ===
+    "function"
+  ) {
+    window.showStudyantePage("upload");
+  } else {
+    const uploadPage =
+      document.getElementById("upload");
+
+    const libraryPage =
+      document.getElementById("library");
+
+    if (libraryPage) {
+      libraryPage.hidden = true;
+      libraryPage.style.display = "none";
+    }
+
+    if (uploadPage) {
+      uploadPage.hidden = false;
+      uploadPage.style.display = "";
+    }
+  }
+
   generatedContent.hidden = false;
+
   generatedIcon.textContent = "🧠";
-  generatedTitle.textContent = set.name;
+
+  generatedTitle.textContent =
+    set.name || "Study Flashcards";
 
   renderFlashcard(false);
 
-  generatedContent.scrollIntoView({
-    behavior: "smooth"
-  });
+  setTimeout(() => {
+    generatedContent.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }, 100);
 }
+
 
 confirmSaveAIFlashcards.addEventListener(
   "click",
