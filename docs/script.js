@@ -1,4 +1,4 @@
-﻿let studyingChatBusy = false;
+let studyingChatBusy = false;
 
 function cleanAIAnswer(text) {
   return String(text || "")
@@ -250,7 +250,7 @@ function handleFile(file) {
   fileName.textContent = file.name;
 
   fileSize.textContent =
-    `${formatFileSize(file.size)} â€¢ Saving to My Library...`;
+    `${formatFileSize(file.size)} • Saving to My Library...`;
 
   selectedFile.hidden = false;
   generateSection.hidden = false;
@@ -311,7 +311,7 @@ async function saveUploadedFile(file) {
       activeLibraryId = data.file.id;
 
       fileSize.textContent =
-        `${formatFileSize(data.file.size)} â€¢ Saved in My Library âœ…`;
+        `${formatFileSize(data.file.size)} • Saved in My Library ✅`;
     }
 
     await loadLibrary();
@@ -320,7 +320,7 @@ async function saveUploadedFile(file) {
 
     if (uploadedFile === file) {
       fileSize.textContent =
-        `${formatFileSize(file.size)} â€¢ Could not save to My Library`;
+        `${formatFileSize(file.size)} • Could not save to My Library`;
     }
   }
 }
@@ -375,7 +375,7 @@ async function loadLibrary() {
     libraryStatus.hidden = false;
 
     libraryStatus.innerHTML =
-      `âš ï¸ ${escapeHTML(error.message)}`;
+      `⚠️ ${escapeHTML(error.message)}`;
   }
 }
 
@@ -403,7 +403,7 @@ function renderFolderFilters() {
         folder.id;
 
       button.textContent =
-        `ðŸ“ ${folder.name}`;
+        `📁 ${folder.name}`;
 
       if (
         activeFolderFilter ===
@@ -536,7 +536,7 @@ function createFileCard(item) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      ðŸ“„
+      📄
     </div>
 
     <h3>
@@ -551,12 +551,12 @@ function createFileCard(item) {
           .replace(".", "")
           .toUpperCase()
       )}
-      â€¢
+      •
       ${formatFileSize(item.size)}
     </p>
 
     <small>
-      ðŸ“ ${
+      📁 ${
         folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
@@ -656,7 +656,7 @@ function createFlashcardSetCard(set) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      ðŸ§ 
+      🧠
     </div>
 
     <h3>
@@ -673,7 +673,7 @@ function createFlashcardSetCard(set) {
     </p>
 
     <small>
-      ðŸ“ ${
+      📁 ${
         folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
@@ -793,7 +793,7 @@ function selectLibraryFile(item) {
     item.name;
 
   fileSize.textContent =
-    `${formatFileSize(item.size)} â€¢ From My Library`;
+    `${formatFileSize(item.size)} • From My Library`;
 
   selectedFile.hidden = false;
   generateSection.hidden = false;
@@ -1109,7 +1109,7 @@ function addManualFlashcard() {
       type="button"
       class="remove-manual-card"
     >
-      âœ•
+      ✕
     </button>
 
     <label class="field-label">
@@ -1366,14 +1366,14 @@ function showLoading(type) {
   };
 
   generatedContent.hidden = false;
-  generatedIcon.textContent = "âœ¨";
+  generatedIcon.textContent = "✨";
 
   generatedTitle.textContent =
     `Creating ${titles[type]}...`;
 
   generatedBody.innerHTML = `
     <div class="loading-box">
-      ðŸ§  Studying AI is reading your lesson...
+      🧠 Studying AI is reading your lesson...
     </div>
   `;
 
@@ -1390,7 +1390,7 @@ function displayGenerated(
   generatedContent.hidden = false;
 
   if (type === "notes") {
-    generatedIcon.textContent = "ðŸ“";
+    generatedIcon.textContent = "📝";
     generatedTitle.textContent =
       "Study Notes";
 
@@ -1422,7 +1422,7 @@ function displayGenerated(
           )} Flashcards`
         : "Study Flashcards";
 
-    generatedIcon.textContent = "ðŸ§ ";
+    generatedIcon.textContent = "🧠";
 
     generatedTitle.textContent =
       `${flashcards.length} Flashcards`;
@@ -1433,7 +1433,7 @@ function displayGenerated(
   }
 
   if (type === "test") {
-    generatedIcon.textContent = "âœ…";
+    generatedIcon.textContent = "✅";
     generatedTitle.textContent =
       "Practice Test";
 
@@ -1499,7 +1499,7 @@ function displayGenerated(
   }
 
   if (type === "game") {
-    generatedIcon.textContent = "ðŸŽ®";
+    generatedIcon.textContent = "🎮";
     generatedTitle.textContent =
       "Study Game";
 
@@ -1624,7 +1624,7 @@ function renderFlashcard(
           class="secondary-btn"
           type="button"
         >
-          â† Previous
+          ← Previous
         </button>
 
         <button
@@ -1632,7 +1632,7 @@ function renderFlashcard(
           class="primary-btn"
           type="button"
         >
-          Next â†’
+          Next →
         </button>
 
         ${
@@ -1643,7 +1643,7 @@ function renderFlashcard(
                 class="secondary-btn"
                 type="button"
               >
-                ðŸ’¾ Save to My Library
+                💾 Save to My Library
               </button>
             `
             : ""
@@ -1748,7 +1748,7 @@ function openSavedFlashcards(set) {
 
   generatedContent.hidden = false;
 
-  generatedIcon.textContent = "ðŸ§ ";
+  generatedIcon.textContent = "🧠";
 
   generatedTitle.textContent =
     set.name || "Study Flashcards";
@@ -1796,7 +1796,7 @@ confirmSaveAIFlashcards.addEventListener(
       await loadLibrary();
 
       alert(
-        "Flashcards saved to My Library! âœ…"
+        "Flashcards saved to My Library! ✅"
       );
     } catch (error) {
       alert(error.message);
@@ -1841,7 +1841,7 @@ function checkGameAnswer(button) {
 
 function showError(message) {
   generatedContent.hidden = false;
-  generatedIcon.textContent = "âš ï¸";
+  generatedIcon.textContent = "⚠️";
   generatedTitle.textContent =
     "Could not generate";
 
@@ -2501,7 +2501,7 @@ function addMessage(
     ) {
         message.innerHTML = `
             <span class="message-avatar">
-                ðŸ¤–
+                🤖
             </span>
 
             <div class="message-text"></div>
@@ -2686,7 +2686,7 @@ function renderChatHistory() {
                 "chat-history-delete";
 
             deleteButton.textContent =
-                "ðŸ—‘";
+                "🗑";
 
             deleteButton.title =
                 "Delete chat";
@@ -3014,7 +3014,6 @@ function setStudyingThinking(show) {
         "dashboard",
         "upload",
         "library",
-        "community",
         "ai"
     ];
 
@@ -3559,7 +3558,7 @@ function setStudyingThinking(show) {
         button.className = "ai-attach-menu-item";
 
         button.innerHTML =
-            '<span class="ai-attach-menu-icon">ðŸŽ¨</span>' +
+            '<span class="ai-attach-menu-icon">🎨</span>' +
             '<span>Generate Image</span>';
 
         button.addEventListener("click", function (event) {
@@ -3767,1450 +3766,3 @@ function setStudyingThinking(show) {
     );
 
 })();
-
-
-
-/* ==========================================================
-   STUDYANTE_COMMUNITY_FRONTEND
-   ========================================================== */
-
-let studyanteCommunityData = {
-    files: [],
-    flashcardSets: []
-};
-
-let studyanteCommunityIsAdmin = false;
-
-
-/* ----------------------------------------------------------
-   STATUS BADGE
----------------------------------------------------------- */
-
-function getStudyanteCommunityStatus(item) {
-
-    const status =
-        String(
-            item.communityStatus ||
-            "private"
-        ).toLowerCase();
-
-    if (status === "pending") {
-        return {
-            text: "⏳ Pending",
-            className:
-                "community-status-pending"
-        };
-    }
-
-    if (status === "approved") {
-        return {
-            text: "✅ Approved",
-            className:
-                "community-status-approved"
-        };
-    }
-
-    if (status === "rejected") {
-        return {
-            text: "❌ Rejected",
-            className:
-                "community-status-rejected"
-        };
-    }
-
-    return {
-        text: "🔒 Private",
-        className:
-            "community-status-private"
-    };
-}
-
-
-/* ----------------------------------------------------------
-   ADD SUBMIT BUTTONS TO MY LIBRARY
----------------------------------------------------------- */
-
-if (
-    typeof createFileCard ===
-    "function"
-) {
-
-    const originalStudyanteCreateFileCard =
-        createFileCard;
-
-    createFileCard =
-        function(item) {
-
-            const card =
-                originalStudyanteCreateFileCard(
-                    item
-                );
-
-            addStudyanteSubmitControls(
-                card,
-                item,
-                "file"
-            );
-
-            return card;
-        };
-}
-
-
-if (
-    typeof createFlashcardSetCard ===
-    "function"
-) {
-
-    const originalStudyanteCreateFlashcardCard =
-        createFlashcardSetCard;
-
-    createFlashcardSetCard =
-        function(set) {
-
-            const card =
-                originalStudyanteCreateFlashcardCard(
-                    set
-                );
-
-            addStudyanteSubmitControls(
-                card,
-                set,
-                "flashcards"
-            );
-
-            return card;
-        };
-}
-
-
-function addStudyanteSubmitControls(
-    card,
-    item,
-    type
-) {
-
-    if (
-        !card ||
-        card.querySelector(
-            ".community-owner-controls"
-        )
-    ) {
-        return;
-    }
-
-
-    const status =
-        getStudyanteCommunityStatus(
-            item
-        );
-
-
-    const wrapper =
-        document.createElement(
-            "div"
-        );
-
-    wrapper.className =
-        "community-owner-controls";
-
-
-    const badge =
-        document.createElement(
-            "span"
-        );
-
-    badge.className =
-        `community-status-badge ${status.className}`;
-
-    badge.textContent =
-        status.text;
-
-    wrapper.appendChild(
-        badge
-    );
-
-
-    const currentStatus =
-        String(
-            item.communityStatus ||
-            "private"
-        ).toLowerCase();
-
-
-    if (
-        currentStatus === "private" ||
-        currentStatus === "rejected"
-    ) {
-
-        const submitButton =
-            document.createElement(
-                "button"
-            );
-
-        submitButton.type =
-            "button";
-
-        submitButton.className =
-            "secondary-btn community-submit-button";
-
-        submitButton.textContent =
-            currentStatus ===
-            "rejected"
-                ? "↻ Submit Again"
-                : "🌐 Submit for Approval";
-
-
-        submitButton.addEventListener(
-            "click",
-            async event => {
-
-                event.stopPropagation();
-
-                await submitStudyanteCommunityMaterial(
-                    type,
-                    item.id,
-                    submitButton
-                );
-            }
-        );
-
-
-        wrapper.appendChild(
-            submitButton
-        );
-    }
-
-
-    card.appendChild(
-        wrapper
-    );
-}
-
-
-/* ----------------------------------------------------------
-   SUBMIT OWN MATERIAL
----------------------------------------------------------- */
-
-async function submitStudyanteCommunityMaterial(
-    type,
-    id,
-    button
-) {
-
-    if (
-        !confirm(
-            "Submit this study material for administrator approval?"
-        )
-    ) {
-        return;
-    }
-
-
-    const originalText =
-        button
-            ? button.textContent
-            : "";
-
-
-    if (button) {
-        button.disabled = true;
-        button.textContent =
-            "Submitting...";
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/community/submit/${type}/${encodeURIComponent(
-                    id
-                )}`,
-                {
-                    method:
-                        "POST"
-                }
-            );
-
-
-        const data =
-            await readResponse(
-                response
-            );
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Could not submit material."
-            );
-        }
-
-
-        alert(
-            "Submitted for approval! ✅"
-        );
-
-
-        if (
-            typeof loadLibrary ===
-            "function"
-        ) {
-
-            await loadLibrary();
-        }
-
-    }
-    catch (error) {
-
-        alert(
-            error.message
-        );
-
-        if (button) {
-            button.disabled = false;
-            button.textContent =
-                originalText;
-        }
-    }
-}
-
-
-/* ----------------------------------------------------------
-   LOAD COMMUNITY
----------------------------------------------------------- */
-
-async function loadStudyanteCommunity() {
-
-    const status =
-        document.getElementById(
-            "communityStatus"
-        );
-
-    const grid =
-        document.getElementById(
-            "communityGrid"
-        );
-
-
-    if (
-        !status ||
-        !grid
-    ) {
-        return;
-    }
-
-
-    status.hidden = false;
-
-    status.textContent =
-        "Loading community materials...";
-
-    grid.innerHTML = "";
-
-
-    try {
-
-        const [
-            communityResponse,
-            statusResponse
-        ] =
-            await Promise.all([
-                fetch(
-                    `${API_BASE}/api/community`
-                ),
-
-                fetch(
-                    `${API_BASE}/api/community/status`
-                )
-            ]);
-
-
-        const communityData =
-            await readResponse(
-                communityResponse
-            );
-
-
-        const accountData =
-            await readResponse(
-                statusResponse
-            );
-
-
-        if (
-            !communityResponse.ok ||
-            !communityData.success
-        ) {
-
-            throw new Error(
-                communityData.message ||
-                "Could not load Community Notes."
-            );
-        }
-
-
-        studyanteCommunityData = {
-            files:
-                Array.isArray(
-                    communityData.files
-                )
-                    ? communityData.files
-                    : [],
-
-            flashcardSets:
-                Array.isArray(
-                    communityData.flashcardSets
-                )
-                    ? communityData.flashcardSets
-                    : []
-        };
-
-
-        studyanteCommunityIsAdmin =
-            Boolean(
-                accountData &&
-                accountData.isAdmin
-            );
-
-
-        renderStudyanteCommunity();
-
-
-        const adminPanel =
-            document.getElementById(
-                "communityAdminPanel"
-            );
-
-
-        if (adminPanel) {
-
-            adminPanel.hidden =
-                !studyanteCommunityIsAdmin;
-        }
-
-
-        if (
-            studyanteCommunityIsAdmin
-        ) {
-
-            await loadStudyantePendingCommunity();
-        }
-
-    }
-    catch (error) {
-
-        grid.innerHTML = "";
-
-        status.hidden = false;
-
-        status.textContent =
-            `⚠️ ${error.message}`;
-    }
-}
-
-
-/* ----------------------------------------------------------
-   RENDER APPROVED MATERIALS
----------------------------------------------------------- */
-
-function renderStudyanteCommunity() {
-
-    const status =
-        document.getElementById(
-            "communityStatus"
-        );
-
-    const grid =
-        document.getElementById(
-            "communityGrid"
-        );
-
-
-    if (
-        !status ||
-        !grid
-    ) {
-        return;
-    }
-
-
-    grid.innerHTML = "";
-
-
-    const files =
-        studyanteCommunityData.files;
-
-    const sets =
-        studyanteCommunityData
-            .flashcardSets;
-
-
-    if (
-        files.length === 0 &&
-        sets.length === 0
-    ) {
-
-        status.hidden = false;
-
-        status.textContent =
-            "No approved community materials yet.";
-
-        return;
-    }
-
-
-    status.hidden = true;
-
-
-    files.forEach(
-        item => {
-
-            grid.appendChild(
-                createStudyanteCommunityFileCard(
-                    item
-                )
-            );
-        }
-    );
-
-
-    sets.forEach(
-        item => {
-
-            grid.appendChild(
-                createStudyanteCommunityFlashcardCard(
-                    item
-                )
-            );
-        }
-    );
-}
-
-
-/* ----------------------------------------------------------
-   COMMUNITY FILE CARD
----------------------------------------------------------- */
-
-function createStudyanteCommunityFileCard(
-    item
-) {
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-    card.className =
-        "library-card community-card";
-
-
-    card.innerHTML = `
-        <div class="library-card-icon">
-            📄
-        </div>
-
-        <span class="community-public-badge">
-            ✅ Approved
-        </span>
-
-        <h3>
-            ${escapeHTML(
-                item.name || "Study Material"
-            )}
-        </h3>
-
-        <p class="community-author">
-            👤 ${escapeHTML(
-                item.author ||
-                "STUDYante User"
-            )}
-        </p>
-
-        <div class="library-actions">
-            <button
-                type="button"
-                class="primary-btn community-view-file"
-            >
-                View
-            </button>
-        </div>
-    `;
-
-
-    card
-        .querySelector(
-            ".community-view-file"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                viewStudyanteCommunityFile(
-                    item
-                );
-            }
-        );
-
-
-    return card;
-}
-
-
-/* ----------------------------------------------------------
-   COMMUNITY FLASHCARD CARD
----------------------------------------------------------- */
-
-function createStudyanteCommunityFlashcardCard(
-    set
-) {
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-    card.className =
-        "library-card community-card";
-
-
-    const count =
-        Array.isArray(
-            set.flashcards
-        )
-            ? set.flashcards.length
-            : 0;
-
-
-    card.innerHTML = `
-        <div class="library-card-icon">
-            🧠
-        </div>
-
-        <span class="community-public-badge">
-            ✅ Approved
-        </span>
-
-        <h3>
-            ${escapeHTML(
-                set.name ||
-                "Flashcards"
-            )}
-        </h3>
-
-        <p>
-            ${count} flashcard${
-                count === 1
-                    ? ""
-                    : "s"
-            }
-        </p>
-
-        <p class="community-author">
-            👤 ${escapeHTML(
-                set.author ||
-                "STUDYante User"
-            )}
-        </p>
-
-        <div class="library-actions">
-
-            <button
-                type="button"
-                class="primary-btn community-study-set"
-            >
-                Study
-            </button>
-
-            <button
-                type="button"
-                class="secondary-btn community-copy-set"
-            >
-                💾 Save Copy
-            </button>
-
-        </div>
-    `;
-
-
-    card
-        .querySelector(
-            ".community-study-set"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                showStudyanteCommunityFlashcards(
-                    set
-                );
-            }
-        );
-
-
-    card
-        .querySelector(
-            ".community-copy-set"
-        )
-        .addEventListener(
-            "click",
-            async event => {
-
-                await copyStudyanteCommunityFlashcards(
-                    set,
-                    event.currentTarget
-                );
-            }
-        );
-
-
-    return card;
-}
-
-
-/* ----------------------------------------------------------
-   VIEW COMMUNITY FILE
----------------------------------------------------------- */
-
-async function viewStudyanteCommunityFile(
-    item
-) {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/community/file/${encodeURIComponent(
-                    item.id
-                )}/content`
-            );
-
-
-        const data =
-            await readResponse(
-                response
-            );
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Could not open material."
-            );
-        }
-
-
-        const material =
-            data.material || {};
-
-
-        showStudyanteCommunityModal(
-            material.name ||
-            "Study Material",
-
-            `
-                <p class="community-modal-author">
-                    👤 ${escapeHTML(
-                        material.author ||
-                        "STUDYante User"
-                    )}
-                </p>
-
-                <div class="community-note-content">
-                    ${escapeHTML(
-                        material.text ||
-                        "No readable text is available for this material."
-                    )}
-                </div>
-            `
-        );
-
-    }
-    catch (error) {
-
-        alert(
-            error.message
-        );
-    }
-}
-
-
-/* ----------------------------------------------------------
-   STUDY COMMUNITY FLASHCARDS
----------------------------------------------------------- */
-
-function showStudyanteCommunityFlashcards(
-    set
-) {
-
-    const cards =
-        Array.isArray(
-            set.flashcards
-        )
-            ? set.flashcards
-            : [];
-
-
-    if (!cards.length) {
-
-        alert(
-            "This flashcard set has no cards."
-        );
-
-        return;
-    }
-
-
-    const content =
-        cards
-            .map(
-                (card, index) => `
-                    <div class="community-flashcard-preview">
-
-                        <strong>
-                            ${index + 1}.
-                            ${escapeHTML(
-                                card.question || ""
-                            )}
-                        </strong>
-
-                        <p>
-                            ${escapeHTML(
-                                card.answer || ""
-                            )}
-                        </p>
-
-                    </div>
-                `
-            )
-            .join("");
-
-
-    showStudyanteCommunityModal(
-        set.name ||
-        "Community Flashcards",
-
-        `
-            <p class="community-modal-author">
-                👤 ${escapeHTML(
-                    set.author ||
-                    "STUDYante User"
-                )}
-            </p>
-
-            ${content}
-        `
-    );
-}
-
-
-/* ----------------------------------------------------------
-   SAVE FLASHCARD COPY
----------------------------------------------------------- */
-
-async function copyStudyanteCommunityFlashcards(
-    set,
-    button
-) {
-
-    const originalText =
-        button.textContent;
-
-
-    button.disabled = true;
-    button.textContent =
-        "Saving...";
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/community/flashcards/${encodeURIComponent(
-                    set.id
-                )}/copy`,
-                {
-                    method:
-                        "POST"
-                }
-            );
-
-
-        const data =
-            await readResponse(
-                response
-            );
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Could not save copy."
-            );
-        }
-
-
-        alert(
-            "Saved privately to My Library! ✅"
-        );
-
-
-        if (
-            typeof loadLibrary ===
-            "function"
-        ) {
-
-            await loadLibrary();
-        }
-
-    }
-    catch (error) {
-
-        alert(
-            error.message
-        );
-    }
-    finally {
-
-        button.disabled = false;
-        button.textContent =
-            originalText;
-    }
-}
-
-
-/* ----------------------------------------------------------
-   COMMUNITY MODAL
----------------------------------------------------------- */
-
-function showStudyanteCommunityModal(
-    title,
-    html
-) {
-
-    let modal =
-        document.getElementById(
-            "studyanteCommunityModal"
-        );
-
-
-    if (!modal) {
-
-        modal =
-            document.createElement(
-                "div"
-            );
-
-        modal.id =
-            "studyanteCommunityModal";
-
-        modal.className =
-            "community-modal-overlay";
-
-        modal.innerHTML = `
-            <div class="community-modal">
-
-                <div class="community-modal-header">
-
-                    <h2 id="communityModalTitle"></h2>
-
-                    <button
-                        id="communityModalClose"
-                        type="button"
-                        class="modal-close"
-                    >
-                        ✕
-                    </button>
-
-                </div>
-
-                <div
-                    id="communityModalBody"
-                    class="community-modal-body"
-                ></div>
-
-            </div>
-        `;
-
-
-        document.body.appendChild(
-            modal
-        );
-
-
-        modal
-            .querySelector(
-                "#communityModalClose"
-            )
-            .addEventListener(
-                "click",
-                () => {
-
-                    modal.classList.remove(
-                        "show"
-                    );
-                }
-            );
-
-
-        modal.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target ===
-                    modal
-                ) {
-
-                    modal.classList.remove(
-                        "show"
-                    );
-                }
-            }
-        );
-    }
-
-
-    modal
-        .querySelector(
-            "#communityModalTitle"
-        )
-        .textContent =
-            title;
-
-
-    modal
-        .querySelector(
-            "#communityModalBody"
-        )
-        .innerHTML =
-            html;
-
-
-    modal.classList.add(
-        "show"
-    );
-}
-
-
-/* ----------------------------------------------------------
-   ADMIN PENDING
----------------------------------------------------------- */
-
-async function loadStudyantePendingCommunity() {
-
-    if (
-        !studyanteCommunityIsAdmin
-    ) {
-        return;
-    }
-
-
-    const status =
-        document.getElementById(
-            "communityPendingStatus"
-        );
-
-    const grid =
-        document.getElementById(
-            "communityPendingGrid"
-        );
-
-
-    if (
-        !status ||
-        !grid
-    ) {
-        return;
-    }
-
-
-    status.hidden = false;
-
-    status.textContent =
-        "Loading pending submissions...";
-
-    grid.innerHTML = "";
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/admin/community/pending`
-            );
-
-
-        const data =
-            await readResponse(
-                response
-            );
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Could not load pending materials."
-            );
-        }
-
-
-        const files =
-            Array.isArray(
-                data.files
-            )
-                ? data.files
-                : [];
-
-
-        const sets =
-            Array.isArray(
-                data.flashcardSets
-            )
-                ? data.flashcardSets
-                : [];
-
-
-        if (
-            files.length === 0 &&
-            sets.length === 0
-        ) {
-
-            status.hidden = false;
-
-            status.textContent =
-                "No materials are waiting for approval.";
-
-            return;
-        }
-
-
-        status.hidden = true;
-
-
-        files.forEach(
-            item => {
-
-                grid.appendChild(
-                    createStudyanteAdminCommunityCard(
-                        item,
-                        "file"
-                    )
-                );
-            }
-        );
-
-
-        sets.forEach(
-            item => {
-
-                grid.appendChild(
-                    createStudyanteAdminCommunityCard(
-                        item,
-                        "flashcards"
-                    )
-                );
-            }
-        );
-
-    }
-    catch (error) {
-
-        status.hidden = false;
-
-        status.textContent =
-            `⚠️ ${error.message}`;
-    }
-}
-
-
-/* ----------------------------------------------------------
-   ADMIN CARD
----------------------------------------------------------- */
-
-function createStudyanteAdminCommunityCard(
-    item,
-    type
-) {
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-    card.className =
-        "library-card community-admin-card";
-
-
-    const authorName =
-        item.author &&
-        item.author.name
-            ? item.author.name
-            : "Unknown User";
-
-
-    const authorEmail =
-        item.author &&
-        item.author.email
-            ? item.author.email
-            : "";
-
-
-    card.innerHTML = `
-        <div class="library-card-icon">
-            ${type === "file"
-                ? "📄"
-                : "🧠"
-            }
-        </div>
-
-        <span class="community-status-badge community-status-pending">
-            ⏳ Pending
-        </span>
-
-        <h3>
-            ${escapeHTML(
-                item.name ||
-                "Untitled"
-            )}
-        </h3>
-
-        <p>
-            👤 ${escapeHTML(
-                authorName
-            )}
-        </p>
-
-        ${
-            authorEmail
-                ? `
-                    <small>
-                        ${escapeHTML(
-                            authorEmail
-                        )}
-                    </small>
-                `
-                : ""
-        }
-
-        <div class="library-actions">
-
-            <button
-                type="button"
-                class="primary-btn community-approve"
-            >
-                ✅ Approve
-            </button>
-
-            <button
-                type="button"
-                class="danger-btn community-reject"
-            >
-                ❌ Reject
-            </button>
-
-        </div>
-    `;
-
-
-    card
-        .querySelector(
-            ".community-approve"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                reviewStudyanteCommunityMaterial(
-                    type,
-                    item.id,
-                    "approve"
-                );
-            }
-        );
-
-
-    card
-        .querySelector(
-            ".community-reject"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                reviewStudyanteCommunityMaterial(
-                    type,
-                    item.id,
-                    "reject"
-                );
-            }
-        );
-
-
-    return card;
-}
-
-
-/* ----------------------------------------------------------
-   ADMIN APPROVE / REJECT
----------------------------------------------------------- */
-
-async function reviewStudyanteCommunityMaterial(
-    type,
-    id,
-    action
-) {
-
-    const actionWord =
-        action === "approve"
-            ? "approve"
-            : "reject";
-
-
-    if (
-        !confirm(
-            `Are you sure you want to ${actionWord} this material?`
-        )
-    ) {
-        return;
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/admin/community/${type}/${encodeURIComponent(
-                    id
-                )}/${action}`,
-                {
-                    method:
-                        "POST"
-                }
-            );
-
-
-        const data =
-            await readResponse(
-                response
-            );
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Could not review material."
-            );
-        }
-
-
-        alert(
-            action === "approve"
-                ? "Material approved and published! ✅"
-                : "Material rejected."
-        );
-
-
-        await loadStudyanteCommunity();
-
-    }
-    catch (error) {
-
-        alert(
-            error.message
-        );
-    }
-}
-
-
-/* ----------------------------------------------------------
-   BUTTON EVENTS
----------------------------------------------------------- */
-
-const studyanteRefreshCommunity =
-    document.getElementById(
-        "refreshCommunity"
-    );
-
-
-if (studyanteRefreshCommunity) {
-
-    studyanteRefreshCommunity
-        .addEventListener(
-            "click",
-            loadStudyanteCommunity
-        );
-}
-
-
-const studyanteRefreshPending =
-    document.getElementById(
-        "refreshPendingCommunity"
-    );
-
-
-if (studyanteRefreshPending) {
-
-    studyanteRefreshPending
-        .addEventListener(
-            "click",
-            loadStudyantePendingCommunity
-        );
-}
-
-
-/* ----------------------------------------------------------
-   LOAD COMMUNITY WHEN PAGE IS OPENED
----------------------------------------------------------- */
-
-document.addEventListener(
-    "click",
-    event => {
-
-        const link =
-            event.target.closest(
-                '[data-page="community"]'
-            );
-
-
-        if (link) {
-
-            setTimeout(
-                loadStudyanteCommunity,
-                50
-            );
-        }
-    }
-);
-
-
-/* Reload library so approval controls appear */
-if (
-    typeof loadLibrary ===
-    "function"
-) {
-
-    loadLibrary();
-}
-
