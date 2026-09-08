@@ -5653,3 +5653,352 @@ body.studyante-dark
 }
 
 /* STUDYANTE_RESPONSIVE_DEVICE_LAYOUT_END */
+
+/* STUDYANTE_PHONE_LAYOUT_FIX_START */
+
+
+/* ==========================================================
+   PHONE + TABLET
+   ========================================================== */
+
+@media (max-width: 800px) {
+
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+    }
+
+
+    /* ------------------------------------------------------
+       SIDEBAR
+       Keep it compact instead of taking most of the screen.
+       ------------------------------------------------------ */
+
+    .sidebar {
+        width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+
+        overflow: visible !important;
+    }
+
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        height: auto !important;
+        min-height: 0 !important;
+
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+
+        gap: 1px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        min-height: 38px !important;
+
+        padding-top: 7px !important;
+        padding-bottom: 7px !important;
+
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+
+    /* Do not allow hidden sidebar sections to reserve space */
+
+    .sidebar-chat-history:empty {
+        display: none !important;
+    }
+
+
+    /* ------------------------------------------------------
+       PAGE
+       ------------------------------------------------------ */
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        margin: 0 !important;
+
+        box-sizing: border-box !important;
+
+        overflow-x: hidden !important;
+    }
+
+
+    .studyante-page,
+    .panel {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* ------------------------------------------------------
+       AI PAGE
+       ------------------------------------------------------ */
+
+    #ai {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        box-sizing: border-box !important;
+
+        overflow-x: hidden !important;
+    }
+
+
+    #ai * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    /* Prevent flex children from forcing horizontal overflow */
+
+    #ai div,
+    #ai form {
+        min-width: 0;
+    }
+
+
+    /* ------------------------------------------------------
+       AI INPUT AREA
+       Fix Send button going outside screen.
+       ------------------------------------------------------ */
+
+    #ai textarea,
+    #ai input[type="text"] {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+
+    #ai button {
+        max-width: 100%;
+    }
+
+
+    /* Any composer/form row must remain inside viewport */
+
+    #ai form {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+
+/* ==========================================================
+   PHONE
+   ========================================================== */
+
+@media (max-width: 600px) {
+
+    /* ------------------------------------------------------
+       SIDEBAR NAV
+       ------------------------------------------------------ */
+
+    .sidebar {
+        padding:
+            8px
+            8px
+            8px !important;
+    }
+
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        gap: 0 !important;
+
+        margin-top: 3px !important;
+        margin-bottom: 3px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        min-height: 36px !important;
+
+        padding:
+            6px
+            10px !important;
+
+        border-radius: 10px !important;
+
+        font-size: 13px !important;
+    }
+
+
+    /* ------------------------------------------------------
+       AI PAGE SPACING
+       ------------------------------------------------------ */
+
+    #ai.panel,
+    #ai.studyante-page {
+        padding:
+            14px
+            10px !important;
+
+        margin: 0 !important;
+    }
+
+
+    #ai h1,
+    #ai h2 {
+        font-size: clamp(
+            22px,
+            7vw,
+            30px
+        ) !important;
+
+        line-height: 1.15 !important;
+    }
+
+
+    #ai p {
+        overflow-wrap: anywhere;
+    }
+
+
+    /* ------------------------------------------------------
+       CHAT AREA
+       ------------------------------------------------------ */
+
+    #ai .ai-chat,
+    #ai .chat-container,
+    #ai .chat-box,
+    #ai .chat-messages,
+    #ai .ai-chat-box,
+    #ai .ai-chat-container {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* Messages cannot overflow */
+
+    #ai .message,
+    #ai .chat-message,
+    #ai .ai-message,
+    #ai .assistant-message,
+    #ai .user-message {
+        max-width: 88% !important;
+
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+    }
+
+
+    /* ------------------------------------------------------
+       COMPOSER
+       ------------------------------------------------------ */
+
+    #ai .chat-input,
+    #ai .chat-input-area,
+    #ai .chat-input-container,
+    #ai .ai-input,
+    #ai .ai-input-area,
+    #ai .ai-input-container,
+    #ai .composer,
+    #ai .composer-row {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    #ai textarea,
+    #ai input[type="text"] {
+        width: 100% !important;
+
+        min-width: 0 !important;
+
+        font-size: 16px !important;
+    }
+
+
+    /* Keep Send from inheriting a huge desktop width */
+
+    #ai button[type="submit"],
+    #ai .send-btn,
+    #ai .send-button,
+    #ai #sendButton,
+    #ai #sendBtn {
+        width: auto !important;
+
+        min-width: 82px !important;
+        max-width: 110px !important;
+
+        flex:
+            0 0 auto !important;
+
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
+
+
+/* ==========================================================
+   VERY SMALL PHONES
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    #ai.panel,
+    #ai.studyante-page {
+        padding:
+            12px
+            8px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        font-size: 12.5px !important;
+    }
+
+
+    #ai button[type="submit"],
+    #ai .send-btn,
+    #ai .send-button,
+    #ai #sendButton,
+    #ai #sendBtn {
+        min-width: 72px !important;
+        max-width: 90px !important;
+
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+}
+
+
+/* STUDYANTE_PHONE_LAYOUT_FIX_END */
