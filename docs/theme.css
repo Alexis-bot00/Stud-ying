@@ -1,0 +1,225 @@
+/* STUDYANTE_GLOBAL_THEME */
+
+.theme-toggle {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #111827;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.theme-toggle:hover {
+    background: #eef2ff;
+}
+
+body.studyante-dark {
+    --background: #0b1120;
+    --white: #111827;
+    --border: #293548;
+    --dark: #f8fafc;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --blue-soft: #172554;
+    --red-soft: #3f151d;
+
+    background: #0b1120 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark main {
+    background: #0b1120 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark .sidebar {
+    background: #111827 !important;
+    border-color: #293548 !important;
+}
+
+body.studyante-dark .sidebar nav a {
+    color: #cbd5e1 !important;
+}
+
+body.studyante-dark .sidebar nav a:hover {
+    background: #172554 !important;
+    color: #93c5fd !important;
+}
+
+body.studyante-dark .sidebar nav a.active {
+    color: #ffffff !important;
+}
+
+body.studyante-dark .theme-toggle {
+    background: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+body.studyante-dark .theme-toggle:hover {
+    background: #334155;
+}
+
+body.studyante-dark .panel,
+body.studyante-dark .library-card,
+body.studyante-dark .provider-card,
+body.studyante-dark .generate-card,
+body.studyante-dark .question-card details,
+body.studyante-dark .modal-card,
+body.studyante-dark .manual-card,
+body.studyante-dark .ai-image-preview-card,
+body.studyante-dark .community-card,
+body.studyante-dark .community-modal {
+    background: #111827 !important;
+    border-color: #293548 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark .topbar,
+body.studyante-dark .library-header,
+body.studyante-dark .generated-header,
+body.studyante-dark .chat-history-panel {
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark h1,
+body.studyante-dark h2,
+body.studyante-dark h3,
+body.studyante-dark h4,
+body.studyante-dark h5,
+body.studyante-dark strong,
+body.studyante-dark label {
+    color: #f8fafc;
+}
+
+body.studyante-dark p,
+body.studyante-dark small {
+    color: #cbd5e1;
+}
+
+body.studyante-dark input,
+body.studyante-dark textarea,
+body.studyante-dark select {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark input::placeholder,
+body.studyante-dark textarea::placeholder {
+    color: #64748b !important;
+}
+
+body.studyante-dark .secondary-btn {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .secondary-btn:hover {
+    background: #334155 !important;
+}
+
+body.studyante-dark .drop-area,
+body.studyante-dark .generated-content,
+body.studyante-dark .chat-messages {
+    background: #0f172a !important;
+    border-color: #293548 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark .message:not(.user) {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .message.user {
+    color: #ffffff !important;
+}
+
+body.studyante-dark .ai-chat-input-bar,
+body.studyante-dark .ai-attach-menu {
+    background: #111827 !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .ai-attach-btn,
+body.studyante-dark .ai-media-btn,
+body.studyante-dark .ai-attach-option {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .ai-attach-btn:hover,
+body.studyante-dark .ai-media-btn:hover,
+body.studyante-dark .ai-attach-option:hover {
+    background: #1e293b !important;
+}
+
+body.studyante-dark .community-empty {
+    background: #0f172a !important;
+    color: #cbd5e1 !important;
+}
+
+body.studyante-dark .community-study-card {
+    background: #111827 !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .community-card-text {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .community-card-side,
+body.studyante-dark .community-flip-hint {
+    color: #94a3b8 !important;
+}
+
+body.studyante-dark .community-study.community-focus-mode {
+    background: #020617 !important;
+}
+
+body.studyante-dark .community-expand-btn {
+    background: #1e293b !important;
+    border-color: #475569 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .ai-camera-box {
+    background: #111827 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .selected-file,
+body.studyante-dark .flashcard,
+body.studyante-dark .game-choice {
+    border-color: #334155 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark .library-card.active {
+    background: #172554 !important;
+}
+
+body.studyante-dark .profile,
+body.studyante-dark .profile span {
+    color: #e5e7eb !important;
+}
+
+@media (max-width: 800px) {
+    body.studyante-dark .sidebar {
+        background: #111827 !important;
+    }
+
+    .theme-toggle {
+        margin-top: 8px;
+    }
+}
