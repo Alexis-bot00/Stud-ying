@@ -3437,9 +3437,18 @@ app.post("/api/generate-image", requireAuth, async (req, res) => {
             });
         }
 
-        const interaction = await ai.interactions.create({
+        const imageAI = new GoogleGenAI({
+            apiKey: GEMINI_API_KEY
+        });
+
+        const interaction = await imageAI.interactions.create({
             model: "gemini-3.1-flash-image",
             input: prompt,
+            response_format: {
+                type: "image",
+                mime_type: "image/png",
+                aspect_ratio: "1:1"
+            },
             store: false
         });
 
@@ -3528,4 +3537,5 @@ app.listen(
     console.log("");
   }
 );
+
 
