@@ -3521,6 +3521,605 @@ app.post("/api/generate-image", requireAuth, async (req, res) => {
     }
 });
 
+
+/* ==========================================================
+   STUDYANTE_COMMUNITY_SYSTEM
+   Private -> Pending -> Approved / Rejected
+   ========================================================== */
+
+function getCommunityUser(userId) {
+    const users = readUsers();
+
+    return users.find(
+        user => user.id === userId
+    ) || null;
+}
+
+
+function isStudyanteAdmin(userId) {
+    const user = getCommunityUser(userId);
+
+    if (!user) {
+        return false;
+    }
+
+    if (user.role === "admin") {
+        return true;
+    }
+
+    const adminEmails =
+        String(process.env.ADMIN_EMAILS || "")
+            .split(",")
+            .map(email =>
+                email.trim().toLowerCase()
+            )
+            .filter(Boolean);
+
+    return adminEmails.includes(
+        String(user.email || "")
+            .trim()
+            .toLowerCase()
+    );
+}
+
+
+function requireStudyanteAdmin(req, res, next) {
+
+    if (!isStudyanteAdmin(req.user.id)) {
+        return res.status(403).json({
+            success: false,
+            message: "Administrator access required."
+        });
+    }
+
+    next();
+}
+
+
+/* ----------------------------------------------------------
+   SUBMIT LIBRARY FILE FOR APPROVAL
+---------------------------------------------------------- */
+
+app.post(
+    "/api/community/submit/file/:id",
+    requireAuth,
+    (req, res) => {
+
+        const library = readLibrary();
+
+        const item = library.files.find(
+            file =>
+                file.id === req.params.id &&
+                file.userId === req.user.id
+        );
+
+        if (!item) {
+            return res.status(404).json({
+                success: false,
+                message: "File not found."
+            });
+        }
+
+        item.communityStatus = "pending";
+        item.submittedAt =
+            new Date().toISOString();
+
+        item.approvedAt = null;
+        item.approvedBy = null;
+        item.rejectedAt = null;
+
+        writeLibrary(library);
+
+        return res.json({
+            success: true,
+            message: "Submitted for approval.",
+            item
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   SUBMIT FLASHCARD SET FOR APPROVAL
+---------------------------------------------------------- */
+
+app.post(
+    "/api/community/submit/flashcards/:id",
+    requireAuth,
+    (req, res) => {
+
+        const library = readLibrary();
+
+        const item =
+            library.flashcardSets.find(
+                set =>
+                    set.id === req.params.id &&
+                    set.userId === req.user.id
+            );
+
+        if (!item) {
+            return res.status(404).json({
+                success: false,
+                message: "Flashcard set not found."
+            });
+        }
+
+        item.communityStatus = "pending";
+        item.submittedAt =
+            new Date().toISOString();
+
+        item.approvedAt = null;
+        item.approvedBy = null;
+        item.rejectedAt = null;
+
+        writeLibrary(library);
+
+        return res.json({
+            success: true,
+            message: "Submitted for approval.",
+            item
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   COMMUNITY MATERIALS
+
+   SECURITY:
+   Only approved materials are returned.
+---------------------------------------------------------- */
+
+app.get(
+    "/api/community",
+    requireAuth,
+    (req, res) => {
+
+        const library = readLibrary();
+        const users = readUsers();
+
+        const getAuthor = userId => {
+            const user = users.find(
+                account =>
+                    account.id === userId
+            );
+
+            return user
+                ? user.name
+                : "STUDYante User";
+        };
+
+
+        const files =
+            library.files
+                .filter(
+                    item =>
+                        item.communityStatus ===
+                        "approved"
+                )
+                .map(item => ({
+                    id: item.id,
+                    type: "file",
+                    name: item.name,
+                    size: item.size,
+                    createdAt: item.createdAt,
+                    approvedAt: item.approvedAt,
+                    author:
+                        getAuthor(item.userId)
+                }));
+
+
+        const flashcardSets =
+            library.flashcardSets
+                .filter(
+                    item =>
+                        item.communityStatus ===
+                        "approved"
+                )
+                .map(item => ({
+                    id: item.id,
+                    type: "flashcards",
+                    name: item.name,
+                    flashcards:
+                        item.flashcards || [],
+                    createdAt: item.createdAt,
+                    approvedAt: item.approvedAt,
+                    author:
+                        getAuthor(item.userId)
+                }));
+
+
+        return res.json({
+            success: true,
+            files,
+            flashcardSets
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   ADMIN - PENDING SUBMISSIONS
+---------------------------------------------------------- */
+
+app.get(
+    "/api/admin/community/pending",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const library = readLibrary();
+        const users = readUsers();
+
+        const getAuthor = userId => {
+            const user = users.find(
+                account =>
+                    account.id === userId
+            );
+
+            return user
+                ? {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                }
+                : {
+                    id: userId,
+                    name: "Unknown User",
+                    email: ""
+                };
+        };
+
+
+        const files =
+            library.files
+                .filter(
+                    item =>
+                        item.communityStatus ===
+                        "pending"
+                )
+                .map(item => ({
+                    ...item,
+                    author:
+                        getAuthor(item.userId)
+                }));
+
+
+        const flashcardSets =
+            library.flashcardSets
+                .filter(
+                    item =>
+                        item.communityStatus ===
+                        "pending"
+                )
+                .map(item => ({
+                    ...item,
+                    author:
+                        getAuthor(item.userId)
+                }));
+
+
+        return res.json({
+            success: true,
+            files,
+            flashcardSets
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   ADMIN - APPROVE
+---------------------------------------------------------- */
+
+app.post(
+    "/api/admin/community/:type/:id/approve",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const library = readLibrary();
+
+        const collection =
+            req.params.type === "flashcards"
+                ? library.flashcardSets
+                : req.params.type === "file"
+                    ? library.files
+                    : null;
+
+        if (!collection) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid material type."
+            });
+        }
+
+
+        const item = collection.find(
+            material =>
+                material.id === req.params.id
+        );
+
+
+        if (!item) {
+            return res.status(404).json({
+                success: false,
+                message: "Material not found."
+            });
+        }
+
+
+        if (
+            item.communityStatus !==
+            "pending"
+        ) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "This material is not pending approval."
+            });
+        }
+
+
+        item.communityStatus =
+            "approved";
+
+        item.approvedAt =
+            new Date().toISOString();
+
+        item.approvedBy =
+            req.user.id;
+
+        item.rejectedAt =
+            null;
+
+
+        writeLibrary(library);
+
+
+        return res.json({
+            success: true,
+            message:
+                "Material approved and published.",
+            item
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   ADMIN - REJECT
+---------------------------------------------------------- */
+
+app.post(
+    "/api/admin/community/:type/:id/reject",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const library = readLibrary();
+
+        const collection =
+            req.params.type === "flashcards"
+                ? library.flashcardSets
+                : req.params.type === "file"
+                    ? library.files
+                    : null;
+
+
+        if (!collection) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid material type."
+            });
+        }
+
+
+        const item = collection.find(
+            material =>
+                material.id === req.params.id
+        );
+
+
+        if (!item) {
+            return res.status(404).json({
+                success: false,
+                message: "Material not found."
+            });
+        }
+
+
+        item.communityStatus =
+            "rejected";
+
+        item.rejectedAt =
+            new Date().toISOString();
+
+        item.approvedAt =
+            null;
+
+        item.approvedBy =
+            null;
+
+
+        writeLibrary(library);
+
+
+        return res.json({
+            success: true,
+            message: "Material rejected.",
+            item
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   SAVE PUBLIC FLASHCARDS TO MY LIBRARY
+---------------------------------------------------------- */
+
+app.post(
+    "/api/community/flashcards/:id/copy",
+    requireAuth,
+    (req, res) => {
+
+        const library = readLibrary();
+
+        const original =
+            library.flashcardSets.find(
+                set =>
+                    set.id === req.params.id &&
+                    set.communityStatus ===
+                        "approved"
+            );
+
+
+        if (!original) {
+            return res.status(404).json({
+                success: false,
+                message:
+                    "Community flashcard set not found."
+            });
+        }
+
+
+        const copy = {
+            ...original,
+
+            id: createId(),
+
+            userId:
+                req.user.id,
+
+            name:
+                original.name + " - Copy",
+
+            folderId:
+                null,
+
+            communityStatus:
+                "private",
+
+            submittedAt:
+                null,
+
+            approvedAt:
+                null,
+
+            approvedBy:
+                null,
+
+            rejectedAt:
+                null,
+
+            createdAt:
+                new Date().toISOString()
+        };
+
+
+        library.flashcardSets.push(copy);
+
+        writeLibrary(library);
+
+
+        return res.json({
+            success: true,
+            message:
+                "Saved to My Library.",
+            set: copy
+        });
+    }
+);
+
+
+/* ==========================================================
+   STUDYANTE_COMMUNITY_UI_API
+   ========================================================== */
+
+app.get(
+    "/api/community/status",
+    requireAuth,
+    (req, res) => {
+
+        const user =
+            getCommunityUser(req.user.id);
+
+        return res.json({
+            success: true,
+
+            user: user
+                ? {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                }
+                : null,
+
+            isAdmin:
+                isStudyanteAdmin(req.user.id)
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   READ APPROVED COMMUNITY FILE CONTENT
+
+   Does NOT expose private files.
+---------------------------------------------------------- */
+
+app.get(
+    "/api/community/file/:id/content",
+    requireAuth,
+    (req, res) => {
+
+        const library =
+            readLibrary();
+
+        const item =
+            library.files.find(
+                file =>
+                    file.id ===
+                        req.params.id &&
+                    file.communityStatus ===
+                        "approved"
+            );
+
+        if (!item) {
+            return res.status(404).json({
+                success: false,
+                message:
+                    "Community material not found."
+            });
+        }
+
+        const owner =
+            getCommunityUser(item.userId);
+
+        return res.json({
+            success: true,
+
+            material: {
+                id: item.id,
+                name: item.name,
+
+                text:
+                    String(
+                        item.text || ""
+                    ),
+
+                author:
+                    owner
+                        ? owner.name
+                        : "STUDYante User",
+
+                approvedAt:
+                    item.approvedAt || null
+            }
+        });
+    }
+);
+
 app.listen(
   PORT,
   () => {
@@ -3552,6 +4151,8 @@ app.listen(
     console.log("");
   }
 );
+
+
 
 
 

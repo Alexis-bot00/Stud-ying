@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -153,19 +153,22 @@
     <nav>
 
       <a href="#dashboard" data-page="dashboard">
-        🏠 Dashboard
+        ðŸ  Dashboard
       </a>
 
       <a href="#upload" data-page="upload">
-        📤 Upload Material
+        ðŸ“¤ Upload Material
       </a>
 
       <a href="#library" data-page="library">
-        📚 My Library
+        ðŸ“š My Library
+      </a>
+      <a href="#community" data-page="community">
+        🌐 Community Notes
       </a>
 
       <a href="#ai" data-page="ai">
-        🤖 STUDYante AI
+        ðŸ¤– STUDYante AI
       </a>
 
 
@@ -214,7 +217,7 @@
     <header class="topbar">
 
       <div>
-        <h3>Welcome back 👋</h3>
+        <h3>Welcome back ðŸ‘‹</h3>
         <p>What are we studying today?</p>
       </div>
 
@@ -260,7 +263,7 @@
       <div class="section-title">
         <h2>Upload Study Material</h2>
         <p>
-          PDF, DOCX, PPTX or TXT • Maximum 20 MB
+          PDF, DOCX, PPTX or TXT â€¢ Maximum 20 MB
         </p>
       </div>
 
@@ -271,7 +274,7 @@
       >
 
         <div class="big-icon">
-          📄
+          ðŸ“„
         </div>
 
         <h3>
@@ -307,7 +310,7 @@
       >
 
         <span class="file-icon">
-          📄
+          ðŸ“„
         </span>
 
         <div>
@@ -320,7 +323,7 @@
           type="button"
           class="icon-btn"
         >
-          ✕
+          âœ•
         </button>
 
       </div>
@@ -450,7 +453,7 @@
             data-type="notes"
             type="button"
           >
-            <span>📝</span>
+            <span>ðŸ“</span>
             <strong>Notes</strong>
             <small>Easy study notes</small>
           </button>
@@ -461,7 +464,7 @@
             data-type="flashcards"
             type="button"
           >
-            <span>🧠</span>
+            <span>ðŸ§ </span>
             <strong>Flashcards</strong>
             <small>Up to 50 cards</small>
           </button>
@@ -472,7 +475,7 @@
             data-type="test"
             type="button"
           >
-            <span>✅</span>
+            <span>âœ…</span>
             <strong>Practice Test</strong>
             <small>Up to 100 questions</small>
           </button>
@@ -483,7 +486,7 @@
             data-type="game"
             type="button"
           >
-            <span>🎮</span>
+            <span>ðŸŽ®</span>
             <strong>Study Game</strong>
             <small>Up to 100 questions</small>
           </button>
@@ -502,7 +505,7 @@
         <div class="generated-header">
 
           <span id="generatedIcon">
-            ✨
+            âœ¨
           </span>
 
           <div>
@@ -534,7 +537,7 @@
         <div class="section-title">
 
           <h2>
-            📚 My Library
+            ðŸ“š My Library
           </h2>
 
           <p>
@@ -551,7 +554,7 @@
             type="button"
             class="secondary-btn"
           >
-            📁 + New Folder
+            ðŸ“ + New Folder
           </button>
 
           <button
@@ -559,7 +562,7 @@
             type="button"
             class="primary-btn"
           >
-            🧠 + Create Flashcards
+            ðŸ§  + Create Flashcards
           </button>
 
           <button
@@ -567,7 +570,7 @@
             type="button"
             class="secondary-btn"
           >
-            ↻ Refresh
+            â†» Refresh
           </button>
 
         </div>
@@ -615,6 +618,89 @@
 
 
     
+
+    <section
+      id="community"
+      class="panel studyante-page"
+      hidden
+    >
+
+      <div class="community-header">
+
+        <div class="section-title">
+          <h2>🌐 Community Notes</h2>
+
+          <p>
+            Discover study materials shared and approved by STUDYante.
+          </p>
+        </div>
+
+        <button
+          id="refreshCommunity"
+          type="button"
+          class="secondary-btn"
+        >
+          🔄 Refresh
+        </button>
+
+      </div>
+
+
+      <div
+        id="communityStatus"
+        class="library-status"
+      >
+        Loading community materials...
+      </div>
+
+
+      <div
+        id="communityGrid"
+        class="library-grid community-grid"
+      ></div>
+
+
+      <div
+        id="communityAdminPanel"
+        class="community-admin-panel"
+        hidden
+      >
+
+        <div class="community-admin-heading">
+          <div>
+            <h2>🛡️ Admin Review</h2>
+
+            <p>
+              Review study materials submitted by students.
+            </p>
+          </div>
+
+          <button
+            id="refreshPendingCommunity"
+            type="button"
+            class="secondary-btn"
+          >
+            🔄 Refresh
+          </button>
+        </div>
+
+
+        <div
+          id="communityPendingStatus"
+          class="library-status"
+        >
+          Loading pending submissions...
+        </div>
+
+
+        <div
+          id="communityPendingGrid"
+          class="library-grid community-grid"
+        ></div>
+
+      </div>
+
+    </section>
 <section
       id="ai"
       class="panel studyante-page"
@@ -830,7 +916,7 @@
       <div class="modal-header">
 
         <div>
-          <h2>📁 New Folder</h2>
+          <h2>ðŸ“ New Folder</h2>
           <p>
             Create a folder for your study materials.
           </p>
@@ -841,7 +927,7 @@
           data-close="folderModal"
           type="button"
         >
-          ✕
+          âœ•
         </button>
 
       </div>
@@ -892,7 +978,7 @@
       <div class="modal-header">
 
         <div>
-          <h2>🧠 Create Flashcards</h2>
+          <h2>ðŸ§  Create Flashcards</h2>
           <p>
             Make your own flashcard set.
           </p>
@@ -903,7 +989,7 @@
           data-close="flashcardModal"
           type="button"
         >
-          ✕
+          âœ•
         </button>
 
       </div>
@@ -992,7 +1078,7 @@
       <div class="modal-header">
 
         <div>
-          <h2>💾 Save Flashcards</h2>
+          <h2>ðŸ’¾ Save Flashcards</h2>
           <p>
             Save your AI-generated flashcards to My Library.
           </p>
@@ -1003,7 +1089,7 @@
           data-close="saveAIFlashcardsModal"
           type="button"
         >
-          ✕
+          âœ•
         </button>
 
       </div>
