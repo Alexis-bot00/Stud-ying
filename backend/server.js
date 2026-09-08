@@ -1,4 +1,4 @@
-﻿import express from "express";
+import express from "express";
 import cors from "cors";
 import multer from "multer";
 import dotenv from "dotenv";
@@ -387,6 +387,13 @@ function readLibrary() {
           data.flashcardSets
         )
           ? data.flashcardSets
+          : [],
+
+      studyMaterials:
+        Array.isArray(
+          data.studyMaterials
+        )
+          ? data.studyMaterials
           : []
     };
 
@@ -1788,7 +1795,30 @@ app.get(
           publicFile
         ),
 
-      flashcardSets
+      flashcardSets,
+
+      studyMaterials:
+        (
+          Array.isArray(
+            library.studyMaterials
+          )
+            ? library.studyMaterials
+            : []
+        )
+          .filter(
+            item =>
+              item.userId ===
+                req.user.id
+          )
+          .sort(
+            (a, b) =>
+              new Date(
+                b.createdAt
+              ) -
+              new Date(
+                a.createdAt
+              )
+          )
     });
   }
 );
@@ -1966,6 +1996,34 @@ app.delete(
             }
 
             return set;
+          }
+        );
+
+    library.studyMaterials =
+      (
+        Array.isArray(
+          library.studyMaterials
+        )
+          ? library.studyMaterials
+          : []
+      )
+        .map(
+          item => {
+
+            if (
+              item.userId ===
+                req.user.id &&
+              item.folderId ===
+                req.params.id
+            ) {
+              return {
+                ...item,
+                folderId:
+                  null
+              };
+            }
+
+            return item;
           }
         );
 
@@ -4120,6 +4178,348 @@ app.get(
     }
 );
 
+
+/* ==========================================================
+   STUDYANTE_SAVED_STUDY_MATERIALS_BACKEND
+   Notes / Practice Tests / Study Games
+   ========================================================== */
+
+app.post(
+  "/api/library/study-materials",
+  requireAuth,
+  (req, res) => {
+
+    const library =
+      readLibrary();
+
+    if (
+      !Array.isArray(
+        library.studyMaterials
+      )
+    ) {
+      library.studyMaterials = [];
+    }
+
+
+    const type =
+      String(
+        req.body.type || ""
+      ).trim();
+
+
+    if (
+      ![
+        "notes",
+        "test",
+        "game"
+      ].includes(type)
+    ) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message:
+            "Invalid study material type."
+        });
+    }
+
+
+    const name =
+      String(
+        req.body.name || ""
+      ).trim();
+
+
+    if (!name) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message:
+            "Enter a name."
+        });
+    }
+
+
+    const requestedFolderId =
+      String(
+        req.body.folderId || ""
+      ).trim() || null;
+
+
+    const folderId =
+      requestedFolderId &&
+      library.folders.some(
+        folder =>
+          folder.id ===
+            requestedFolderId &&
+          folder.userId ===
+            req.user.id
+      )
+        ? requestedFolderId
+        : null;
+
+
+    const incomingData =
+      req.body.data &&
+      typeof req.body.data === "object"
+        ? req.body.data
+        : {};
+
+
+    let data;
+
+
+    if (type === "notes") {
+
+      const notes =
+        String(
+          incomingData.notes || ""
+        ).trim();
+
+      if (!notes) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "The notes are empty."
+          });
+      }
+
+      data = {
+        notes
+      };
+    }
+
+
+    if (type === "test") {
+
+      const questions =
+        Array.isArray(
+          incomingData.questions
+        )
+          ? incomingData.questions
+          : [];
+
+      if (!questions.length) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "The practice test is empty."
+          });
+      }
+
+      data = {
+        questions
+      };
+    }
+
+
+    if (type === "game") {
+
+      const game =
+        Array.isArray(
+          incomingData.game
+        )
+          ? incomingData.game
+          : [];
+
+      if (!game.length) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "The study game is empty."
+          });
+      }
+
+      data = {
+        game
+      };
+    }
+
+
+    const item = {
+
+      id:
+        createId(),
+
+      userId:
+        req.user.id,
+
+      type,
+
+      name,
+
+      folderId,
+
+      data,
+
+      createdAt:
+        new Date()
+          .toISOString()
+    };
+
+
+    library.studyMaterials.push(
+      item
+    );
+
+    writeLibrary(
+      library
+    );
+
+
+    res.json({
+      success: true,
+      item
+    });
+  }
+);
+
+
+app.patch(
+  "/api/library/study-materials/:id",
+  requireAuth,
+  (req, res) => {
+
+    const library =
+      readLibrary();
+
+    const materials =
+      Array.isArray(
+        library.studyMaterials
+      )
+        ? library.studyMaterials
+        : [];
+
+
+    const item =
+      materials.find(
+        material =>
+          material.id ===
+            req.params.id &&
+          material.userId ===
+            req.user.id
+      );
+
+
+    if (!item) {
+      return res
+        .status(404)
+        .json({
+          success: false,
+          message:
+            "Study material not found."
+        });
+    }
+
+
+    const folderId =
+      String(
+        req.body.folderId || ""
+      ).trim() || null;
+
+
+    if (
+      folderId &&
+      !library.folders.some(
+        folder =>
+          folder.id ===
+            folderId &&
+          folder.userId ===
+            req.user.id
+      )
+    ) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message:
+            "Folder not found."
+        });
+    }
+
+
+    item.folderId =
+      folderId;
+
+    writeLibrary(
+      library
+    );
+
+
+    res.json({
+      success: true,
+      item
+    });
+  }
+);
+
+
+app.delete(
+  "/api/library/study-materials/:id",
+  requireAuth,
+  (req, res) => {
+
+    const library =
+      readLibrary();
+
+    const materials =
+      Array.isArray(
+        library.studyMaterials
+      )
+        ? library.studyMaterials
+        : [];
+
+
+    const exists =
+      materials.some(
+        item =>
+          item.id ===
+            req.params.id &&
+          item.userId ===
+            req.user.id
+      );
+
+
+    if (!exists) {
+      return res
+        .status(404)
+        .json({
+          success: false,
+          message:
+            "Study material not found."
+        });
+    }
+
+
+    library.studyMaterials =
+      materials.filter(
+        item =>
+          !(
+            item.id ===
+              req.params.id &&
+            item.userId ===
+              req.user.id
+          )
+      );
+
+
+    writeLibrary(
+      library
+    );
+
+
+    res.json({
+      success: true
+    });
+  }
+);
 app.listen(
   PORT,
   () => {

@@ -1308,3 +1308,2948 @@ body.studyante-dark .sidebar-bottom-controls {
 }
 
 /* STUDYANTE_CHATGPT_SIDEBAR_END */
+
+/* STUDYANTE_SIDEBAR_FINAL_FIX_START */
+
+
+/* =========================================================
+   SIDEBAR STRUCTURE
+   ========================================================= */
+
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+
+    height: 100vh !important;
+    max-height: 100vh !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Navigation stays at top */
+
+.sidebar nav,
+.sidebar .nav-links,
+.sidebar .sidebar-nav {
+    flex: 0 0 auto !important;
+}
+
+
+/* =========================================================
+   CHAT HISTORY
+   ========================================================= */
+
+.sidebar-chat-history {
+    flex: 1 1 auto !important;
+
+    min-height: 0 !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    margin: 8px 0 0 !important;
+    padding: 0 6px 10px !important;
+
+    border: 0 !important;
+}
+
+
+/* Keep each history item compact */
+
+.sidebar-chat-history .chat-history-item {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    min-height: 36px !important;
+
+    margin: 2px 0 !important;
+    padding: 8px 32px 8px 10px !important;
+
+    border-radius: 8px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* History title/text */
+
+.sidebar-chat-history .chat-history-item span,
+.sidebar-chat-history .chat-history-item .title,
+.sidebar-chat-history .chat-history-item .chat-title {
+    flex: 1 1 auto !important;
+
+    min-width: 0 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+
+/* IMPORTANT:
+   stop tiny delete/trash buttons becoming full-width rows */
+
+.sidebar-chat-history .chat-history-item button {
+    position: absolute !important;
+
+    right: 5px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 12px !important;
+}
+
+
+/* Extra protection for known delete-like buttons */
+
+.sidebar-chat-history button[class*="delete"],
+.sidebar-chat-history button[class*="remove"],
+.sidebar-chat-history .delete-chat,
+.sidebar-chat-history .delete-chat-btn,
+.sidebar-chat-history .chat-delete-btn {
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 12px !important;
+}
+
+
+/* Do not turn miscellaneous history buttons into huge rows */
+
+.sidebar-chat-history button:not(.chat-history-item) {
+    max-width: 28px !important;
+}
+
+
+/* =========================================================
+   BOTTOM AREA
+   ========================================================= */
+
+.sidebar-bottom-controls {
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin-top: auto !important;
+
+    padding: 10px 6px 6px !important;
+
+    border-top: 1px solid rgba(128,128,128,0.22) !important;
+
+    background: inherit !important;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+.sidebar-bottom-controls .theme-toggle {
+    order: 1 !important;
+
+    flex: 0 0 auto !important;
+
+    width: 44px !important;
+    height: 23px !important;
+
+    min-width: 44px !important;
+    min-height: 23px !important;
+
+    margin: 0 0 10px 3px !important;
+}
+
+
+/* =========================================================
+   USER AREA
+   ========================================================= */
+
+.sidebar-bottom-controls .sidebar-user-panel {
+    order: 2 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/* Student ALWAYS above Logout */
+
+.sidebar-bottom-controls .sidebar-user-panel .profile {
+    order: 1 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    gap: 9px !important;
+
+    margin: 0 !important;
+    padding: 5px 3px !important;
+
+    background: transparent !important;
+    border: 0 !important;
+}
+
+
+/* Avatar */
+
+.sidebar-bottom-controls .sidebar-user-panel .avatar {
+    flex: 0 0 32px !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    min-height: 32px !important;
+
+    font-size: 12px !important;
+}
+
+
+/* Student text */
+
+.sidebar-bottom-controls .sidebar-user-panel .profile strong {
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile span {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+}
+
+
+/* =========================================================
+   LOGOUT — VERY BOTTOM
+   ========================================================= */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.logout-btn {
+    order: 2 !important;
+
+    position: static !important;
+
+    align-self: flex-start !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: auto !important;
+    max-width: max-content !important;
+
+    min-width: 0 !important;
+    min-height: 24px !important;
+
+    margin: 5px 0 0 41px !important;
+
+    padding: 4px 9px !important;
+
+    border-radius: 6px !important;
+
+    font-size: 10px !important;
+    line-height: 1 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   REMOVE OLD GIANT LOGOUT APPEARANCE
+   ========================================================= */
+
+.sidebar .logout-btn {
+    height: auto !important;
+
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+
+    font-size: 10px !important;
+
+    transform: none !important;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+body.studyante-dark .sidebar-bottom-controls {
+    border-top-color: #333333 !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls {
+        padding: 8px 5px 5px !important;
+    }
+
+    .sidebar-bottom-controls .sidebar-user-panel .avatar {
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+        min-height: 30px !important;
+    }
+
+    .sidebar-bottom-controls .sidebar-user-panel .profile strong {
+        font-size: 12px !important;
+    }
+
+    .sidebar-bottom-controls .sidebar-user-panel .profile span {
+        font-size: 9px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        min-height: 23px !important;
+
+        margin-left: 39px !important;
+
+        padding: 4px 8px !important;
+
+        font-size: 9px !important;
+    }
+}
+
+
+/* STUDYANTE_SIDEBAR_FINAL_FIX_END */
+
+
+/* STUDYANTE_SIDEBAR_CLEAN_FINAL */
+
+/* SIDEBAR */
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+}
+
+/* NAVIGATION */
+.sidebar nav {
+    flex: 0 0 auto !important;
+}
+
+/* =========================================================
+   CHAT HISTORY
+   ========================================================= */
+
+.sidebar-chat-history {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+
+    margin: 10px 0 0 !important;
+    padding: 0 4px 10px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    border: 0 !important;
+}
+
+/* Chat History heading */
+.sidebar-chat-history h3,
+.sidebar-chat-history h4,
+.sidebar-chat-history .chat-history-title {
+    margin: 7px 7px 8px !important;
+    padding: 0 !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+
+    opacity: .65 !important;
+}
+
+/* Chat list */
+.sidebar-chat-history .chat-history-list,
+.sidebar-chat-history #chatHistoryList {
+    display: flex !important;
+    flex-direction: column !important;
+
+    gap: 2px !important;
+
+    width: 100% !important;
+}
+
+/* ONE CHAT = ONE ROW */
+.sidebar-chat-history .chat-history-item {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 8px 34px 8px 9px !important;
+
+    border: 0 !important;
+    border-radius: 8px !important;
+
+    box-shadow: none !important;
+
+    overflow: hidden !important;
+}
+
+/* Chat title */
+.sidebar-chat-history .chat-history-item span,
+.sidebar-chat-history .chat-history-item .title,
+.sidebar-chat-history .chat-history-item .chat-title {
+    flex: 1 1 auto !important;
+
+    min-width: 0 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* DELETE BUTTON — SMALL AND INSIDE CHAT ROW */
+.sidebar-chat-history .chat-history-item button,
+.sidebar-chat-history .delete-chat,
+.sidebar-chat-history .delete-chat-btn,
+.sidebar-chat-history .chat-delete-btn {
+    position: absolute !important;
+
+    top: 50% !important;
+    right: 5px !important;
+
+    transform: translateY(-50%) !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 11px !important;
+}
+
+/* Prevent old CSS from creating giant buttons */
+.sidebar-chat-history button {
+    flex: 0 0 24px !important;
+}
+
+/* =========================================================
+   BOTTOM SECTION
+   Dark/Light
+   Student
+   Logout
+   ========================================================= */
+
+.sidebar-bottom-controls {
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin-top: auto !important;
+    padding: 10px 5px 5px !important;
+
+    border-top: 1px solid rgba(128,128,128,.22) !important;
+
+    background: inherit !important;
+}
+
+/* =========================================================
+   DARK / LIGHT MODE ROW
+   ========================================================= */
+
+.sidebar-bottom-controls .theme-toggle {
+    order: 1 !important;
+
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 44px !important;
+    height: 23px !important;
+
+    min-width: 44px !important;
+    min-height: 23px !important;
+
+    margin: 0 0 11px 3px !important;
+    padding: 0 !important;
+
+    border-radius: 999px !important;
+}
+
+/* Toggle knob */
+.sidebar-bottom-controls .theme-toggle::before {
+    width: 17px !important;
+    height: 17px !important;
+
+    top: 3px !important;
+    left: 3px !important;
+}
+
+/* Keep Dark Mode / Light Mode text visible */
+.sidebar-bottom-controls .theme-toggle::after {
+    position: absolute !important;
+
+    left: 52px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
+
+    width: max-content !important;
+
+    font-size: 11px !important;
+    font-weight: 500 !important;
+
+    white-space: nowrap !important;
+}
+
+/* =========================================================
+   STUDENT
+   ========================================================= */
+
+.sidebar-bottom-controls .sidebar-user-panel {
+    order: 2 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile {
+    order: 1 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    gap: 9px !important;
+
+    margin: 0 !important;
+    padding: 5px 3px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Avatar */
+.sidebar-bottom-controls .sidebar-user-panel .avatar {
+    flex: 0 0 32px !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    min-height: 32px !important;
+
+    font-size: 12px !important;
+}
+
+/* Student name */
+.sidebar-bottom-controls .sidebar-user-panel .profile strong {
+    display: block !important;
+
+    margin: 0 !important;
+
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+}
+
+/* Student label */
+.sidebar-bottom-controls .sidebar-user-panel .profile span {
+    display: block !important;
+
+    margin-top: 2px !important;
+
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+
+    opacity: .65 !important;
+}
+
+/* =========================================================
+   LOGOUT — DIRECTLY BELOW STUDENT AND LAST ITEM
+   ========================================================= */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.logout-btn {
+    order: 2 !important;
+
+    position: static !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    align-self: flex-start !important;
+
+    width: auto !important;
+    height: 24px !important;
+
+    min-width: 0 !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+
+    margin: 4px 0 0 44px !important;
+
+    padding: 3px 9px !important;
+
+    border-radius: 6px !important;
+
+    font-size: 10px !important;
+    line-height: 1 !important;
+
+    box-shadow: none !important;
+
+    transform: none !important;
+}
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+body:not(.studyante-dark)
+.sidebar-chat-history
+.chat-history-item {
+    background: transparent !important;
+}
+
+body:not(.studyante-dark)
+.sidebar-chat-history
+.chat-history-item:hover {
+    background: #f2f2f2 !important;
+}
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+body.studyante-dark
+.sidebar-chat-history
+.chat-history-item {
+    background: transparent !important;
+}
+
+body.studyante-dark
+.sidebar-chat-history
+.chat-history-item:hover {
+    background: #2f2f2f !important;
+}
+
+body.studyante-dark
+.sidebar-bottom-controls {
+    border-top-color: #333333 !important;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls {
+        padding: 8px 4px 4px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle {
+        width: 42px !important;
+        height: 22px !important;
+
+        min-width: 42px !important;
+        min-height: 22px !important;
+
+        margin-bottom: 9px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle::before {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle::after {
+        left: 49px !important;
+        font-size: 10px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .avatar {
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+        min-height: 30px !important;
+
+        flex-basis: 30px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .profile strong {
+        font-size: 12px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .profile span {
+        font-size: 9px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        height: 23px !important;
+        min-height: 23px !important;
+
+        margin-left: 42px !important;
+
+        padding: 3px 8px !important;
+
+        font-size: 9px !important;
+    }
+}
+
+
+/* STUDYANTE_REAL_SIDEBAR_FIX */
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+
+    height: 100vh !important;
+    max-height: 100vh !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   CHAT HISTORY
+   ========================================================= */
+
+.sidebar-chat-history {
+    flex: 1 1 auto !important;
+
+    min-height: 0 !important;
+
+    margin: 12px 0 0 !important;
+    padding: 0 4px 10px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    border: 0 !important;
+}
+
+
+.chat-history-panel {
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+#chatHistoryList {
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    gap: 2px !important;
+}
+
+
+/* ONE CHAT ROW */
+
+.chat-history-item {
+    display: flex !important;
+    align-items: center !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    border-radius: 8px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/* CHAT TITLE BUTTON */
+
+.chat-history-open {
+    position: static !important;
+
+    flex: 1 1 auto !important;
+
+    display: block !important;
+
+    width: auto !important;
+    max-width: none !important;
+
+    min-width: 0 !important;
+    min-height: 36px !important;
+
+    margin: 0 !important;
+
+    padding: 8px 34px 8px 9px !important;
+
+    border: 0 !important;
+    border-radius: 8px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    text-align: left !important;
+
+    font-size: 13px !important;
+    font-weight: 400 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+
+/* DELETE ICON */
+
+.chat-history-delete {
+    position: absolute !important;
+
+    top: 50% !important;
+    right: 5px !important;
+
+    transform: translateY(-50%) !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: 0 0 24px !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 11px !important;
+}
+
+
+/* =========================================================
+   BOTTOM CONTROLS
+   ========================================================= */
+
+.sidebar-bottom-controls {
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin-top: auto !important;
+
+    padding: 10px 5px 5px !important;
+
+    border-top: 1px solid rgba(128,128,128,.22) !important;
+
+    background: inherit !important;
+}
+
+
+/* =========================================================
+   DARK/LIGHT TOGGLE
+   ========================================================= */
+
+#studyanteThemeToggle {
+    order: 1 !important;
+
+    position: relative !important;
+
+    width: 44px !important;
+    height: 23px !important;
+
+    min-width: 44px !important;
+    min-height: 23px !important;
+
+    margin: 0 0 10px 3px !important;
+    padding: 0 !important;
+
+    border-radius: 999px !important;
+}
+
+
+/* =========================================================
+   STUDENT + LOGOUT
+   ========================================================= */
+
+.sidebar-user-panel {
+    order: 2 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+.sidebar-user-panel .profile {
+    order: 1 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    gap: 9px !important;
+
+    margin: 0 !important;
+    padding: 5px 3px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/* LOGOUT DIRECTLY BELOW STUDENT */
+
+.sidebar-user-panel #logoutButton {
+    order: 2 !important;
+
+    position: static !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    align-self: flex-start !important;
+
+    width: auto !important;
+    height: 24px !important;
+
+    min-width: 0 !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+
+    margin: 4px 0 0 44px !important;
+
+    padding: 3px 9px !important;
+
+    border-radius: 6px !important;
+
+    font-size: 10px !important;
+    line-height: 1 !important;
+
+    transform: none !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+body:not(.studyante-dark)
+.chat-history-item:hover {
+    background: #f2f2f2 !important;
+}
+
+
+body.studyante-dark
+.chat-history-item:hover {
+    background: #2f2f2f !important;
+}
+
+
+body.studyante-dark
+.sidebar-bottom-controls {
+    border-top-color: #333333 !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls {
+        padding: 8px 4px 4px !important;
+    }
+
+    #studyanteThemeToggle {
+        width: 42px !important;
+        height: 22px !important;
+
+        min-width: 42px !important;
+        min-height: 22px !important;
+    }
+
+    .sidebar-user-panel #logoutButton {
+        height: 23px !important;
+        min-height: 23px !important;
+
+        margin-left: 42px !important;
+
+        padding: 3px 8px !important;
+
+        font-size: 9px !important;
+    }
+}
+
+
+/* STUDYANTE_CHAT_NAME_DELETE_SAME_ROW */
+
+/*
+   CORRECT:
+   Chat Name                  Delete
+
+   NOT:
+   Chat Name
+   Delete
+*/
+
+#chatHistoryList .chat-history-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 38px !important;
+
+    margin: 2px 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    border-radius: 8px !important;
+}
+
+
+/* CHAT NAME */
+
+#chatHistoryList .chat-history-open {
+    position: static !important;
+
+    display: block !important;
+
+    flex: 1 1 auto !important;
+
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 38px !important;
+    min-height: 38px !important;
+
+    margin: 0 !important;
+
+    padding: 0 34px 0 10px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    text-align: left !important;
+
+    font-size: 13px !important;
+    font-weight: 400 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    line-height: 38px !important;
+}
+
+
+/* DELETE BUTTON — SAME ROW, RIGHT SIDE */
+
+#chatHistoryList .chat-history-delete {
+    position: absolute !important;
+
+    top: 50% !important;
+    right: 6px !important;
+
+    transform: translateY(-50%) !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: none !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+
+    max-width: 24px !important;
+    max-height: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+
+    box-shadow: none !important;
+
+    font-size: 11px !important;
+    line-height: 1 !important;
+
+    z-index: 2 !important;
+}
+
+
+/* HOVER */
+
+body:not(.studyante-dark)
+#chatHistoryList .chat-history-item:hover {
+    background: #f2f2f2 !important;
+}
+
+body.studyante-dark
+#chatHistoryList .chat-history-item:hover {
+    background: #2f2f2f !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    #chatHistoryList .chat-history-item {
+        min-height: 36px !important;
+    }
+
+    #chatHistoryList .chat-history-open {
+        height: 36px !important;
+        min-height: 36px !important;
+
+        padding-left: 9px !important;
+        padding-right: 32px !important;
+
+        font-size: 12px !important;
+
+        line-height: 36px !important;
+    }
+
+    #chatHistoryList .chat-history-delete {
+        right: 5px !important;
+
+        width: 22px !important;
+        height: 22px !important;
+
+        min-width: 22px !important;
+        min-height: 22px !important;
+
+        max-width: 22px !important;
+        max-height: 22px !important;
+    }
+}
+
+
+/* STUDYANTE_CHAT_HISTORY_GRID_FIX */
+
+/* ================================
+   CHAT HISTORY HEADER
+   ================================ */
+
+.sidebar-chat-history .chat-history-panel {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+}
+
+/* Heading + New Chat button */
+.sidebar-chat-history .chat-history-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    width: 100% !important;
+
+    margin: 0 0 7px !important;
+    padding: 0 5px !important;
+}
+
+/* Chat History text */
+.sidebar-chat-history .chat-history-header h3,
+.sidebar-chat-history .chat-history-header h4,
+.sidebar-chat-history .chat-history-title {
+    flex: 1 1 auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 12px !important;
+    line-height: 28px !important;
+}
+
+/* + New Chat button */
+#newChatButton {
+    position: static !important;
+
+    flex: 0 0 28px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 28px !important;
+    height: 28px !important;
+
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 16px !important;
+    line-height: 1 !important;
+}
+
+
+/* ================================
+   CHAT LIST
+   ================================ */
+
+#chatHistoryList {
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    gap: 2px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+/* ================================
+   CHAT NAME + DELETE SAME ROW
+   ================================ */
+
+#chatHistoryList .chat-history-item {
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        28px !important;
+
+    align-items: center !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 4px 0 0 !important;
+
+    border: 0 !important;
+    border-radius: 8px !important;
+
+    overflow: hidden !important;
+
+    box-shadow: none !important;
+}
+
+
+/* CHAT NAME */
+
+#chatHistoryList .chat-history-open {
+    grid-column: 1 !important;
+
+    position: static !important;
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    height: 38px !important;
+    min-height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    text-align: left !important;
+
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 38px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    transform: none !important;
+}
+
+
+/* DELETE BUTTON */
+
+#chatHistoryList .chat-history-delete {
+    grid-column: 2 !important;
+
+    position: static !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 11px !important;
+    line-height: 1 !important;
+
+    transform: none !important;
+}
+
+
+/* Remove old button constraints */
+
+.sidebar-chat-history #chatHistoryList .chat-history-open {
+    flex: unset !important;
+}
+
+.sidebar-chat-history #chatHistoryList .chat-history-delete {
+    flex: unset !important;
+}
+
+
+/* HOVER */
+
+body:not(.studyante-dark)
+#chatHistoryList .chat-history-item:hover {
+    background: #f2f2f2 !important;
+}
+
+body.studyante-dark
+#chatHistoryList .chat-history-item:hover {
+    background: #2f2f2f !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    #chatHistoryList .chat-history-item {
+        grid-template-columns:
+            minmax(0, 1fr)
+            26px !important;
+
+        min-height: 36px !important;
+    }
+
+    #chatHistoryList .chat-history-open {
+        height: 36px !important;
+        min-height: 36px !important;
+
+        line-height: 36px !important;
+
+        font-size: 12px !important;
+    }
+
+    #chatHistoryList .chat-history-delete {
+        width: 22px !important;
+        height: 22px !important;
+
+        min-width: 22px !important;
+        min-height: 22px !important;
+
+        max-width: 22px !important;
+        max-height: 22px !important;
+    }
+}
+
+
+/* STUDYANTE_HEADER_TOGGLE_FINAL_FIX */
+
+
+/* =========================================================
+   CHAT HISTORY HEADER
+   Chat History                       +
+   ========================================================= */
+
+.sidebar-chat-history .chat-history-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    width: 100% !important;
+
+    margin: 0 0 8px 0 !important;
+    padding: 0 4px !important;
+
+    overflow: visible !important;
+}
+
+.sidebar-chat-history .chat-history-header h3,
+.sidebar-chat-history .chat-history-header h4,
+.sidebar-chat-history .chat-history-title {
+    flex: 1 1 auto !important;
+
+    width: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 28px !important;
+
+    white-space: nowrap !important;
+}
+
+
+/* NEW CHAT = PLUS ONLY */
+
+#newChatButton {
+    position: relative !important;
+
+    flex: 0 0 28px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 28px !important;
+    height: 28px !important;
+
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 7px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    overflow: hidden !important;
+
+    font-size: 0 !important;
+    line-height: 1 !important;
+
+    color: inherit !important;
+}
+
+
+/* Hide "New Chat" text and display + */
+
+#newChatButton::before {
+    content: "+" !important;
+
+    position: static !important;
+
+    display: block !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    background: none !important;
+
+    transform: none !important;
+
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+
+    color: currentColor !important;
+}
+
+#newChatButton::after {
+    display: none !important;
+    content: none !important;
+}
+
+
+body:not(.studyante-dark) #newChatButton:hover {
+    background: #eeeeee !important;
+}
+
+body.studyante-dark #newChatButton:hover {
+    background: #2f2f2f !important;
+}
+
+
+/* =========================================================
+   DARK / LIGHT MODE
+   Proper switch + label
+   ========================================================= */
+
+.sidebar-bottom-controls #studyanteThemeToggle {
+    order: 1 !important;
+
+    position: relative !important;
+
+    display: block !important;
+
+    width: 125px !important;
+    height: 28px !important;
+
+    min-width: 125px !important;
+    min-height: 28px !important;
+    max-width: 125px !important;
+
+    margin: 0 0 10px 3px !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    overflow: visible !important;
+
+    font-size: 0 !important;
+
+    cursor: pointer !important;
+}
+
+
+/* SWITCH TRACK */
+
+.sidebar-bottom-controls #studyanteThemeToggle::before {
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 0 !important;
+    top: 3px !important;
+
+    width: 42px !important;
+    height: 22px !important;
+
+    border-radius: 999px !important;
+
+    background: #d4d4d4 !important;
+
+    transform: none !important;
+
+    transition: background .2s ease !important;
+}
+
+
+/* MODE LABEL */
+
+.sidebar-bottom-controls #studyanteThemeToggle::after {
+    content: "Dark Mode" !important;
+
+    position: absolute !important;
+
+    left: 52px !important;
+    top: 50% !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    transform: translateY(-50%) !important;
+
+    background: none !important;
+
+    color: inherit !important;
+
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+}
+
+
+/* SWITCH KNOB */
+
+.sidebar-bottom-controls #studyanteThemeToggle {
+    background-image:
+        radial-gradient(
+            circle at 11px 14px,
+            #ffffff 0,
+            #ffffff 7px,
+            transparent 7.5px
+        ) !important;
+
+    background-repeat: no-repeat !important;
+}
+
+
+/* DARK MODE TRACK + KNOB */
+
+body.studyante-dark
+.sidebar-bottom-controls
+#studyanteThemeToggle::before {
+    background: #2563eb !important;
+}
+
+body.studyante-dark
+.sidebar-bottom-controls
+#studyanteThemeToggle {
+    background-image:
+        radial-gradient(
+            circle at 31px 14px,
+            #ffffff 0,
+            #ffffff 7px,
+            transparent 7.5px
+        ) !important;
+}
+
+body.studyante-dark
+.sidebar-bottom-controls
+#studyanteThemeToggle::after {
+    content: "Light Mode" !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    #newChatButton {
+        width: 26px !important;
+        height: 26px !important;
+
+        min-width: 26px !important;
+        min-height: 26px !important;
+        max-width: 26px !important;
+        max-height: 26px !important;
+    }
+
+    #newChatButton::before {
+        font-size: 17px !important;
+    }
+
+    .sidebar-bottom-controls #studyanteThemeToggle {
+        width: 115px !important;
+        min-width: 115px !important;
+        max-width: 115px !important;
+    }
+
+    .sidebar-bottom-controls #studyanteThemeToggle::after {
+        left: 49px !important;
+        font-size: 10px !important;
+    }
+}
+
+
+/* STUDYANTE_AI_DARK_CONTRAST_FIX */
+
+
+/* =========================================
+   AI ASSISTANT MESSAGE — LIGHT MODE
+   ========================================= */
+
+body:not(.studyante-dark) .message.assistant .message-text,
+body:not(.studyante-dark) .assistant-message .message-text,
+body:not(.studyante-dark) .message.bot .message-text {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+
+    border: 1px solid #e5e7eb !important;
+}
+
+
+/* =========================================
+   AI ASSISTANT MESSAGE — DARK MODE
+   ========================================= */
+
+body.studyante-dark .message.assistant .message-text,
+body.studyante-dark .assistant-message .message-text,
+body.studyante-dark .message.bot .message-text {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+}
+
+
+/* Text inside assistant response */
+
+body.studyante-dark .message.assistant .message-text *,
+body.studyante-dark .assistant-message .message-text *,
+body.studyante-dark .message.bot .message-text * {
+    color: #f8fafc !important;
+}
+
+
+/* Paragraphs */
+
+body.studyante-dark .message.assistant p,
+body.studyante-dark .assistant-message p,
+body.studyante-dark .message.bot p {
+    color: #f8fafc !important;
+}
+
+
+/* Lists */
+
+body.studyante-dark .message.assistant li,
+body.studyante-dark .assistant-message li,
+body.studyante-dark .message.bot li {
+    color: #f8fafc !important;
+}
+
+
+/* Strong text */
+
+body.studyante-dark .message.assistant strong,
+body.studyante-dark .assistant-message strong,
+body.studyante-dark .message.bot strong {
+    color: #ffffff !important;
+}
+
+
+/* =========================================
+   AI CHAT INPUT — DARK MODE
+   ========================================= */
+
+body.studyante-dark .ai-input-bar,
+body.studyante-dark .chat-input-container,
+body.studyante-dark .ai-input-container {
+    background: #1e293b !important;
+
+    border-color: #334155 !important;
+}
+
+
+body.studyante-dark #question,
+body.studyante-dark .ai-input-bar textarea,
+body.studyante-dark .chat-input-container textarea {
+    background: transparent !important;
+
+    color: #f8fafc !important;
+}
+
+
+body.studyante-dark #question::placeholder,
+body.studyante-dark .ai-input-bar textarea::placeholder,
+body.studyante-dark .chat-input-container textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+
+/* Plus attachment button */
+
+body.studyante-dark .ai-input-bar button:not(.send-btn),
+body.studyante-dark .attachment-button,
+body.studyante-dark .attach-button {
+    color: #cbd5e1 !important;
+}
+
+
+/* =========================================
+   CHAT AREA
+   ========================================= */
+
+body.studyante-dark .chat-box,
+body.studyante-dark .chat-messages,
+body.studyante-dark .ai-chat {
+    color: #f8fafc !important;
+}
+
+
+/* Keep USER bubble blue */
+
+body.studyante-dark .message.user .message-text,
+body.studyante-dark .user-message .message-text {
+    color: #ffffff !important;
+}
+
+
+/* STUDYANTE_DARK_TEXT_ICONS_FIX */
+
+/* GENERAL TEXT */
+body.studyante-dark,
+body.studyante-dark main,
+body.studyante-dark .main,
+body.studyante-dark .content,
+body.studyante-dark .panel,
+body.studyante-dark .card,
+body.studyante-dark .modal,
+body.studyante-dark .sidebar {
+    color: #f8fafc !important;
+}
+
+/* HEADINGS + NORMAL TEXT */
+body.studyante-dark h1,
+body.studyante-dark h2,
+body.studyante-dark h3,
+body.studyante-dark h4,
+body.studyante-dark h5,
+body.studyante-dark h6,
+body.studyante-dark p,
+body.studyante-dark span,
+body.studyante-dark label,
+body.studyante-dark small,
+body.studyante-dark strong,
+body.studyante-dark b,
+body.studyante-dark li,
+body.studyante-dark dt,
+body.studyante-dark dd {
+    color: #f8fafc !important;
+}
+
+/* LINKS */
+body.studyante-dark a {
+    color: #e2e8f0 !important;
+}
+
+/* BUTTON TEXT + ICONS */
+body.studyante-dark button {
+    color: #f8fafc !important;
+}
+
+/* SVG ICONS */
+body.studyante-dark svg {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark svg path,
+body.studyante-dark svg circle,
+body.studyante-dark svg line,
+body.studyante-dark svg polyline,
+body.studyante-dark svg polygon,
+body.studyante-dark svg rect {
+    stroke: currentColor !important;
+}
+
+/* ICON FONTS / SYMBOLS */
+body.studyante-dark i,
+body.studyante-dark .icon,
+body.studyante-dark [class*="icon"],
+body.studyante-dark .material-icons {
+    color: #f8fafc !important;
+}
+
+/* INPUTS */
+body.studyante-dark input,
+body.studyante-dark textarea,
+body.studyante-dark select {
+    color: #f8fafc !important;
+}
+
+/* PLACEHOLDERS */
+body.studyante-dark input::placeholder,
+body.studyante-dark textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* TABLES */
+body.studyante-dark table,
+body.studyante-dark th,
+body.studyante-dark td {
+    color: #f8fafc !important;
+}
+
+/* CHAT HISTORY */
+body.studyante-dark .chat-history-title,
+body.studyante-dark .chat-history-open,
+body.studyante-dark .chat-history-delete {
+    color: #e5e7eb !important;
+}
+
+/* SIDEBAR */
+body.studyante-dark .sidebar nav a,
+body.studyante-dark .sidebar-user-panel,
+body.studyante-dark .sidebar-user-panel strong,
+body.studyante-dark .sidebar-user-panel span {
+    color: #f8fafc !important;
+}
+
+/* FLASHCARDS / GENERATED CONTENT */
+body.studyante-dark .generated-content,
+body.studyante-dark .generated-content *,
+body.studyante-dark .flashcard,
+body.studyante-dark .flashcard *,
+body.studyante-dark .community-card,
+body.studyante-dark .community-card * {
+    color: #f8fafc !important;
+}
+
+/* AI CHAT */
+body.studyante-dark .message,
+body.studyante-dark .message *,
+body.studyante-dark .ai-chat,
+body.studyante-dark .ai-chat * {
+    color: #f8fafc !important;
+}
+
+/* KEEP USER MESSAGE WHITE */
+body.studyante-dark .message.user .message-text,
+body.studyante-dark .message.user .message-text * {
+    color: #ffffff !important;
+}
+
+/* DISABLED / MUTED TEXT */
+body.studyante-dark .muted,
+body.studyante-dark .secondary-text,
+body.studyante-dark .hint,
+body.studyante-dark .subtitle {
+    color: #94a3b8 !important;
+}
+
+/* DARK MODE TOGGLE LABEL */
+body.studyante-dark #studyanteThemeToggle::after {
+    color: #f8fafc !important;
+}
+
+
+/* STUDYANTE_AI_DARK_FINAL_FIX */
+
+
+/* =========================================================
+   LIGHT MODE — KEEP CURRENT CLEAN DESIGN
+   ========================================================= */
+
+body:not(.studyante-dark) #ai .message.assistant,
+body:not(.studyante-dark) #ai .message.assistant .message-text {
+    color: #111827 !important;
+}
+
+body:not(.studyante-dark) #ai .message.assistant .message-text {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+
+/* =========================================================
+   DARK MODE — ASSISTANT MESSAGE
+   ========================================================= */
+
+/* Remove the broken blue block/background */
+
+body.studyante-dark #ai .message.assistant {
+    background: transparent !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark #ai .message.assistant .message-text {
+    display: block !important;
+
+    background: #1e293b !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+    border-radius: 14px !important;
+
+    box-shadow: none !important;
+
+    text-decoration: none !important;
+}
+
+
+/* Everything inside AI answer stays readable */
+
+body.studyante-dark #ai .message.assistant .message-text *,
+body.studyante-dark #ai .message.assistant p,
+body.studyante-dark #ai .message.assistant span,
+body.studyante-dark #ai .message.assistant strong,
+body.studyante-dark #ai .message.assistant li {
+    background: transparent !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    text-decoration: none !important;
+}
+
+
+/* =========================================================
+   USER MESSAGE
+   ========================================================= */
+
+body.studyante-dark #ai .message.user .message-text {
+    background: #2563eb !important;
+    background-image: none !important;
+
+    color: #ffffff !important;
+
+    border: 0 !important;
+}
+
+body.studyante-dark #ai .message.user .message-text * {
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   AI CHAT AREA
+   ========================================================= */
+
+body.studyante-dark #ai .chat-box,
+body.studyante-dark #ai .chat-messages,
+body.studyante-dark #ai #chatMessages {
+    background: #0f172a !important;
+
+    color: #f8fafc !important;
+
+    border-color: #334155 !important;
+}
+
+
+/* =========================================================
+   INPUT BAR — FIX WHITE BAR IN DARK MODE
+   ========================================================= */
+
+/* The element directly containing the textarea */
+
+body.studyante-dark #ai :has(> #question) {
+    background: #1e293b !important;
+    background-image: none !important;
+
+    border-color: #334155 !important;
+
+    color: #f8fafc !important;
+}
+
+
+/* Textarea */
+
+body.studyante-dark #ai #question {
+    background: transparent !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+/* Placeholder */
+
+body.studyante-dark #ai #question::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+
+/* Attachment + controls near textarea */
+
+body.studyante-dark #ai :has(> #question) button:not(.send-btn),
+body.studyante-dark #ai :has(> #question) .attachment-button,
+body.studyante-dark #ai :has(> #question) .attach-button {
+    background: transparent !important;
+
+    color: #e2e8f0 !important;
+
+    border-color: transparent !important;
+}
+
+
+/* =========================================================
+   AI PANEL
+   ========================================================= */
+
+body.studyante-dark #ai {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark #ai h1,
+body.studyante-dark #ai h2,
+body.studyante-dark #ai h3,
+body.studyante-dark #ai p {
+    color: #f8fafc !important;
+}
+
+
+/* =========================================================
+   PREVENT GLOBAL DARK CSS FROM TURNING AI CONTENT BLUE
+   ========================================================= */
+
+body.studyante-dark #ai .message.assistant *,
+body.studyante-dark #ai .message-text * {
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+
+/* Selection should only appear while ACTUALLY selecting text */
+
+body.studyante-dark #ai ::selection {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+
+/* STUDYANTE_LIBRARY_DARK_CONTRAST_FIX */
+
+
+/* =========================================================
+   LIBRARY FILTER PILLS
+   ========================================================= */
+
+/* Inactive folder/category filters */
+body.studyante-dark .library-filter,
+body.studyante-dark .folder-filter,
+body.studyante-dark .category-filter,
+body.studyante-dark .filter-pill,
+body.studyante-dark [class*="filter-btn"]:not(.active) {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+
+    border-color: #334155 !important;
+}
+
+/* Everything inside filter pills */
+body.studyante-dark .library-filter *,
+body.studyante-dark .folder-filter *,
+body.studyante-dark .category-filter *,
+body.studyante-dark .filter-pill *,
+body.studyante-dark [class*="filter-btn"] * {
+    color: inherit !important;
+}
+
+
+/* ACTIVE FILTER */
+
+body.studyante-dark .library-filter.active,
+body.studyante-dark .folder-filter.active,
+body.studyante-dark .category-filter.active,
+body.studyante-dark .filter-pill.active,
+body.studyante-dark [class*="filter-btn"].active {
+    background: #2563eb !important;
+    color: #ffffff !important;
+
+    border-color: #2563eb !important;
+}
+
+
+/* =========================================================
+   LIBRARY CARDS
+   ========================================================= */
+
+body.studyante-dark .library-card,
+body.studyante-dark .flashcard-set-card,
+body.studyante-dark .saved-flashcard-card,
+body.studyante-dark [class*="flashcard"][class*="card"] {
+    background: #111827 !important;
+    color: #f8fafc !important;
+
+    border-color: #334155 !important;
+}
+
+body.studyante-dark .library-card *,
+body.studyante-dark .flashcard-set-card *,
+body.studyante-dark .saved-flashcard-card * {
+    color: #f8fafc !important;
+}
+
+
+/* =========================================================
+   CATEGORY SELECT
+   ========================================================= */
+
+body.studyante-dark .library-card select,
+body.studyante-dark .flashcard-set-card select,
+body.studyante-dark .saved-flashcard-card select {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+
+    border-color: #475569 !important;
+}
+
+body.studyante-dark .library-card select option,
+body.studyante-dark .flashcard-set-card select option,
+body.studyante-dark .saved-flashcard-card select option {
+    background: #111827 !important;
+    color: #f8fafc !important;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
+
+/* PRIVATE */
+body.studyante-dark .status-private,
+body.studyante-dark .private-badge,
+body.studyante-dark [class*="badge"][class*="private"] {
+    background: #334155 !important;
+    color: #f8fafc !important;
+
+    border-color: #475569 !important;
+}
+
+/* APPROVED */
+body.studyante-dark .status-approved,
+body.studyante-dark .approved-badge,
+body.studyante-dark [class*="badge"][class*="approved"] {
+    background: #14532d !important;
+    color: #dcfce7 !important;
+
+    border-color: #22c55e !important;
+}
+
+/* PENDING */
+body.studyante-dark .status-pending,
+body.studyante-dark .pending-badge,
+body.studyante-dark [class*="badge"][class*="pending"] {
+    background: #78350f !important;
+    color: #fef3c7 !important;
+
+    border-color: #f59e0b !important;
+}
+
+/* REJECTED */
+body.studyante-dark .status-rejected,
+body.studyante-dark .rejected-badge,
+body.studyante-dark [class*="badge"][class*="rejected"] {
+    background: #7f1d1d !important;
+    color: #fee2e2 !important;
+
+    border-color: #ef4444 !important;
+}
+
+
+/* =========================================================
+   GENERIC STATUS PILLS
+   Prevent white text on white backgrounds
+   ========================================================= */
+
+body.studyante-dark [class*="status"],
+body.studyante-dark [class*="badge"] {
+    text-shadow: none !important;
+}
+
+body.studyante-dark [class*="status"] *,
+body.studyante-dark [class*="badge"] * {
+    color: inherit !important;
+}
+
+
+/* =========================================================
+   SUBMIT FOR APPROVAL
+   ========================================================= */
+
+body.studyante-dark .submit-approval-btn,
+body.studyante-dark [class*="submit"][class*="approval"],
+body.studyante-dark [class*="approval-btn"] {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+
+    border-color: #475569 !important;
+}
+
+body.studyante-dark .submit-approval-btn:hover,
+body.studyante-dark [class*="submit"][class*="approval"]:hover,
+body.studyante-dark [class*="approval-btn"]:hover {
+    background: #334155 !important;
+}
+
+
+/* =========================================================
+   FOLDER TEXT / ICONS
+   ========================================================= */
+
+body.studyante-dark .library-card .folder,
+body.studyante-dark .flashcard-set-card .folder,
+body.studyante-dark .folder-name,
+body.studyante-dark [class*="folder-label"] {
+    color: #e2e8f0 !important;
+}
+
+
+/* =========================================================
+   KEEP STUDY BUTTON WHITE TEXT
+   ========================================================= */
+
+body.studyante-dark .study-btn,
+body.studyante-dark [class*="study-btn"] {
+    color: #ffffff !important;
+}
+
+body.studyante-dark .study-btn *,
+body.studyante-dark [class*="study-btn"] * {
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   KEEP DELETE BUTTON READABLE
+   ========================================================= */
+
+body.studyante-dark .delete-btn,
+body.studyante-dark [class*="delete-btn"] {
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE — DO NOT CHANGE
+   ========================================================= */
+
+body:not(.studyante-dark) .status-private,
+body:not(.studyante-dark) .private-badge {
+    color: #374151 !important;
+}
+
+
+/* STUDYANTE_AI_BUBBLE_FIT_TEXT */
+
+/*
+   Assistant bubble now sizes according to its text
+   instead of using a large fixed box.
+*/
+
+#ai .message.assistant {
+    display: flex !important;
+    align-items: flex-start !important;
+}
+
+#ai .message.assistant .message-text {
+    display: inline-block !important;
+
+    width: fit-content !important;
+    max-width: min(75%, 760px) !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    height: auto !important;
+
+    margin: 0 !important;
+
+    padding: 12px 16px !important;
+
+    border-radius: 14px !important;
+
+    line-height: 1.5 !important;
+
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+}
+
+
+/* Short message = small bubble */
+
+#ai .message.assistant .message-text p:first-child {
+    margin-top: 0 !important;
+}
+
+#ai .message.assistant .message-text p:last-child {
+    margin-bottom: 0 !important;
+}
+
+
+/* Remove extra spacing from direct text elements */
+
+#ai .message.assistant .message-text > *:first-child {
+    margin-top: 0 !important;
+}
+
+#ai .message.assistant .message-text > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+
+/* User messages also fit their content */
+
+#ai .message.user {
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+#ai .message.user .message-text {
+    width: fit-content !important;
+    max-width: min(75%, 760px) !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    height: auto !important;
+
+    padding: 10px 14px !important;
+
+    line-height: 1.45 !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    #ai .message.assistant .message-text,
+    #ai .message.user .message-text {
+        max-width: 85% !important;
+    }
+
+    #ai .message.assistant .message-text {
+        padding: 10px 13px !important;
+    }
+}
+
+
+/* STUDYANTE_PRACTICE_TEST_DARK_FIX */
+
+
+/* =========================================================
+   PRACTICE TEST OPTIONS — DARK MODE
+   ========================================================= */
+
+/* Choice rows */
+body.studyante-dark .practice-test [class*="option"],
+body.studyante-dark .practice-test [class*="choice"],
+body.studyante-dark .quiz-question [class*="option"],
+body.studyante-dark .quiz-question [class*="choice"],
+body.studyante-dark .test-question [class*="option"],
+body.studyante-dark .test-question [class*="choice"],
+body.studyante-dark .practice-question [class*="option"],
+body.studyante-dark .practice-question [class*="choice"] {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+
+    border-color: #334155 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* Text inside choices */
+body.studyante-dark .practice-test [class*="option"] *,
+body.studyante-dark .practice-test [class*="choice"] *,
+body.studyante-dark .quiz-question [class*="option"] *,
+body.studyante-dark .quiz-question [class*="choice"] *,
+body.studyante-dark .test-question [class*="option"] *,
+body.studyante-dark .test-question [class*="choice"] *,
+body.studyante-dark .practice-question [class*="option"] *,
+body.studyante-dark .practice-question [class*="choice"] * {
+    color: #f8fafc !important;
+}
+
+
+/* Radio / checkbox labels */
+body.studyante-dark .practice-test label,
+body.studyante-dark .quiz-question label,
+body.studyante-dark .test-question label,
+body.studyante-dark .practice-question label {
+    color: #f8fafc !important;
+}
+
+
+/* Buttons used as answers */
+body.studyante-dark .practice-test button[class*="option"],
+body.studyante-dark .practice-test button[class*="choice"],
+body.studyante-dark .quiz-question button,
+body.studyante-dark .test-question button[class*="option"] {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+}
+
+
+/* Hover */
+body.studyante-dark .practice-test [class*="option"]:hover,
+body.studyante-dark .practice-test [class*="choice"]:hover,
+body.studyante-dark .quiz-question [class*="option"]:hover,
+body.studyante-dark .quiz-question [class*="choice"]:hover,
+body.studyante-dark .test-question [class*="option"]:hover,
+body.studyante-dark .test-question [class*="choice"]:hover {
+    background: #334155 !important;
+}
+
+
+/* Selected answer */
+body.studyante-dark .practice-test [class*="option"].selected,
+body.studyante-dark .practice-test [class*="choice"].selected,
+body.studyante-dark .quiz-question [class*="option"].selected,
+body.studyante-dark .test-question [class*="option"].selected,
+body.studyante-dark input[type="radio"]:checked + label,
+body.studyante-dark input[type="checkbox"]:checked + label {
+    background: #1d4ed8 !important;
+    color: #ffffff !important;
+
+    border-color: #3b82f6 !important;
+}
+
+
+/* Correct answer */
+body.studyante-dark [class*="option"].correct,
+body.studyante-dark [class*="choice"].correct {
+    background: #14532d !important;
+    color: #dcfce7 !important;
+
+    border-color: #22c55e !important;
+}
+
+
+/* Wrong answer */
+body.studyante-dark [class*="option"].incorrect,
+body.studyante-dark [class*="option"].wrong,
+body.studyante-dark [class*="choice"].incorrect,
+body.studyante-dark [class*="choice"].wrong {
+    background: #7f1d1d !important;
+    color: #fee2e2 !important;
+
+    border-color: #ef4444 !important;
+}
+
+
+/* Show Answer */
+body.studyante-dark details,
+body.studyante-dark summary {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark summary {
+    cursor: pointer !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE UNCHANGED
+   ========================================================= */
+
+
+/* STUDYANTE_TEST_CHOICE_EXACT_DARK_FIX */
+
+/*
+   Exact Practice Test classes:
+   .question-card
+   .test-choice
+*/
+
+/* QUESTION CARD */
+
+body.studyante-dark .question-card {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+
+
+/* QUESTION */
+
+body.studyante-dark .question-card h3 {
+    color: #f8fafc !important;
+}
+
+
+/* ANSWER CHOICES — EXACT CLASS */
+
+body.studyante-dark .question-card .test-choice,
+body.studyante-dark .test-choice {
+    background: #1e293b !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+    border-radius: 9px !important;
+
+    box-shadow: none !important;
+}
+
+
+/* Make absolutely sure text stays visible */
+
+body.studyante-dark .test-choice,
+body.studyante-dark .test-choice * {
+    color: #f8fafc !important;
+}
+
+
+/* HOVER */
+
+body.studyante-dark .test-choice:hover {
+    background: #334155 !important;
+    border-color: #475569 !important;
+}
+
+
+/* SHOW ANSWER */
+
+body.studyante-dark .question-card details {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .question-card summary {
+    color: #f8fafc !important;
+    cursor: pointer !important;
+}
+
+body.studyante-dark .question-card details p {
+    color: #e2e8f0 !important;
+}
+
+
+/* LIGHT MODE — preserve original */
+
+body:not(.studyante-dark) .test-choice {
+    background: #f7f8fa !important;
+    color: #111827 !important;
+}
+
+
+/* STUDYANTE_STUDY_GAME_DARK_FIX */
+
+/* EXACT STUDY GAME BUTTON CLASS */
+body.studyante-dark .game-choice {
+    background: #1e293b !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+
+    box-shadow: none !important;
+}
+
+body.studyante-dark .game-choice * {
+    color: #f8fafc !important;
+}
+
+
+/* HOVER */
+body.studyante-dark .game-choice:hover:not(:disabled) {
+    background: #334155 !important;
+    border-color: #475569 !important;
+}
+
+
+/* CORRECT ANSWER */
+body.studyante-dark .game-choice.correct {
+    background: #14532d !important;
+    color: #dcfce7 !important;
+
+    border-color: #22c55e !important;
+}
+
+body.studyante-dark .game-choice.correct * {
+    color: #dcfce7 !important;
+}
+
+
+/* WRONG ANSWER */
+body.studyante-dark .game-choice.wrong {
+    background: #7f1d1d !important;
+    color: #fee2e2 !important;
+
+    border-color: #ef4444 !important;
+}
+
+body.studyante-dark .game-choice.wrong * {
+    color: #fee2e2 !important;
+}
+
+
+/* DISABLED AFTER ANSWERING */
+body.studyante-dark .game-choice:disabled {
+    opacity: 1 !important;
+}
+
+
+/* QUESTION CARD */
+body.studyante-dark .question-card {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+
+    border-color: #334155 !important;
+}
+
+body.studyante-dark .question-card h3 {
+    color: #f8fafc !important;
+}
+
+
+/* LIGHT MODE STAYS ORIGINAL */
+body:not(.studyante-dark) .game-choice {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+
+/* ==========================================================
+   STUDYANTE_SAVED_STUDY_MATERIALS_STYLE
+   ========================================================== */
+
+.studyante-save-generated {
+    margin-top: 18px;
+}
+
+.studyante-saved-material {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.studyante-saved-material-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.studyante-saved-material-header h3 {
+    margin: 0 0 4px;
+}
+
+.studyante-saved-material-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #f1f5f9;
+
+    font-size: 21px;
+}
+
+.studyante-saved-material-type,
+.studyante-saved-material-folder {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.studyante-saved-material-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.studyante-saved-material-actions select {
+    min-width: 140px;
+}
+
+
+/* DARK MODE */
+
+body.studyante-dark
+.studyante-saved-material {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+
+body.studyante-dark
+.studyante-saved-material h3,
+body.studyante-dark
+.studyante-saved-material-type,
+body.studyante-dark
+.studyante-saved-material-folder {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark
+.studyante-saved-material-icon {
+    background: #1e293b !important;
+}
+
+body.studyante-dark
+.studyante-saved-material-actions select {
+    background: #111827 !important;
+    color: #f8fafc !important;
+    border-color: #475569 !important;
+}
+
+body.studyante-dark
+.studyante-saved-material-actions option {
+    background: #111827 !important;
+    color: #f8fafc !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .studyante-saved-material-actions {
+        align-items: stretch;
+    }
+
+    .studyante-saved-material-actions button,
+    .studyante-saved-material-actions select {
+        width: 100%;
+    }
+}

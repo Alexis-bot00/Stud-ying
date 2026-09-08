@@ -22,7 +22,8 @@ let activeLibraryId = null;
 let libraryData = {
   folders: [],
   files: [],
-  flashcardSets: []
+  flashcardSets: [],
+  studyMaterials: []
 };
 
 let activeFolderFilter = "";
@@ -363,6 +364,11 @@ async function loadLibrary() {
       flashcardSets:
         Array.isArray(data.flashcardSets)
           ? data.flashcardSets
+          : [],
+
+      studyMaterials:
+        Array.isArray(data.studyMaterials)
+          ? data.studyMaterials
           : []
     };
 
@@ -3767,3 +3773,736 @@ function setStudyingThinking(show) {
     );
 
 })();
+
+
+/* STUDYANTE_NOTES_MARKDOWN_CLEANUP */
+
+/*
+   Cleans raw Markdown symbols from generated Study Notes.
+
+   Example:
+   ### Overview
+   * **Course:** Personal Development
+
+   becomes:
+
+   Overview
+   Course: Personal Development
+*/
+
+function cleanStudyanteNotesMarkdown(text) {
+    if (!text) return "";
+
+    return String(text)
+
+        /* Remove escaped Markdown characters */
+        .replace(/\\([*#_`~>])/g, "$1")
+
+        /* Remove heading symbols: # ## ### etc. */
+        .replace(/^\s*#{1,6}\s*/gm, "")
+
+        /* Remove bullet *, but keep the text */
+        .replace(/^\s*\*\s+/gm, "")
+
+        /* Remove bullet - */
+        .replace(/^\s*-\s+/gm, "")
+
+        /* Remove bold/italic **text**, *text* */
+        .replace(/\*\*(.*?)\*\*/g, "$1")
+        .replace(/\*(.*?)\*/g, "$1")
+
+        /* Remove underscores used for Markdown emphasis */
+        .replace(/__(.*?)__/g, "$1")
+        .replace(/_(.*?)_/g, "$1")
+
+        /* Remove leftover Markdown stars */
+        .replace(/\*+/g, "")
+
+        /* Remove leftover heading hashes at line beginnings */
+        .replace(/^\s*#+\s*/gm, "")
+
+        /* Clean excessive spaces */
+        .replace(/[ \t]+/g, " ")
+
+        /* Keep paragraph breaks clean */
+        .replace(/\n[ \t]+/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+
+        .trim();
+}
+
+
+/*
+   Automatically clean generated Notes when they are rendered.
+*/
+
+const studyanteNotesObserver = new MutationObserver(() => {
+
+    const generatedArea =
+        document.querySelector("#generatedContent") ||
+        document.querySelector(".generated-content");
+
+    if (!generatedArea) return;
+
+    const notesHeading = Array.from(
+        generatedArea.querySelectorAll("h1, h2, h3, strong")
+    ).find(el =>
+        /study notes/i.test(el.textContent || "")
+    );
+
+    if (!notesHeading) return;
+
+    generatedArea.querySelectorAll("p, div, pre").forEach(element => {
+
+        if (element.children.length > 0) return;
+
+        const original = element.textContent || "";
+
+        if (
+            original.includes("###") ||
+            original.includes("**") ||
+            original.includes("\\*") ||
+            original.includes("\\#")
+        ) {
+            element.textContent =
+                cleanStudyanteNotesMarkdown(original);
+        }
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    studyanteNotesObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+});
+
+
+/* ==========================================================
+   STUDYANTE_SAVED_STUDY_MATERIALS_FRONTEND
+   ========================================================== */
+
+let studyanteGeneratedMaterial =
+  null;
+
+let studyanteOpeningSavedMaterial =
+  false;
+
+
+function studyanteMaterialInfo(type) {
+
+  const types = {
+
+    notes: {
+      icon: "📝",
+      title: "Notes",
+      action: "Open"
+    },
+
+    test: {
+      icon: "✅",
+      title: "Practice Test",
+      action: "Study"
+    },
+
+    game: {
+      icon: "🎮",
+      title: "Study Game",
+      action: "Play"
+    }
+  };
+
+  return types[type] || {
+    icon: "📚",
+    title: "Study Material",
+    action: "Open"
+  };
+}
+
+
+/* ----------------------------------------------------------
+   Capture generated Notes / Test / Game
+---------------------------------------------------------- */
+
+const studyanteOriginalDisplayGenerated =
+  displayGenerated;
+
+displayGenerated =
+  function(
+    type,
+    data,
+    sourceFile
+  ) {
+
+    studyanteOriginalDisplayGenerated(
+      type,
+      data,
+      sourceFile
+    );
+
+
+    if (
+      ![
+        "notes",
+        "test",
+        "game"
+      ].includes(type)
+    ) {
+      return;
+    }
+
+
+    studyanteGeneratedMaterial = {
+      type,
+      data:
+        JSON.parse(
+          JSON.stringify(
+            data || {}
+          )
+        ),
+      sourceFile:
+        sourceFile || ""
+    };
+
+
+    if (
+      studyanteOpeningSavedMaterial
+    ) {
+
+      studyanteOpeningSavedMaterial =
+        false;
+
+      return;
+    }
+
+
+    studyanteAddSaveButton();
+  };
+
+
+function studyanteAddSaveButton() {
+
+  const old =
+    document.getElementById(
+      "studyanteSaveGenerated"
+    );
+
+  if (old) {
+    old.remove();
+  }
+
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+  button.id =
+    "studyanteSaveGenerated";
+
+  button.type =
+    "button";
+
+  button.className =
+    "secondary-btn studyante-save-generated";
+
+  button.textContent =
+    "💾 Save to My Library";
+
+
+  button.onclick =
+    studyanteSaveGenerated;
+
+
+  generatedBody.appendChild(
+    button
+  );
+}
+
+
+async function studyanteSaveGenerated() {
+
+  const material =
+    studyanteGeneratedMaterial;
+
+  if (!material) {
+    return;
+  }
+
+
+  const info =
+    studyanteMaterialInfo(
+      material.type
+    );
+
+
+  let baseName =
+    material.sourceFile
+      ? String(
+          material.sourceFile
+        ).replace(
+          /\.[^.]+$/,
+          ""
+        )
+      : "";
+
+
+  const suggested =
+    baseName
+      ? `${baseName} ${info.title}`
+      : info.title;
+
+
+  const entered =
+    window.prompt(
+      `Name this ${info.title}:`,
+      suggested
+    );
+
+
+  if (entered === null) {
+    return;
+  }
+
+
+  const name =
+    entered.trim();
+
+
+  if (!name) {
+
+    alert(
+      "Enter a name."
+    );
+
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        `${API_BASE}/api/library/study-materials`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              type:
+                material.type,
+
+              name,
+
+              folderId:
+                null,
+
+              data:
+                material.data
+            })
+        }
+      );
+
+
+    const result =
+      await readResponse(
+        response
+      );
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+      throw new Error(
+        result.message ||
+        "Could not save study material."
+      );
+    }
+
+
+    await loadLibrary();
+
+
+    alert(
+      `${info.title} saved to My Library! ✅`
+    );
+
+  } catch (error) {
+
+    alert(
+      error.message
+    );
+  }
+}
+
+
+/* ----------------------------------------------------------
+   Extend My Library
+---------------------------------------------------------- */
+
+const studyanteOriginalRenderLibrary =
+  renderLibrary;
+
+renderLibrary =
+  function() {
+
+    studyanteOriginalRenderLibrary();
+
+    studyanteRenderMaterialCards();
+  };
+
+
+function studyanteRenderMaterialCards() {
+
+  let items =
+    Array.isArray(
+      libraryData.studyMaterials
+    )
+      ? [
+          ...libraryData.studyMaterials
+        ]
+      : [];
+
+
+  if (
+    activeFolderFilter ===
+      "uncategorized"
+  ) {
+
+    items =
+      items.filter(
+        item =>
+          !item.folderId
+      );
+
+  } else if (
+    activeFolderFilter
+  ) {
+
+    items =
+      items.filter(
+        item =>
+          item.folderId ===
+            activeFolderFilter
+      );
+  }
+
+
+  if (
+    items.length > 0 &&
+    libraryStatus
+  ) {
+    libraryStatus.hidden =
+      true;
+  }
+
+
+  items.forEach(
+    item => {
+
+      libraryGrid.appendChild(
+        studyanteCreateMaterialCard(
+          item
+        )
+      );
+    }
+  );
+}
+
+
+function studyanteCreateMaterialCard(
+  item
+) {
+
+  const info =
+    studyanteMaterialInfo(
+      item.type
+    );
+
+
+  const card =
+    document.createElement(
+      "div"
+    );
+
+  card.className =
+    "library-card studyante-saved-material";
+
+
+  const folder =
+    item.folderId
+      ? getFolder(
+          item.folderId
+        )
+      : null;
+
+
+  card.innerHTML = `
+
+    <div class="studyante-saved-material-header">
+
+      <div class="studyante-saved-material-icon">
+        ${info.icon}
+      </div>
+
+      <div>
+        <h3>
+          ${escapeHTML(item.name)}
+        </h3>
+
+        <span class="studyante-saved-material-type">
+          ${escapeHTML(info.title)}
+        </span>
+      </div>
+
+    </div>
+
+
+    <div class="studyante-saved-material-folder">
+
+      ${
+        folder
+          ? `📁 ${escapeHTML(folder.name)}`
+          : "📁 Uncategorized"
+      }
+
+    </div>
+
+
+    <div class="studyante-saved-material-actions">
+
+      <button
+        type="button"
+        class="secondary-btn studyante-open-material"
+      >
+        ${escapeHTML(info.action)}
+      </button>
+
+
+      <select
+        class="studyante-move-material"
+      >
+        ${folderOptions(item.folderId || "")}
+      </select>
+
+
+      <button
+        type="button"
+        class="delete-btn studyante-delete-material"
+      >
+        Delete
+      </button>
+
+    </div>
+  `;
+
+
+  card
+    .querySelector(
+      ".studyante-open-material"
+    )
+    .onclick =
+      () =>
+        studyanteOpenMaterial(
+          item
+        );
+
+
+  card
+    .querySelector(
+      ".studyante-move-material"
+    )
+    .onchange =
+      event =>
+        studyanteMoveMaterial(
+          item.id,
+          event.target.value
+        );
+
+
+  card
+    .querySelector(
+      ".studyante-delete-material"
+    )
+    .onclick =
+      () =>
+        studyanteDeleteMaterial(
+          item
+        );
+
+
+  return card;
+}
+
+
+function studyanteOpenMaterial(
+  item
+) {
+
+  if (
+    !item ||
+    !item.data
+  ) {
+
+    alert(
+      "Saved material is empty."
+    );
+
+    return;
+  }
+
+
+  if (
+    typeof window.showStudyantePage ===
+      "function"
+  ) {
+
+    window.showStudyantePage(
+      "upload"
+    );
+  }
+
+
+  studyanteOpeningSavedMaterial =
+    true;
+
+
+  displayGenerated(
+    item.type,
+    JSON.parse(
+      JSON.stringify(
+        item.data
+      )
+    ),
+    item.name
+  );
+
+
+  setTimeout(
+    () => {
+
+      generatedContent.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    },
+    100
+  );
+}
+
+
+async function studyanteMoveMaterial(
+  id,
+  folderId
+) {
+
+  try {
+
+    const response =
+      await fetch(
+        `${API_BASE}/api/library/study-materials/${encodeURIComponent(id)}`,
+        {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              folderId:
+                folderId || null
+            })
+        }
+      );
+
+
+    const result =
+      await readResponse(
+        response
+      );
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+      throw new Error(
+        result.message ||
+        "Could not move study material."
+      );
+    }
+
+
+    await loadLibrary();
+
+  } catch (error) {
+
+    alert(
+      error.message
+    );
+  }
+}
+
+
+async function studyanteDeleteMaterial(
+  item
+) {
+
+  if (
+    !window.confirm(
+      `Delete "${item.name}" from My Library?`
+    )
+  ) {
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        `${API_BASE}/api/library/study-materials/${encodeURIComponent(item.id)}`,
+        {
+          method: "DELETE"
+        }
+      );
+
+
+    const result =
+      await readResponse(
+        response
+      );
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+      throw new Error(
+        result.message ||
+        "Could not delete study material."
+      );
+    }
+
+
+    await loadLibrary();
+
+  } catch (error) {
+
+    alert(
+      error.message
+    );
+  }
+}
