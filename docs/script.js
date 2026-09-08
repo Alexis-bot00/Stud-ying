@@ -88,6 +88,9 @@ const aiImageInput = $("aiImageInput");
 const aiCameraInput = $("aiCameraInput");
 const aiCameraButton = $("aiCameraButton");
 const aiImageButton = $("aiImageButton");
+
+const aiAttachButton = $("aiAttachButton");
+const aiAttachMenu = $("aiAttachMenu");
 const aiImagePreview = $("aiImagePreview");
 const aiImagePreviewImg = $("aiImagePreviewImg");
 const aiImageName = $("aiImageName");
@@ -1869,6 +1872,83 @@ question.addEventListener(
 
 
 
+
+function closeAIAttachMenu() {
+    if (!aiAttachMenu) {
+        return;
+    }
+
+    aiAttachMenu.hidden = true;
+
+    if (aiAttachButton) {
+        aiAttachButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+}
+
+
+function toggleAIAttachMenu(event) {
+    if (event) {
+        event.stopPropagation();
+    }
+
+    if (!aiAttachMenu) {
+        return;
+    }
+
+    const willOpen =
+        aiAttachMenu.hidden;
+
+    aiAttachMenu.hidden =
+        !willOpen;
+
+    if (aiAttachButton) {
+        aiAttachButton.setAttribute(
+            "aria-expanded",
+            willOpen
+                ? "true"
+                : "false"
+        );
+    }
+}
+
+
+if (aiAttachButton) {
+    aiAttachButton.addEventListener(
+        "click",
+        toggleAIAttachMenu
+    );
+}
+
+
+if (aiAttachMenu) {
+    aiAttachMenu.addEventListener(
+        "click",
+        event => {
+            event.stopPropagation();
+        }
+    );
+}
+
+
+document.addEventListener(
+    "click",
+    closeAIAttachMenu
+);
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+        if (event.key === "Escape") {
+            closeAIAttachMenu();
+        }
+    }
+);
+
+
 function stopAICamera() {
 
     if (aiCameraStream) {
@@ -2084,7 +2164,10 @@ function setAIImage(file) {
 if (aiCameraButton) {
     aiCameraButton.addEventListener(
         "click",
-        openAICamera
+        () => {
+            closeAIAttachMenu();
+            openAICamera();
+        }
     );
 }
 
@@ -2141,6 +2224,7 @@ if (aiImageButton) {
     aiImageButton.addEventListener(
         "click",
         () => {
+            closeAIAttachMenu();
             aiImageInput.click();
         }
     );

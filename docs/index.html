@@ -736,26 +736,60 @@
               </div>
             </div>
 
-            <div class="ai-media-buttons">
-              <button
-                id="aiCameraButton"
-                class="ai-media-btn"
-                type="button"
-                title="Take a photo"
-                aria-label="Take a photo"
-              >
-                &#x1F4F7;
-              </button>
+            <div class="ai-attach-wrap">
 
               <button
-                id="aiImageButton"
-                class="ai-media-btn"
+                id="aiAttachButton"
+                class="ai-attach-btn"
                 type="button"
-                title="Upload an image"
-                aria-label="Upload an image"
+                aria-label="Add attachment"
+                aria-expanded="false"
               >
-                &#x1F5BC;
+                +
               </button>
+
+              <div
+                id="aiAttachMenu"
+                class="ai-attach-menu"
+                hidden
+              >
+
+                <button
+                  id="aiImageButton"
+                  class="ai-attach-option"
+                  type="button"
+                >
+                  <span class="ai-attach-icon">
+                    &#x1F4CE;
+                  </span>
+
+                  <span>
+                    <strong>Upload file</strong>
+                    <small>
+                      Add an image from your device
+                    </small>
+                  </span>
+                </button>
+
+                <button
+                  id="aiCameraButton"
+                  class="ai-attach-option"
+                  type="button"
+                >
+                  <span class="ai-attach-icon">
+                    &#x1F4F7;
+                  </span>
+
+                  <span>
+                    <strong>Camera</strong>
+                    <small>
+                      Take a photo
+                    </small>
+                  </span>
+                </button>
+
+              </div>
+
             </div>
 
             <textarea
