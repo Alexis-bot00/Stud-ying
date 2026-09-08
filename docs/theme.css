@@ -4508,3 +4508,56 @@ body.studyante-dark
         white-space: normal !important;
     }
 }
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_TYPE_UNDER_TITLE
+   ========================================================== */
+
+/* Keep title and Practice Test / Notes / Study Game
+   directly underneath each other */
+
+.studyante-saved-material-header > div:last-child {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    min-width: 0 !important;
+}
+
+.studyante-saved-material-header h3 {
+    width: 100% !important;
+    margin: 0 0 5px 0 !important;
+}
+
+.studyante-saved-material-type {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+}
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_VERTICAL_HEADER
+   ========================================================== */
+
+.studyante-saved-material-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+}
+
+.studyante-saved-material-header > div:last-child {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.studyante-saved-material-header h3 {
+    width: 100% !important;
+    margin: 0 0 5px 0 !important;
+}
+
+.studyante-saved-material-type {
+    display: block !important;
+    margin: 0 !important;
+}
