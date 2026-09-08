@@ -568,3 +568,209 @@ body.community-focus-active {
         top: 0 !important;
     }
 }
+
+/* ==========================================================
+   STUDYANTE_COMMUNITY_SWIPE_STYLE
+   ========================================================== */
+
+.community-study-card {
+    position: relative;
+    touch-action: pan-y;
+    user-select: none;
+    overflow: hidden;
+}
+
+.community-study-card.community-swipe-dragging {
+    transition: none !important;
+}
+
+.community-study-card.community-swipe-known {
+    border-color: #22c55e !important;
+}
+
+.community-study-card.community-swipe-learning {
+    border-color: #ef4444 !important;
+}
+
+.community-study-card.community-swipe-known::after,
+.community-study-card.community-swipe-learning::after {
+    position: absolute;
+    top: 24px;
+    z-index: 5;
+
+    padding: 8px 13px;
+
+    border: 2px solid currentColor;
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.92);
+
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: .6px;
+
+    pointer-events: none;
+}
+
+.community-study-card.community-swipe-known::after {
+    content: "KNOW IT";
+    left: 24px;
+    color: #16a34a;
+    transform: rotate(-7deg);
+}
+
+.community-study-card.community-swipe-learning::after {
+    content: "STILL LEARNING";
+    right: 24px;
+    color: #dc2626;
+    transform: rotate(7deg);
+}
+
+.community-study-card.community-swipe-out-right {
+    transform:
+        translateX(120vw)
+        rotate(18deg) !important;
+
+    opacity: 0;
+
+    transition:
+        transform .25s ease,
+        opacity .25s ease !important;
+}
+
+.community-study-card.community-swipe-out-left {
+    transform:
+        translateX(-120vw)
+        rotate(-18deg) !important;
+
+    opacity: 0;
+
+    transition:
+        transform .25s ease,
+        opacity .25s ease !important;
+}
+
+
+/* RESULTS */
+
+.community-flashcard-result {
+    width: 100%;
+    max-width: 620px;
+
+    margin: auto;
+
+    padding: 36px 28px;
+
+    text-align: center;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+
+    background: #ffffff;
+}
+
+.community-result-icon {
+    width: 58px;
+    height: 58px;
+
+    display: grid;
+    place-items: center;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+    color: #15803d;
+
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.community-result-score {
+    margin-top: 18px;
+
+    font-size: clamp(42px, 7vw, 68px);
+    font-weight: 800;
+    line-height: 1;
+}
+
+.community-result-label {
+    margin-top: 6px;
+    opacity: .65;
+}
+
+.community-result-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+    margin: 25px 0;
+}
+
+.community-result-stats > div {
+    padding: 18px 12px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+
+.community-result-stats strong {
+    display: block;
+    font-size: 27px;
+}
+
+.community-result-stats span {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    opacity: .7;
+}
+
+
+/* DARK MODE */
+
+body.studyante-dark
+.community-study-card.community-swipe-known::after,
+body.studyante-dark
+.community-study-card.community-swipe-learning::after {
+    background: rgba(15,23,42,.94);
+}
+
+body.studyante-dark
+.community-flashcard-result {
+    background: #111827;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+body.studyante-dark
+.community-result-stats > div {
+    border-color: #334155;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .community-study-card.community-swipe-known::after,
+    .community-study-card.community-swipe-learning::after {
+        top: 16px;
+        padding: 6px 9px;
+        font-size: 11px;
+    }
+
+    .community-study-card.community-swipe-known::after {
+        left: 14px;
+    }
+
+    .community-study-card.community-swipe-learning::after {
+        right: 14px;
+    }
+
+    .community-flashcard-result {
+        padding: 28px 18px;
+    }
+}

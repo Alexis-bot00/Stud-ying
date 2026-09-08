@@ -426,6 +426,12 @@
         var currentIndex = 0;
         var showingAnswer = false;
 
+        /* STUDYANTE_COMMUNITY_SWIPE_STATE */
+        var communityRatings =
+            new Array(cards.length).fill(null);
+
+        var communitySwipeBusy = false;
+
         showCommunityModal(
             set.name || "Flashcards",
             '<div class="community-study">' +
@@ -599,6 +605,181 @@
         }
 
 
+        /* =====================================================
+           STUDYANTE_COMMUNITY_SWIPE_FUNCTIONS
+           ===================================================== */
+
+        function showCommunityFlashcardResults() {
+
+            var known =
+                communityRatings.filter(
+                    function (rating) {
+                        return rating === "known";
+                    }
+                ).length;
+
+            var learning =
+                communityRatings.filter(
+                    function (rating) {
+                        return rating === "learning";
+                    }
+                ).length;
+
+            var mastery =
+                cards.length
+                    ? Math.round(
+                        (known / cards.length) * 100
+                    )
+                    : 0;
+
+            card.style.transform = "";
+            card.style.opacity = "";
+
+            studyContainer.innerHTML =
+                '<div class="community-flashcard-result">' +
+
+                    '<div class="community-result-icon">✓</div>' +
+
+                    '<h2>Flashcard Result</h2>' +
+
+                    '<div class="community-result-score">' +
+                        mastery +
+                        '%' +
+                    '</div>' +
+
+                    '<p class="community-result-label">Mastery</p>' +
+
+                    '<div class="community-result-stats">' +
+
+                        '<div>' +
+                            '<strong>' +
+                                known +
+                            '</strong>' +
+                            '<span>Know It</span>' +
+                        '</div>' +
+
+                        '<div>' +
+                            '<strong>' +
+                                learning +
+                            '</strong>' +
+                            '<span>Still Learning</span>' +
+                        '</div>' +
+
+                    '</div>' +
+
+                    '<button type="button" ' +
+                        'id="communityStudyAgain" ' +
+                        'class="primary-btn">' +
+                        'Study Again' +
+                    '</button>' +
+
+                '</div>';
+
+            var studyAgain =
+                document.getElementById(
+                    "communityStudyAgain"
+                );
+
+            if (studyAgain) {
+
+                studyAgain.addEventListener(
+                    "click",
+                    function () {
+
+                        openCommunityFlashcards(
+                            set,
+                            cards
+                        );
+                    }
+                );
+            }
+        }
+
+
+        function rateCommunityCard(knows) {
+
+            if (communitySwipeBusy) {
+                return;
+            }
+
+            communitySwipeBusy = true;
+
+            communityRatings[currentIndex] =
+                knows
+                    ? "known"
+                    : "learning";
+
+            card.classList.remove(
+                "community-swipe-known",
+                "community-swipe-learning"
+            );
+
+            card.classList.add(
+                knows
+                    ? "community-swipe-out-right"
+                    : "community-swipe-out-left"
+            );
+
+            window.setTimeout(
+                function () {
+
+                    var complete =
+                        communityRatings.every(
+                            function (rating) {
+                                return rating !== null;
+                            }
+                        );
+
+                    if (complete) {
+
+                        showCommunityFlashcardResults();
+                        return;
+                    }
+
+                    var nextIndex = -1;
+
+                    for (
+                        var offset = 1;
+                        offset <= cards.length;
+                        offset++
+                    ) {
+
+                        var candidate =
+                            (currentIndex + offset) %
+                            cards.length;
+
+                        if (
+                            communityRatings[candidate] ===
+                            null
+                        ) {
+                            nextIndex = candidate;
+                            break;
+                        }
+                    }
+
+                    if (nextIndex >= 0) {
+                        currentIndex = nextIndex;
+                    }
+
+                    showingAnswer = false;
+
+                    card.classList.remove(
+                        "community-swipe-out-right",
+                        "community-swipe-out-left"
+                    );
+
+                    card.style.transform = "";
+                    card.style.opacity = "";
+
+                    communitySwipeBusy = false;
+
+                    renderCard();
+
+                },
+                250
+            );
+        }
+
         function toggleCard() {
 
             showingAnswer =
@@ -608,9 +789,189 @@
         }
 
 
+        /* =====================================================
+           STUDYANTE_COMMUNITY_POINTER_SWIPE
+           Tap = reveal
+           Left = Still Learning
+           Right = Know It
+           ===================================================== */
+
+        var communityPointerDown = false;
+        var communityPointerId = null;
+        var communityStartX = 0;
+        var communityStartY = 0;
+        var communityDeltaX = 0;
+        var communityDeltaY = 0;
+
+
         card.addEventListener(
-            "click",
-            toggleCard
+            "pointerdown",
+            function (event) {
+
+                if (communitySwipeBusy) {
+                    return;
+                }
+
+                communityPointerDown = true;
+                communityPointerId =
+                    event.pointerId;
+
+                communityStartX =
+                    event.clientX;
+
+                communityStartY =
+                    event.clientY;
+
+                communityDeltaX = 0;
+                communityDeltaY = 0;
+
+                try {
+                    card.setPointerCapture(
+                        event.pointerId
+                    );
+                } catch (error) {
+                }
+
+                card.classList.add(
+                    "community-swipe-dragging"
+                );
+            }
+        );
+
+
+        card.addEventListener(
+            "pointermove",
+            function (event) {
+
+                if (
+                    !communityPointerDown ||
+                    event.pointerId !==
+                        communityPointerId
+                ) {
+                    return;
+                }
+
+                communityDeltaX =
+                    event.clientX -
+                    communityStartX;
+
+                communityDeltaY =
+                    event.clientY -
+                    communityStartY;
+
+                if (
+                    Math.abs(communityDeltaX) <=
+                    Math.abs(communityDeltaY)
+                ) {
+                    return;
+                }
+
+                event.preventDefault();
+
+                var rotation =
+                    communityDeltaX / 35;
+
+                card.style.transform =
+                    "translateX(" +
+                    communityDeltaX +
+                    "px) rotate(" +
+                    rotation +
+                    "deg)";
+
+                card.classList.toggle(
+                    "community-swipe-known",
+                    communityDeltaX > 35
+                );
+
+                card.classList.toggle(
+                    "community-swipe-learning",
+                    communityDeltaX < -35
+                );
+            }
+        );
+
+
+        function finishCommunitySwipe(event) {
+
+            if (
+                !communityPointerDown ||
+                event.pointerId !==
+                    communityPointerId
+            ) {
+                return;
+            }
+
+            communityPointerDown = false;
+
+            card.classList.remove(
+                "community-swipe-dragging"
+            );
+
+            try {
+                card.releasePointerCapture(
+                    event.pointerId
+                );
+            } catch (error) {
+            }
+
+            var horizontal =
+                Math.abs(communityDeltaX) >
+                Math.abs(communityDeltaY);
+
+            if (
+                horizontal &&
+                Math.abs(communityDeltaX) >= 90
+            ) {
+
+                rateCommunityCard(
+                    communityDeltaX > 0
+                );
+
+                return;
+            }
+
+            card.style.transform = "";
+
+            card.classList.remove(
+                "community-swipe-known",
+                "community-swipe-learning"
+            );
+
+            if (
+                Math.abs(communityDeltaX) < 10 &&
+                Math.abs(communityDeltaY) < 10
+            ) {
+                toggleCard();
+            }
+        }
+
+
+        card.addEventListener(
+            "pointerup",
+            finishCommunitySwipe
+        );
+
+        card.addEventListener(
+            "pointercancel",
+            function (event) {
+
+                if (
+                    event.pointerId !==
+                    communityPointerId
+                ) {
+                    return;
+                }
+
+                communityPointerDown = false;
+
+                card.style.transform = "";
+
+                card.classList.remove(
+                    "community-swipe-dragging",
+                    "community-swipe-known",
+                    "community-swipe-learning"
+                );
+            }
         );
 
         flip.addEventListener(
