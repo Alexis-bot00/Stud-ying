@@ -410,6 +410,251 @@
     }
 
 
+
+    function openCommunityFlashcards(set, cards) {
+
+        if (!Array.isArray(cards) || cards.length === 0) {
+            showCommunityModal(
+                set.name || "Flashcards",
+                "<p>No flashcards available.</p>"
+            );
+            return;
+        }
+
+        var currentIndex = 0;
+        var showingAnswer = false;
+
+        showCommunityModal(
+            set.name || "Flashcards",
+            '<div class="community-study">' +
+
+                '<div class="community-study-progress">' +
+                    '<span id="communityCardCounter"></span>' +
+                '</div>' +
+
+                '<button type="button" id="communityStudyCard" class="community-study-card">' +
+
+                    '<span id="communityCardSide" class="community-card-side">' +
+                        'QUESTION' +
+                    '</span>' +
+
+                    '<div id="communityCardText" class="community-card-text"></div>' +
+
+                    '<small class="community-flip-hint">' +
+                        'Click the card to reveal the answer' +
+                    '</small>' +
+
+                '</button>' +
+
+                '<div class="community-study-controls">' +
+
+                    '<button type="button" id="communityPreviousCard" class="secondary-btn">' +
+                        'Previous' +
+                    '</button>' +
+
+                    '<button type="button" id="communityFlipCard" class="primary-btn">' +
+                        'Show Answer' +
+                    '</button>' +
+
+                    '<button type="button" id="communityNextCard" class="secondary-btn">' +
+                        'Next' +
+                    '</button>' +
+
+                '</div>' +
+
+            '</div>'
+        );
+
+        var card =
+            document.getElementById("communityStudyCard");
+
+        var cardText =
+            document.getElementById("communityCardText");
+
+        var cardSide =
+            document.getElementById("communityCardSide");
+
+        var counter =
+            document.getElementById("communityCardCounter");
+
+        var previous =
+            document.getElementById("communityPreviousCard");
+
+        var next =
+            document.getElementById("communityNextCard");
+
+        var flip =
+            document.getElementById("communityFlipCard");
+
+
+        function renderCard() {
+
+            var flashcard =
+                cards[currentIndex] || {};
+
+            counter.textContent =
+                (currentIndex + 1) +
+                " / " +
+                cards.length;
+
+            if (showingAnswer) {
+
+                cardSide.textContent =
+                    "ANSWER";
+
+                cardText.textContent =
+                    flashcard.answer ||
+                    "No answer provided.";
+
+                flip.textContent =
+                    "Show Question";
+
+                card.classList.add(
+                    "showing-answer"
+                );
+
+            } else {
+
+                cardSide.textContent =
+                    "QUESTION";
+
+                cardText.textContent =
+                    flashcard.question ||
+                    "No question provided.";
+
+                flip.textContent =
+                    "Show Answer";
+
+                card.classList.remove(
+                    "showing-answer"
+                );
+            }
+
+            previous.disabled =
+                currentIndex === 0;
+
+            next.disabled =
+                currentIndex ===
+                cards.length - 1;
+        }
+
+
+        function toggleCard() {
+
+            showingAnswer =
+                !showingAnswer;
+
+            renderCard();
+        }
+
+
+        card.addEventListener(
+            "click",
+            toggleCard
+        );
+
+        flip.addEventListener(
+            "click",
+            toggleCard
+        );
+
+
+        previous.addEventListener(
+            "click",
+            function () {
+
+                if (currentIndex > 0) {
+
+                    currentIndex--;
+                    showingAnswer = false;
+
+                    renderCard();
+                }
+            }
+        );
+
+
+        next.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    currentIndex <
+                    cards.length - 1
+                ) {
+
+                    currentIndex++;
+                    showingAnswer = false;
+
+                    renderCard();
+                }
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function communityFlashcardKeys(event) {
+
+                var modal =
+                    document.getElementById(
+                        "communityModal"
+                    );
+
+                if (
+                    !modal ||
+                    !modal.classList.contains("open")
+                ) {
+
+                    document.removeEventListener(
+                        "keydown",
+                        communityFlashcardKeys
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    event.key === " " ||
+                    event.key === "Enter"
+                ) {
+
+                    event.preventDefault();
+                    toggleCard();
+                }
+
+
+                if (
+                    event.key === "ArrowRight" &&
+                    currentIndex <
+                    cards.length - 1
+                ) {
+
+                    currentIndex++;
+                    showingAnswer = false;
+
+                    renderCard();
+                }
+
+
+                if (
+                    event.key === "ArrowLeft" &&
+                    currentIndex > 0
+                ) {
+
+                    currentIndex--;
+                    showingAnswer = false;
+
+                    renderCard();
+                }
+            }
+        );
+
+
+        renderCard();
+    }
+
     function createPublicFlashcardCard(set) {
 
         var card =
@@ -451,30 +696,9 @@
             "click",
             function () {
 
-                var html = "";
-
-                cards.forEach(function (flashcard, index) {
-
-                    html +=
-                        '<div class="community-flashcard">' +
-                            '<strong>' +
-                                (index + 1) +
-                                '. ' +
-                                communityEscape(
-                                    flashcard.question || ""
-                                ) +
-                            '</strong>' +
-                            '<p>' +
-                                communityEscape(
-                                    flashcard.answer || ""
-                                ) +
-                            '</p>' +
-                        '</div>';
-                });
-
-                showCommunityModal(
-                    set.name || "Flashcards",
-                    html || "<p>No flashcards available.</p>"
+                openCommunityFlashcards(
+                    set,
+                    cards
                 );
             }
         );
