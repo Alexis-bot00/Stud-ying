@@ -6288,3 +6288,203 @@ body.studyante-dark
 
 
 /* STUDYANTE_MOBILE_HORIZONTAL_NAV_COMPOSER_END */
+
+/* STUDYANTE_MOBILE_AI_MESSAGES_FIX_START */
+
+@media (max-width: 600px) {
+
+    /* ======================================================
+       AI CHAT CONTAINER
+       ====================================================== */
+
+    #ai .ai-chat,
+    #ai .chat-container,
+    #ai .chat-box,
+    #ai .chat-messages,
+    #ai .ai-chat-box,
+    #ai .ai-chat-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+
+        overflow-x: hidden !important;
+    }
+
+
+    /* ======================================================
+       MESSAGE ROWS
+       ====================================================== */
+
+    #ai .message-row,
+    #ai .chat-message-row,
+    #ai .ai-message-row {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* ======================================================
+       AI + USER MESSAGE BUBBLES
+
+       Previous mobile rule used 88%.
+       Give messages more usable horizontal space.
+       ====================================================== */
+
+    #ai .message,
+    #ai .chat-message,
+    #ai .ai-message,
+    #ai .assistant-message,
+    #ai .user-message {
+        width: auto !important;
+        max-width: 94% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+
+        white-space: normal !important;
+
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+    }
+
+
+    /* ======================================================
+       AI RESPONSE
+       ====================================================== */
+
+    #ai .assistant-message,
+    #ai .ai-message {
+        flex:
+            1 1 auto !important;
+
+        max-width:
+            calc(100% - 46px) !important;
+
+        padding:
+            14px
+            15px !important;
+    }
+
+
+    /* ======================================================
+       USER MESSAGE
+       ====================================================== */
+
+    #ai .user-message {
+        max-width: 85% !important;
+
+        margin-left: auto !important;
+
+        padding:
+            11px
+            14px !important;
+    }
+
+
+    /* ======================================================
+       AVATAR
+       ====================================================== */
+
+    #ai .avatar,
+    #ai .ai-avatar,
+    #ai .message-avatar {
+        flex:
+            0 0 34px !important;
+
+        width: 34px !important;
+        height: 34px !important;
+
+        min-width: 34px !important;
+        max-width: 34px !important;
+    }
+
+
+    /* ======================================================
+       LONG AI CONTENT
+       ====================================================== */
+
+    #ai .assistant-message p,
+    #ai .assistant-message div,
+    #ai .ai-message p,
+    #ai .ai-message div {
+        max-width: 100% !important;
+
+        overflow-wrap: anywhere !important;
+
+        white-space: normal !important;
+    }
+
+
+    #ai .assistant-message pre,
+    #ai .ai-message pre {
+        max-width: 100% !important;
+
+        overflow-x: auto !important;
+
+        white-space: pre-wrap !important;
+    }
+
+
+    /* ======================================================
+       AI PAGE HEADER
+       Prevent title from touching browser top
+       ====================================================== */
+
+    #ai {
+        padding-top: 16px !important;
+    }
+
+
+    #ai h1,
+    #ai h2 {
+        margin-top: 0 !important;
+    }
+}
+
+
+/* EXTRA SMALL PHONE */
+
+@media (max-width: 420px) {
+
+    #ai .message,
+    #ai .chat-message,
+    #ai .ai-message,
+    #ai .assistant-message {
+        font-size: 15px !important;
+        line-height: 1.45 !important;
+    }
+
+
+    #ai .assistant-message,
+    #ai .ai-message {
+        max-width:
+            calc(100% - 40px) !important;
+
+        padding:
+            12px
+            13px !important;
+    }
+
+
+    #ai .avatar,
+    #ai .ai-avatar,
+    #ai .message-avatar {
+        flex-basis: 30px !important;
+
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+        max-width: 30px !important;
+    }
+}
+
+/* STUDYANTE_MOBILE_AI_MESSAGES_FIX_END */
