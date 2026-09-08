@@ -1828,12 +1828,24 @@ function renderFlashcard(
   generatedBody.innerHTML = `
     <div class="flashcard-area">
 
+      <div class="studyante-flashcard-topbar">
+
       <div class="flashcard-progress">
         Card
         ${currentFlashcard + 1}
         of
         ${flashcards.length}
       </div>
+
+      <button
+        id="studyanteExpandFlashcard"
+        class="studyante-flashcard-expand"
+        type="button"
+      >
+        ⛶ Expand
+      </button>
+
+    </div>
 
       <div
         id="activeFlashcard"
@@ -2043,6 +2055,63 @@ function renderFlashcard(
     "pointercancel",
     finishFlashcardSwipe
   );
+
+  /* ==========================================================
+     STUDYANTE_FLASHCARD_FOCUS_MODE
+     ========================================================== */
+
+  const flashcardExpandButton =
+    document.getElementById(
+      "studyanteExpandFlashcard"
+    );
+
+  const flashcardViewer =
+    activeFlashcard.closest(
+      ".flashcard-viewer"
+    );
+
+
+  function setFlashcardFocusMode(enabled) {
+
+    if (
+      !flashcardViewer ||
+      !flashcardExpandButton
+    ) {
+      return;
+    }
+
+    flashcardViewer.classList.toggle(
+      "studyante-flashcard-focus-mode",
+      enabled
+    );
+
+    document.body.classList.toggle(
+      "studyante-flashcard-focus-active",
+      enabled
+    );
+
+    flashcardExpandButton.textContent =
+      enabled
+        ? "✕ Exit"
+        : "⛶ Expand";
+  }
+
+
+  if (flashcardExpandButton) {
+
+    flashcardExpandButton.onclick =
+      () => {
+
+        const enabled =
+          !flashcardViewer.classList.contains(
+            "studyante-flashcard-focus-mode"
+          );
+
+        setFlashcardFocusMode(
+          enabled
+        );
+      };
+  }
 
   $("previousCard").onclick =
     () => {

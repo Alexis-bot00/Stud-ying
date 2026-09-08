@@ -5100,3 +5100,241 @@ body.studyante-dark
         font-size: 12px;
     }
 }
+
+/* ==========================================================
+   STUDYANTE_FLASHCARD_FOCUS_STYLE
+   ========================================================== */
+
+.studyante-flashcard-topbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    margin-bottom: 12px;
+}
+
+.studyante-flashcard-topbar .flashcard-progress {
+    margin: 0;
+}
+
+.studyante-flashcard-expand {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    min-height: 36px;
+    padding: 7px 13px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #0f172a;
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.studyante-flashcard-expand:hover {
+    background: #f1f5f9;
+}
+
+
+/* Prevent page scrolling while expanded */
+
+body.studyante-flashcard-focus-active {
+    overflow: hidden !important;
+}
+
+
+/* Full-screen study mode */
+
+.flashcard-viewer.studyante-flashcard-focus-mode {
+    position: fixed !important;
+    inset: 0 !important;
+
+    z-index: 999999 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding:
+        max(22px, env(safe-area-inset-top))
+        5vw
+        max(22px, env(safe-area-inset-bottom)) !important;
+
+    box-sizing: border-box !important;
+
+    background: #f7f8fb !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Top card counter / Exit button */
+
+.flashcard-viewer.studyante-flashcard-focus-mode
+.studyante-flashcard-topbar {
+    flex: 0 0 auto;
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin:
+        0 auto 18px;
+}
+
+
+/* Flashcard fills available screen */
+
+.flashcard-viewer.studyante-flashcard-focus-mode
+.flashcard {
+    flex: 1 1 auto !important;
+
+    width: 100% !important;
+    max-width: 1200px !important;
+
+    min-height: 0 !important;
+    height: auto !important;
+
+    margin:
+        0 auto !important;
+
+    border-radius: 24px !important;
+}
+
+
+/* Larger question/answer while expanded */
+
+.flashcard-viewer.studyante-flashcard-focus-mode
+.flashcard h2 {
+    font-size:
+        clamp(
+            28px,
+            4vw,
+            52px
+        ) !important;
+
+    line-height: 1.2 !important;
+}
+
+
+/* Controls remain at bottom */
+
+.flashcard-viewer.studyante-flashcard-focus-mode
+.flashcard-navigation {
+    flex: 0 0 auto;
+
+    width: 100%;
+    max-width: 760px;
+
+    margin:
+        20px auto 0 !important;
+}
+
+
+.flashcard-viewer.studyante-flashcard-focus-mode
+.flashcard-navigation button {
+    min-height: 52px;
+
+    font-size: 16px;
+}
+
+
+/* Dark mode */
+
+body.studyante-dark
+.flashcard-viewer.studyante-flashcard-focus-mode {
+    background: #020617 !important;
+}
+
+
+body.studyante-dark
+.studyante-flashcard-expand {
+    background: #1e293b;
+
+    border-color: #475569;
+
+    color: #f8fafc;
+}
+
+
+body.studyante-dark
+.studyante-flashcard-expand:hover {
+    background: #334155;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .studyante-flashcard-topbar {
+        min-height: 38px;
+    }
+
+    .studyante-flashcard-expand {
+        min-height: 34px;
+
+        padding: 6px 9px;
+
+        font-size: 12px;
+    }
+
+
+    .flashcard-viewer.studyante-flashcard-focus-mode {
+        padding:
+            max(
+                14px,
+                env(safe-area-inset-top)
+            )
+            14px
+            max(
+                14px,
+                env(safe-area-inset-bottom)
+            ) !important;
+    }
+
+
+    .flashcard-viewer.studyante-flashcard-focus-mode
+    .studyante-flashcard-topbar {
+        margin-bottom: 12px;
+    }
+
+
+    .flashcard-viewer.studyante-flashcard-focus-mode
+    .flashcard {
+        min-height: 0 !important;
+
+        padding: 24px 18px !important;
+
+        border-radius: 18px !important;
+    }
+
+
+    .flashcard-viewer.studyante-flashcard-focus-mode
+    .flashcard h2 {
+        font-size:
+            clamp(
+                22px,
+                7vw,
+                34px
+            ) !important;
+    }
+
+
+    .flashcard-viewer.studyante-flashcard-focus-mode
+    .flashcard-navigation {
+        margin-top: 12px !important;
+    }
+}
