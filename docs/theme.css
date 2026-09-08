@@ -5338,3 +5338,318 @@ body.studyante-dark
         margin-top: 12px !important;
     }
 }
+
+/* STUDYANTE_RESPONSIVE_DEVICE_LAYOUT_START */
+
+/* ==========================================================
+   STUDYANTE RESPONSIVE DEVICE LAYOUT
+
+   Small phone     <= 480px
+   Phone           <= 600px
+   Tablet          601px - 800px
+   Laptop/Desktop  >= 801px
+   Large desktop   >= 1440px
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   TABLETS + PHONES
+
+   IMPORTANT:
+   The desktop sidebar uses 100vh.
+   On stacked layouts that creates a giant blank section.
+   Reset its height so content begins immediately after nav.
+   ---------------------------------------------------------- */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        overflow: visible !important;
+
+        position: relative !important;
+        inset: auto !important;
+
+        box-sizing: border-box !important;
+
+        flex: 0 0 auto !important;
+    }
+
+
+    /* Navigation should size itself naturally */
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        flex: none !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* Chat history must not force sidebar to fill viewport */
+
+    .sidebar-chat-history {
+        flex: none !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* Bottom controls stay part of normal document flow */
+
+    .sidebar-bottom-controls {
+        flex: none !important;
+
+        margin-top: 10px !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+
+    /* Main page/content follows sidebar immediately */
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin-left: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    .studyante-page {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   TABLET
+   ---------------------------------------------------------- */
+
+@media (min-width: 601px) and (max-width: 800px) {
+
+    .sidebar {
+        padding:
+            18px
+            clamp(20px, 5vw, 48px)
+            16px !important;
+    }
+
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        max-width: 680px !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        min-height: 44px !important;
+
+        padding:
+            10px
+            14px !important;
+
+        font-size: 15px !important;
+    }
+
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        padding-left: clamp(18px, 4vw, 40px) !important;
+        padding-right: clamp(18px, 4vw, 40px) !important;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   PHONE
+   ---------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    .sidebar {
+        padding:
+            14px
+            12px
+            12px !important;
+    }
+
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
+
+        gap: 3px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        width: 100% !important;
+
+        min-height: 42px !important;
+
+        padding:
+            9px
+            12px !important;
+
+        font-size: 14px !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+
+    .panel,
+    .studyante-page {
+        max-width: 100% !important;
+
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    img,
+    video,
+    canvas {
+        max-width: 100%;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   SMALL PHONE
+   ---------------------------------------------------------- */
+
+@media (max-width: 480px) {
+
+    .sidebar {
+        padding:
+            12px
+            8px
+            10px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        min-height: 40px !important;
+
+        padding:
+            8px
+            10px !important;
+
+        font-size: 13px !important;
+    }
+
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   LAPTOP + DESKTOP
+
+   Preserve current desktop sidebar behavior.
+   ---------------------------------------------------------- */
+
+@media (min-width: 801px) {
+
+    .sidebar {
+        height: 100vh !important;
+        max-height: 100vh !important;
+    }
+
+
+    .sidebar-chat-history {
+        flex: 1 1 auto !important;
+
+        min-height: 0 !important;
+
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+
+    .sidebar-bottom-controls {
+        flex: 0 0 auto !important;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   LARGE DESKTOP
+
+   Prevent content from becoming excessively stretched.
+   ---------------------------------------------------------- */
+
+@media (min-width: 1440px) {
+
+    .studyante-page:not(#ai) {
+        max-width: 1400px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* STUDYANTE_RESPONSIVE_DEVICE_LAYOUT_END */
