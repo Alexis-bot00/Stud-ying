@@ -1619,6 +1619,197 @@ function displayGenerated(
   }
 }
 
+/* ==========================================================
+   STUDYANTE_FLASHCARD_SWIPE_SYSTEM
+   ========================================================== */
+
+let studyanteFlashcardRatings = [];
+
+
+function resetFlashcardSwipeResults() {
+
+  studyanteFlashcardRatings =
+    Array(flashcards.length).fill(null);
+}
+
+
+function ensureFlashcardSwipeResults() {
+
+  if (
+    !Array.isArray(
+      studyanteFlashcardRatings
+    ) ||
+    studyanteFlashcardRatings.length !==
+      flashcards.length
+  ) {
+    resetFlashcardSwipeResults();
+  }
+}
+
+
+function rateFlashcard(
+  knows,
+  showSaveButton
+) {
+
+  ensureFlashcardSwipeResults();
+
+  studyanteFlashcardRatings[
+    currentFlashcard
+  ] = knows
+    ? "known"
+    : "learning";
+
+  const activeFlashcard =
+    document.getElementById(
+      "activeFlashcard"
+    );
+
+  if (!activeFlashcard) {
+    return;
+  }
+
+  activeFlashcard.classList.add(
+    knows
+      ? "swipe-out-right"
+      : "swipe-out-left"
+  );
+
+  setTimeout(() => {
+
+    const finished =
+      studyanteFlashcardRatings.every(
+        rating => rating !== null
+      );
+
+    if (finished) {
+
+      showFlashcardSwipeResult(
+        showSaveButton
+      );
+
+      return;
+    }
+
+
+    let nextIndex =
+      (
+        currentFlashcard + 1
+      ) % flashcards.length;
+
+    let checked = 0;
+
+    while (
+      studyanteFlashcardRatings[
+        nextIndex
+      ] !== null &&
+      checked < flashcards.length
+    ) {
+
+      nextIndex =
+        (
+          nextIndex + 1
+        ) % flashcards.length;
+
+      checked++;
+    }
+
+    currentFlashcard =
+      nextIndex;
+
+    renderFlashcard(
+      showSaveButton
+    );
+
+  }, 250);
+}
+
+
+function showFlashcardSwipeResult(
+  showSaveButton
+) {
+
+  ensureFlashcardSwipeResults();
+
+  const known =
+    studyanteFlashcardRatings.filter(
+      rating => rating === "known"
+    ).length;
+
+  const learning =
+    studyanteFlashcardRatings.filter(
+      rating => rating === "learning"
+    ).length;
+
+  const total =
+    flashcards.length;
+
+  const mastery =
+    total
+      ? Math.round(
+          known / total * 100
+        )
+      : 0;
+
+
+  generatedBody.innerHTML = `
+    <div class="studyante-flashcard-result">
+
+      <h2>
+        Flashcard Result
+      </h2>
+
+      <div class="studyante-flashcard-result-score">
+        ${known}/${total}
+      </div>
+
+      <p>
+        Know It:
+        <strong>${known}</strong>
+      </p>
+
+      <p>
+        Still Learning:
+        <strong>${learning}</strong>
+      </p>
+
+      <p>
+        Mastery:
+        <strong>${mastery}%</strong>
+      </p>
+
+      <button
+        id="restartFlashcards"
+        type="button"
+        class="primary-btn"
+      >
+        Study Again
+      </button>
+
+    </div>
+  `;
+
+
+  const restart =
+    document.getElementById(
+      "restartFlashcards"
+    );
+
+  if (restart) {
+
+    restart.onclick = () => {
+
+      resetFlashcardSwipeResults();
+
+      currentFlashcard = 0;
+
+      renderFlashcard(
+        showSaveButton
+      );
+    };
+  }
+}
+
 function renderFlashcard(
   showSaveButton = false
 ) {
@@ -1719,14 +1910,139 @@ function renderFlashcard(
 
     </div>
   `;
+  /* STUDYANTE_FLASHCARD_POINTER_SWIPE */
 
-  $("activeFlashcard").onclick =
+  ensureFlashcardSwipeResults();
+
+  const activeFlashcard =
+    $("activeFlashcard");
+
+  let swipeStartX = 0;
+  let swipeCurrentX = 0;
+  let swipeDragging = false;
+  let swipeMoved = false;
+
+
+  activeFlashcard.addEventListener(
+    "pointerdown",
     event => {
-      event.currentTarget
-        .classList.toggle(
+
+      swipeDragging = true;
+      swipeMoved = false;
+
+      swipeStartX =
+        event.clientX;
+
+      swipeCurrentX =
+        event.clientX;
+
+      activeFlashcard.classList.add(
+        "swiping"
+      );
+
+      try {
+        activeFlashcard.setPointerCapture(
+          event.pointerId
+        );
+      } catch (error) {}
+    }
+  );
+
+
+  activeFlashcard.addEventListener(
+    "pointermove",
+    event => {
+
+      if (!swipeDragging) {
+        return;
+      }
+
+      swipeCurrentX =
+        event.clientX;
+
+      const distance =
+        swipeCurrentX -
+        swipeStartX;
+
+      if (
+        Math.abs(distance) > 6
+      ) {
+        swipeMoved = true;
+      }
+
+      activeFlashcard.style.transform =
+        `translateX(${distance}px) rotate(${distance / 25}deg)`;
+
+      activeFlashcard.classList.toggle(
+        "swipe-know",
+        distance > 35
+      );
+
+      activeFlashcard.classList.toggle(
+        "swipe-learning",
+        distance < -35
+      );
+    }
+  );
+
+
+  const finishFlashcardSwipe =
+    event => {
+
+      if (!swipeDragging) {
+        return;
+      }
+
+      swipeDragging = false;
+
+      activeFlashcard.classList.remove(
+        "swiping"
+      );
+
+      const distance =
+        swipeCurrentX -
+        swipeStartX;
+
+
+      if (
+        Math.abs(distance) >= 90
+      ) {
+
+        rateFlashcard(
+          distance > 0,
+          showSaveButton
+        );
+
+        return;
+      }
+
+
+      activeFlashcard.style.transform = "";
+
+      activeFlashcard.classList.remove(
+        "swipe-know",
+        "swipe-learning"
+      );
+
+
+      if (!swipeMoved) {
+
+        activeFlashcard.classList.toggle(
           "flipped"
         );
+      }
     };
+
+
+  activeFlashcard.addEventListener(
+    "pointerup",
+    finishFlashcardSwipe
+  );
+
+  activeFlashcard.addEventListener(
+    "pointercancel",
+    finishFlashcardSwipe
+  );
 
   $("previousCard").onclick =
     () => {
@@ -1778,6 +2094,9 @@ function openSavedFlashcards(set) {
     : [];
 
   currentFlashcard = 0;
+
+  /* STUDYANTE_SAVED_FLASHCARD_SWIPE_RESET */
+  resetFlashcardSwipeResults();
 
   if (flashcards.length === 0) {
     alert("This flashcard set is empty.");

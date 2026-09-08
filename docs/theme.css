@@ -4931,3 +4931,172 @@ body.studyante-dark .studyante-test-result-card {
 body.studyante-dark .studyante-test-answer {
     background: #172033;
 }
+
+/* ==========================================================
+   STUDYANTE_FLASHCARD_SWIPE_STYLE
+   ========================================================== */
+
+.flashcard {
+    position: relative;
+    touch-action: pan-y;
+    user-select: none;
+    will-change: transform;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.flashcard.swiping {
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.flashcard.swipe-know {
+    border-color: #22c55e !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(34, 197, 94, 0.18);
+}
+
+.flashcard.swipe-learning {
+    border-color: #ef4444 !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(239, 68, 68, 0.18);
+}
+
+
+.flashcard.swipe-know::before,
+.flashcard.swipe-learning::before {
+    position: absolute;
+    top: 20px;
+    z-index: 10;
+
+    padding: 8px 12px;
+
+    border: 2px solid currentColor;
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    font-size: 14px;
+    font-weight: 900;
+
+    pointer-events: none;
+}
+
+
+.flashcard.swipe-know::before {
+    content: "KNOW IT";
+    left: 20px;
+
+    color: #16a34a;
+}
+
+
+.flashcard.swipe-learning::before {
+    content: "STILL LEARNING";
+    right: 20px;
+
+    color: #dc2626;
+}
+
+
+.flashcard.swipe-out-right {
+    transform:
+        translateX(130%)
+        rotate(15deg) !important;
+
+    opacity: 0;
+}
+
+
+.flashcard.swipe-out-left {
+    transform:
+        translateX(-130%)
+        rotate(-15deg) !important;
+
+    opacity: 0;
+}
+
+
+.studyante-flashcard-result {
+    max-width: 520px;
+
+    margin:
+        20px auto;
+
+    padding: 28px;
+
+    border:
+        1px solid #dbe2ea;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    text-align: center;
+}
+
+
+.studyante-flashcard-result h2 {
+    margin-top: 0;
+}
+
+
+.studyante-flashcard-result-score {
+    margin: 16px 0;
+
+    font-size: 42px;
+    font-weight: 900;
+}
+
+
+.studyante-flashcard-result p {
+    margin: 10px 0;
+}
+
+
+#restartFlashcards {
+    margin-top: 18px;
+}
+
+
+body.studyante-dark
+.flashcard.swipe-know::before,
+body.studyante-dark
+.flashcard.swipe-learning::before {
+    background: #111827;
+}
+
+
+body.studyante-dark
+.studyante-flashcard-result {
+    background: #111827;
+
+    border-color: #334155;
+
+    color: #f8fafc;
+}
+
+
+@media (max-width: 600px) {
+
+    .flashcard {
+        min-height: 260px;
+    }
+
+    .flashcard.swipe-know::before,
+    .flashcard.swipe-learning::before {
+        top: 12px;
+
+        font-size: 12px;
+    }
+}
