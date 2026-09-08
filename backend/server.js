@@ -3498,10 +3498,25 @@ app.post("/api/generate-image", requireAuth, async (req, res) => {
     } catch (error) {
         console.error("Image generation error:", error);
 
+        const errorMessage = String(
+            error?.message || ""
+        );
+
+        if (
+            errorMessage.includes("429") ||
+            errorMessage.toLowerCase().includes("quota") ||
+            errorMessage.toLowerCase().includes("rate limit") ||
+            errorMessage.toLowerCase().includes("resource_exhausted")
+        ) {
+            return res.status(429).json({
+                error:
+                    "Image generation is temporarily unavailable. Please try again later."
+            });
+        }
+
         return res.status(500).json({
             error:
-                error?.message ||
-                "Unable to generate the image right now."
+                "STUDYante AI could not generate the image right now. Please try again later."
         });
     }
 });
@@ -3537,6 +3552,7 @@ app.listen(
     console.log("");
   }
 );
+
 
 
 
