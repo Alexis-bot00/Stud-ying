@@ -4337,3 +4337,90 @@ body.studyante-dark
         flex: none;
     }
 }
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_MATCH_FLASHCARDS
+   ========================================================== */
+
+.studyante-saved-material {
+    min-height: 272px;
+    padding: 18px;
+    border: 1px solid #dbe2ea;
+    border-radius: 14px;
+    box-sizing: border-box;
+}
+
+.studyante-saved-material-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.studyante-saved-material-header > div:last-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.studyante-saved-material-header h3 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.studyante-saved-material-type {
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.studyante-saved-material-folder {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.studyante-saved-material-actions {
+    margin-top: 12px;
+
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 0.95fr;
+    gap: 8px;
+
+    width: 100%;
+}
+
+.studyante-saved-material-actions button,
+.studyante-saved-material-actions select {
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+
+    box-sizing: border-box;
+}
+
+.studyante-saved-material-actions button:first-child {
+    font-weight: 700;
+}
+
+.studyante-saved-material-actions button:last-child {
+    font-weight: 700;
+}
+
+@media (max-width: 600px) {
+
+    .studyante-saved-material {
+        min-height: 0;
+    }
+
+    .studyante-saved-material-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .studyante-saved-material-header h3 {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
