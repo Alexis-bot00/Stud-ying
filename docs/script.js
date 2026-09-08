@@ -2263,6 +2263,89 @@ if (removeAIImage) {
 }
 
 
+
+function addImageToChatMessage(
+    messageElement,
+    file
+) {
+    if (
+        !messageElement ||
+        !file
+    ) {
+        return;
+    }
+
+    const imageURL =
+        URL.createObjectURL(file);
+
+    const imageWrap =
+        document.createElement(
+            "div"
+        );
+
+    imageWrap.className =
+        "chat-message-image-wrap";
+
+
+    const image =
+        document.createElement(
+            "img"
+        );
+
+    image.className =
+        "chat-message-image";
+
+    image.alt =
+        "Uploaded image";
+
+    image.src =
+        imageURL;
+
+
+    image.addEventListener(
+        "load",
+        () => {
+            URL.revokeObjectURL(
+                imageURL
+            );
+        },
+        {
+            once: true
+        }
+    );
+
+
+    imageWrap.appendChild(
+        image
+    );
+
+
+    const messageText =
+        messageElement.querySelector(
+            ".message-text"
+        );
+
+
+    if (messageText) {
+
+        messageElement.insertBefore(
+            imageWrap,
+            messageText
+        );
+
+    } else {
+
+        messageElement.appendChild(
+            imageWrap
+        );
+    }
+
+
+    aiMessages.scrollTop =
+        aiMessages.scrollHeight;
+}
+
+
 async function sendQuestion() {
     let text =
         question.value.trim();
@@ -2279,15 +2362,18 @@ async function sendQuestion() {
     const imageForRequest =
         selectedAIImage;
 
-    const displayedText =
-        imageForRequest
-            ? "📷 " + text
-            : text;
+    const userMessage =
+        addMessage(
+            text,
+            "user"
+        );
 
-    addMessage(
-        displayedText,
-        "user"
-    );
+    if (imageForRequest) {
+        addImageToChatMessage(
+            userMessage,
+            imageForRequest
+        );
+    }
 
     question.value = "";
     askButton.disabled = true;
