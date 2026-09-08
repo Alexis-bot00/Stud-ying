@@ -3298,3 +3298,89 @@ textarea {
     }
 }
 
+
+
+/* ==========================================================
+   STUDYante GENERATED IMAGE UI
+   ========================================================== */
+
+.studyante-generated-image-message .message-content {
+    width: min(100%, 680px);
+}
+
+.generated-image-wrapper {
+    width: 100%;
+    margin-top: 8px;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.studyante-generated-image {
+    display: block;
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    max-height: 640px;
+    object-fit: contain;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+.generated-image-description {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.generated-image-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.generated-image-action {
+    min-height: 36px;
+    padding: 7px 12px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: inherit;
+
+    font: inherit;
+    font-size: 13px;
+
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.generated-image-action:hover {
+    background: #f5f5f5;
+}
+
+#aiGenerateImageButton {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+
+    .studyante-generated-image {
+        max-height: 480px;
+    }
+
+    .generated-image-actions {
+        gap: 6px;
+    }
+
+    .generated-image-action {
+        min-height: 34px;
+        padding: 6px 9px;
+        font-size: 12px;
+    }
+}
+

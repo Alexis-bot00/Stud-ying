@@ -3418,6 +3418,85 @@ app.use(
   }
 );
 
+
+/* ===== STUDYANTE_IMAGE_GENERATION_ROUTE ===== */
+
+app.post("/api/generate-image", requireAuth, async (req, res) => {
+    try {
+        const prompt = String(req.body?.prompt || "").trim();
+
+        if (!prompt) {
+            return res.status(400).json({
+                error: "Please describe the image you want to generate."
+            });
+        }
+
+        if (!GEMINI_API_KEY) {
+            return res.status(500).json({
+                error: "Gemini API is not configured."
+            });
+        }
+
+        const interaction = await ai.interactions.create({
+            model: "gemini-3.1-flash-image",
+            input: prompt,
+            store: false
+        });
+
+        let generatedImage = interaction.output_image || null;
+
+        if (!generatedImage && Array.isArray(interaction.steps)) {
+            for (const step of interaction.steps) {
+                if (
+                    step &&
+                    step.type === "model_output" &&
+                    Array.isArray(step.content)
+                ) {
+                    const imageBlock = step.content.find(
+                        (block) => block && block.type === "image" && block.data
+                    );
+
+                    if (imageBlock) {
+                        generatedImage = imageBlock;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!generatedImage || !generatedImage.data) {
+            return res.status(502).json({
+                error: "STUDYante AI could not generate an image for that request."
+            });
+        }
+
+        const mimeType =
+            generatedImage.mime_type ||
+            generatedImage.mimeType ||
+            "image/png";
+
+        return res.json({
+            success: true,
+            imageData: generatedImage.data,
+            mimeType,
+            text: String(
+                interaction.outputText ||
+                interaction.output_text ||
+                ""
+            ).trim()
+        });
+
+    } catch (error) {
+        console.error("Image generation error:", error);
+
+        return res.status(500).json({
+            error:
+                error?.message ||
+                "Unable to generate the image right now."
+        });
+    }
+});
+
 app.listen(
   PORT,
   () => {
@@ -3449,3 +3528,4 @@ app.listen(
     console.log("");
   }
 );
+
