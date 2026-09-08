@@ -1625,6 +1625,9 @@ function displayGenerated(
 
 let studyanteFlashcardRatings = [];
 
+/* Keep Expand mode active when changing/swiping cards */
+let studyanteFlashcardFocusActive = false;
+
 
 function resetFlashcardSwipeResults() {
 
@@ -1728,6 +1731,12 @@ function rateFlashcard(
 function showFlashcardSwipeResult(
   showSaveButton
 ) {
+
+  studyanteFlashcardFocusActive = false;
+
+  document.body.classList.remove(
+    "studyante-flashcard-focus-active"
+  );
 
   ensureFlashcardSwipeResults();
 
@@ -2065,6 +2074,29 @@ function renderFlashcard(
       "studyanteExpandFlashcard"
     );
 
+  /* STUDYANTE_RESTORE_FLASHCARD_FOCUS */
+  if (studyanteFlashcardFocusActive) {
+
+    const restoredFlashcardArea =
+      activeFlashcard.closest(
+        ".flashcard-area"
+      );
+
+    if (restoredFlashcardArea) {
+
+      restoredFlashcardArea.classList.add(
+        "studyante-flashcard-focus-mode"
+      );
+
+      document.body.classList.add(
+        "studyante-flashcard-focus-active"
+      );
+
+      flashcardExpandButton.textContent =
+        "✕ Exit";
+    }
+  }
+
   const flashcardViewer =
     activeFlashcard.closest(
       ".flashcard-area"
@@ -2079,6 +2111,9 @@ function renderFlashcard(
     ) {
       return;
     }
+
+    studyanteFlashcardFocusActive =
+      enabled;
 
     flashcardViewer.classList.toggle(
       "studyante-flashcard-focus-mode",
