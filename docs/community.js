@@ -97,11 +97,13 @@
                 .getElementById("communityModalClose")
                 .addEventListener("click", function () {
                     overlay.classList.remove("open");
+                    document.body.classList.remove("community-focus-active");
                 });
 
             overlay.addEventListener("click", function (event) {
                 if (event.target === overlay) {
                     overlay.classList.remove("open");
+                    document.body.classList.remove("community-focus-active");
                 }
             });
         }
@@ -430,6 +432,9 @@
 
                 '<div class="community-study-progress">' +
                     '<span id="communityCardCounter"></span>' +
+                    '<button type="button" id="communityExpandCard" class="community-expand-btn">' +
+                        'Expand' +
+                    '</button>' +
                 '</div>' +
 
                 '<button type="button" id="communityStudyCard" class="community-study-card">' +
@@ -485,6 +490,61 @@
 
         var flip =
             document.getElementById("communityFlipCard");
+
+        var expand =
+            document.getElementById("communityExpandCard");
+
+        var studyContainer =
+            card.closest(".community-study");
+
+
+        function setFocusMode(enabled) {
+
+            if (!studyContainer) {
+                return;
+            }
+
+            if (enabled) {
+
+                studyContainer.classList.add(
+                    "community-focus-mode"
+                );
+
+                document.body.classList.add(
+                    "community-focus-active"
+                );
+
+                expand.textContent =
+                    "Exit Focus";
+
+            } else {
+
+                studyContainer.classList.remove(
+                    "community-focus-mode"
+                );
+
+                document.body.classList.remove(
+                    "community-focus-active"
+                );
+
+                expand.textContent =
+                    "Expand";
+            }
+        }
+
+
+        expand.addEventListener(
+            "click",
+            function () {
+
+                var enabled =
+                    !studyContainer.classList.contains(
+                        "community-focus-mode"
+                    );
+
+                setFocusMode(enabled);
+            }
+        );
 
 
         function renderCard() {
@@ -612,6 +672,22 @@
                     );
 
                     return;
+                }
+
+
+                if (event.key === "Escape") {
+
+                    if (
+                        studyContainer &&
+                        studyContainer.classList.contains(
+                            "community-focus-mode"
+                        )
+                    ) {
+
+                        event.preventDefault();
+                        setFocusMode(false);
+                        return;
+                    }
                 }
 
 

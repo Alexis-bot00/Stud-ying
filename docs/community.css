@@ -269,3 +269,119 @@
         grid-row: 1;
     }
 }
+/* STUDYANTE_COMMUNITY_FOCUS_MODE */
+
+.community-study-progress {
+    position: relative;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.community-expand-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    min-height: 34px;
+    padding: 6px 12px;
+    border: 1px solid #d7dce5;
+    border-radius: 9px;
+    background: #ffffff;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.community-expand-btn:hover {
+    background: #f5f7fa;
+}
+
+body.community-focus-active {
+    overflow: hidden;
+}
+
+.community-study.community-focus-mode {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    max-width: none;
+    width: 100vw;
+    height: 100vh;
+    padding: 24px 5vw;
+    box-sizing: border-box;
+    background: #f7f8fb;
+    display: flex;
+    flex-direction: column;
+}
+
+.community-study.community-focus-mode .community-study-progress {
+    flex: 0 0 auto;
+    margin-bottom: 18px;
+    font-size: 18px;
+}
+
+.community-study.community-focus-mode .community-expand-btn {
+    right: 0;
+}
+
+.community-study.community-focus-mode .community-study-card {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 24px;
+    padding: 48px;
+}
+
+.community-study.community-focus-mode .community-card-text {
+    font-size: clamp(28px, 4vw, 52px);
+    max-width: 900px;
+}
+
+.community-study.community-focus-mode .community-card-side {
+    font-size: 14px;
+}
+
+.community-study.community-focus-mode .community-flip-hint {
+    font-size: 14px;
+}
+
+.community-study.community-focus-mode .community-study-controls {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 760px;
+    margin: 20px auto 0;
+}
+
+.community-study.community-focus-mode .community-study-controls button {
+    min-height: 52px;
+    font-size: 16px;
+}
+
+@media (max-width: 600px) {
+
+    .community-expand-btn {
+        padding: 6px 9px;
+        font-size: 12px;
+    }
+
+    .community-study.community-focus-mode {
+        padding: 16px 14px;
+    }
+
+    .community-study.community-focus-mode .community-study-card {
+        padding: 28px 18px;
+        border-radius: 18px;
+    }
+
+    .community-study.community-focus-mode .community-card-text {
+        font-size: clamp(22px, 7vw, 34px);
+    }
+
+    .community-study.community-focus-mode .community-study-controls {
+        margin-top: 14px;
+    }
+}
