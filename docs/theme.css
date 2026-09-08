@@ -4864,3 +4864,70 @@ body.studyante-dark .test-choice.wrong {
     border-color: #ef4444 !important;
     color: #fee2e2 !important;
 }
+
+/* ==========================================================
+   STUDYANTE_TEST_FINAL_RESULTS_STYLE
+   ========================================================== */
+
+.test-choice.selected {
+    border-color: #2563eb !important;
+    background: #dbeafe !important;
+    color: #1e3a8a !important;
+}
+
+body.studyante-dark .test-choice.selected {
+    border-color: #3b82f6 !important;
+    background: #1e3a8a !important;
+    color: #eff6ff !important;
+}
+
+.studyante-test-submit-area {
+    margin-top: 24px;
+    text-align: center;
+}
+
+#submitPracticeTest {
+    min-width: 180px;
+}
+
+.studyante-test-result {
+    margin-top: 22px;
+}
+
+.studyante-test-result-card {
+    padding: 24px;
+    border: 1px solid #dbe2ea;
+    border-radius: 16px;
+    text-align: center;
+    background: #ffffff;
+}
+
+.studyante-test-result-card h2 {
+    margin-top: 0;
+}
+
+.studyante-test-score {
+    margin: 12px 0;
+    font-size: 38px;
+    font-weight: 800;
+}
+
+.studyante-test-answer {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.studyante-test-answer[hidden] {
+    display: none !important;
+}
+
+body.studyante-dark .studyante-test-result-card {
+    background: #111827;
+    border-color: #334155;
+}
+
+body.studyante-dark .studyante-test-answer {
+    background: #172033;
+}

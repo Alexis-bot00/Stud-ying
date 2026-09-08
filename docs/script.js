@@ -1439,90 +1439,127 @@ function displayGenerated(
   }
 
   if (type === "test") {
+
     generatedIcon.textContent = "✅";
     generatedTitle.textContent =
       "Practice Test";
 
     const questions =
-      data.questions || [];
+      Array.isArray(data.questions)
+        ? data.questions
+        : [];
 
-    generatedBody.innerHTML =
-      questions
-        .map(
-          (item, index) => `
-            <div class="question-card">
+    generatedBody.innerHTML = `
+      <div class="studyante-test-container">
 
-              <h3>
-                ${index + 1}.
-                ${escapeHTML(
-                  item.question
-                )}
-              </h3>
+        ${questions
+          .map(
+            (item, index) => `
+              <div
+                class="question-card"
+                data-question-index="${index}"
+              >
 
-              ${(item.choices || [])
-                .map(
-                  (choice, choiceIndex) => `
-                    <button
-                      type="button"
-                      class="test-choice"
-                      data-selected="${choiceIndex}"
-                      data-correct="${Number(
-                        item.answer || 0
-                      )}"
-                    >
-                      ${String.fromCharCode(
-                        65 + choiceIndex
-                      )}.
-                      ${escapeHTML(choice)}
-                    </button>
-                  `
-                )
-                .join("")}
-
-              <details>
-
-                <summary>
-                  Show Answer
-                </summary>
-
-                <p>
-                  Answer:
-                  ${String.fromCharCode(
-                    65 +
-                      Number(
-                        item.answer || 0
-                      )
-                  )}
-                </p>
-
-                <p>
+                <h3>
+                  ${index + 1}.
                   ${escapeHTML(
-                    item.explanation || ""
+                    item.question
                   )}
-                </p>
+                </h3>
 
-              </details>
+                ${(item.choices || [])
+                  .map(
+                    (choice, choiceIndex) => `
+                      <button
+                        type="button"
+                        class="test-choice"
+                        data-selected="${choiceIndex}"
+                        data-correct="${Number(
+                          item.answer || 0
+                        )}"
+                      >
+                        ${String.fromCharCode(
+                          65 + choiceIndex
+                        )}.
+                        ${escapeHTML(choice)}
+                      </button>
+                    `
+                  )
+                  .join("")}
 
-            </div>
-          `
-        )
-        .join("");
+                <div
+                  class="studyante-test-answer"
+                  hidden
+                >
+                  <p class="studyante-test-answer-text"></p>
 
-    /* STUDYANTE_TEST_CLICK_HANDLER_FIX */
+                  <p>
+                    ${escapeHTML(
+                      item.explanation || ""
+                    )}
+                  </p>
+                </div>
+
+              </div>
+            `
+          )
+          .join("")}
+
+        ${
+          questions.length
+            ? `
+              <div class="studyante-test-submit-area">
+
+                <button
+                  id="submitPracticeTest"
+                  class="primary-btn"
+                  type="button"
+                >
+                  Submit Test
+                </button>
+
+                <div
+                  id="practiceTestResult"
+                  class="studyante-test-result"
+                  hidden
+                ></div>
+
+              </div>
+            `
+            : `
+              <div class="error-box">
+                No test questions found.
+              </div>
+            `
+        }
+
+      </div>
+    `;
 
     generatedBody
       .querySelectorAll(".test-choice")
       .forEach(button => {
 
-        button.disabled = false;
-
         button.addEventListener(
           "click",
           () => {
-            checkTestAnswer(button);
+            selectTestAnswer(button);
           }
         );
       });
+
+    const submitButton =
+      generatedBody.querySelector(
+        "#submitPracticeTest"
+      );
+
+    if (submitButton) {
+
+      submitButton.addEventListener(
+        "click",
+        submitPracticeTest
+      );
+    }
 
     return;
   }
@@ -1833,45 +1870,212 @@ confirmSaveAIFlashcards.addEventListener(
   }
 );
 
-function checkTestAnswer(button) {
+/* ==========================================================
+   STUDYANTE PRACTICE TEST FINAL RESULTS
+   ========================================================== */
 
-  const selected =
-    Number(button.dataset.selected);
-
-  const correct =
-    Number(button.dataset.correct);
+function selectTestAnswer(button) {
 
   const card =
-    button.closest(".question-card");
+    button.closest(
+      ".question-card"
+    );
 
   if (!card) {
     return;
   }
 
   const choices =
-    card.querySelectorAll(".test-choice");
+    card.querySelectorAll(
+      ".test-choice"
+    );
 
-  choices.forEach(
-    (choice, index) => {
+  choices.forEach(choice => {
+    choice.classList.remove(
+      "selected",
+      "correct",
+      "wrong"
+    );
+  });
 
-      choice.disabled = true;
-
-      choice.classList.remove(
-        "correct",
-        "wrong"
-      );
-
-      if (index === correct) {
-        choice.classList.add("correct");
-      }
-    }
+  button.classList.add(
+    "selected"
   );
 
-  if (selected !== correct) {
-    button.classList.add("wrong");
-  }
+  card.dataset.selected =
+    button.dataset.selected;
 }
 
+
+function submitPracticeTest() {
+
+  const cards =
+    generatedBody.querySelectorAll(
+      ".question-card"
+    );
+
+  if (!cards.length) {
+    return;
+  }
+
+  let answered = 0;
+  let correctCount = 0;
+
+  cards.forEach(card => {
+
+    if (
+      typeof card.dataset.selected !==
+      "undefined"
+    ) {
+      answered++;
+    }
+  });
+
+  if (answered < cards.length) {
+
+    alert(
+      `Please answer all questions first. ` +
+      `${answered}/${cards.length} answered.`
+    );
+
+    return;
+  }
+
+
+  cards.forEach(card => {
+
+    const choices =
+      card.querySelectorAll(
+        ".test-choice"
+      );
+
+    const selected =
+      Number(
+        card.dataset.selected
+      );
+
+    const correct =
+      Number(
+        choices[0]?.dataset.correct || 0
+      );
+
+    if (selected === correct) {
+      correctCount++;
+    }
+
+    choices.forEach(
+      (choice, index) => {
+
+        choice.disabled = true;
+
+        choice.classList.remove(
+          "selected",
+          "correct",
+          "wrong"
+        );
+
+        if (index === correct) {
+          choice.classList.add(
+            "correct"
+          );
+        }
+
+        if (
+          index === selected &&
+          selected !== correct
+        ) {
+          choice.classList.add(
+            "wrong"
+          );
+        }
+      }
+    );
+
+    const answerBox =
+      card.querySelector(
+        ".studyante-test-answer"
+      );
+
+    const answerText =
+      card.querySelector(
+        ".studyante-test-answer-text"
+      );
+
+    if (answerText) {
+
+      answerText.textContent =
+        "Correct Answer: " +
+        String.fromCharCode(
+          65 + correct
+        );
+    }
+
+    if (answerBox) {
+      answerBox.hidden = false;
+    }
+  });
+
+
+  const percentage =
+    Math.round(
+      (
+        correctCount /
+        cards.length
+      ) * 100
+    );
+
+
+  const result =
+    generatedBody.querySelector(
+      "#practiceTestResult"
+    );
+
+  if (result) {
+
+    result.hidden = false;
+
+    result.innerHTML = `
+      <div class="studyante-test-result-card">
+
+        <h2>
+          Test Result
+        </h2>
+
+        <div class="studyante-test-score">
+          ${correctCount}/${cards.length}
+        </div>
+
+        <p>
+          Score: ${correctCount} out of
+          ${cards.length}
+        </p>
+
+        <p>
+          Percentage: ${percentage}%
+        </p>
+
+      </div>
+    `;
+
+    result.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+
+
+  const submitButton =
+    generatedBody.querySelector(
+      "#submitPracticeTest"
+    );
+
+  if (submitButton) {
+
+    submitButton.disabled = true;
+    submitButton.textContent =
+      "Test Submitted";
+  }
+}
 
 function checkGameAnswer(button) {
   const selected =
