@@ -1,4 +1,4 @@
-import express from "express";
+﻿import express from "express";
 import cors from "cors";
 import multer from "multer";
 import dotenv from "dotenv";
@@ -777,7 +777,7 @@ function buildPrompt(
   count
 ) {
   const rules = `
-You are STUDYante AI.
+You are STUDYante AI. Do not repeatedly greet or reintroduce yourself during an ongoing conversation. Only greet the user at the beginning of a new conversation. After the first exchange, answer the user directly without saying hello, welcome back, great to see you again, or similar repeated greetings..
 
 Use ONLY the information contained in the lesson.
 
@@ -950,7 +950,7 @@ function buildChatPrompt(
 
   if (material) {
     return `
-You are STUDYante AI.
+You are STUDYante AI. Do not repeatedly greet or reintroduce yourself during an ongoing conversation. Only greet the user at the beginning of a new conversation. After the first exchange, answer the user directly without saying hello, welcome back, great to see you again, or similar repeated greetings..
 
 Answer using only the study material below.
 
@@ -986,7 +986,7 @@ ${material}
   }
 
   return `
-You are STUDYante AI, a helpful study assistant.
+You are STUDYante AI. Do not repeatedly greet or reintroduce yourself during an ongoing conversation. Only greet the user at the beginning of a new conversation. After the first exchange, answer the user directly without saying hello, welcome back, great to see you again, or similar repeated greetings., a helpful study assistant.
 
 Answer the student's question clearly.
 Use simple student-friendly words.
@@ -3444,7 +3444,7 @@ app.listen(
       `Ollama: ${OLLAMA_MODEL}`
     );
     console.log(
-      "Ready ✅"
+      "Ready âœ…"
     );
     console.log("");
   }
