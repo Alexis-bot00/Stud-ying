@@ -3014,6 +3014,7 @@ function setStudyingThinking(show) {
         "dashboard",
         "upload",
         "library",
+        "community",
         "ai"
     ];
 

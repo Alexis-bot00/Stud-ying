@@ -142,6 +142,7 @@
 
 </style>
 
+  <link rel="stylesheet" href="community.css">
 </head>
 
 <body>
@@ -162,6 +163,10 @@
 
       <a href="#library" data-page="library">
         📚 My Library
+      </a>
+
+      <a href="#community" data-page="community">
+        &#127760; Community Notes
       </a>
 
       <a href="#ai" data-page="ai">
@@ -616,6 +621,85 @@
 
     
 <section
+      id="community"
+      class="panel studyante-page"
+      hidden
+    >
+
+      <div class="community-header">
+
+        <div class="section-title">
+          <h2>&#127760; Community Notes</h2>
+
+          <p>
+            Explore study materials shared by students and approved by STUDYante.
+          </p>
+        </div>
+
+        <button
+          id="refreshCommunity"
+          type="button"
+          class="secondary-btn"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+      <div
+        id="communityStatus"
+        class="library-status"
+      >
+        Loading community materials...
+      </div>
+
+      <div
+        id="communityGrid"
+        class="community-grid"
+      ></div>
+
+
+      <div
+        id="communityAdmin"
+        class="community-admin"
+        hidden
+      >
+
+        <div class="community-admin-header">
+
+          <div>
+            <h2>Admin Review</h2>
+
+            <p>
+              Approve or reject submitted study materials.
+            </p>
+          </div>
+
+          <button
+            id="refreshPendingCommunity"
+            type="button"
+            class="secondary-btn"
+          >
+            Refresh
+          </button>
+
+        </div>
+
+        <div
+          id="communityPendingStatus"
+          class="library-status"
+        ></div>
+
+        <div
+          id="communityPendingGrid"
+          class="community-grid"
+        ></div>
+
+      </div>
+
+    </section>
+
+<section
       id="ai"
       class="panel studyante-page"
     >
@@ -1061,6 +1145,7 @@
 <script src="auth.js"></script> 
   <script src="script.js"></script>
 
+  <script src="community.js"></script>
 </body>
 
 </html>
