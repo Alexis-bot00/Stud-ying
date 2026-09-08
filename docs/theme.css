@@ -590,3 +590,218 @@ body.studyante-dark
         font-size: 11px !important;
     }
 }
+
+/* STUDYANTE_SIDEBAR_BOTTOM_SEPARATION */
+
+/*
+   SIDEBAR ORDER
+
+   Navigation
+
+   Chat History
+   ----------------
+
+   Dark Mode
+
+   Student
+   Logout
+*/
+
+
+/* CHAT HISTORY IS ITS OWN AREA */
+
+.sidebar-chat-history {
+    margin-bottom: 0 !important;
+    padding-bottom: 14px !important;
+}
+
+.sidebar-chat-history .chat-history-panel {
+    margin-bottom: 0 !important;
+}
+
+
+/* CLEAR SEPARATION BELOW CHAT HISTORY */
+
+.sidebar-bottom-controls {
+    flex: 0 0 auto !important;
+
+    margin-top: 0 !important;
+    padding-top: 14px !important;
+
+    border-top: 1px solid var(--border) !important;
+}
+
+
+/* DARK MODE AREA */
+
+.sidebar-bottom-controls .theme-toggle {
+    display: block !important;
+
+    margin:
+        0 0
+        14px 4px !important;
+}
+
+
+/* PROFILE AREA */
+
+.sidebar-bottom-controls .sidebar-user-panel {
+    display: flex !important;
+    flex-direction: column !important;
+
+    margin: 0 !important;
+
+    padding:
+        12px 0
+        0 !important;
+
+    border-top: 1px solid var(--border) !important;
+    border-bottom: 0 !important;
+}
+
+
+/* STUDENT INFORMATION */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.profile {
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+}
+
+
+/* LOGOUT DIRECTLY UNDER STUDENT */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.logout-btn {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin:
+        8px 0
+        0 !important;
+
+    padding:
+        6px 10px !important;
+
+    min-height: 30px !important;
+
+    border-radius: 8px !important;
+
+    font-size: 11px !important;
+}
+
+
+/* DESKTOP SIDEBAR */
+
+@media (min-width: 801px) {
+
+    .sidebar {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100vh !important;
+    }
+
+    /*
+       Chat History gets remaining space.
+       Bottom controls stay at the bottom.
+    */
+
+    .sidebar-chat-history {
+        flex:
+            1 1 auto !important;
+
+        min-height: 0 !important;
+
+        overflow-y: auto !important;
+    }
+
+    .sidebar-bottom-controls {
+        flex:
+            0 0 auto !important;
+    }
+}
+
+
+/* DARK MODE DIVIDERS */
+
+body.studyante-dark
+.sidebar-bottom-controls,
+
+body.studyante-dark
+.sidebar-bottom-controls
+.sidebar-user-panel {
+    border-color: #293548 !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .sidebar-chat-history {
+        padding-bottom: 10px !important;
+    }
+
+    .sidebar-bottom-controls {
+        margin-top: 0 !important;
+        padding-top: 10px !important;
+    }
+
+    .sidebar-bottom-controls
+    .theme-toggle {
+        margin:
+            0 0
+            10px 4px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel {
+        padding-top: 10px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        margin-top: 6px !important;
+        min-height: 28px !important;
+    }
+}
+
+/* STUDYANTE_SMALLER_LOGOUT */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.logout-btn {
+    width: fit-content !important;
+    min-width: 0 !important;
+    min-height: 26px !important;
+
+    margin-top: 6px !important;
+
+    padding:
+        4px 9px !important;
+
+    border-radius: 7px !important;
+
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+}
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        min-height: 25px !important;
+        padding: 4px 8px !important;
+        font-size: 10px !important;
+    }
+}
