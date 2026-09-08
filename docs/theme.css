@@ -223,3 +223,134 @@ body.studyante-dark .profile span {
         margin-top: 8px;
     }
 }
+/* STUDYANTE_THEME_SWITCH_DESIGN */
+
+.theme-toggle {
+    position: relative !important;
+
+    width: 58px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+
+    margin: 14px 0 14px 8px !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 999px !important;
+
+    background: #d1d5db !important;
+
+    font-size: 0 !important;
+    color: transparent !important;
+
+    cursor: pointer;
+    overflow: visible;
+
+    transition:
+        background .25s ease,
+        box-shadow .25s ease !important;
+}
+
+.theme-toggle::before {
+    content: "";
+
+    position: absolute;
+
+    width: 24px;
+    height: 24px;
+
+    top: 3px;
+    left: 3px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, .25);
+
+    transition:
+        transform .25s ease,
+        background .25s ease;
+}
+
+
+/* LIGHT MODE LABEL */
+
+.theme-toggle::after {
+    content: "Dark Mode";
+
+    position: absolute;
+
+    left: 70px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: max-content;
+
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    pointer-events: none;
+}
+
+
+/* DARK MODE */
+
+body.studyante-dark .theme-toggle {
+    background: #2563eb !important;
+}
+
+body.studyante-dark .theme-toggle::before {
+    transform: translateX(28px);
+    background: #ffffff;
+}
+
+body.studyante-dark .theme-toggle::after {
+    content: "Light Mode";
+    color: #e5e7eb;
+}
+
+
+/* KEYBOARD ACCESS */
+
+.theme-toggle:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, .35) !important;
+    outline-offset: 3px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .theme-toggle {
+        width: 52px !important;
+        height: 28px !important;
+        min-height: 28px !important;
+
+        margin:
+            8px 0
+            8px 6px !important;
+    }
+
+    .theme-toggle::before {
+        width: 22px;
+        height: 22px;
+        top: 3px;
+        left: 3px;
+    }
+
+    body.studyante-dark
+    .theme-toggle::before {
+        transform: translateX(24px);
+    }
+
+    .theme-toggle::after {
+        left: 62px;
+        font-size: 13px;
+    }
+}
