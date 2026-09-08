@@ -4561,3 +4561,92 @@ body.studyante-dark
     display: block !important;
     margin: 0 !important;
 }
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_FLASHCARD_LAYOUT
+   ========================================================== */
+
+.studyante-saved-material {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    height: auto !important;
+    min-height: 272px !important;
+    padding: 18px !important;
+}
+
+/* Remove side-by-side icon/title layout */
+.studyante-saved-material-header {
+    display: block !important;
+    width: 100% !important;
+}
+
+.studyante-saved-material-icon {
+    display: none !important;
+}
+
+/* Main title line */
+.studyante-saved-material-header > div:last-child {
+    width: 100% !important;
+}
+
+.studyante-saved-material-header h3 {
+    margin: 0 !important;
+    font-size: 20px !important;
+    line-height: 1.25 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+/* Material type underneath */
+.studyante-saved-material-type {
+    display: block !important;
+    margin-top: 4px !important;
+    font-size: 15px !important;
+}
+
+/* Folder line like flashcards */
+.studyante-saved-material-folder {
+    margin: 4px 0 0 0 !important;
+    font-size: 14px !important;
+}
+
+/* Same horizontal controls */
+.studyante-saved-material-actions {
+    margin-top: 2px !important;
+
+    display: grid !important;
+    grid-template-columns:
+        minmax(110px, 1fr)
+        minmax(120px, 1fr)
+        minmax(90px, 0.9fr) !important;
+
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+.studyante-saved-material-actions button,
+.studyante-saved-material-actions select {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    box-sizing: border-box !important;
+}
+
+/* Keep actions aligned near bottom like flashcard cards */
+.studyante-saved-material-actions {
+    margin-top: auto !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .studyante-saved-material {
+        min-height: 0 !important;
+    }
+
+    .studyante-saved-material-actions {
+        grid-template-columns: 1fr !important;
+    }
+}
