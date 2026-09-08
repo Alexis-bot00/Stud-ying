@@ -2861,7 +2861,40 @@ if (aiCameraButton) {
     aiCameraButton.addEventListener(
         "click",
         () => {
+
             closeAIAttachMenu();
+
+            /* STUDYANTE_CROSS_DEVICE_CAMERA */
+
+            const isTouchDevice =
+                navigator.maxTouchPoints > 0 ||
+                "ontouchstart" in window;
+
+            const looksLikeMobile =
+                /Android|iPhone|iPad|iPod|Mobile/i.test(
+                    navigator.userAgent || ""
+                );
+
+            /*
+             * Phones/tablets:
+             * use the native camera input.
+             *
+             * Laptop/desktop:
+             * use the existing live camera.
+             */
+
+            if (
+                aiCameraInput &&
+                (isTouchDevice || looksLikeMobile)
+            ) {
+
+                aiCameraInput.value = "";
+
+                aiCameraInput.click();
+
+                return;
+            }
+
             openAICamera();
         }
     );
@@ -2920,7 +2953,17 @@ if (aiImageButton) {
     aiImageButton.addEventListener(
         "click",
         () => {
+
             closeAIAttachMenu();
+
+            /* STUDYANTE_CROSS_DEVICE_IMAGE_UPLOAD */
+
+            if (!aiImageInput) {
+                return;
+            }
+
+            aiImageInput.value = "";
+
             aiImageInput.click();
         }
     );
