@@ -4650,3 +4650,168 @@ body.studyante-dark
         grid-template-columns: 1fr !important;
     }
 }
+
+/* ==========================================================
+   STUDYANTE_EXACT_FLASHCARD_CARD_MATCH_FINAL
+   ========================================================== */
+
+/* EXACT SAME BASE CARD DIMENSIONS AS .library-card */
+.studyante-saved-material {
+    min-width: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 18px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+
+    border: 1px solid var(--border) !important;
+    border-radius: 15px !important;
+    background: white;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ICON ON TOP JUST LIKE FLASHCARD */
+.studyante-saved-material-header {
+    display: contents !important;
+}
+
+.studyante-saved-material-icon {
+    display: grid !important;
+
+    width: 46px !important;
+    height: 46px !important;
+
+    place-items: center !important;
+
+    border-radius: 12px !important;
+
+    font-size: 24px !important;
+
+    background: linear-gradient(
+        135deg,
+        var(--red-soft),
+        var(--blue-soft)
+    ) !important;
+}
+
+
+/* TITLE + TYPE */
+.studyante-saved-material-header > div:last-child {
+    display: contents !important;
+}
+
+.studyante-saved-material-header h3 {
+    margin: 0 !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+
+    font-size: inherit !important;
+    line-height: inherit !important;
+}
+
+.studyante-saved-material-type {
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: inherit !important;
+    line-height: inherit !important;
+
+    color: var(--muted);
+}
+
+
+/* FOLDER SAME SPACING */
+.studyante-saved-material-folder {
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: inherit !important;
+    line-height: inherit !important;
+}
+
+
+/* EXACT SAME ACTION BEHAVIOR AS .library-actions */
+.studyante-saved-material-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+
+    gap: 7px !important;
+
+    width: 100% !important;
+
+    margin-top: 9px !important;
+}
+
+.studyante-saved-material-actions button,
+.studyante-saved-material-actions select {
+    flex: 1 1 0 !important;
+
+    width: auto !important;
+    min-width: 75px !important;
+    max-width: none !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+.studyante-saved-material-actions select {
+    padding: 9px !important;
+
+    border: 1px solid var(--border) !important;
+    border-radius: 9px !important;
+
+    background: white;
+}
+
+
+/* DARK MODE */
+body.studyante-dark .studyante-saved-material {
+    background: #111827 !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark
+.studyante-saved-material-actions select {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: #475569 !important;
+}
+
+
+/* PHONE — SAME BEHAVIOR AS LIBRARY ACTIONS */
+@media (max-width: 600px) {
+
+    .studyante-saved-material {
+        width: 100% !important;
+        padding: 15px !important;
+    }
+
+    .studyante-saved-material-actions {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .studyante-saved-material-actions button,
+    .studyante-saved-material-actions select {
+        width: 100% !important;
+    }
+}
