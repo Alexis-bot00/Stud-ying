@@ -2067,7 +2067,7 @@ function renderFlashcard(
 
   const flashcardViewer =
     activeFlashcard.closest(
-      ".flashcard-viewer"
+      ".flashcard-area"
     );
 
 

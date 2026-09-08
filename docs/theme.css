@@ -5153,7 +5153,7 @@ body.studyante-flashcard-focus-active {
 
 /* Full-screen study mode */
 
-.flashcard-viewer.studyante-flashcard-focus-mode {
+.flashcard-area.studyante-flashcard-focus-mode {
     position: fixed !important;
     inset: 0 !important;
 
@@ -5183,7 +5183,7 @@ body.studyante-flashcard-focus-active {
 
 /* Top card counter / Exit button */
 
-.flashcard-viewer.studyante-flashcard-focus-mode
+.flashcard-area.studyante-flashcard-focus-mode
 .studyante-flashcard-topbar {
     flex: 0 0 auto;
 
@@ -5197,7 +5197,7 @@ body.studyante-flashcard-focus-active {
 
 /* Flashcard fills available screen */
 
-.flashcard-viewer.studyante-flashcard-focus-mode
+.flashcard-area.studyante-flashcard-focus-mode
 .flashcard {
     flex: 1 1 auto !important;
 
@@ -5216,7 +5216,7 @@ body.studyante-flashcard-focus-active {
 
 /* Larger question/answer while expanded */
 
-.flashcard-viewer.studyante-flashcard-focus-mode
+.flashcard-area.studyante-flashcard-focus-mode
 .flashcard h2 {
     font-size:
         clamp(
@@ -5231,7 +5231,7 @@ body.studyante-flashcard-focus-active {
 
 /* Controls remain at bottom */
 
-.flashcard-viewer.studyante-flashcard-focus-mode
+.flashcard-area.studyante-flashcard-focus-mode
 .flashcard-navigation {
     flex: 0 0 auto;
 
@@ -5243,7 +5243,7 @@ body.studyante-flashcard-focus-active {
 }
 
 
-.flashcard-viewer.studyante-flashcard-focus-mode
+.flashcard-area.studyante-flashcard-focus-mode
 .flashcard-navigation button {
     min-height: 52px;
 
@@ -5254,7 +5254,7 @@ body.studyante-flashcard-focus-active {
 /* Dark mode */
 
 body.studyante-dark
-.flashcard-viewer.studyante-flashcard-focus-mode {
+.flashcard-area.studyante-flashcard-focus-mode {
     background: #020617 !important;
 }
 
@@ -5292,7 +5292,7 @@ body.studyante-dark
     }
 
 
-    .flashcard-viewer.studyante-flashcard-focus-mode {
+    .flashcard-area.studyante-flashcard-focus-mode {
         padding:
             max(
                 14px,
@@ -5306,13 +5306,13 @@ body.studyante-dark
     }
 
 
-    .flashcard-viewer.studyante-flashcard-focus-mode
+    .flashcard-area.studyante-flashcard-focus-mode
     .studyante-flashcard-topbar {
         margin-bottom: 12px;
     }
 
 
-    .flashcard-viewer.studyante-flashcard-focus-mode
+    .flashcard-area.studyante-flashcard-focus-mode
     .flashcard {
         min-height: 0 !important;
 
@@ -5322,7 +5322,7 @@ body.studyante-dark
     }
 
 
-    .flashcard-viewer.studyante-flashcard-focus-mode
+    .flashcard-area.studyante-flashcard-focus-mode
     .flashcard h2 {
         font-size:
             clamp(
@@ -5333,7 +5333,7 @@ body.studyante-dark
     }
 
 
-    .flashcard-viewer.studyante-flashcard-focus-mode
+    .flashcard-area.studyante-flashcard-focus-mode
     .flashcard-navigation {
         margin-top: 12px !important;
     }
