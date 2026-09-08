@@ -3596,3 +3596,173 @@ function setStudyingThinking(show) {
     setTimeout(installGenerateImageButton, 500);
 
 })();
+
+
+/* ===== STUDYANTE_AUTO_IMAGE_DETECTION ===== */
+
+(function () {
+
+    function isStudyanteImageRequest(text) {
+
+        const prompt = String(text || "")
+            .trim()
+            .toLowerCase();
+
+        if (!prompt) {
+            return false;
+        }
+
+        /*
+            Examples detected:
+
+            make me a logo
+            create a logo for STUDYante
+            generate an image of a computer
+            make a poster about gender equality
+            draw a diagram of the water cycle
+            create an illustration
+            design a mascot
+            generate a banner
+        */
+
+        const directImageWords =
+            /\b(generate|create|make|design|draw|render|illustrate)\b/;
+
+        const visualWords =
+            /\b(image|picture|photo|logo|poster|banner|illustration|drawing|diagram|infographic|mascot|icon|wallpaper|artwork|graphic|cover|flyer|visual)\b/;
+
+        const explicitPatterns = [
+            /\bmake me (an?|the)?\s*(logo|image|picture|poster|banner|diagram|illustration|mascot|icon|graphic|flyer)\b/,
+            /\bcreate (me )?(an?|the)?\s*(logo|image|picture|poster|banner|diagram|illustration|mascot|icon|graphic|flyer)\b/,
+            /\bgenerate (me )?(an?|the)?\s*(logo|image|picture|poster|banner|diagram|illustration|mascot|icon|graphic|flyer)\b/,
+            /\bdesign (me )?(an?|the)?\s*(logo|poster|banner|mascot|icon|graphic|flyer)\b/,
+            /\bdraw (me )?(an?|the)?\s*(image|picture|diagram|illustration|logo)\b/,
+            /\bvisualize\b/,
+            /\bturn .* into (an?|the)?\s*(image|picture|diagram|illustration|logo|poster)\b/
+        ];
+
+        if (explicitPatterns.some(pattern => pattern.test(prompt))) {
+            return true;
+        }
+
+        return directImageWords.test(prompt) &&
+               visualWords.test(prompt);
+    }
+
+
+    function handleStudyanteImageRequest(event) {
+
+        const question =
+            document.getElementById("question");
+
+        if (!question) {
+            return false;
+        }
+
+        const prompt =
+            String(question.value || "").trim();
+
+        if (!isStudyanteImageRequest(prompt)) {
+            return false;
+        }
+
+        if (
+            typeof window.generateStudyanteImage !==
+            "function"
+        ) {
+            return false;
+        }
+
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+        }
+
+        window.generateStudyanteImage(
+            prompt,
+            true
+        );
+
+        return true;
+    }
+
+
+    function installStudyanteAutoImageDetection() {
+
+        const askButton =
+            document.getElementById("askButton");
+
+        const question =
+            document.getElementById("question");
+
+        if (
+            askButton &&
+            !askButton.dataset.studyanteImageDetection
+        ) {
+
+            askButton.dataset.studyanteImageDetection =
+                "true";
+
+            askButton.addEventListener(
+                "click",
+                function (event) {
+                    handleStudyanteImageRequest(event);
+                },
+                true
+            );
+        }
+
+
+        if (
+            question &&
+            !question.dataset.studyanteImageDetection
+        ) {
+
+            question.dataset.studyanteImageDetection =
+                "true";
+
+            question.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key === "Enter" &&
+                        !event.shiftKey
+                    ) {
+
+                        handleStudyanteImageRequest(
+                            event
+                        );
+                    }
+
+                },
+                true
+            );
+        }
+    }
+
+
+    window.isStudyanteImageRequest =
+        isStudyanteImageRequest;
+
+
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            installStudyanteAutoImageDetection
+        );
+
+    } else {
+
+        installStudyanteAutoImageDetection();
+    }
+
+
+    setTimeout(
+        installStudyanteAutoImageDetection,
+        500
+    );
+
+})();
