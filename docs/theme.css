@@ -4253,3 +4253,87 @@ body.studyante-dark
         width: 100%;
     }
 }
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_CARD_LAYOUT_FIX
+   ========================================================== */
+
+/* Keep the header inside the library card */
+.studyante-saved-material {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.studyante-saved-material-header {
+    width: 100%;
+    min-width: 0;
+}
+
+.studyante-saved-material-header > div:last-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Prevent long saved-material names from leaving the card */
+.studyante-saved-material-header h3 {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    box-sizing: border-box;
+}
+
+/* Make Notes / Test / Game controls match the flashcard cards */
+.studyante-saved-material-actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+}
+
+.studyante-saved-material-actions > button:first-child {
+    flex: 1 1 150px;
+    min-width: 110px;
+}
+
+.studyante-saved-material-actions > select {
+    flex: 0 1 140px;
+    min-width: 115px;
+    max-width: 140px;
+}
+
+.studyante-saved-material-actions > button:last-child {
+    flex: 0 0 auto;
+    min-width: 98px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .studyante-saved-material-header h3 {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .studyante-saved-material-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .studyante-saved-material-actions > button:first-child,
+    .studyante-saved-material-actions > select,
+    .studyante-saved-material-actions > button:last-child {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        flex: none;
+    }
+}
