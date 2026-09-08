@@ -416,3 +416,177 @@ body.studyante-dark .sidebar-user-panel {
         margin-top: 10px !important;
     }
 }
+
+/* STUDYANTE_COMPACT_BOTTOM_CONTROLS */
+
+.sidebar-bottom-controls {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+
+/* SMALLER THEME SWITCH */
+
+.sidebar-bottom-controls .theme-toggle {
+    width: 46px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+
+    margin:
+        0 0
+        10px 4px !important;
+}
+
+.sidebar-bottom-controls .theme-toggle::before {
+    width: 18px !important;
+    height: 18px !important;
+
+    top: 3px !important;
+    left: 3px !important;
+}
+
+.sidebar-bottom-controls .theme-toggle::after {
+    left: 56px !important;
+
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+
+body.studyante-dark
+.sidebar-bottom-controls
+.theme-toggle::before {
+    transform: translateX(22px) !important;
+}
+
+
+/* SMALLER PROFILE AREA */
+
+.sidebar-bottom-controls .sidebar-user-panel {
+    margin-top: 4px !important;
+    padding:
+        10px 0
+        0 !important;
+
+    border-top: 1px solid var(--border) !important;
+    border-bottom: 0 !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile {
+    gap: 8px !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .avatar {
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+
+    font-size: 14px !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile strong {
+    font-size: 13px !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile span {
+    font-size: 11px !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .logout-btn {
+    width: auto !important;
+
+    min-height: 32px !important;
+
+    margin-top: 9px !important;
+    padding:
+        6px 12px !important;
+
+    border-radius: 8px !important;
+
+    font-size: 12px !important;
+}
+
+
+/* KEEP CONTROLS AT BOTTOM OF DESKTOP SIDEBAR */
+
+@media (min-width: 801px) {
+
+    .sidebar {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .sidebar-chat-history {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+    }
+
+    .sidebar-bottom-controls {
+        flex: 0 0 auto !important;
+    }
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls {
+        margin-top: 10px !important;
+        padding-top: 10px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle {
+        width: 42px !important;
+        height: 22px !important;
+        min-height: 22px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle::before {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    body.studyante-dark
+    .sidebar-bottom-controls
+    .theme-toggle::before {
+        transform: translateX(20px) !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle::after {
+        left: 51px !important;
+        font-size: 11px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .avatar {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        font-size: 12px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .profile strong {
+        font-size: 12px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .profile span {
+        font-size: 10px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        min-height: 30px !important;
+        padding:
+            5px 10px !important;
+        font-size: 11px !important;
+    }
+}
