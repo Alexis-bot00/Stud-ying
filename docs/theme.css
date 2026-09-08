@@ -4815,3 +4815,52 @@ body.studyante-dark
         width: 100% !important;
     }
 }
+
+/* ==========================================================
+   STUDYANTE_INTERACTIVE_TEST_CHOICE_STYLE
+   ========================================================== */
+
+.test-choice {
+    width: 100%;
+    display: block;
+    margin: 7px 0;
+    padding: 10px 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #f7f8fa;
+    cursor: pointer;
+}
+
+.test-choice:hover:not(:disabled) {
+    border-color: var(--blue);
+}
+
+.test-choice.correct {
+    border-color: #22c55e !important;
+    background: #dcfce7 !important;
+    color: #166534 !important;
+}
+
+.test-choice.wrong {
+    border-color: #ef4444 !important;
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+}
+
+.test-choice:disabled {
+    opacity: 1;
+    cursor: default;
+}
+
+body.studyante-dark .test-choice.correct {
+    background: #14532d !important;
+    border-color: #22c55e !important;
+    color: #dcfce7 !important;
+}
+
+body.studyante-dark .test-choice.wrong {
+    background: #7f1d1d !important;
+    border-color: #ef4444 !important;
+    color: #fee2e2 !important;
+}

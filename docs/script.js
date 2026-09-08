@@ -1462,12 +1462,19 @@ function displayGenerated(
               ${(item.choices || [])
                 .map(
                   (choice, choiceIndex) => `
-                    <div class="test-choice">
+                    <button
+                      type="button"
+                      class="test-choice"
+                      data-selected="${choiceIndex}"
+                      data-correct="${Number(
+                        item.answer || 0
+                      )}"
+                    >
                       ${String.fromCharCode(
                         65 + choiceIndex
                       )}.
                       ${escapeHTML(choice)}
-                    </div>
+                    </button>
                   `
                 )
                 .join("")}
@@ -1500,6 +1507,22 @@ function displayGenerated(
           `
         )
         .join("");
+
+    /* STUDYANTE_TEST_CLICK_HANDLER_FIX */
+
+    generatedBody
+      .querySelectorAll(".test-choice")
+      .forEach(button => {
+
+        button.disabled = false;
+
+        button.addEventListener(
+          "click",
+          () => {
+            checkTestAnswer(button);
+          }
+        );
+      });
 
     return;
   }
@@ -1809,6 +1832,46 @@ confirmSaveAIFlashcards.addEventListener(
     }
   }
 );
+
+function checkTestAnswer(button) {
+
+  const selected =
+    Number(button.dataset.selected);
+
+  const correct =
+    Number(button.dataset.correct);
+
+  const card =
+    button.closest(".question-card");
+
+  if (!card) {
+    return;
+  }
+
+  const choices =
+    card.querySelectorAll(".test-choice");
+
+  choices.forEach(
+    (choice, index) => {
+
+      choice.disabled = true;
+
+      choice.classList.remove(
+        "correct",
+        "wrong"
+      );
+
+      if (index === correct) {
+        choice.classList.add("correct");
+      }
+    }
+  );
+
+  if (selected !== correct) {
+    button.classList.add("wrong");
+  }
+}
+
 
 function checkGameAnswer(button) {
   const selected =
@@ -4386,6 +4449,10 @@ function studyanteOpenMaterial(
     item.name
   );
 
+  if (item.type === "game") {
+    studyanteRebindGameChoices();
+  }
+
 
   setTimeout(
     () => {
@@ -4505,4 +4572,26 @@ async function studyanteDeleteMaterial(
       error.message
     );
   }
+}
+
+/* ==========================================================
+   STUDYANTE_GAME_REBIND_FIX
+   ========================================================== */
+
+function studyanteRebindGameChoices() {
+
+  if (!generatedBody) {
+    return;
+  }
+
+  generatedBody
+    .querySelectorAll(".game-choice")
+    .forEach(button => {
+
+      button.disabled = false;
+
+      button.onclick = () => {
+        checkGameAnswer(button);
+      };
+    });
 }
