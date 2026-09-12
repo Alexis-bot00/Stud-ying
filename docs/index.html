@@ -2567,210 +2567,7 @@ body.studyante-dark .studyante-admin-badge {
 
 
 <style>
-/* STUDYANTE_DASHBOARD_2D_FIX_START */
 
-/* Make dashboard sections tighter */
-.studyante-dashboard-home {
-    margin-top: 16px !important;
-    gap: 16px !important;
-}
-
-/* Section headers */
-.studyante-dashboard-block-header {
-    margin-bottom: 8px !important;
-}
-
-.studyante-dashboard-block-header h2 {
-    font-size: 19px !important;
-    margin-bottom: 2px !important;
-}
-
-.studyante-dashboard-block-header p {
-    font-size: 13px !important;
-    margin: 0 !important;
-}
-
-
-/* ANNOUNCEMENT = FLAT 2D BOX */
-
-.studyante-dashboard-announcements {
-    gap: 8px !important;
-}
-
-.studyante-dashboard-announcement {
-    background: #ffffff !important;
-    border: 1px solid #dbe2ea !important;
-
-    border-radius: 8px !important;
-
-    padding: 14px 42px 14px 14px !important;
-
-    box-shadow: none !important;
-
-    min-height: 0 !important;
-}
-
-.studyante-dashboard-announcement-title {
-    font-size: 15px !important;
-    margin-bottom: 5px !important;
-    gap: 6px !important;
-}
-
-.studyante-dashboard-announcement-message {
-    font-size: 14px !important;
-    line-height: 1.4 !important;
-}
-
-.studyante-dashboard-announcement-date {
-    margin-top: 7px !important;
-    font-size: 11px !important;
-}
-
-.studyante-announcement-dismiss {
-    top: 8px !important;
-    right: 8px !important;
-
-    width: 26px !important;
-    height: 26px !important;
-
-    border-radius: 5px !important;
-}
-
-
-/* RECENT FLASHCARDS = FLAT 2D BOXES */
-
-.studyante-recent-flashcards {
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr)) !important;
-
-    gap: 10px !important;
-}
-
-.studyante-recent-flashcard {
-    background: #ffffff !important;
-
-    border: 1px solid #dbe2ea !important;
-
-    border-radius: 8px !important;
-
-    padding: 14px !important;
-
-    min-height: 100px !important;
-
-    box-shadow: none !important;
-
-    transform: none !important;
-}
-
-.studyante-recent-flashcard:hover {
-    transform: none !important;
-
-    box-shadow: none !important;
-
-    border-color: #2563eb !important;
-
-    background: #f8fafc !important;
-}
-
-.studyante-recent-flashcard-icon {
-    font-size: 20px !important;
-    margin-bottom: 7px !important;
-}
-
-.studyante-recent-flashcard h3 {
-    font-size: 15px !important;
-    margin-bottom: 5px !important;
-}
-
-.studyante-recent-flashcard p {
-    font-size: 12px !important;
-    line-height: 1.35 !important;
-}
-
-
-/* EMPTY BOX */
-
-.studyante-dashboard-empty {
-    padding: 14px !important;
-
-    border-radius: 8px !important;
-
-    min-height: 0 !important;
-
-    box-shadow: none !important;
-}
-
-
-/* DARK MODE */
-
-body.studyante-dark
-.studyante-dashboard-announcement,
-body.studyante-dark
-.studyante-recent-flashcard {
-    background: #111827 !important;
-
-    border-color: #334155 !important;
-
-    box-shadow: none !important;
-}
-
-body.studyante-dark
-.studyante-recent-flashcard:hover {
-    background: #172033 !important;
-
-    border-color: #3b82f6 !important;
-
-    box-shadow: none !important;
-}
-
-body.studyante-dark
-.studyante-dashboard-empty {
-    background: #111827 !important;
-
-    border-color: #334155 !important;
-}
-
-
-/* TABLET */
-
-@media (max-width: 850px) {
-
-    .studyante-recent-flashcards {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr)) !important;
-    }
-}
-
-
-/* MOBILE */
-
-@media (max-width: 600px) {
-
-    .studyante-dashboard-home {
-        gap: 14px !important;
-        margin-top: 12px !important;
-    }
-
-    .studyante-recent-flashcards {
-        grid-template-columns: 1fr !important;
-        gap: 8px !important;
-    }
-
-    .studyante-dashboard-announcement {
-        padding:
-            12px
-            38px
-            12px
-            12px !important;
-    }
-
-    .studyante-recent-flashcard {
-        padding: 12px !important;
-        min-height: 85px !important;
-    }
-}
-
-/* STUDYANTE_DASHBOARD_2D_FIX_END */
 </style>
 
 
@@ -2780,482 +2577,12 @@ body.studyante-dark
 
 
 <style>
-/* STUDYANTE_RECENT_STYLE_V2_START */
 
-.studyante-recent-flashcards {
-    display: grid !important;
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr)) !important;
-
-    gap: 16px !important;
-}
-
-.studyante-recent-flashcard {
-    position: relative !important;
-
-    min-height: 170px !important;
-
-    padding: 22px !important;
-
-    border-radius: 18px !important;
-
-    border: 1px solid #dbe2ea !important;
-
-    background: #ffffff !important;
-
-    box-shadow: none !important;
-
-    overflow: hidden !important;
-
-    cursor: pointer !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-}
-
-.studyante-recent-flashcard:hover {
-    transform: none !important;
-
-    border-color: #2563eb !important;
-
-    box-shadow: none !important;
-}
-
-.studyante-recent-flashcard-icon {
-    display: none !important;
-}
-
-.studyante-recent-flashcard h3 {
-    margin: 0 0 14px !important;
-
-    font-size: 21px !important;
-    font-weight: 700 !important;
-
-    color: #111827 !important;
-
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-}
-
-.studyante-recent-flashcard p {
-    margin: 0 0 15px !important;
-
-    font-size: 13px !important;
-
-    color: #64748b !important;
-}
-
-
-/* fake study progress */
-
-.studyante-recent-flashcard::before {
-    content: "";
-
-    display: block;
-
-    width: 70% !important;
-    height: 9px !important;
-
-    position: absolute !important;
-
-    left: 22px !important;
-    top: 70px !important;
-
-    border-radius: 999px !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            #22c55e 0%,
-            #22c55e 45%,
-            #334155 45%,
-            #334155 100%
-        ) !important;
-}
-
-
-/* Continue button */
-
-.studyante-recent-flashcard::after {
-    content: "Continue";
-
-    display: inline-flex !important;
-
-    align-items: center !important;
-    justify-content: center !important;
-
-    width: 95px !important;
-    height: 38px !important;
-
-    margin-top: auto !important;
-
-    border-radius: 20px !important;
-
-    background: #3155f5 !important;
-
-    color: #ffffff !important;
-
-    font-size: 13px !important;
-    font-weight: 700 !important;
-}
-
-
-/* DARK MODE */
-
-body.studyante-dark
-.studyante-recent-flashcard {
-    background: #1f2146 !important;
-
-    border-color: #33365d !important;
-}
-
-body.studyante-dark
-.studyante-recent-flashcard h3 {
-    color: #f8fafc !important;
-}
-
-body.studyante-dark
-.studyante-recent-flashcard p {
-    color: #cbd5e1 !important;
-}
-
-body.studyante-dark
-.studyante-recent-flashcard:hover {
-    background: #25284f !important;
-
-    border-color: #4f67ff !important;
-}
-
-
-/* RECENT HEADER */
-
-.studyante-dashboard-block-header h2 {
-    font-size: 20px !important;
-    font-weight: 700 !important;
-}
-
-
-/* MOBILE */
-
-@media(max-width:700px) {
-
-    .studyante-recent-flashcards {
-        grid-template-columns: 1fr !important;
-    }
-
-    .studyante-recent-flashcard {
-        min-height: 150px !important;
-        padding: 18px !important;
-    }
-
-    .studyante-recent-flashcard::before {
-        left: 18px !important;
-        top: 64px !important;
-        width: 72% !important;
-    }
-}
-
-/* STUDYANTE_RECENT_STYLE_V2_END */
 </style>
 
 
 <style>
-/* STUDYANTE_RECENT_STYLE_V3_START */
 
-/* RECENTLY STUDIED GRID */
-
-.studyante-recent-flashcards {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 16px !important;
-    width: 100% !important;
-}
-
-
-/* CARD */
-
-.studyante-recent-flashcard {
-    position: relative !important;
-
-    min-height: 210px !important;
-
-    padding: 24px 28px !important;
-
-    border-radius: 18px !important;
-
-    border: 1px solid #334155 !important;
-
-    background: #111827 !important;
-
-    box-sizing: border-box !important;
-
-    overflow: hidden !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    cursor: pointer !important;
-
-    box-shadow: none !important;
-
-    transform: none !important;
-}
-
-.studyante-recent-flashcard:hover {
-    border-color: #475569 !important;
-    background: #131c2d !important;
-    transform: none !important;
-    box-shadow: none !important;
-}
-
-
-/* HIDE OLD ICON */
-
-.studyante-recent-flashcard-icon {
-    display: none !important;
-}
-
-
-/* TITLE */
-
-.studyante-recent-flashcard h3 {
-    margin: 0 !important;
-
-    padding-right: 30px !important;
-
-    color: #f8fafc !important;
-
-    font-size: 21px !important;
-
-    line-height: 1.25 !important;
-
-    font-weight: 700 !important;
-
-    white-space: nowrap !important;
-
-    overflow: hidden !important;
-
-    text-overflow: ellipsis !important;
-}
-
-
-/* OLD INFO TEXT */
-
-.studyante-recent-flashcard p {
-    margin: 14px 0 0 !important;
-
-    color: #cbd5e1 !important;
-
-    font-size: 13px !important;
-
-    line-height: 1.4 !important;
-}
-
-
-/* MENU DOTS */
-
-.studyante-recent-flashcard::after {
-    content: "⋮" !important;
-
-    position: absolute !important;
-
-    top: 20px !important;
-
-    right: 20px !important;
-
-    width: auto !important;
-    height: auto !important;
-
-    margin: 0 !important;
-
-    background: transparent !important;
-
-    color: #e2e8f0 !important;
-
-    font-size: 25px !important;
-
-    font-weight: 700 !important;
-
-    line-height: 1 !important;
-}
-
-
-/* PROGRESS TRACK */
-
-.studyante-recent-flashcard::before {
-    content: "" !important;
-
-    position: absolute !important;
-
-    left: 28px !important;
-    right: 28px !important;
-
-    top: 112px !important;
-
-    width: auto !important;
-
-    height: 10px !important;
-
-    border-radius: 999px !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            #22c55e 0%,
-            #22c55e 42%,
-            #334155 42%,
-            #334155 100%
-        ) !important;
-}
-
-
-/* CONTINUE BUTTON */
-
-.studyante-recent-flashcard {
-    --studyante-continue-bottom: 24px;
-}
-
-.studyante-recent-flashcard > * {
-    position: relative;
-    z-index: 2;
-}
-
-
-/* Add actual visible Continue button using extra overlay */
-
-.studyante-recent-flashcard .studyante-card-continue {
-    margin-top: auto !important;
-}
-
-
-/* Injected by JS */
-
-.studyante-recent-continue-btn {
-    position: absolute !important;
-
-    left: 28px !important;
-    bottom: 24px !important;
-
-    min-width: 115px !important;
-
-    height: 44px !important;
-
-    padding: 0 22px !important;
-
-    border: 0 !important;
-
-    border-radius: 999px !important;
-
-    background: #3155f5 !important;
-
-    color: #ffffff !important;
-
-    font-size: 14px !important;
-
-    font-weight: 700 !important;
-
-    cursor: pointer !important;
-
-    z-index: 5 !important;
-}
-
-.studyante-recent-continue-btn:hover {
-    background: #2647e8 !important;
-}
-
-
-/* PROGRESS PERCENT */
-
-.studyante-recent-percent {
-    position: absolute !important;
-
-    right: 28px !important;
-
-    top: 100px !important;
-
-    color: #e2e8f0 !important;
-
-    font-size: 13px !important;
-
-    z-index: 4 !important;
-}
-
-
-/* LIGHT MODE */
-
-body:not(.studyante-dark)
-.studyante-recent-flashcard {
-    background: #ffffff !important;
-
-    border-color: #dbe2ea !important;
-}
-
-body:not(.studyante-dark)
-.studyante-recent-flashcard h3 {
-    color: #111827 !important;
-}
-
-body:not(.studyante-dark)
-.studyante-recent-flashcard p {
-    color: #64748b !important;
-}
-
-body:not(.studyante-dark)
-.studyante-recent-flashcard::after {
-    color: #475569 !important;
-}
-
-body:not(.studyante-dark)
-.studyante-recent-percent {
-    color: #475569 !important;
-}
-
-
-/* TABLET */
-
-@media (max-width: 1050px) {
-
-    .studyante-recent-flashcards {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr)) !important;
-    }
-}
-
-
-/* MOBILE */
-
-@media (max-width: 650px) {
-
-    .studyante-recent-flashcards {
-        grid-template-columns: 1fr !important;
-    }
-
-    .studyante-recent-flashcard {
-        min-height: 190px !important;
-
-        padding: 20px !important;
-    }
-
-    .studyante-recent-flashcard::before {
-        left: 20px !important;
-        right: 20px !important;
-        top: 106px !important;
-    }
-
-    .studyante-recent-percent {
-        right: 20px !important;
-        top: 94px !important;
-    }
-
-    .studyante-recent-continue-btn {
-        left: 20px !important;
-        bottom: 20px !important;
-    }
-}
-
-/* STUDYANTE_RECENT_STYLE_V3_END */
 </style>
 
 <script>
@@ -3369,60 +2696,7 @@ body:not(.studyante-dark)
 
 
 <style>
-/* STUDYANTE_CONTINUE_FIX_START */
 
-.studyante-recent-flashcard {
-    padding-bottom: 80px !important;
-}
-
-.studyante-recent-continue-btn {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-
-    position: absolute !important;
-
-    left: 28px !important;
-    bottom: 22px !important;
-
-    width: auto !important;
-    min-width: 110px !important;
-    height: 42px !important;
-
-    padding: 0 22px !important;
-
-    align-items: center !important;
-    justify-content: center !important;
-
-    border: none !important;
-    border-radius: 999px !important;
-
-    background: #3155f5 !important;
-    color: #ffffff !important;
-
-    font-size: 14px !important;
-    font-weight: 700 !important;
-
-    line-height: 1 !important;
-
-    cursor: pointer !important;
-
-    z-index: 999 !important;
-}
-
-.studyante-recent-continue-btn:hover {
-    background: #2448ed !important;
-}
-
-@media(max-width:650px) {
-
-    .studyante-recent-continue-btn {
-        left: 20px !important;
-        bottom: 18px !important;
-    }
-}
-
-/* STUDYANTE_CONTINUE_FIX_END */
 </style>
 
 <script>
@@ -6487,92 +5761,76 @@ body.studyante-admin-page #studyanteAdminPage {
 <!-- STUDYANTE_ADMIN_NAVIGATION_FIX_END -->
 
 
+
+
+
 <!-- STUDYANTE_DASHBOARD_HOME_START -->
 
 <style>
 
-/* ==========================================================
-   STUDYANTE DASHBOARD - ANNOUNCEMENTS + RECENT FLASHCARDS
-========================================================== */
+/* =========================================
+   DASHBOARD FINAL
+========================================= */
 
 .studyante-dashboard-home {
-    margin-top: 24px;
+    margin-top: 20px;
     display: grid;
-    gap: 22px;
+    gap: 26px;
 }
 
-.studyante-dashboard-block {
-    width: 100%;
-}
+/* HEADERS */
 
 .studyante-dashboard-block-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .studyante-dashboard-block-header h2 {
     margin: 0;
-    font-size: 21px;
-    color: #111827;
+    font-size: 22px;
+    font-weight: 700;
 }
 
 .studyante-dashboard-block-header p {
     margin: 4px 0 0;
-    color: #6b7280;
-    font-size: 14px;
+    font-size: 13px;
+    color: #64748b;
 }
 
-
-/* ANNOUNCEMENTS */
+/* ANNOUNCEMENT */
 
 .studyante-dashboard-announcements {
     display: grid;
-    gap: 12px;
+    gap: 10px;
 }
 
 .studyante-dashboard-announcement {
     position: relative;
-
-    padding: 18px 48px 18px 18px;
-
-    border: 1px solid #bfdbfe;
+    padding: 18px 46px 18px 18px;
+    border: 1px solid #334155;
     border-radius: 14px;
-
-    background: #eff6ff;
+    background: #111827;
 }
 
 .studyante-dashboard-announcement-title {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-
-    margin-bottom: 8px;
-
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 700;
-
-    color: #111827;
+    margin-bottom: 10px;
 }
 
 .studyante-dashboard-announcement-message {
-    color: #374151;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.6;
     white-space: pre-wrap;
 }
 
 .studyante-dashboard-announcement-date {
-    margin-top: 10px;
-
-    color: #6b7280;
+    margin-top: 14px;
     font-size: 12px;
+    color: #94a3b8;
 }
 
 .studyante-announcement-dismiss {
     position: absolute;
-
     top: 10px;
     right: 10px;
 
@@ -6580,196 +5838,167 @@ body.studyante-admin-page #studyanteAdminPage {
     height: 30px;
 
     border: 0;
-    border-radius: 8px;
-
     background: transparent;
-    color: #64748b;
+    color: #cbd5e1;
 
+    font-size: 18px;
     cursor: pointer;
-    font-size: 17px;
 }
-
-.studyante-announcement-dismiss:hover {
-    background: rgba(0,0,0,.06);
-}
-
 
 /* RECENT FLASHCARDS */
 
 .studyante-recent-flashcards {
     display: grid;
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 14px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
 }
 
 .studyante-recent-flashcard {
-    padding: 17px;
+    position: relative;
 
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
+    min-height: 210px;
+    padding: 24px 24px 76px;
 
-    background: #ffffff;
+    border: 1px solid #334155;
+    border-radius: 18px;
 
+    background: #111827;
+
+    overflow: hidden;
     cursor: pointer;
-
-    transition:
-        transform .15s ease,
-        box-shadow .15s ease,
-        border-color .15s ease;
-}
-
-.studyante-recent-flashcard:hover {
-    transform: translateY(-2px);
-
-    border-color: #93c5fd;
-
-    box-shadow:
-        0 8px 22px rgba(15,23,42,.08);
-}
-
-.studyante-recent-flashcard-icon {
-    font-size: 25px;
-    margin-bottom: 11px;
 }
 
 .studyante-recent-flashcard h3 {
-    margin: 0 0 6px;
+    margin: 0;
+    padding-right: 30px;
 
-    color: #111827;
+    color: #f8fafc;
 
-    font-size: 16px;
+    font-size: 20px;
+    font-weight: 700;
 
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .studyante-recent-flashcard p {
-    margin: 0;
+    margin: 12px 0 0;
 
-    color: #6b7280;
+    color: #cbd5e1;
+
     font-size: 13px;
 }
 
-.studyante-dashboard-empty {
-    padding: 18px;
+/* PROGRESS BAR */
 
-    border: 1px dashed #cbd5e1;
-    border-radius: 12px;
+.studyante-recent-progress {
+    position: absolute;
 
-    color: #64748b;
+    left: 24px;
+    right: 58px;
+    top: 105px;
 
-    background: rgba(255,255,255,.45);
+    height: 10px;
 
-    text-align: center;
+    border-radius: 999px;
+
+    background: #334155;
+
+    overflow: hidden;
 }
 
-
-/* DARK MODE */
-
-body.studyante-dark
-.studyante-dashboard-block-header h2 {
-    color: #f8fafc;
+.studyante-recent-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: #22c55e;
 }
 
-body.studyante-dark
-.studyante-dashboard-block-header p {
-    color: #94a3b8;
-}
+.studyante-recent-percent {
+    position: absolute;
 
-body.studyante-dark
-.studyante-dashboard-announcement {
-    background: #172033;
-    border-color: #334155;
-}
+    top: 100px;
+    right: 22px;
 
-body.studyante-dark
-.studyante-dashboard-announcement-title {
-    color: #f8fafc;
-}
-
-body.studyante-dark
-.studyante-dashboard-announcement-message {
+    font-size: 12px;
     color: #cbd5e1;
 }
 
-body.studyante-dark
-.studyante-dashboard-announcement-date {
-    color: #94a3b8;
+/* CONTINUE */
+
+.studyante-recent-continue-btn {
+    position: absolute;
+
+    left: 24px;
+    bottom: 22px;
+
+    min-width: 105px;
+    height: 42px;
+
+    border: 0;
+    border-radius: 999px;
+
+    background: #3155f5;
+    color: white;
+
+    font-weight: 700;
+    cursor: pointer;
 }
 
-body.studyante-dark
-.studyante-announcement-dismiss {
-    color: #94a3b8;
+/* MENU */
+
+.studyante-recent-menu {
+    position: absolute;
+
+    top: 17px;
+    right: 18px;
+
+    color: #cbd5e1;
+    font-size: 22px;
 }
 
-body.studyante-dark
-.studyante-announcement-dismiss:hover {
-    background: #1e293b;
-}
+/* LIGHT MODE */
 
-body.studyante-dark
+body:not(.studyante-dark)
+.studyante-dashboard-announcement,
+body:not(.studyante-dark)
 .studyante-recent-flashcard {
-    background: #111827;
-
-    border-color: #334155;
+    background: #ffffff;
+    border-color: #dbe2ea;
 }
 
-body.studyante-dark
-.studyante-recent-flashcard:hover {
-    border-color: #3b82f6;
-
-    background: #172033;
+body:not(.studyante-dark)
+.studyante-recent-flashcard h3,
+body:not(.studyante-dark)
+.studyante-dashboard-announcement-title {
+    color: #111827;
 }
 
-body.studyante-dark
-.studyante-recent-flashcard h3 {
-    color: #f8fafc;
+body:not(.studyante-dark)
+.studyante-recent-flashcard p,
+body:not(.studyante-dark)
+.studyante-dashboard-announcement-message {
+    color: #374151;
 }
 
-body.studyante-dark
-.studyante-recent-flashcard p {
-    color: #94a3b8;
+body:not(.studyante-dark)
+.studyante-recent-percent,
+body:not(.studyante-dark)
+.studyante-recent-menu {
+    color: #64748b;
 }
-
-body.studyante-dark
-.studyante-dashboard-empty {
-    background: #111827;
-
-    border-color: #334155;
-
-    color: #94a3b8;
-}
-
 
 /* MOBILE */
 
-@media (max-width: 850px) {
-
+@media(max-width: 900px) {
     .studyante-recent-flashcards {
-        grid-template-columns:
-            repeat(2, minmax(0,1fr));
+        grid-template-columns: repeat(2, minmax(0,1fr));
     }
 }
 
-@media (max-width: 600px) {
-
-    .studyante-dashboard-home {
-        margin-top: 18px;
-    }
-
+@media(max-width: 600px) {
     .studyante-recent-flashcards {
         grid-template-columns: 1fr;
-    }
-
-    .studyante-dashboard-announcement {
-        padding:
-            15px
-            42px
-            15px
-            15px;
     }
 }
 
@@ -6777,163 +6006,84 @@ body.studyante-dark
 
 
 <script>
-
 (() => {
 
-    const STUDYANTE_DASHBOARD_API =
+    const API =
         "https://stud-ying-production.up.railway.app";
 
+    function esc(v) {
+        return String(v ?? "")
+            .replaceAll("&","&amp;")
+            .replaceAll("<","&lt;")
+            .replaceAll(">","&gt;")
+            .replaceAll('"',"&quot;")
+            .replaceAll("'","&#039;");
+    }
 
-    /* ======================================================
-       CURRENT USER STORAGE KEY
-    ====================================================== */
-
-    function studyanteDashboardUserKey() {
-
+    function userKey() {
         try {
-
-            const user =
+            const u =
                 JSON.parse(
-                    localStorage.getItem(
-                        "studyingUser"
-                    ) || "{}"
+                    localStorage.getItem("studyingUser") || "{}"
                 );
 
-            return String(
-                user.id ||
-                user.email ||
-                "default"
-            );
-
+            return u.id || u.email || "default";
         } catch {
-
             return "default";
         }
     }
 
-
-    function recentStorageKey() {
-
-        return (
-            "studyanteRecentFlashcards_" +
-            studyanteDashboardUserKey()
-        );
+    function recentKey() {
+        return "studyanteRecentFlashcards_" + userKey();
     }
 
-
-    function dismissedStorageKey() {
-
-        return (
-            "studyanteDismissedAnnouncements_" +
-            studyanteDashboardUserKey()
-        );
+    function dismissKey() {
+        return "studyanteDismissedAnnouncements_" + userKey();
     }
 
-
-    /* ======================================================
-       ESCAPE HTML
-    ====================================================== */
-
-    function dashboardEscape(value) {
-
-        return String(value ?? "")
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
-    }
-
-
-    /* ======================================================
-       INSTALL DASHBOARD SECTIONS
-    ====================================================== */
-
-    function installDashboardHome() {
+    function installDashboard() {
 
         const dashboard =
-            document.getElementById(
-                "dashboard"
-            );
+            document.getElementById("dashboard");
 
-        if (
-            !dashboard ||
-            document.getElementById(
-                "studyanteDashboardHome"
-            )
-        ) {
-            return;
-        }
+        if (!dashboard) return;
 
-        const container =
-            document.createElement(
-                "div"
-            );
+        const old =
+            document.getElementById("studyanteDashboardHome");
 
-        container.id =
+        if (old) old.remove();
+
+        const wrap =
+            document.createElement("div");
+
+        wrap.id =
             "studyanteDashboardHome";
 
-        container.className =
+        wrap.className =
             "studyante-dashboard-home";
 
-        container.innerHTML = `
+        wrap.innerHTML = `
 
-            <section
-                class="studyante-dashboard-block"
-            >
+            <section class="studyante-dashboard-block">
 
-                <div
-                    class="studyante-dashboard-block-header"
-                >
-
-                    <div>
-
-                        <h2>
-                            📢 Announcements
-                        </h2>
-
-                        <p>
-                            Latest updates from STUDYante
-                        </p>
-
-                    </div>
-
+                <div class="studyante-dashboard-block-header">
+                    <h2>📢 Announcements</h2>
+                    <p>Latest updates from STUDYante</p>
                 </div>
 
                 <div
                     id="studyanteDashboardAnnouncements"
                     class="studyante-dashboard-announcements"
-                >
-
-                    <div class="studyante-dashboard-empty">
-                        Loading announcements...
-                    </div>
-
-                </div>
+                ></div>
 
             </section>
 
 
-            <section
-                class="studyante-dashboard-block"
-            >
+            <section class="studyante-dashboard-block">
 
-                <div
-                    class="studyante-dashboard-block-header"
-                >
-
-                    <div>
-
-                        <h2>
-                            🧠 Recently Studied
-                        </h2>
-
-                        <p>
-                            Your 3 latest flashcard sets
-                        </p>
-
-                    </div>
-
+                <div class="studyante-dashboard-block-header">
+                    <h2>🧠 Recently Studied</h2>
+                    <p>Your 3 latest flashcard sets</p>
                 </div>
 
                 <div
@@ -6944,248 +6094,106 @@ body.studyante-dark
             </section>
         `;
 
-        dashboard.appendChild(
-            container
-        );
+        dashboard.appendChild(wrap);
 
-        loadDashboardAnnouncements();
-
-        renderRecentFlashcards();
+        loadAnnouncements();
+        renderRecent();
     }
 
+    async function loadAnnouncements() {
 
-    /* ======================================================
-       ANNOUNCEMENTS
-    ====================================================== */
-
-    function getDismissedAnnouncements() {
-
-        try {
-
-            const data =
-                JSON.parse(
-                    localStorage.getItem(
-                        dismissedStorageKey()
-                    ) || "[]"
-                );
-
-            return Array.isArray(data)
-                ? data
-                : [];
-
-        } catch {
-
-            return [];
-        }
-    }
-
-
-    function dismissAnnouncement(id) {
-
-        const dismissed =
-            getDismissedAnnouncements();
-
-        if (
-            !dismissed.includes(id)
-        ) {
-            dismissed.push(id);
-        }
-
-        localStorage.setItem(
-            dismissedStorageKey(),
-            JSON.stringify(
-                dismissed.slice(-100)
-            )
-        );
-
-        loadDashboardAnnouncements();
-    }
-
-
-    async function loadDashboardAnnouncements() {
-
-        const container =
+        const box =
             document.getElementById(
                 "studyanteDashboardAnnouncements"
             );
 
-        if (!container) {
-            return;
-        }
+        if (!box) return;
 
         try {
 
             const response =
                 await fetch(
-                    STUDYANTE_DASHBOARD_API +
-                    "/api/announcements"
+                    API + "/api/announcements"
                 );
 
             const data =
                 await response.json();
 
-            if (!response.ok) {
-
-                throw new Error(
-                    data.message ||
-                    "Could not load announcements."
-                );
-            }
-
             const dismissed =
-                getDismissedAnnouncements();
+                JSON.parse(
+                    localStorage.getItem(
+                        dismissKey()
+                    ) || "[]"
+                );
 
-            const announcements =
-                (
-                    Array.isArray(
-                        data.announcements
-                    )
-                        ? data.announcements
-                        : []
-                )
+            const list =
+                (data.announcements || [])
                 .filter(
-                    item =>
-                        !dismissed.includes(
-                            item.id
-                        )
+                    a =>
+                        !dismissed.includes(a.id)
                 )
-                .slice(0, 3);
+                .slice(0,3);
 
+            if (!list.length) {
 
-            if (
-                announcements.length === 0
-            ) {
-
-                container.innerHTML = `
-                    <div
-                        class="studyante-dashboard-empty"
-                    >
-                        No new announcements.
-                    </div>
-                `;
+                box.innerHTML =
+                    '<div class="studyante-dashboard-empty">No new announcements.</div>';
 
                 return;
             }
 
+            box.innerHTML =
+                list.map(a => {
 
-            container.innerHTML =
-                announcements
-                    .map(
-                        item => {
+                    const date =
+                        a.createdAt
+                        ? new Date(a.createdAt).toLocaleString()
+                        : "";
 
-                            let date =
-                                "Recently";
+                    return `
 
-                            if (
-                                item.createdAt
-                            ) {
+                        <article class="studyante-dashboard-announcement">
 
-                                const parsed =
-                                    new Date(
-                                        item.createdAt
-                                    );
+                            <button
+                                class="studyante-announcement-dismiss"
+                                data-dismiss="${esc(a.id)}"
+                            >
+                                ✕
+                            </button>
 
-                                if (
-                                    !Number.isNaN(
-                                        parsed.getTime()
-                                    )
-                                ) {
+                            <div class="studyante-dashboard-announcement-title">
+                                📢 ${esc(a.title)}
+                            </div>
 
-                                    date =
-                                        parsed.toLocaleString(
-                                            undefined,
-                                            {
-                                                dateStyle:
-                                                    "medium",
+                            <div class="studyante-dashboard-announcement-message">
+                                ${esc(a.message)}
+                            </div>
 
-                                                timeStyle:
-                                                    "short"
-                                            }
-                                        );
-                                }
-                            }
+                            <div class="studyante-dashboard-announcement-date">
+                                ${esc(date)}
+                            </div>
 
-                            return `
+                        </article>
+                    `;
 
-                                <article
-                                    class="studyante-dashboard-announcement"
-                                >
+                }).join("");
 
-                                    <button
-                                        type="button"
-                                        class="studyante-announcement-dismiss"
-                                        data-dismiss-announcement="${dashboardEscape(item.id)}"
-                                        title="Dismiss"
-                                    >
-                                        ✕
-                                    </button>
+        } catch {
 
-                                    <div
-                                        class="studyante-dashboard-announcement-title"
-                                    >
-                                        <span>
-                                            📢
-                                        </span>
-
-                                        <span>
-                                            ${dashboardEscape(item.title)}
-                                        </span>
-                                    </div>
-
-                                    <div
-                                        class="studyante-dashboard-announcement-message"
-                                    >
-                                        ${dashboardEscape(item.message)}
-                                    </div>
-
-                                    <div
-                                        class="studyante-dashboard-announcement-date"
-                                    >
-                                        ${dashboardEscape(date)}
-                                    </div>
-
-                                </article>
-                            `;
-                        }
-                    )
-                    .join("");
-
-        } catch (error) {
-
-            console.error(
-                "Announcement error:",
-                error
-            );
-
-            container.innerHTML = `
-                <div
-                    class="studyante-dashboard-empty"
-                >
-                    Announcements could not be loaded.
-                </div>
-            `;
+            box.innerHTML =
+                '<div class="studyante-dashboard-empty">Could not load announcements.</div>';
         }
     }
 
-
-    /* ======================================================
-       RECENT FLASHCARDS
-    ====================================================== */
-
-    function getRecentFlashcards() {
+    function getRecent() {
 
         try {
 
-            const data =
-                JSON.parse(
-                    localStorage.getItem(
-                        recentStorageKey()
-                    ) || "[]"
-                );
-
-            return Array.isArray(data)
-                ? data
-                : [];
+            return JSON.parse(
+                localStorage.getItem(
+                    recentKey()
+                ) || "[]"
+            );
 
         } catch {
 
@@ -7193,357 +6201,153 @@ body.studyante-dark
         }
     }
 
+    function renderRecent() {
 
-    function saveRecentFlashcard(
-        name,
-        count
-    ) {
-
-        name =
-            String(name || "")
-                .trim();
-
-        if (!name) {
-            return;
-        }
-
-        let recent =
-            getRecentFlashcards();
-
-        /*
-          Remove previous copy so studying
-          the same set moves it back to #1.
-        */
-
-        recent =
-            recent.filter(
-                item =>
-                    item.name !== name
-            );
-
-        recent.unshift({
-            name,
-
-            count:
-                Number(count) || 0,
-
-            studiedAt:
-                new Date()
-                    .toISOString()
-        });
-
-        recent =
-            recent.slice(0, 3);
-
-        localStorage.setItem(
-            recentStorageKey(),
-            JSON.stringify(recent)
-        );
-
-        renderRecentFlashcards();
-    }
-
-
-    function renderRecentFlashcards() {
-
-        const container =
+        const box =
             document.getElementById(
                 "studyanteRecentFlashcards"
             );
 
-        if (!container) {
-            return;
-        }
+        if (!box) return;
 
-        const recent =
-            getRecentFlashcards()
-                .slice(0, 3);
+        const list =
+            getRecent().slice(0,3);
 
-        if (
-            recent.length === 0
-        ) {
+        if (!list.length) {
 
-            container.innerHTML = `
-                <div
-                    class="studyante-dashboard-empty"
-                >
-                    Study a flashcard set and it will appear here.
-                </div>
-            `;
+            box.innerHTML =
+                '<div class="studyante-dashboard-empty">Study a flashcard set and it will appear here.</div>';
 
             return;
         }
 
+        box.innerHTML =
+            list.map((item,index) => {
 
-        container.innerHTML =
-            recent
-                .map(
-                    item => {
+                const percentValues =
+                    [50,43,20];
 
-                        let studied =
-                            "Recently studied";
+                const percent =
+                    percentValues[index] || 20;
 
-                        if (
-                            item.studiedAt
-                        ) {
+                const date =
+                    item.studiedAt
+                    ? new Date(item.studiedAt).toLocaleString()
+                    : "";
 
-                            const date =
-                                new Date(
-                                    item.studiedAt
-                                );
+                return `
 
-                            if (
-                                !Number.isNaN(
-                                    date.getTime()
-                                )
-                            ) {
+                    <article
+                        class="studyante-recent-flashcard"
+                    >
 
-                                studied =
-                                    date.toLocaleString(
-                                        undefined,
-                                        {
-                                            dateStyle:
-                                                "medium",
+                        <div class="studyante-recent-menu">
+                            ⋮
+                        </div>
 
-                                            timeStyle:
-                                                "short"
-                                        }
-                                    );
-                            }
-                        }
+                        <h3>
+                            ${esc(item.name)}
+                        </h3>
 
+                        <p>
+                            ${esc(item.count || 0)}
+                            flashcards •
+                            ${esc(date)}
+                        </p>
 
-                        return `
+                        <div class="studyante-recent-progress">
 
-                            <article
-                                class="studyante-recent-flashcard"
-                                data-recent-flashcard="true"
-                                tabindex="0"
-                            >
+                            <div
+                                class="studyante-recent-progress-fill"
+                                style="width:${percent}%"
+                            ></div>
 
-                                <div
-                                    class="studyante-recent-flashcard-icon"
-                                >
-                                    🧠
-                                </div>
+                        </div>
 
-                                <h3>
-                                    ${dashboardEscape(item.name)}
-                                </h3>
+                        <div class="studyante-recent-percent">
+                            ${percent}%
+                        </div>
 
-                                <p>
-                                    ${
-                                        item.count
-                                            ? dashboardEscape(item.count) +
-                                              " flashcards • "
-                                            : ""
-                                    }
-                                    ${dashboardEscape(studied)}
-                                </p>
+                        <button
+                            class="studyante-recent-continue-btn"
+                            type="button"
+                        >
+                            Continue
+                        </button>
 
-                            </article>
-                        `;
-                    }
-                )
-                .join("");
+                    </article>
+                `;
+
+            }).join("");
     }
-
-
-    /* ======================================================
-       DETECT WHEN STUDENT CLICKS "STUDY"
-       ON A SAVED FLASHCARD SET
-    ====================================================== */
 
     document.addEventListener(
         "click",
         event => {
 
-            const studyButton =
-                event.target.closest(
-                    ".study-set"
-                );
-
-            if (studyButton) {
-
-                const card =
-                    studyButton.closest(
-                        ".library-card"
-                    );
-
-                if (card) {
-
-                    const name =
-                        card
-                            .querySelector("h3")
-                            ?.textContent
-                            ?.trim() ||
-                        "Flashcards";
-
-                    const text =
-                        card
-                            .querySelector("p")
-                            ?.textContent ||
-                        "";
-
-                    const match =
-                        text.match(
-                            /(\d+)\s+Flashcard/i
-                        );
-
-                    const count =
-                        match
-                            ? Number(match[1])
-                            : 0;
-
-                    saveRecentFlashcard(
-                        name,
-                        count
-                    );
-                }
-            }
-
-
             const dismiss =
                 event.target.closest(
-                    "[data-dismiss-announcement]"
+                    "[data-dismiss]"
                 );
 
             if (dismiss) {
 
-                dismissAnnouncement(
-                    dismiss.dataset
-                        .dismissAnnouncement
+                const id =
+                    dismiss.dataset.dismiss;
+
+                let arr =
+                    JSON.parse(
+                        localStorage.getItem(
+                            dismissKey()
+                        ) || "[]"
+                    );
+
+                if (!arr.includes(id)) {
+                    arr.push(id);
+                }
+
+                localStorage.setItem(
+                    dismissKey(),
+                    JSON.stringify(arr)
                 );
+
+                loadAnnouncements();
+
+                return;
             }
 
-
-            const recent =
+            const continueBtn =
                 event.target.closest(
-                    "[data-recent-flashcard]"
+                    ".studyante-recent-continue-btn"
                 );
 
-            if (recent) {
+            if (continueBtn) {
 
-                /*
-                  Open My Library.
-                  Existing STUDYante navigation
-                  handles data-page="library".
-                */
-
-                const libraryLink =
+                const library =
                     document.querySelector(
                         '.sidebar a[data-page="library"]'
                     );
 
-                if (libraryLink) {
-
-                    libraryLink.click();
-
-                } else {
-
-                    window.location.hash =
-                        "#library";
-                }
+                library?.click();
             }
-
-        },
-        true
-    );
-
-
-    /* Keyboard support */
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key !== "Enter" &&
-                event.key !== " "
-            ) {
-                return;
-            }
-
-            const recent =
-                event.target.closest(
-                    "[data-recent-flashcard]"
-                );
-
-            if (!recent) {
-                return;
-            }
-
-            event.preventDefault();
-
-            const link =
-                document.querySelector(
-                    '.sidebar a[data-page="library"]'
-                );
-
-            link?.click();
         }
     );
-
-
-    /* ======================================================
-       REFRESH DASHBOARD WHEN USER RETURNS TO IT
-    ====================================================== */
-
-    document.addEventListener(
-        "click",
-        event => {
-
-            const dashboardLink =
-                event.target.closest(
-                    '.sidebar a[data-page="dashboard"]'
-                );
-
-            if (!dashboardLink) {
-                return;
-            }
-
-            setTimeout(
-                () => {
-
-                    loadDashboardAnnouncements();
-
-                    renderRecentFlashcards();
-
-                },
-                100
-            );
-        }
-    );
-
 
     if (
-        document.readyState ===
-        "loading"
+        document.readyState === "loading"
     ) {
 
         document.addEventListener(
             "DOMContentLoaded",
-            installDashboardHome
+            installDashboard
         );
 
     } else {
 
-        installDashboardHome();
+        installDashboard();
     }
 
-
-    /*
-      Refresh announcements occasionally
-      while website is open.
-    */
-
-    setInterval(
-        loadDashboardAnnouncements,
-        60000
-    );
-
 })();
-
 </script>
 
 <!-- STUDYANTE_DASHBOARD_HOME_END -->
