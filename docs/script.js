@@ -128,6 +128,7 @@ document
     );
   });
 
+if (logoutButton) {
 logoutButton.addEventListener(
   "click",
   () => {
@@ -151,6 +152,8 @@ logoutButton.addEventListener(
     });
   }
 );
+
+}
 
 chooseFileButton.addEventListener(
   "click",
