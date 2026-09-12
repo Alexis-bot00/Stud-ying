@@ -1827,10 +1827,20 @@
                         );
 
 
+                    var avatarHTML =
+                        user.profilePicture
+                            ? '<span class="community-user-avatar"><img src="' +
+                                communityEscape(
+                                    user.profilePicture
+                                ) +
+                                '" alt=""></span>'
+                            : '<span class="community-user-avatar">' +
+                                communityEscape(initial) +
+                                '</span>';
+
+
                     card.innerHTML =
-                        '<span class="community-user-avatar">' +
-                            communityEscape(initial) +
-                        '</span>' +
+                        avatarHTML +
 
                         '<span class="community-user-info">' +
 
@@ -1967,13 +1977,21 @@
 
                     '<div class="community-profile-header">' +
 
-                        '<div class="community-profile-avatar">' +
-                            communityEscape(
-                                communityPublicInitial(
-                                    user.name
-                                )
-                            ) +
-                        '</div>' +
+                        (
+                            user.profilePicture
+                                ? '<div class="community-profile-avatar"><img src="' +
+                                    communityEscape(
+                                        user.profilePicture
+                                    ) +
+                                    '" alt=""></div>'
+                                : '<div class="community-profile-avatar">' +
+                                    communityEscape(
+                                        communityPublicInitial(
+                                            user.name
+                                        )
+                                    ) +
+                                    '</div>'
+                        ) +
 
                         '<div>' +
 

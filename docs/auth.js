@@ -213,4 +213,895 @@
       }
     }
   );
+
+  /* STUDYANTE_ACCOUNT_SETTINGS_FRONTEND_START */
+
+  let studyanteCurrentUser = null;
+  let studyanteProfilePictureFile = null;
+  let studyanteRemoveProfilePicture = false;
+
+
+  function studyanteInitial(name) {
+
+    const value =
+      String(
+        name || "S"
+      ).trim();
+
+    return value
+      ? value.charAt(0).toUpperCase()
+      : "S";
+  }
+
+
+  function studyanteApplyUserProfile(user) {
+
+    if (!user) {
+      return;
+    }
+
+    studyanteCurrentUser =
+      user;
+
+    localStorage.setItem(
+      "studyingUser",
+      JSON.stringify(user)
+    );
+
+
+    const name =
+      user.name || "Student";
+
+    const email =
+      user.email || "";
+
+    const picture =
+      user.profilePicture || "";
+
+
+    const nameNodes = [
+      document.getElementById("userName"),
+      document.getElementById("profileName"),
+      document.querySelector(".user-name")
+    ];
+
+
+    nameNodes.forEach(
+      node => {
+
+        if (node) {
+          node.textContent = name;
+        }
+      }
+    );
+
+
+    const emailNodes = [
+      document.getElementById("userEmail"),
+      document.querySelector(".user-email")
+    ];
+
+
+    emailNodes.forEach(
+      node => {
+
+        if (node) {
+          node.textContent = email;
+        }
+      }
+    );
+
+
+    const avatarImage =
+      document.getElementById(
+        "profileAvatarImage"
+      );
+
+    const avatarInitial =
+      document.getElementById(
+        "profileAvatarInitial"
+      );
+
+
+    if (avatarImage && avatarInitial) {
+
+      if (picture) {
+
+        avatarImage.src =
+          picture;
+
+        avatarImage.hidden =
+          false;
+
+        avatarInitial.hidden =
+          true;
+
+      } else {
+
+        avatarImage.removeAttribute(
+          "src"
+        );
+
+        avatarImage.hidden =
+          true;
+
+        avatarInitial.hidden =
+          false;
+
+        avatarInitial.textContent =
+          studyanteInitial(name);
+      }
+    }
+
+
+    const settingsName =
+      document.getElementById(
+        "settingsProfileName"
+      );
+
+    const settingsEmail =
+      document.getElementById(
+        "settingsProfileEmail"
+      );
+
+
+    if (settingsName) {
+      settingsName.value = name;
+    }
+
+    if (settingsEmail) {
+      settingsEmail.value = email;
+    }
+
+
+    studyanteUpdateSettingsPreview(
+      picture,
+      name
+    );
+  }
+
+
+  function studyanteUpdateSettingsPreview(
+    picture,
+    name
+  ) {
+
+    const preview =
+      document.getElementById(
+        "settingsProfilePreview"
+      );
+
+    const initial =
+      document.getElementById(
+        "settingsProfileInitial"
+      );
+
+
+    if (!preview || !initial) {
+      return;
+    }
+
+
+    if (picture) {
+
+      preview.src =
+        picture;
+
+      preview.hidden =
+        false;
+
+      initial.hidden =
+        true;
+
+    } else {
+
+      preview.removeAttribute(
+        "src"
+      );
+
+      preview.hidden =
+        true;
+
+      initial.hidden =
+        false;
+
+      initial.textContent =
+        studyanteInitial(
+          name ||
+          studyanteCurrentUser?.name
+        );
+    }
+  }
+
+
+  function studyanteSettingsMessage(
+    elementId,
+    message,
+    success
+  ) {
+
+    const element =
+      document.getElementById(
+        elementId
+      );
+
+    if (!element) {
+      return;
+    }
+
+    element.textContent =
+      message || "";
+
+    element.classList.toggle(
+      "success",
+      Boolean(success)
+    );
+
+    element.classList.toggle(
+      "error",
+      Boolean(message) &&
+      !success
+    );
+  }
+
+
+  function openStudyanteAccountSettings() {
+
+    const modal =
+      document.getElementById(
+        "accountSettingsModal"
+      );
+
+    if (!modal) {
+      return;
+    }
+
+
+    studyanteProfilePictureFile =
+      null;
+
+    studyanteRemoveProfilePicture =
+      false;
+
+
+    if (studyanteCurrentUser) {
+
+      studyanteApplyUserProfile(
+        studyanteCurrentUser
+      );
+    }
+
+
+    studyanteSettingsMessage(
+      "profileSettingsMessage",
+      "",
+      false
+    );
+
+    studyanteSettingsMessage(
+      "passwordSettingsMessage",
+      "",
+      false
+    );
+
+
+    modal.hidden =
+      false;
+
+    document.body.classList.add(
+      "studyante-account-open"
+    );
+  }
+
+
+  function closeStudyanteAccountSettings() {
+
+    const modal =
+      document.getElementById(
+        "accountSettingsModal"
+      );
+
+    if (modal) {
+      modal.hidden = true;
+    }
+
+    document.body.classList.remove(
+      "studyante-account-open"
+    );
+  }
+
+
+  async function saveStudyanteProfile() {
+
+    const nameInput =
+      document.getElementById(
+        "settingsProfileName"
+      );
+
+    const emailInput =
+      document.getElementById(
+        "settingsProfileEmail"
+      );
+
+    const button =
+      document.getElementById(
+        "saveProfileSettings"
+      );
+
+
+    const name =
+      String(
+        nameInput?.value || ""
+      ).trim();
+
+    const email =
+      String(
+        emailInput?.value || ""
+      ).trim();
+
+
+    if (!name || !email) {
+
+      studyanteSettingsMessage(
+        "profileSettingsMessage",
+        "Enter your name and email.",
+        false
+      );
+
+      return;
+    }
+
+
+    const formData =
+      new FormData();
+
+    formData.append(
+      "name",
+      name
+    );
+
+    formData.append(
+      "email",
+      email
+    );
+
+
+    if (
+      studyanteProfilePictureFile
+    ) {
+
+      formData.append(
+        "profilePicture",
+        studyanteProfilePictureFile
+      );
+    }
+
+
+    if (
+      studyanteRemoveProfilePicture
+    ) {
+
+      formData.append(
+        "removeProfilePicture",
+        "true"
+      );
+    }
+
+
+    const oldText =
+      button?.textContent || "";
+
+    if (button) {
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Saving...";
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          `${AUTH_API_BASE}/api/account/profile`,
+          {
+            method: "PATCH",
+            body: formData
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          "Could not update profile."
+        );
+      }
+
+
+      if (data.token) {
+
+        localStorage.setItem(
+          "studyingToken",
+          data.token
+        );
+      }
+
+
+      studyanteProfilePictureFile =
+        null;
+
+      studyanteRemoveProfilePicture =
+        false;
+
+
+      studyanteApplyUserProfile(
+        data.user
+      );
+
+
+      studyanteSettingsMessage(
+        "profileSettingsMessage",
+        "Profile updated successfully.",
+        true
+      );
+
+
+    } catch (error) {
+
+      studyanteSettingsMessage(
+        "profileSettingsMessage",
+        error.message,
+        false
+      );
+
+    } finally {
+
+      if (button) {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          oldText;
+      }
+    }
+  }
+
+
+  async function changeStudyantePassword() {
+
+    const currentPassword =
+      document.getElementById(
+        "settingsCurrentPassword"
+      );
+
+    const newPassword =
+      document.getElementById(
+        "settingsNewPassword"
+      );
+
+    const confirmPassword =
+      document.getElementById(
+        "settingsConfirmPassword"
+      );
+
+    const button =
+      document.getElementById(
+        "changeAccountPassword"
+      );
+
+
+    const current =
+      currentPassword?.value || "";
+
+    const next =
+      newPassword?.value || "";
+
+    const confirm =
+      confirmPassword?.value || "";
+
+
+    if (
+      !current ||
+      !next ||
+      !confirm
+    ) {
+
+      studyanteSettingsMessage(
+        "passwordSettingsMessage",
+        "Complete all password fields.",
+        false
+      );
+
+      return;
+    }
+
+
+    if (next.length < 6) {
+
+      studyanteSettingsMessage(
+        "passwordSettingsMessage",
+        "New password must be at least 6 characters.",
+        false
+      );
+
+      return;
+    }
+
+
+    if (next !== confirm) {
+
+      studyanteSettingsMessage(
+        "passwordSettingsMessage",
+        "New passwords do not match.",
+        false
+      );
+
+      return;
+    }
+
+
+    const oldText =
+      button?.textContent || "";
+
+    if (button) {
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Changing...";
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          `${AUTH_API_BASE}/api/account/password`,
+          {
+            method: "PATCH",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+                currentPassword:
+                  current,
+
+                newPassword:
+                  next
+              })
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.message ||
+          "Could not change password."
+        );
+      }
+
+
+      currentPassword.value =
+        "";
+
+      newPassword.value =
+        "";
+
+      confirmPassword.value =
+        "";
+
+
+      studyanteSettingsMessage(
+        "passwordSettingsMessage",
+        "Password changed successfully.",
+        true
+      );
+
+
+    } catch (error) {
+
+      studyanteSettingsMessage(
+        "passwordSettingsMessage",
+        error.message,
+        false
+      );
+
+    } finally {
+
+      if (button) {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          oldText;
+      }
+    }
+  }
+
+
+  function installStudyanteAccountSettings() {
+
+    const openButton =
+      document.getElementById(
+        "openAccountSettings"
+      );
+
+    const closeButton =
+      document.getElementById(
+        "closeAccountSettings"
+      );
+
+    const modal =
+      document.getElementById(
+        "accountSettingsModal"
+      );
+
+    const pictureInput =
+      document.getElementById(
+        "settingsProfilePicture"
+      );
+
+    const removePicture =
+      document.getElementById(
+        "removeSettingsProfilePicture"
+      );
+
+    const saveProfile =
+      document.getElementById(
+        "saveProfileSettings"
+      );
+
+    const changePassword =
+      document.getElementById(
+        "changeAccountPassword"
+      );
+
+
+    if (
+      openButton &&
+      !openButton.dataset.accountReady
+    ) {
+
+      openButton.dataset.accountReady =
+        "true";
+
+      openButton.addEventListener(
+        "click",
+        openStudyanteAccountSettings
+      );
+    }
+
+
+    if (
+      closeButton &&
+      !closeButton.dataset.accountReady
+    ) {
+
+      closeButton.dataset.accountReady =
+        "true";
+
+      closeButton.addEventListener(
+        "click",
+        closeStudyanteAccountSettings
+      );
+    }
+
+
+    if (
+      modal &&
+      !modal.dataset.accountReady
+    ) {
+
+      modal.dataset.accountReady =
+        "true";
+
+      modal.addEventListener(
+        "click",
+        event => {
+
+          if (
+            event.target === modal
+          ) {
+
+            closeStudyanteAccountSettings();
+          }
+        }
+      );
+    }
+
+
+    if (
+      pictureInput &&
+      !pictureInput.dataset.accountReady
+    ) {
+
+      pictureInput.dataset.accountReady =
+        "true";
+
+
+      pictureInput.addEventListener(
+        "change",
+        () => {
+
+          const file =
+            pictureInput.files?.[0];
+
+          if (!file) {
+            return;
+          }
+
+
+          if (
+            ![
+              "image/jpeg",
+              "image/png",
+              "image/webp"
+            ].includes(
+              file.type
+            )
+          ) {
+
+            alert(
+              "Choose a JPG, PNG or WEBP image."
+            );
+
+            pictureInput.value =
+              "";
+
+            return;
+          }
+
+
+          if (
+            file.size >
+            3 * 1024 * 1024
+          ) {
+
+            alert(
+              "Profile picture must be 3 MB or smaller."
+            );
+
+            pictureInput.value =
+              "";
+
+            return;
+          }
+
+
+          studyanteProfilePictureFile =
+            file;
+
+          studyanteRemoveProfilePicture =
+            false;
+
+
+          const reader =
+            new FileReader();
+
+          reader.onload =
+            () => {
+
+              studyanteUpdateSettingsPreview(
+                reader.result,
+                studyanteCurrentUser?.name
+              );
+            };
+
+          reader.readAsDataURL(
+            file
+          );
+        }
+      );
+    }
+
+
+    if (
+      removePicture &&
+      !removePicture.dataset.accountReady
+    ) {
+
+      removePicture.dataset.accountReady =
+        "true";
+
+      removePicture.addEventListener(
+        "click",
+        () => {
+
+          studyanteProfilePictureFile =
+            null;
+
+          studyanteRemoveProfilePicture =
+            true;
+
+          if (pictureInput) {
+            pictureInput.value = "";
+          }
+
+          studyanteUpdateSettingsPreview(
+            "",
+            studyanteCurrentUser?.name
+          );
+        }
+      );
+    }
+
+
+    if (
+      saveProfile &&
+      !saveProfile.dataset.accountReady
+    ) {
+
+      saveProfile.dataset.accountReady =
+        "true";
+
+      saveProfile.addEventListener(
+        "click",
+        saveStudyanteProfile
+      );
+    }
+
+
+    if (
+      changePassword &&
+      !changePassword.dataset.accountReady
+    ) {
+
+      changePassword.dataset.accountReady =
+        "true";
+
+      changePassword.addEventListener(
+        "click",
+        changeStudyantePassword
+      );
+    }
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape" &&
+          modal &&
+          !modal.hidden
+        ) {
+
+          closeStudyanteAccountSettings();
+        }
+      }
+    );
+  }
+
+
+  window.studyanteApplyUserProfile =
+    studyanteApplyUserProfile;
+
+  /* STUDYANTE_ACCOUNT_SETTINGS_FRONTEND_END */
+
 })();

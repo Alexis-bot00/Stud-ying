@@ -1679,7 +1679,13 @@ app.get(
           user.name,
 
         email:
-          user.email
+          user.email,
+
+        profilePicture:
+          String(
+            user.profilePicture ||
+            ""
+          )
       }
     });
   }
@@ -4593,6 +4599,12 @@ app.get(
                                 "STUDYante User"
                             ),
 
+                        profilePicture:
+                            String(
+                                user.profilePicture ||
+                                ""
+                            ),
+
                         notesCount:
                             publicFiles.length,
 
@@ -4768,6 +4780,12 @@ app.get(
                     String(
                         user.name ||
                         "STUDYante User"
+                    ),
+
+                profilePicture:
+                    String(
+                        user.profilePicture ||
+                        ""
                     )
             },
 
@@ -4779,6 +4797,400 @@ app.get(
 
 
 /* STUDYANTE_PUBLIC_USER_PROFILES_END */
+
+
+/* STUDYANTE_ACCOUNT_SETTINGS_BACKEND_START */
+
+
+/* ----------------------------------------------------------
+   UPDATE PROFILE
+   Name / Email / Profile Picture
+---------------------------------------------------------- */
+
+app.patch(
+    "/api/account/profile",
+    requireAuth,
+    imageUpload.single("profilePicture"),
+    async (req, res) => {
+
+        let temporaryPath =
+            req.file?.path || null;
+
+        try {
+
+            const users =
+                readUsers();
+
+            const userIndex =
+                users.findIndex(
+                    account =>
+                        account.id ===
+                        req.user.id
+                );
+
+
+            if (userIndex < 0) {
+
+                return res
+                    .status(404)
+                    .json({
+                        success: false,
+                        message:
+                            "Account not found."
+                    });
+            }
+
+
+            const user =
+                users[userIndex];
+
+
+            const name =
+                String(
+                    req.body.name ??
+                    user.name ??
+                    ""
+                )
+                    .trim();
+
+
+            const email =
+                String(
+                    req.body.email ??
+                    user.email ??
+                    ""
+                )
+                    .trim()
+                    .toLowerCase();
+
+
+            if (!name) {
+
+                return res
+                    .status(400)
+                    .json({
+                        success: false,
+                        message:
+                            "Profile name is required."
+                    });
+            }
+
+
+            if (
+                !email ||
+                !email.includes("@")
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+                        success: false,
+                        message:
+                            "Please enter a valid email."
+                    });
+            }
+
+
+            const emailTaken =
+                users.some(
+                    account =>
+                        account.id !== user.id &&
+                        String(
+                            account.email || ""
+                        )
+                            .trim()
+                            .toLowerCase() === email
+                );
+
+
+            if (emailTaken) {
+
+                return res
+                    .status(400)
+                    .json({
+                        success: false,
+                        message:
+                            "Another account already uses this email."
+                    });
+            }
+
+
+            user.name =
+                name;
+
+            user.email =
+                email;
+
+
+            if (
+                String(
+                    req.body.removeProfilePicture ||
+                    ""
+                ) === "true"
+            ) {
+
+                user.profilePicture =
+                    "";
+            }
+
+
+            if (req.file) {
+
+                if (
+                    req.file.size >
+                    3 * 1024 * 1024
+                ) {
+
+                    return res
+                        .status(400)
+                        .json({
+                            success: false,
+                            message:
+                                "Profile picture must be 3 MB or smaller."
+                        });
+                }
+
+
+                const imageBuffer =
+                    fs.readFileSync(
+                        req.file.path
+                    );
+
+
+                user.profilePicture =
+                    "data:" +
+                    req.file.mimetype +
+                    ";base64," +
+                    imageBuffer.toString(
+                        "base64"
+                    );
+            }
+
+
+            users[userIndex] =
+                user;
+
+            writeUsers(
+                users
+            );
+
+
+            const token =
+                createToken(
+                    user
+                );
+
+
+            return res.json({
+                success: true,
+
+                message:
+                    "Profile updated.",
+
+                token,
+
+                user: {
+                    id:
+                        user.id,
+
+                    name:
+                        user.name,
+
+                    email:
+                        user.email,
+
+                    profilePicture:
+                        String(
+                            user.profilePicture ||
+                            ""
+                        )
+                }
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Profile update error:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+                    success: false,
+                    message:
+                        error.message ||
+                        "Could not update profile."
+                });
+
+        } finally {
+
+            if (
+                temporaryPath &&
+                fs.existsSync(
+                    temporaryPath
+                )
+            ) {
+
+                try {
+                    fs.unlinkSync(
+                        temporaryPath
+                    );
+                } catch {
+                    // ignore cleanup error
+                }
+            }
+        }
+    }
+);
+
+
+/* ----------------------------------------------------------
+   CHANGE PASSWORD
+---------------------------------------------------------- */
+
+app.patch(
+    "/api/account/password",
+    requireAuth,
+    async (req, res) => {
+
+        try {
+
+            const currentPassword =
+                String(
+                    req.body.currentPassword ||
+                    ""
+                );
+
+
+            const newPassword =
+                String(
+                    req.body.newPassword ||
+                    ""
+                );
+
+
+            if (
+                !currentPassword ||
+                !newPassword
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+                        success: false,
+                        message:
+                            "Enter your current and new password."
+                    });
+            }
+
+
+            if (
+                newPassword.length <
+                6
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+                        success: false,
+                        message:
+                            "New password must be at least 6 characters."
+                    });
+            }
+
+
+            const users =
+                readUsers();
+
+
+            const userIndex =
+                users.findIndex(
+                    account =>
+                        account.id ===
+                        req.user.id
+                );
+
+
+            if (userIndex < 0) {
+
+                return res
+                    .status(404)
+                    .json({
+                        success: false,
+                        message:
+                            "Account not found."
+                    });
+            }
+
+
+            const user =
+                users[userIndex];
+
+
+            const correct =
+                await bcrypt.compare(
+                    currentPassword,
+                    user.password
+                );
+
+
+            if (!correct) {
+
+                return res
+                    .status(401)
+                    .json({
+                        success: false,
+                        message:
+                            "Current password is incorrect."
+                    });
+            }
+
+
+            user.password =
+                await bcrypt.hash(
+                    newPassword,
+                    10
+                );
+
+
+            users[userIndex] =
+                user;
+
+            writeUsers(
+                users
+            );
+
+
+            return res.json({
+                success: true,
+                message:
+                    "Password changed successfully."
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Password change error:",
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+                    success: false,
+                    message:
+                        error.message ||
+                        "Could not change password."
+                });
+        }
+    }
+);
+
+
+/* STUDYANTE_ACCOUNT_SETTINGS_BACKEND_END */
 
 app.listen(
   PORT,
@@ -4811,9 +5223,3 @@ app.listen(
     console.log("");
   }
 );
-
-
-
-
-
-
