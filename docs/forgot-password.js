@@ -264,21 +264,14 @@
             try {
                 const controller = new AbortController();
 
-const timeout = setTimeout(() => {
-    controller.abort();
-}, 8000);
+                const timeout = setTimeout(() => {
+                    controller.abort();
+                }, 8000);
 
-const controller = new AbortController();
-
-const timeout = setTimeout(() => {
-    controller.abort();
-}, 8000);
-
-const response = await fetch(
-    API + "/api/auth/forgot-password",
-    {
-        signal: controller.signal,
-        signal: controller.signal,
+                const response = await fetch(
+                    API + "/api/auth/forgot-password",
+                    {
+                        signal: controller.signal,
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
@@ -291,9 +284,7 @@ const response = await fetch(
 
                 clearTimeout(timeout);
 
-clearTimeout(timeout);
-
-const text = await response.text();
+                const text = await response.text();
 
                 let data;
 
