@@ -753,107 +753,7 @@ input[placeholder*="search students"] {
 <!-- STUDYANTE_DEVICE_SIDEBAR_END -->
 
 
-<!-- STUDYANTE_SEARCH_SIZE_START -->
-<style>
 
-/* Desktop */
-@media (min-width: 901px) {
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar {
-        width: 560px !important;
-        max-width: 560px !important;
-    }
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"] {
-        width: 100% !important;
-        height: 42px !important;
-    }
-}
-
-/* Tablet */
-@media (max-width: 900px) {
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar {
-        width: 320px !important;
-        max-width: 320px !important;
-    }
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"] {
-        width: 100% !important;
-        height: 36px !important;
-        font-size: 13px !important;
-    }
-
-    .search-container button,
-    .search-wrapper button,
-    .student-search button,
-    .search-bar button {
-        padding: 6px 10px !important;
-        font-size: 12px !important;
-    }
-}
-
-/* Phone */
-@media (max-width: 600px) {
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar {
-        width: 190px !important;
-        max-width: 190px !important;
-    }
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"] {
-        width: 100% !important;
-        height: 32px !important;
-        font-size: 11px !important;
-        padding-left: 28px !important;
-        padding-right: 45px !important;
-    }
-
-    .search-container button,
-    .search-wrapper button,
-    .student-search button,
-    .search-bar button {
-        padding: 5px 8px !important;
-        font-size: 10px !important;
-    }
-}
-
-/* Small phone */
-@media (max-width: 400px) {
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar {
-        width: 150px !important;
-        max-width: 150px !important;
-    }
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"] {
-        height: 30px !important;
-        font-size: 10px !important;
-    }
-
-    .search-container button,
-    .search-wrapper button,
-    .student-search button,
-    .search-bar button {
-        padding: 4px 6px !important;
-        font-size: 9px !important;
-    }
-}
-
-</style>
-<!-- STUDYANTE_SEARCH_SIZE_END -->
 
 
 <!-- STUDYANTE_MOBILE_FINAL_START -->
@@ -1877,323 +1777,10 @@ main,
 </style>
 
 
-<!-- STUDYANTE_MOBILE_SEARCH_FINAL_START -->
-<style>
 
-/* ==========================================
-   MOBILE SEARCH - DO NOT TOUCH SIDEBAR
-========================================== */
 
-@media screen and (max-width: 600px) {
 
-    /*
-       Available mobile layout:
 
-       SIDEBAR |   SEARCH   | PROFILE
-    */
-
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar,
-    .top-search {
-
-        position: fixed !important;
-
-        top: 9px !important;
-
-        /* start AFTER sidebar */
-        left: 230px !important;
-
-        /* leave room for profile */
-        right: 55px !important;
-
-        width: auto !important;
-        max-width: none !important;
-        min-width: 0 !important;
-
-        height: 36px !important;
-
-        margin: 0 !important;
-        padding: 3px !important;
-
-        transform: none !important;
-
-        box-sizing: border-box !important;
-
-        z-index: 8000 !important;
-    }
-
-
-    /* Search form itself */
-    .search-container form,
-    .search-wrapper form,
-    .student-search form,
-    .search-bar form,
-    .top-search form {
-
-        display: flex !important;
-        align-items: center !important;
-
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-
-        height: 100% !important;
-
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-
-    /* SEARCH INPUT */
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"],
-    input[placeholder*="search students"] {
-
-        flex: 1 1 auto !important;
-
-        width: 1px !important;
-        max-width: none !important;
-        min-width: 0 !important;
-
-        height: 28px !important;
-
-        margin: 0 !important;
-
-        padding: 4px 7px !important;
-
-        font-size: 9px !important;
-
-        box-sizing: border-box !important;
-    }
-
-
-    /* BLUE SEARCH BUTTON */
-
-    .search-container button,
-    .search-wrapper button,
-    .student-search button,
-    .search-bar button,
-    .top-search button {
-
-        display: block !important;
-
-        flex: 0 0 auto !important;
-
-        width: auto !important;
-        min-width: 42px !important;
-        max-width: 48px !important;
-
-        height: 27px !important;
-
-        margin-left: 3px !important;
-
-        padding: 2px 6px !important;
-
-        font-size: 9px !important;
-
-        white-space: nowrap !important;
-    }
-
-
-    /* PROFILE STAYS ON RIGHT */
-
-    .studyante-top-profile-wrap {
-
-        position: fixed !important;
-
-        top: 10px !important;
-        right: 8px !important;
-
-        width: 34px !important;
-
-        z-index: 10000 !important;
-    }
-
-
-    .studyante-top-profile-button {
-
-        width: 34px !important;
-        min-width: 34px !important;
-        max-width: 34px !important;
-
-        height: 34px !important;
-
-        padding: 0 !important;
-
-        border-radius: 50% !important;
-    }
-
-}
-
-
-/* ==========================================
-   SMALLER PHONES
-========================================== */
-
-@media screen and (max-width: 430px) {
-
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar,
-    .top-search {
-
-        left: 120px !important;
-        right: 48px !important;
-
-        height: 32px !important;
-    }
-
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"],
-    input[placeholder*="search students"] {
-
-        height: 25px !important;
-
-        font-size: 8px !important;
-
-        padding: 3px 5px !important;
-    }
-
-
-    .search-container button,
-    .search-wrapper button,
-    .student-search button,
-    .search-bar button,
-    .top-search button {
-
-        min-width: 35px !important;
-        max-width: 38px !important;
-
-        height: 24px !important;
-
-        padding: 2px 4px !important;
-
-        font-size: 7px !important;
-    }
-
-
-    .studyante-top-profile-wrap {
-
-        top: 9px !important;
-        right: 6px !important;
-
-        width: 30px !important;
-    }
-
-
-    .studyante-top-profile-button {
-
-        width: 30px !important;
-        min-width: 30px !important;
-        max-width: 30px !important;
-
-        height: 30px !important;
-    }
-
-}
-
-</style>
-<!-- STUDYANTE_MOBILE_SEARCH_FINAL_END -->
-
-
-<!-- STUDYANTE_SEARCH_ADJUST_START -->
-<style>
-
-/* TABLET */
-@media (max-width: 900px) {
-
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar,
-    .top-search {
-        width: 260px !important;
-        max-width: 260px !important;
-
-        /* move slightly right */
-        left: 185px !important;
-        right: auto !important;
-
-        transform: none !important;
-    }
-
-}
-
-
-/* MOBILE */
-@media (max-width: 600px) {
-
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar,
-    .top-search {
-        /* slightly bigger */
-        width: 165px !important;
-        max-width: 165px !important;
-
-        /* slightly more to the right */
-        left: 140px !important;
-        right: auto !important;
-
-        transform: none !important;
-    }
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"],
-    input[placeholder*="search students"] {
-        width: 100% !important;
-        max-width: 100% !important;
-
-        height: 30px !important;
-        font-size: 9px !important;
-    }
-
-}
-
-
-/* SMALL PHONE */
-@media (max-width: 430px) {
-
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar,
-    .top-search {
-        width: 145px !important;
-        max-width: 145px !important;
-
-        left: 128px !important;
-        right: auto !important;
-    }
-
-}
-
-
-/* SIDEBAR CLOSED:
-   search can use more space */
-@media (max-width: 600px) {
-
-    body.sidebar-closed .search-container,
-    body.sidebar-closed .search-wrapper,
-    body.sidebar-closed .student-search,
-    body.sidebar-closed .search-bar,
-    body.sidebar-closed .top-search {
-        left: 60px !important;
-
-        width: 190px !important;
-        max-width: 190px !important;
-    }
-
-}
-
-</style>
-<!-- STUDYANTE_SEARCH_ADJUST_END -->
 
 
 <style>
@@ -2325,8 +1912,21 @@ main,
 
 
 
-<!-- STUDYANTE_REAL_SEARCH_POSITION_START -->
+
+
+
+
+
+
+
+
+
+<!-- STUDYANTE_SEARCH_FINAL_V3_START -->
 <style>
+
+/* =========================================
+   FINAL MOBILE SEARCH POSITION
+   ========================================= */
 
 @media (max-width: 700px) {
 
@@ -2336,245 +1936,132 @@ main,
 
         top: 8px !important;
 
-        /* better position */
-        left: 135px !important;
-
         right: auto !important;
-
-        width: 165px !important;
-        max-width: 165px !important;
+        bottom: auto !important;
 
         margin: 0 !important;
-        transform: none !important;
+
+        box-sizing: border-box !important;
 
         z-index: 20000 !important;
+
+        transition:
+            left .25s ease,
+            width .25s ease,
+            transform .25s ease !important;
     }
 
+
+    #studyanteGlobalSearch .studyante-global-search-box,
     .studyante-global-search-box {
         width: 100% !important;
-        max-width: 100% !important;
+        max-width: none !important;
+        box-sizing: border-box !important;
     }
 
-}
 
+    /* =====================================
+       SIDEBAR OPEN
+       ===================================== */
 
-/* SMALL PHONE */
-@media (max-width: 430px) {
+    body:not(.sidebar-closed) #studyanteGlobalSearch,
+    body:not(.sidebar-closed) .studyante-global-search {
 
-    #studyanteGlobalSearch,
-    .studyante-global-search {
-        left: 125px !important;
+        /*
+           Starts just after sidebar/toggle
+           and is slightly wider
+        */
+        left: 140px !important;
 
-        width: 150px !important;
-        max-width: 150px !important;
+        width: 205px !important;
+        max-width: 205px !important;
+
+        transform: none !important;
     }
 
-}
 
-
-/* WHEN SIDEBAR IS CLOSED */
-@media (max-width: 700px) {
+    /* =====================================
+       SIDEBAR CLOSED
+       ===================================== */
 
     body.sidebar-closed #studyanteGlobalSearch,
     body.sidebar-closed .studyante-global-search {
-        left: 55px !important;
 
-        width: 215px !important;
-        max-width: 215px !important;
-    }
-
-}
-
-</style>
-<!-- STUDYANTE_REAL_SEARCH_POSITION_END -->
-
-
-<!-- STUDYANTE_SEARCH_RESPONSIVE_FINAL_START -->
-<style>
-
-/* MOBILE SEARCH - SIDEBAR OPEN */
-@media (max-width: 700px) {
-
-    #studyanteGlobalSearch,
-    .studyante-global-search {
-        position: fixed !important;
-
-        top: 8px !important;
-
-        /* stays beside the open sidebar */
-        left: 132px !important;
-
-        right: auto !important;
-
-        /* a little wider */
-        width: 185px !important;
-        max-width: 185px !important;
-
-        margin: 0 !important;
-        transform: none !important;
-
-        z-index: 20000 !important;
-    }
-
-    .studyante-global-search-box {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-}
-
-
-/* SMALL PHONES */
-@media (max-width: 430px) {
-
-    #studyanteGlobalSearch,
-    .studyante-global-search {
-        left: 122px !important;
-
-        width: 180px !important;
-        max-width: 180px !important;
-    }
-}
-
-
-/* SIDEBAR CLOSED = SEARCH AUTOMATICALLY CENTERED */
-@media (max-width: 700px) {
-
-    body.sidebar-closed #studyanteGlobalSearch,
-    body.sidebar-closed .studyante-global-search {
+        /*
+           True center of the screen
+        */
         left: 50% !important;
-        right: auto !important;
-
-        transform: translateX(-50%) !important;
 
         width: 230px !important;
         max-width: 230px !important;
 
-        margin: 0 !important;
-    }
-}
-
-
-/* EXTRA SMALL PHONE */
-@media (max-width: 380px) {
-
-    body:not(.sidebar-closed) #studyanteGlobalSearch,
-    body:not(.sidebar-closed) .studyante-global-search {
-        left: 115px !important;
-
-        width: 165px !important;
-        max-width: 165px !important;
-    }
-
-    body.sidebar-closed #studyanteGlobalSearch,
-    body.sidebar-closed .studyante-global-search {
-        width: 210px !important;
-        max-width: 210px !important;
-    }
-}
-
-</style>
-<!-- STUDYANTE_SEARCH_RESPONSIVE_FINAL_END -->
-
-
-<!-- STUDYANTE_SEARCH_SMART_CENTER_START -->
-<style>
-
-@media (max-width: 700px) {
-
-    /* SIDEBAR OPEN */
-    body:not(.sidebar-closed) #studyanteGlobalSearch,
-    body:not(.sidebar-closed) .studyante-global-search {
-        position: fixed !important;
-
-        top: 8px !important;
-        left: 132px !important;
-
-        width: 190px !important;
-        max-width: 190px !important;
-
-        right: auto !important;
-        margin: 0 !important;
-        transform: none !important;
-
-        z-index: 20000 !important;
-    }
-
-
-    /* SIDEBAR CLOSED */
-    body.sidebar-closed #studyanteGlobalSearch,
-    body.sidebar-closed .studyante-global-search {
-        position: fixed !important;
-
-        top: 8px !important;
-
-        /* center between menu and profile */
-        left: calc(50% - 12px) !important;
-
-        width: 240px !important;
-        max-width: 240px !important;
-
-        right: auto !important;
-        margin: 0 !important;
-
         transform: translateX(-50%) !important;
-
-        z-index: 20000 !important;
-    }
-
-
-    .studyante-global-search-box {
-        width: 100% !important;
-        max-width: 100% !important;
     }
 
 }
 
 
-/* SMALL PHONE */
+/* =========================================
+   SMALL PHONE
+   ========================================= */
+
 @media (max-width: 430px) {
 
     body:not(.sidebar-closed) #studyanteGlobalSearch,
     body:not(.sidebar-closed) .studyante-global-search {
-        left: 122px !important;
 
-        width: 185px !important;
-        max-width: 185px !important;
+        left: 128px !important;
+
+        width: 190px !important;
+        max-width: 190px !important;
     }
 
 
     body.sidebar-closed #studyanteGlobalSearch,
     body.sidebar-closed .studyante-global-search {
-        left: calc(50% - 10px) !important;
 
-        width: 235px !important;
-        max-width: 235px !important;
+        left: 50% !important;
+
+        width: 220px !important;
+        max-width: 220px !important;
+
+        transform: translateX(-50%) !important;
     }
 
 }
 
 
-/* VERY SMALL PHONE */
+/* =========================================
+   VERY SMALL PHONE
+   ========================================= */
+
 @media (max-width: 380px) {
 
     body:not(.sidebar-closed) #studyanteGlobalSearch,
     body:not(.sidebar-closed) .studyante-global-search {
-        left: 112px !important;
 
-        width: 170px !important;
-        max-width: 170px !important;
+        left: 115px !important;
+
+        width: 180px !important;
+        max-width: 180px !important;
     }
 
 
     body.sidebar-closed #studyanteGlobalSearch,
     body.sidebar-closed .studyante-global-search {
-        width: 215px !important;
-        max-width: 215px !important;
+
+        left: 50% !important;
+
+        width: 205px !important;
+        max-width: 205px !important;
+
+        transform: translateX(-50%) !important;
     }
 
 }
 
 </style>
-<!-- STUDYANTE_SEARCH_SMART_CENTER_END -->
+<!-- STUDYANTE_SEARCH_FINAL_V3_END -->
 
 </head>
 
@@ -3943,310 +3430,7 @@ main,
   <!-- STUDYANTE_TOP_PROFILE_MENU_END -->
 
 
-<!-- STUDYANTE_EXACT_MOBILE_SEARCH_START -->
 
-<style>
-
-@media (max-width: 700px) {
-
-    /* keep profile on right */
-    .studyante-top-profile-wrap {
-        position: fixed !important;
-        top: 8px !important;
-        right: 8px !important;
-        z-index: 20000 !important;
-    }
-
-    .studyante-top-profile-button {
-        width: 32px !important;
-        min-width: 32px !important;
-        max-width: 32px !important;
-        height: 32px !important;
-        padding: 0 !important;
-        border-radius: 50% !important;
-    }
-
-}
-
-</style>
-
-<script>
-(function () {
-
-    function fixMobileSearch() {
-
-        if (window.innerWidth > 700) {
-            return;
-        }
-
-        const sidebar = document.querySelector(".sidebar");
-
-        const profile =
-            document.querySelector(".studyante-top-profile-wrap");
-
-        const input =
-            document.querySelector(
-                'input[placeholder*="Search students" i]'
-            );
-
-        if (!input || !sidebar) {
-            return;
-        }
-
-        /* Find the actual white search container */
-        let box = input.parentElement;
-
-        for (let i = 0; i < 6 && box; i++) {
-
-            const button =
-                box.querySelector("button");
-
-            if (button) {
-                break;
-            }
-
-            box = box.parentElement;
-        }
-
-        if (!box) {
-            return;
-        }
-
-        const sidebarRight =
-            sidebar.getBoundingClientRect().right;
-
-        let profileLeft =
-            window.innerWidth - 45;
-
-        if (profile) {
-            profileLeft =
-                profile.getBoundingClientRect().left;
-        }
-
-        const left =
-            sidebarRight + 10;
-
-        const rightSpace =
-            window.innerWidth - profileLeft + 8;
-
-        const available =
-            window.innerWidth -
-            left -
-            rightSpace -
-            8;
-
-        /*
-           Limit the WHITE search bar width.
-           It will never cover sidebar/profile.
-        */
-        const searchWidth =
-            Math.max(
-                90,
-                Math.min(available, 170)
-            );
-
-        box.style.setProperty(
-            "position",
-            "fixed",
-            "important"
-        );
-
-        box.style.setProperty(
-            "top",
-            "8px",
-            "important"
-        );
-
-        box.style.setProperty(
-            "left",
-            left + "px",
-            "important"
-        );
-
-        box.style.setProperty(
-            "right",
-            "auto",
-            "important"
-        );
-
-        box.style.setProperty(
-            "width",
-            searchWidth + "px",
-            "important"
-        );
-
-        box.style.setProperty(
-            "max-width",
-            searchWidth + "px",
-            "important"
-        );
-
-        box.style.setProperty(
-            "min-width",
-            "0",
-            "important"
-        );
-
-        box.style.setProperty(
-            "height",
-            "32px",
-            "important"
-        );
-
-        box.style.setProperty(
-            "margin",
-            "0",
-            "important"
-        );
-
-        box.style.setProperty(
-            "padding",
-            "2px 3px",
-            "important"
-        );
-
-        box.style.setProperty(
-            "transform",
-            "none",
-            "important"
-        );
-
-        box.style.setProperty(
-            "box-sizing",
-            "border-box",
-            "important"
-        );
-
-        box.style.setProperty(
-            "z-index",
-            "15000",
-            "important"
-        );
-
-
-        /* SEARCH INPUT */
-        input.style.setProperty(
-            "width",
-            "100%",
-            "important"
-        );
-
-        input.style.setProperty(
-            "max-width",
-            "100%",
-            "important"
-        );
-
-        input.style.setProperty(
-            "min-width",
-            "0",
-            "important"
-        );
-
-        input.style.setProperty(
-            "height",
-            "26px",
-            "important"
-        );
-
-        input.style.setProperty(
-            "font-size",
-            "9px",
-            "important"
-        );
-
-        input.style.setProperty(
-            "padding",
-            "3px 5px",
-            "important"
-        );
-
-
-        /* SEARCH BUTTON */
-        const searchButton =
-            box.querySelector("button");
-
-        if (searchButton) {
-
-            searchButton.style.setProperty(
-                "display",
-                "block",
-                "important"
-            );
-
-            searchButton.style.setProperty(
-                "width",
-                "40px",
-                "important"
-            );
-
-            searchButton.style.setProperty(
-                "min-width",
-                "40px",
-                "important"
-            );
-
-            searchButton.style.setProperty(
-                "max-width",
-                "40px",
-                "important"
-            );
-
-            searchButton.style.setProperty(
-                "height",
-                "25px",
-                "important"
-            );
-
-            searchButton.style.setProperty(
-                "padding",
-                "2px",
-                "important"
-            );
-
-            searchButton.style.setProperty(
-                "font-size",
-                "8px",
-                "important"
-            );
-
-            searchButton.style.setProperty(
-                "margin-left",
-                "2px",
-                "important"
-            );
-        }
-    }
-
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-            fixMobileSearch();
-
-            setTimeout(
-                fixMobileSearch,
-                300
-            );
-
-            setTimeout(
-                fixMobileSearch,
-                1000
-            );
-        }
-    );
-
-
-    window.addEventListener(
-        "resize",
-        fixMobileSearch
-    );
-
-})();
-</script>
-
-<!-- STUDYANTE_EXACT_MOBILE_SEARCH_END -->
 
 
 <!-- STUDYANTE_COLLAPSIBLE_SIDEBAR_START -->
