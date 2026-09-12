@@ -384,7 +384,7 @@ async function loadLibrary() {
     libraryStatus.hidden = false;
 
     libraryStatus.innerHTML =
-      `?? ${escapeHTML(error.message)}`;
+      `❌ ${escapeHTML(error.message)}`;
   }
 }
 
@@ -412,7 +412,7 @@ function renderFolderFilters() {
         folder.id;
 
       button.textContent =
-        `?? ${folder.name}`;
+        `📁 ${folder.name}`;
 
       if (
         activeFolderFilter ===
@@ -545,7 +545,7 @@ function createFileCard(item) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      ??
+      🧠
     </div>
 
     <h3>
@@ -565,8 +565,7 @@ function createFileCard(item) {
     </p>
 
     <small>
-      ?? ${
-        folder
+      📁 ${folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
       }
@@ -665,7 +664,7 @@ function createFlashcardSetCard(set) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      ??
+      🧠
     </div>
 
     <h3>
@@ -682,8 +681,7 @@ function createFlashcardSetCard(set) {
     </p>
 
     <small>
-      ?? ${
-        folder
+      📁 ${folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
       }
@@ -1382,7 +1380,7 @@ function showLoading(type) {
 
   generatedBody.innerHTML = `
     <div class="loading-box">
-      ?? Studying AI is reading your lesson...
+      🤖 Studying AI is reading your lesson...
     </div>
   `;
 
@@ -1399,7 +1397,7 @@ function displayGenerated(
   generatedContent.hidden = false;
 
   if (type === "notes") {
-    generatedIcon.textContent = "??";
+    generatedIcon.textContent = "📝";
     generatedTitle.textContent =
       "Study Notes";
 
@@ -1431,7 +1429,7 @@ function displayGenerated(
           )} Flashcards`
         : "Study Flashcards";
 
-    generatedIcon.textContent = "??";
+    generatedIcon.textContent = "📝";
 
     generatedTitle.textContent =
       `${flashcards.length} Flashcards`;
@@ -1568,7 +1566,7 @@ function displayGenerated(
   }
 
   if (type === "game") {
-    generatedIcon.textContent = "??";
+    generatedIcon.textContent = "📝";
     generatedTitle.textContent =
       "Study Game";
 
@@ -1924,7 +1922,7 @@ function renderFlashcard(
                 class="secondary-btn"
                 type="button"
               >
-                ?? Save to My Library
+                💾 Save to My Library
               </button>
             `
             : ""
@@ -2240,7 +2238,7 @@ function openSavedFlashcards(set) {
 
   generatedContent.hidden = false;
 
-  generatedIcon.textContent = "??";
+  generatedIcon.textContent = "📝";
 
   generatedTitle.textContent =
     set.name || "Study Flashcards";
@@ -2540,7 +2538,7 @@ function checkGameAnswer(button) {
 
 function showError(message) {
   generatedContent.hidden = false;
-  generatedIcon.textContent = "??";
+  generatedIcon.textContent = "📝";
   generatedTitle.textContent =
     "Could not generate";
 
@@ -3261,7 +3259,7 @@ function addMessage(
     ) {
         message.innerHTML = `
             <span class="message-avatar">
-                ??
+                🤖
             </span>
 
             <div class="message-text"></div>
@@ -3457,8 +3455,7 @@ function renderChatHistory() {
             deleteButton.className =
                 "chat-history-delete";
 
-            deleteButton.textContent =
-                "??";
+            deleteButton.textContent = "🗑️";
 
             deleteButton.title =
                 "Delete chat";
@@ -4344,7 +4341,7 @@ function setStudyingThinking(show) {
         button.className = "ai-attach-menu-item";
 
         button.innerHTML =
-            '<span class="ai-attach-menu-icon">??</span>' +
+            '<span class="ai-attach-menu-icon">🖼️</span>' +
             '<span>Generate Image</span>';
 
         button.addEventListener("click", function (event) {
@@ -4676,8 +4673,7 @@ function studyanteMaterialInfo(type) {
   const types = {
 
     notes: {
-      icon: "??",
-      title: "Notes",
+      icon: "📝",`r`n      title: "Notes",
       action: "Open"
     },
 
@@ -4688,15 +4684,13 @@ function studyanteMaterialInfo(type) {
     },
 
     game: {
-      icon: "??",
-      title: "Study Game",
+      icon: "🎮",`r`n      title: "Study Game",
       action: "Play"
     }
   };
 
   return types[type] || {
-    icon: "??",
-    title: "Study Material",
+    icon: "📚",`r`n    title: "Study Material",
     action: "Open"
   };
 }
@@ -4789,7 +4783,7 @@ function studyanteAddSaveButton() {
     "secondary-btn studyante-save-generated";
 
   button.textContent =
-    "?? Save to My Library";
+    "💾 Save to My Library";
 
 
   button.onclick =
@@ -5050,8 +5044,8 @@ function studyanteCreateMaterialCard(
 
       ${
         folder
-          ? `?? ${escapeHTML(folder.name)}`
-          : "?? Uncategorized"
+          ? `📁 ${escapeHTML(folder.name)}`
+          : "📁 Uncategorized"
       }
 
     </div>
