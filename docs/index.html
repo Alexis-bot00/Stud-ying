@@ -1790,6 +1790,92 @@ main,
 </style>
 <!-- STUDYANTE_MOBILE_STACK_END -->
 
+
+<style>
+
+/* SHRINK THE WHOLE SEARCH BAR INCLUDING WHITE BACKGROUND */
+
+@media (max-width: 900px) {
+
+    .search-container,
+    .search-wrapper,
+    .search-bar,
+    .student-search,
+    .top-search {
+        width: 180px !important;
+        max-width: 180px !important;
+        min-width: 0 !important;
+
+        padding: 3px 5px !important;
+
+        left: 145px !important;
+        right: auto !important;
+
+        transform: none !important;
+    }
+
+    .search-container form,
+    .search-wrapper form,
+    .search-bar form,
+    .student-search form,
+    .top-search form {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+}
+
+
+/* PHONE */
+
+@media (max-width: 600px) {
+
+    .search-container,
+    .search-wrapper,
+    .search-bar,
+    .student-search,
+    .top-search {
+        width: 125px !important;
+        max-width: 125px !important;
+
+        left: 120px !important;
+
+        padding: 2px 4px !important;
+    }
+
+    input[placeholder*="Search students"],
+    input[placeholder*="Search Students"],
+    input[placeholder*="search students"] {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: 26px !important;
+
+        font-size: 8px !important;
+    }
+
+}
+
+
+/* VERY SMALL PHONE */
+
+@media (max-width: 400px) {
+
+    .search-container,
+    .search-wrapper,
+    .search-bar,
+    .student-search,
+    .top-search {
+        width: 100px !important;
+        max-width: 100px !important;
+
+        left: 108px !important;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
