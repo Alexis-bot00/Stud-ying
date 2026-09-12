@@ -3863,3 +3863,24 @@ body.studyante-dark .studyante-profile-menu-logout {
 }
 
 /* STUDYANTE_TOP_PROFILE_MENU_STYLE_END */
+
+/* STUDYANTE_PAGE_VISIBILITY_SAFETY_START */
+
+.studyante-page {
+    display: none;
+}
+
+.studyante-page.studyante-page-active {
+    display: block;
+}
+
+.studyante-page[hidden] {
+    display: none !important;
+}
+
+/* Dashboard is the safe default before JavaScript initializes */
+#dashboard:not([hidden]) {
+    display: block;
+}
+
+/* STUDYANTE_PAGE_VISIBILITY_SAFETY_END */
