@@ -5542,6 +5542,1068 @@ body.studyante-admin-page #studyanteAdminPage {
 
 <!-- STUDYANTE_ADMIN_NAVIGATION_FIX_END -->
 
+
+<!-- STUDYANTE_DASHBOARD_HOME_START -->
+
+<style>
+
+/* ==========================================================
+   STUDYANTE DASHBOARD - ANNOUNCEMENTS + RECENT FLASHCARDS
+========================================================== */
+
+.studyante-dashboard-home {
+    margin-top: 24px;
+    display: grid;
+    gap: 22px;
+}
+
+.studyante-dashboard-block {
+    width: 100%;
+}
+
+.studyante-dashboard-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.studyante-dashboard-block-header h2 {
+    margin: 0;
+    font-size: 21px;
+    color: #111827;
+}
+
+.studyante-dashboard-block-header p {
+    margin: 4px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* ANNOUNCEMENTS */
+
+.studyante-dashboard-announcements {
+    display: grid;
+    gap: 12px;
+}
+
+.studyante-dashboard-announcement {
+    position: relative;
+
+    padding: 18px 48px 18px 18px;
+
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+
+    background: #eff6ff;
+}
+
+.studyante-dashboard-announcement-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 8px;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    color: #111827;
+}
+
+.studyante-dashboard-announcement-message {
+    color: #374151;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.studyante-dashboard-announcement-date {
+    margin-top: 10px;
+
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.studyante-announcement-dismiss {
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    width: 30px;
+    height: 30px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #64748b;
+
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.studyante-announcement-dismiss:hover {
+    background: rgba(0,0,0,.06);
+}
+
+
+/* RECENT FLASHCARDS */
+
+.studyante-recent-flashcards {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+.studyante-recent-flashcard {
+    padding: 17px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        border-color .15s ease;
+}
+
+.studyante-recent-flashcard:hover {
+    transform: translateY(-2px);
+
+    border-color: #93c5fd;
+
+    box-shadow:
+        0 8px 22px rgba(15,23,42,.08);
+}
+
+.studyante-recent-flashcard-icon {
+    font-size: 25px;
+    margin-bottom: 11px;
+}
+
+.studyante-recent-flashcard h3 {
+    margin: 0 0 6px;
+
+    color: #111827;
+
+    font-size: 16px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.studyante-recent-flashcard p {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.studyante-dashboard-empty {
+    padding: 18px;
+
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+
+    color: #64748b;
+
+    background: rgba(255,255,255,.45);
+
+    text-align: center;
+}
+
+
+/* DARK MODE */
+
+body.studyante-dark
+.studyante-dashboard-block-header h2 {
+    color: #f8fafc;
+}
+
+body.studyante-dark
+.studyante-dashboard-block-header p {
+    color: #94a3b8;
+}
+
+body.studyante-dark
+.studyante-dashboard-announcement {
+    background: #172033;
+    border-color: #334155;
+}
+
+body.studyante-dark
+.studyante-dashboard-announcement-title {
+    color: #f8fafc;
+}
+
+body.studyante-dark
+.studyante-dashboard-announcement-message {
+    color: #cbd5e1;
+}
+
+body.studyante-dark
+.studyante-dashboard-announcement-date {
+    color: #94a3b8;
+}
+
+body.studyante-dark
+.studyante-announcement-dismiss {
+    color: #94a3b8;
+}
+
+body.studyante-dark
+.studyante-announcement-dismiss:hover {
+    background: #1e293b;
+}
+
+body.studyante-dark
+.studyante-recent-flashcard {
+    background: #111827;
+
+    border-color: #334155;
+}
+
+body.studyante-dark
+.studyante-recent-flashcard:hover {
+    border-color: #3b82f6;
+
+    background: #172033;
+}
+
+body.studyante-dark
+.studyante-recent-flashcard h3 {
+    color: #f8fafc;
+}
+
+body.studyante-dark
+.studyante-recent-flashcard p {
+    color: #94a3b8;
+}
+
+body.studyante-dark
+.studyante-dashboard-empty {
+    background: #111827;
+
+    border-color: #334155;
+
+    color: #94a3b8;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 850px) {
+
+    .studyante-recent-flashcards {
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
+    }
+}
+
+@media (max-width: 600px) {
+
+    .studyante-dashboard-home {
+        margin-top: 18px;
+    }
+
+    .studyante-recent-flashcards {
+        grid-template-columns: 1fr;
+    }
+
+    .studyante-dashboard-announcement {
+        padding:
+            15px
+            42px
+            15px
+            15px;
+    }
+}
+
+</style>
+
+
+<script>
+
+(() => {
+
+    const STUDYANTE_DASHBOARD_API =
+        "https://stud-ying-production.up.railway.app";
+
+
+    /* ======================================================
+       CURRENT USER STORAGE KEY
+    ====================================================== */
+
+    function studyanteDashboardUserKey() {
+
+        try {
+
+            const user =
+                JSON.parse(
+                    localStorage.getItem(
+                        "studyingUser"
+                    ) || "{}"
+                );
+
+            return String(
+                user.id ||
+                user.email ||
+                "default"
+            );
+
+        } catch {
+
+            return "default";
+        }
+    }
+
+
+    function recentStorageKey() {
+
+        return (
+            "studyanteRecentFlashcards_" +
+            studyanteDashboardUserKey()
+        );
+    }
+
+
+    function dismissedStorageKey() {
+
+        return (
+            "studyanteDismissedAnnouncements_" +
+            studyanteDashboardUserKey()
+        );
+    }
+
+
+    /* ======================================================
+       ESCAPE HTML
+    ====================================================== */
+
+    function dashboardEscape(value) {
+
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+
+    /* ======================================================
+       INSTALL DASHBOARD SECTIONS
+    ====================================================== */
+
+    function installDashboardHome() {
+
+        const dashboard =
+            document.getElementById(
+                "dashboard"
+            );
+
+        if (
+            !dashboard ||
+            document.getElementById(
+                "studyanteDashboardHome"
+            )
+        ) {
+            return;
+        }
+
+        const container =
+            document.createElement(
+                "div"
+            );
+
+        container.id =
+            "studyanteDashboardHome";
+
+        container.className =
+            "studyante-dashboard-home";
+
+        container.innerHTML = `
+
+            <section
+                class="studyante-dashboard-block"
+            >
+
+                <div
+                    class="studyante-dashboard-block-header"
+                >
+
+                    <div>
+
+                        <h2>
+                            📢 Announcements
+                        </h2>
+
+                        <p>
+                            Latest updates from STUDYante
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="studyanteDashboardAnnouncements"
+                    class="studyante-dashboard-announcements"
+                >
+
+                    <div class="studyante-dashboard-empty">
+                        Loading announcements...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section
+                class="studyante-dashboard-block"
+            >
+
+                <div
+                    class="studyante-dashboard-block-header"
+                >
+
+                    <div>
+
+                        <h2>
+                            🧠 Recently Studied
+                        </h2>
+
+                        <p>
+                            Your 3 latest flashcard sets
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="studyanteRecentFlashcards"
+                    class="studyante-recent-flashcards"
+                ></div>
+
+            </section>
+        `;
+
+        dashboard.appendChild(
+            container
+        );
+
+        loadDashboardAnnouncements();
+
+        renderRecentFlashcards();
+    }
+
+
+    /* ======================================================
+       ANNOUNCEMENTS
+    ====================================================== */
+
+    function getDismissedAnnouncements() {
+
+        try {
+
+            const data =
+                JSON.parse(
+                    localStorage.getItem(
+                        dismissedStorageKey()
+                    ) || "[]"
+                );
+
+            return Array.isArray(data)
+                ? data
+                : [];
+
+        } catch {
+
+            return [];
+        }
+    }
+
+
+    function dismissAnnouncement(id) {
+
+        const dismissed =
+            getDismissedAnnouncements();
+
+        if (
+            !dismissed.includes(id)
+        ) {
+            dismissed.push(id);
+        }
+
+        localStorage.setItem(
+            dismissedStorageKey(),
+            JSON.stringify(
+                dismissed.slice(-100)
+            )
+        );
+
+        loadDashboardAnnouncements();
+    }
+
+
+    async function loadDashboardAnnouncements() {
+
+        const container =
+            document.getElementById(
+                "studyanteDashboardAnnouncements"
+            );
+
+        if (!container) {
+            return;
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    STUDYANTE_DASHBOARD_API +
+                    "/api/announcements"
+                );
+
+            const data =
+                await response.json();
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    "Could not load announcements."
+                );
+            }
+
+            const dismissed =
+                getDismissedAnnouncements();
+
+            const announcements =
+                (
+                    Array.isArray(
+                        data.announcements
+                    )
+                        ? data.announcements
+                        : []
+                )
+                .filter(
+                    item =>
+                        !dismissed.includes(
+                            item.id
+                        )
+                )
+                .slice(0, 3);
+
+
+            if (
+                announcements.length === 0
+            ) {
+
+                container.innerHTML = `
+                    <div
+                        class="studyante-dashboard-empty"
+                    >
+                        No new announcements.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            container.innerHTML =
+                announcements
+                    .map(
+                        item => {
+
+                            let date =
+                                "Recently";
+
+                            if (
+                                item.createdAt
+                            ) {
+
+                                const parsed =
+                                    new Date(
+                                        item.createdAt
+                                    );
+
+                                if (
+                                    !Number.isNaN(
+                                        parsed.getTime()
+                                    )
+                                ) {
+
+                                    date =
+                                        parsed.toLocaleString(
+                                            undefined,
+                                            {
+                                                dateStyle:
+                                                    "medium",
+
+                                                timeStyle:
+                                                    "short"
+                                            }
+                                        );
+                                }
+                            }
+
+                            return `
+
+                                <article
+                                    class="studyante-dashboard-announcement"
+                                >
+
+                                    <button
+                                        type="button"
+                                        class="studyante-announcement-dismiss"
+                                        data-dismiss-announcement="${dashboardEscape(item.id)}"
+                                        title="Dismiss"
+                                    >
+                                        ✕
+                                    </button>
+
+                                    <div
+                                        class="studyante-dashboard-announcement-title"
+                                    >
+                                        <span>
+                                            📢
+                                        </span>
+
+                                        <span>
+                                            ${dashboardEscape(item.title)}
+                                        </span>
+                                    </div>
+
+                                    <div
+                                        class="studyante-dashboard-announcement-message"
+                                    >
+                                        ${dashboardEscape(item.message)}
+                                    </div>
+
+                                    <div
+                                        class="studyante-dashboard-announcement-date"
+                                    >
+                                        ${dashboardEscape(date)}
+                                    </div>
+
+                                </article>
+                            `;
+                        }
+                    )
+                    .join("");
+
+        } catch (error) {
+
+            console.error(
+                "Announcement error:",
+                error
+            );
+
+            container.innerHTML = `
+                <div
+                    class="studyante-dashboard-empty"
+                >
+                    Announcements could not be loaded.
+                </div>
+            `;
+        }
+    }
+
+
+    /* ======================================================
+       RECENT FLASHCARDS
+    ====================================================== */
+
+    function getRecentFlashcards() {
+
+        try {
+
+            const data =
+                JSON.parse(
+                    localStorage.getItem(
+                        recentStorageKey()
+                    ) || "[]"
+                );
+
+            return Array.isArray(data)
+                ? data
+                : [];
+
+        } catch {
+
+            return [];
+        }
+    }
+
+
+    function saveRecentFlashcard(
+        name,
+        count
+    ) {
+
+        name =
+            String(name || "")
+                .trim();
+
+        if (!name) {
+            return;
+        }
+
+        let recent =
+            getRecentFlashcards();
+
+        /*
+          Remove previous copy so studying
+          the same set moves it back to #1.
+        */
+
+        recent =
+            recent.filter(
+                item =>
+                    item.name !== name
+            );
+
+        recent.unshift({
+            name,
+
+            count:
+                Number(count) || 0,
+
+            studiedAt:
+                new Date()
+                    .toISOString()
+        });
+
+        recent =
+            recent.slice(0, 3);
+
+        localStorage.setItem(
+            recentStorageKey(),
+            JSON.stringify(recent)
+        );
+
+        renderRecentFlashcards();
+    }
+
+
+    function renderRecentFlashcards() {
+
+        const container =
+            document.getElementById(
+                "studyanteRecentFlashcards"
+            );
+
+        if (!container) {
+            return;
+        }
+
+        const recent =
+            getRecentFlashcards()
+                .slice(0, 3);
+
+        if (
+            recent.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div
+                    class="studyante-dashboard-empty"
+                >
+                    Study a flashcard set and it will appear here.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML =
+            recent
+                .map(
+                    item => {
+
+                        let studied =
+                            "Recently studied";
+
+                        if (
+                            item.studiedAt
+                        ) {
+
+                            const date =
+                                new Date(
+                                    item.studiedAt
+                                );
+
+                            if (
+                                !Number.isNaN(
+                                    date.getTime()
+                                )
+                            ) {
+
+                                studied =
+                                    date.toLocaleString(
+                                        undefined,
+                                        {
+                                            dateStyle:
+                                                "medium",
+
+                                            timeStyle:
+                                                "short"
+                                        }
+                                    );
+                            }
+                        }
+
+
+                        return `
+
+                            <article
+                                class="studyante-recent-flashcard"
+                                data-recent-flashcard="true"
+                                tabindex="0"
+                            >
+
+                                <div
+                                    class="studyante-recent-flashcard-icon"
+                                >
+                                    🧠
+                                </div>
+
+                                <h3>
+                                    ${dashboardEscape(item.name)}
+                                </h3>
+
+                                <p>
+                                    ${
+                                        item.count
+                                            ? dashboardEscape(item.count) +
+                                              " flashcards • "
+                                            : ""
+                                    }
+                                    ${dashboardEscape(studied)}
+                                </p>
+
+                            </article>
+                        `;
+                    }
+                )
+                .join("");
+    }
+
+
+    /* ======================================================
+       DETECT WHEN STUDENT CLICKS "STUDY"
+       ON A SAVED FLASHCARD SET
+    ====================================================== */
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            const studyButton =
+                event.target.closest(
+                    ".study-set"
+                );
+
+            if (studyButton) {
+
+                const card =
+                    studyButton.closest(
+                        ".library-card"
+                    );
+
+                if (card) {
+
+                    const name =
+                        card
+                            .querySelector("h3")
+                            ?.textContent
+                            ?.trim() ||
+                        "Flashcards";
+
+                    const text =
+                        card
+                            .querySelector("p")
+                            ?.textContent ||
+                        "";
+
+                    const match =
+                        text.match(
+                            /(\d+)\s+Flashcard/i
+                        );
+
+                    const count =
+                        match
+                            ? Number(match[1])
+                            : 0;
+
+                    saveRecentFlashcard(
+                        name,
+                        count
+                    );
+                }
+            }
+
+
+            const dismiss =
+                event.target.closest(
+                    "[data-dismiss-announcement]"
+                );
+
+            if (dismiss) {
+
+                dismissAnnouncement(
+                    dismiss.dataset
+                        .dismissAnnouncement
+                );
+            }
+
+
+            const recent =
+                event.target.closest(
+                    "[data-recent-flashcard]"
+                );
+
+            if (recent) {
+
+                /*
+                  Open My Library.
+                  Existing STUDYante navigation
+                  handles data-page="library".
+                */
+
+                const libraryLink =
+                    document.querySelector(
+                        '.sidebar a[data-page="library"]'
+                    );
+
+                if (libraryLink) {
+
+                    libraryLink.click();
+
+                } else {
+
+                    window.location.hash =
+                        "#library";
+                }
+            }
+
+        },
+        true
+    );
+
+
+    /* Keyboard support */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key !== "Enter" &&
+                event.key !== " "
+            ) {
+                return;
+            }
+
+            const recent =
+                event.target.closest(
+                    "[data-recent-flashcard]"
+                );
+
+            if (!recent) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const link =
+                document.querySelector(
+                    '.sidebar a[data-page="library"]'
+                );
+
+            link?.click();
+        }
+    );
+
+
+    /* ======================================================
+       REFRESH DASHBOARD WHEN USER RETURNS TO IT
+    ====================================================== */
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            const dashboardLink =
+                event.target.closest(
+                    '.sidebar a[data-page="dashboard"]'
+                );
+
+            if (!dashboardLink) {
+                return;
+            }
+
+            setTimeout(
+                () => {
+
+                    loadDashboardAnnouncements();
+
+                    renderRecentFlashcards();
+
+                },
+                100
+            );
+        }
+    );
+
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            installDashboardHome
+        );
+
+    } else {
+
+        installDashboardHome();
+    }
+
+
+    /*
+      Refresh announcements occasionally
+      while website is open.
+    */
+
+    setInterval(
+        loadDashboardAnnouncements,
+        60000
+    );
+
+})();
+
+</script>
+
+<!-- STUDYANTE_DASHBOARD_HOME_END -->
+
 </body>
 
 </html>
