@@ -3772,6 +3772,196 @@ main,
 
 <!-- STUDYANTE_EXACT_MOBILE_SEARCH_END -->
 
+
+<!-- STUDYANTE_COLLAPSIBLE_SIDEBAR_START -->
+
+<style>
+
+.sidebar-toggle {
+    position: fixed;
+    top: 12px;
+    left: 230px;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    z-index: 30000;
+
+    font-size: 20px;
+}
+
+
+/* OPEN SIDEBAR */
+body:not(.sidebar-closed) .sidebar {
+    transform: translateX(0);
+}
+
+
+/* CLOSED SIDEBAR */
+body.sidebar-closed .sidebar {
+    transform: translateX(-100%) !important;
+}
+
+
+/* DESKTOP CONTENT */
+body.sidebar-closed main,
+body.sidebar-closed .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+
+/* Toggle position when closed */
+body.sidebar-closed .sidebar-toggle {
+    left: 10px !important;
+}
+
+
+/* Smooth animation */
+.sidebar,
+main,
+.main-content,
+.sidebar-toggle {
+    transition: all 0.25s ease !important;
+}
+
+
+/* TABLET */
+@media (max-width: 900px) {
+
+    .sidebar-toggle {
+        left: 158px;
+    }
+
+    body.sidebar-closed .sidebar-toggle {
+        left: 8px !important;
+    }
+
+}
+
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+    .sidebar-toggle {
+        left: 112px;
+        top: 8px;
+
+        width: 30px;
+        height: 30px;
+
+        font-size: 16px;
+    }
+
+    body.sidebar-closed .sidebar-toggle {
+        left: 6px !important;
+    }
+
+
+    /* when closed, content takes full phone width */
+    body.sidebar-closed main,
+    body.sidebar-closed .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+
+    /* search gets more room */
+    body.sidebar-closed .search-container,
+    body.sidebar-closed .search-wrapper,
+    body.sidebar-closed .student-search,
+    body.sidebar-closed .search-bar,
+    body.sidebar-closed .top-search {
+        left: 48px !important;
+    }
+
+}
+
+</style>
+
+
+<script>
+(function () {
+
+    function installSidebarToggle() {
+
+        if (document.getElementById("studyanteSidebarToggle")) {
+            return;
+        }
+
+        const button = document.createElement("button");
+
+        button.id = "studyanteSidebarToggle";
+        button.className = "sidebar-toggle";
+        button.type = "button";
+        button.innerHTML = "☰";
+        button.setAttribute("aria-label", "Open or close sidebar");
+
+        document.body.appendChild(button);
+
+
+        button.addEventListener("click", function () {
+
+            document.body.classList.toggle("sidebar-closed");
+
+            const closed =
+                document.body.classList.contains("sidebar-closed");
+
+            button.innerHTML = closed ? "☰" : "✕";
+
+            localStorage.setItem(
+                "studyanteSidebarClosed",
+                closed ? "1" : "0"
+            );
+
+        });
+
+
+        /* remember sidebar state */
+        if (
+            localStorage.getItem("studyanteSidebarClosed") === "1"
+        ) {
+
+            document.body.classList.add("sidebar-closed");
+            button.innerHTML = "☰";
+
+        } else {
+
+            button.innerHTML = "✕";
+
+        }
+
+    }
+
+
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            installSidebarToggle
+        );
+
+    } else {
+
+        installSidebarToggle();
+
+    }
+
+})();
+</script>
+
+<!-- STUDYANTE_COLLAPSIBLE_SIDEBAR_END -->
+
 </body>
 
 </html>
