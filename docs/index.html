@@ -3466,6 +3466,312 @@ main,
 
   <!-- STUDYANTE_TOP_PROFILE_MENU_END -->
 
+
+<!-- STUDYANTE_EXACT_MOBILE_SEARCH_START -->
+
+<style>
+
+@media (max-width: 700px) {
+
+    /* keep profile on right */
+    .studyante-top-profile-wrap {
+        position: fixed !important;
+        top: 8px !important;
+        right: 8px !important;
+        z-index: 20000 !important;
+    }
+
+    .studyante-top-profile-button {
+        width: 32px !important;
+        min-width: 32px !important;
+        max-width: 32px !important;
+        height: 32px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+    }
+
+}
+
+</style>
+
+<script>
+(function () {
+
+    function fixMobileSearch() {
+
+        if (window.innerWidth > 700) {
+            return;
+        }
+
+        const sidebar = document.querySelector(".sidebar");
+
+        const profile =
+            document.querySelector(".studyante-top-profile-wrap");
+
+        const input =
+            document.querySelector(
+                'input[placeholder*="Search students" i]'
+            );
+
+        if (!input || !sidebar) {
+            return;
+        }
+
+        /* Find the actual white search container */
+        let box = input.parentElement;
+
+        for (let i = 0; i < 6 && box; i++) {
+
+            const button =
+                box.querySelector("button");
+
+            if (button) {
+                break;
+            }
+
+            box = box.parentElement;
+        }
+
+        if (!box) {
+            return;
+        }
+
+        const sidebarRight =
+            sidebar.getBoundingClientRect().right;
+
+        let profileLeft =
+            window.innerWidth - 45;
+
+        if (profile) {
+            profileLeft =
+                profile.getBoundingClientRect().left;
+        }
+
+        const left =
+            sidebarRight + 10;
+
+        const rightSpace =
+            window.innerWidth - profileLeft + 8;
+
+        const available =
+            window.innerWidth -
+            left -
+            rightSpace -
+            8;
+
+        /*
+           Limit the WHITE search bar width.
+           It will never cover sidebar/profile.
+        */
+        const searchWidth =
+            Math.max(
+                90,
+                Math.min(available, 170)
+            );
+
+        box.style.setProperty(
+            "position",
+            "fixed",
+            "important"
+        );
+
+        box.style.setProperty(
+            "top",
+            "8px",
+            "important"
+        );
+
+        box.style.setProperty(
+            "left",
+            left + "px",
+            "important"
+        );
+
+        box.style.setProperty(
+            "right",
+            "auto",
+            "important"
+        );
+
+        box.style.setProperty(
+            "width",
+            searchWidth + "px",
+            "important"
+        );
+
+        box.style.setProperty(
+            "max-width",
+            searchWidth + "px",
+            "important"
+        );
+
+        box.style.setProperty(
+            "min-width",
+            "0",
+            "important"
+        );
+
+        box.style.setProperty(
+            "height",
+            "32px",
+            "important"
+        );
+
+        box.style.setProperty(
+            "margin",
+            "0",
+            "important"
+        );
+
+        box.style.setProperty(
+            "padding",
+            "2px 3px",
+            "important"
+        );
+
+        box.style.setProperty(
+            "transform",
+            "none",
+            "important"
+        );
+
+        box.style.setProperty(
+            "box-sizing",
+            "border-box",
+            "important"
+        );
+
+        box.style.setProperty(
+            "z-index",
+            "15000",
+            "important"
+        );
+
+
+        /* SEARCH INPUT */
+        input.style.setProperty(
+            "width",
+            "100%",
+            "important"
+        );
+
+        input.style.setProperty(
+            "max-width",
+            "100%",
+            "important"
+        );
+
+        input.style.setProperty(
+            "min-width",
+            "0",
+            "important"
+        );
+
+        input.style.setProperty(
+            "height",
+            "26px",
+            "important"
+        );
+
+        input.style.setProperty(
+            "font-size",
+            "9px",
+            "important"
+        );
+
+        input.style.setProperty(
+            "padding",
+            "3px 5px",
+            "important"
+        );
+
+
+        /* SEARCH BUTTON */
+        const searchButton =
+            box.querySelector("button");
+
+        if (searchButton) {
+
+            searchButton.style.setProperty(
+                "display",
+                "block",
+                "important"
+            );
+
+            searchButton.style.setProperty(
+                "width",
+                "40px",
+                "important"
+            );
+
+            searchButton.style.setProperty(
+                "min-width",
+                "40px",
+                "important"
+            );
+
+            searchButton.style.setProperty(
+                "max-width",
+                "40px",
+                "important"
+            );
+
+            searchButton.style.setProperty(
+                "height",
+                "25px",
+                "important"
+            );
+
+            searchButton.style.setProperty(
+                "padding",
+                "2px",
+                "important"
+            );
+
+            searchButton.style.setProperty(
+                "font-size",
+                "8px",
+                "important"
+            );
+
+            searchButton.style.setProperty(
+                "margin-left",
+                "2px",
+                "important"
+            );
+        }
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            fixMobileSearch();
+
+            setTimeout(
+                fixMobileSearch,
+                300
+            );
+
+            setTimeout(
+                fixMobileSearch,
+                1000
+            );
+        }
+    );
+
+
+    window.addEventListener(
+        "resize",
+        fixMobileSearch
+    );
+
+})();
+</script>
+
+<!-- STUDYANTE_EXACT_MOBILE_SEARCH_END -->
+
 </body>
 
 </html>
