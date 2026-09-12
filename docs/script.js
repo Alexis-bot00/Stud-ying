@@ -3195,12 +3195,30 @@ async function sendQuestion() {
             data.chatId ||
             activeChatId;
 
-        loading
-            .querySelector(
+        const assistantMessageText =
+            loading.querySelector(
                 ".message-text"
-            )
-            .textContent =
-                data.answer;
+            );
+
+        if (assistantMessageText) {
+            const answer =
+                String(
+                    data.answer || ""
+                );
+
+            if (
+                typeof window.studyanteRenderMarkdown ===
+                "function"
+            ) {
+                assistantMessageText.innerHTML =
+                    window.studyanteRenderMarkdown(
+                        answer
+                    );
+            } else {
+                assistantMessageText.textContent =
+                    answer;
+            }
+        }
 
         if (imageForRequest) {
             clearAIImage();
@@ -3254,12 +3272,24 @@ function addMessage(
         `;
     }
 
-    message
-        .querySelector(
+    const messageText =
+        message.querySelector(
             ".message-text"
-        )
-        .textContent =
+        );
+
+    if (
+        role === "assistant" &&
+        typeof window.studyanteRenderMarkdown ===
+            "function"
+    ) {
+        messageText.innerHTML =
+            window.studyanteRenderMarkdown(
+                String(text || "")
+            );
+    } else {
+        messageText.textContent =
             text;
+    }
 
     aiMessages.appendChild(
         message
