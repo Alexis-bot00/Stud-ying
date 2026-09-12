@@ -2239,6 +2239,47 @@ main,
 </style>
 <!-- STUDYANTE_SEARCH_BUTTON_TEXT_END -->
 
+
+<!-- STUDYANTE_SIDEBAR_LEFT_START -->
+<style>
+
+/* Keep sidebar aligned exactly to LEFT edge */
+.sidebar {
+    position: fixed !important;
+
+    left: 0 !important;
+    top: 0 !important;
+
+    margin-left: 0 !important;
+
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+
+/* Mobile */
+@media (max-width: 700px) {
+
+    .sidebar {
+        left: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    /* Open */
+    body:not(.sidebar-closed) .sidebar {
+        transform: translateX(0) !important;
+    }
+
+    /* Closed */
+    body.sidebar-closed .sidebar {
+        transform: translateX(-100%) !important;
+    }
+
+}
+
+</style>
+<!-- STUDYANTE_SIDEBAR_LEFT_END -->
+
 </head>
 
 <body>
