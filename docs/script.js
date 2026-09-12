@@ -4673,7 +4673,8 @@ function studyanteMaterialInfo(type) {
   const types = {
 
     notes: {
-      icon: "📝",`r`n      title: "Notes",
+      icon: "📝",
+      title: "Notes",
       action: "Open"
     },
 
@@ -4684,13 +4685,15 @@ function studyanteMaterialInfo(type) {
     },
 
     game: {
-      icon: "🎮",`r`n      title: "Study Game",
+      icon: "🎮",
+      title: "Study Game",
       action: "Play"
     }
   };
 
   return types[type] || {
-    icon: "📚",`r`n    title: "Study Material",
+    icon: "📚",
+      title: "Study Material",
     action: "Open"
   };
 }

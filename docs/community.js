@@ -1,3 +1,7 @@
+/* STUDYANTE_COMMUNITY_API_FIX_START */
+const COMMUNITY_API_BASE =
+    "https://stud-ying-production.up.railway.app";
+/* STUDYANTE_COMMUNITY_API_FIX_END */
 /* STUDYANTE_SAFE_COMMUNITY_JS */
 
 (function () {
@@ -132,7 +136,7 @@
         try {
 
             var response = await fetch(
-                API_BASE +
+                COMMUNITY_API_BASE +
                 "/api/community/submit/" +
                 encodeURIComponent(type) +
                 "/" +
@@ -173,7 +177,7 @@
     async function getOwnLibrary() {
 
         var response = await fetch(
-            API_BASE + "/api/library"
+            COMMUNITY_API_BASE + "/api/library"
         );
 
         var data = await communityRead(response);
@@ -1168,7 +1172,7 @@
         try {
 
             var response = await fetch(
-                API_BASE +
+                COMMUNITY_API_BASE +
                 "/api/community/file/" +
                 encodeURIComponent(item.id) +
                 "/content"
@@ -1226,7 +1230,7 @@
         try {
 
             var response = await fetch(
-                API_BASE +
+                COMMUNITY_API_BASE +
                 "/api/community/flashcards/" +
                 encodeURIComponent(set.id) +
                 "/copy",
@@ -1292,12 +1296,12 @@
             var responses =
                 await Promise.all([
                     fetch(
-                        API_BASE +
+                        COMMUNITY_API_BASE +
                         "/api/community"
                     ),
 
                     fetch(
-                        API_BASE +
+                        COMMUNITY_API_BASE +
                         "/api/community/status"
                     )
                 ]);
@@ -1417,7 +1421,7 @@
         try {
 
             var response = await fetch(
-                API_BASE +
+                COMMUNITY_API_BASE +
                 "/api/admin/community/pending"
             );
 
@@ -1561,7 +1565,7 @@
         try {
 
             var response = await fetch(
-                API_BASE +
+                COMMUNITY_API_BASE +
                 "/api/admin/community/" +
                 encodeURIComponent(type) +
                 "/" +
@@ -1748,7 +1752,7 @@
         try {
 
             var url =
-                API_BASE +
+                COMMUNITY_API_BASE +
                 "/api/community/users";
 
             if (query) {
@@ -1923,7 +1927,7 @@
 
             var response =
                 await fetch(
-                    API_BASE +
+                    COMMUNITY_API_BASE +
                     "/api/community/users/" +
                     encodeURIComponent(
                         userId
