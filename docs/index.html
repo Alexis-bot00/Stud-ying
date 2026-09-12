@@ -2063,6 +2063,94 @@ main,
 </style>
 <!-- STUDYANTE_SEARCH_FINAL_V3_END -->
 
+
+<!-- STUDYANTE_SEARCH_SHAPE_START -->
+<style>
+
+@media (max-width: 700px) {
+
+    /* Make whole search bar WIDER */
+    #studyanteGlobalSearch,
+    .studyante-global-search {
+        width: 220px !important;
+        max-width: 220px !important;
+    }
+
+    /* Make search bar SHORTER */
+    .studyante-global-search-box {
+        width: 100% !important;
+        height: 42px !important;
+        min-height: 42px !important;
+
+        padding-top: 3px !important;
+        padding-bottom: 3px !important;
+
+        box-sizing: border-box !important;
+    }
+
+    #communityUserSearchInput {
+        height: 34px !important;
+        min-height: 34px !important;
+
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+
+    .studyante-global-search-button {
+        height: 34px !important;
+        min-height: 34px !important;
+
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+    }
+
+
+    /* SIDEBAR OPEN */
+    body:not(.sidebar-closed) #studyanteGlobalSearch,
+    body:not(.sidebar-closed) .studyante-global-search {
+        left: 128px !important;
+
+        width: 215px !important;
+        max-width: 215px !important;
+
+        transform: none !important;
+    }
+
+
+    /* SIDEBAR CLOSED */
+    body.sidebar-closed #studyanteGlobalSearch,
+    body.sidebar-closed .studyante-global-search {
+        left: 50% !important;
+
+        width: 260px !important;
+        max-width: 260px !important;
+
+        transform: translateX(-50%) !important;
+    }
+}
+
+
+/* SMALL PHONE */
+@media (max-width: 430px) {
+
+    body:not(.sidebar-closed) #studyanteGlobalSearch,
+    body:not(.sidebar-closed) .studyante-global-search {
+        left: 120px !important;
+
+        width: 205px !important;
+        max-width: 205px !important;
+    }
+
+    body.sidebar-closed #studyanteGlobalSearch,
+    body.sidebar-closed .studyante-global-search {
+        width: 250px !important;
+        max-width: 250px !important;
+    }
+}
+
+</style>
+<!-- STUDYANTE_SEARCH_SHAPE_END -->
+
 </head>
 
 <body>
