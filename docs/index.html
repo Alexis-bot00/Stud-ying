@@ -142,7 +142,7 @@
 
 </style>
 
-  <link rel="stylesheet" href="community.css?v=20260912-users1">
+  <link rel="stylesheet" href="community.css?v=20260912-globalusers1">
   <link rel="stylesheet" href="theme.css?v=20260908-sidebar1">
 </head>
 
@@ -251,7 +251,66 @@
   </aside>
 
 
-  <main>
+
+
+  <!-- STUDYANTE_GLOBAL_USER_SEARCH_START -->
+
+  <div
+    id="studyanteGlobalSearch"
+    class="studyante-global-search"
+  >
+
+    <div class="studyante-global-search-box">
+
+      <span
+        class="studyante-global-search-icon"
+        aria-hidden="true"
+      >
+        &#128269;
+      </span>
+
+      <input
+        id="communityUserSearchInput"
+        type="search"
+        placeholder="Search students..."
+        autocomplete="off"
+        aria-label="Search STUDYante students"
+      >
+
+      <button
+        id="communityUserSearchButton"
+        type="button"
+        class="studyante-global-search-button"
+      >
+        Search
+      </button>
+
+    </div>
+
+    <div
+      id="communityUserSearchPanel"
+      class="studyante-global-search-panel"
+      hidden
+    >
+
+      <div
+        id="communityUserSearchStatus"
+        class="community-user-search-status"
+        hidden
+      ></div>
+
+      <div
+        id="communityUserResults"
+        class="community-user-results"
+      ></div>
+
+    </div>
+
+  </div>
+
+  <!-- STUDYANTE_GLOBAL_USER_SEARCH_END -->
+
+<main>
 
     <section
       id="dashboard"
@@ -663,52 +722,6 @@
         </button>
 
       </div>
-
-
-      <!-- STUDYANTE_USER_SEARCH_START -->
-
-      <div class="community-user-search">
-
-        <div class="community-search-copy">
-          <strong>Find Students</strong>
-          <small>
-            Search students who shared approved study materials.
-          </small>
-        </div>
-
-        <div class="community-search-controls">
-
-          <input
-            id="communityUserSearchInput"
-            type="search"
-            placeholder="Search student name..."
-            autocomplete="off"
-          >
-
-          <button
-            id="communityUserSearchButton"
-            type="button"
-            class="primary-btn"
-          >
-            Search
-          </button>
-
-        </div>
-
-        <div
-          id="communityUserSearchStatus"
-          class="community-user-search-status"
-          hidden
-        ></div>
-
-        <div
-          id="communityUserResults"
-          class="community-user-results"
-        ></div>
-
-      </div>
-
-      <!-- STUDYANTE_USER_SEARCH_END -->
 <div
         id="communityStatus"
         class="library-status"
@@ -1208,7 +1221,7 @@
 <script src="auth.js"></script>
   <script src="script.js?v=20260912-camera3"></script>
 
-  <script src="community.js?v=20260912-users1"></script>
+  <script src="community.js?v=20260912-globalusers1"></script>
   <script src="theme.js?v=20260908-theme1"></script>
 </body>
 

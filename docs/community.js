@@ -2341,4 +2341,199 @@
 
     /* STUDYANTE_USER_SEARCH_PROFILES_END */
 
+
+    /* STUDYANTE_GLOBAL_SEARCH_BEHAVIOR_START */
+
+    function studyanteGlobalSearchPanel() {
+
+        return document.getElementById(
+            "communityUserSearchPanel"
+        );
+    }
+
+
+    function studyanteOpenGlobalSearchPanel() {
+
+        var panel =
+            studyanteGlobalSearchPanel();
+
+        if (panel) {
+            panel.hidden = false;
+        }
+    }
+
+
+    function studyanteCloseGlobalSearchPanel() {
+
+        var panel =
+            studyanteGlobalSearchPanel();
+
+        if (panel) {
+            panel.hidden = true;
+        }
+    }
+
+
+    function installStudyanteGlobalSearchBehavior() {
+
+        var root =
+            document.getElementById(
+                "studyanteGlobalSearch"
+            );
+
+        var input =
+            document.getElementById(
+                "communityUserSearchInput"
+            );
+
+        var button =
+            document.getElementById(
+                "communityUserSearchButton"
+            );
+
+        var results =
+            document.getElementById(
+                "communityUserResults"
+            );
+
+
+        if (
+            input &&
+            !input.dataset.studyanteGlobalPanelReady
+        ) {
+
+            input.dataset.studyanteGlobalPanelReady =
+                "true";
+
+
+            input.addEventListener(
+                "focus",
+                function () {
+
+                    if (
+                        String(
+                            input.value || ""
+                        ).trim()
+                    ) {
+
+                        studyanteOpenGlobalSearchPanel();
+                    }
+                }
+            );
+
+
+            input.addEventListener(
+                "input",
+                function () {
+
+                    studyanteOpenGlobalSearchPanel();
+                }
+            );
+        }
+
+
+        if (
+            button &&
+            !button.dataset.studyanteGlobalPanelReady
+        ) {
+
+            button.dataset.studyanteGlobalPanelReady =
+                "true";
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    studyanteOpenGlobalSearchPanel();
+                }
+            );
+        }
+
+
+        if (
+            results &&
+            !results.dataset.studyanteGlobalPanelReady
+        ) {
+
+            results.dataset.studyanteGlobalPanelReady =
+                "true";
+
+            results.addEventListener(
+                "click",
+                function () {
+
+                    setTimeout(
+                        studyanteCloseGlobalSearchPanel,
+                        150
+                    );
+                }
+            );
+        }
+
+
+        if (
+            !document.documentElement.dataset
+                .studyanteGlobalSearchOutsideReady
+        ) {
+
+            document.documentElement.dataset
+                .studyanteGlobalSearchOutsideReady =
+                "true";
+
+
+            document.addEventListener(
+                "click",
+                function (event) {
+
+                    var currentRoot =
+                        document.getElementById(
+                            "studyanteGlobalSearch"
+                        );
+
+                    if (
+                        currentRoot &&
+                        !currentRoot.contains(
+                            event.target
+                        )
+                    ) {
+
+                        studyanteCloseGlobalSearchPanel();
+                    }
+                }
+            );
+
+
+            document.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key ===
+                        "Escape"
+                    ) {
+
+                        studyanteCloseGlobalSearchPanel();
+                    }
+                }
+            );
+        }
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        installStudyanteGlobalSearchBehavior
+    );
+
+
+    if (
+        document.readyState !==
+        "loading"
+    ) {
+
+        installStudyanteGlobalSearchBehavior();
+    }
+
+    /* STUDYANTE_GLOBAL_SEARCH_BEHAVIOR_END */
+
 })();
