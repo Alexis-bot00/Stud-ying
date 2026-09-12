@@ -3886,6 +3886,1347 @@ main,
 
 <!-- STUDYANTE_COLLAPSIBLE_SIDEBAR_END -->
 
+
+<!-- STUDYANTE_SUPER_ADMIN_UI_START -->
+
+<style>
+
+#studyanteAdminNav {
+    display: none;
+}
+
+#studyanteAdminPage {
+    display: none;
+}
+
+body.studyante-is-admin #studyanteAdminNav {
+    display: flex !important;
+}
+
+body.studyante-admin-page #studyanteAdminPage {
+    display: block !important;
+}
+
+.studyante-admin-wrap {
+    padding: 24px;
+}
+
+.studyante-admin-header {
+    margin-bottom: 24px;
+}
+
+.studyante-admin-header h1 {
+    margin: 0 0 6px;
+    font-size: 30px;
+}
+
+.studyante-admin-header p {
+    margin: 0;
+    opacity: .7;
+}
+
+.studyante-admin-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.studyante-admin-tab {
+    border: 1px solid #ddd;
+    background: white;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.studyante-admin-tab.active {
+    background: #111827;
+    color: white;
+}
+
+.studyante-admin-section {
+    display: none;
+}
+
+.studyante-admin-section.active {
+    display: block;
+}
+
+.studyante-admin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 14px;
+}
+
+.studyante-admin-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 18px;
+    background: white;
+}
+
+.studyante-admin-card strong {
+    display: block;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.studyante-admin-toolbar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.studyante-admin-toolbar input,
+.studyante-admin-toolbar textarea {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+}
+
+.studyante-admin-list {
+    display: grid;
+    gap: 12px;
+}
+
+.studyante-admin-item {
+    border: 1px solid #e5e7eb;
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.studyante-admin-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.studyante-admin-actions {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.studyante-admin-btn {
+    border: none;
+    padding: 8px 11px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.studyante-admin-btn-primary {
+    background: #2563eb;
+    color: white;
+}
+
+.studyante-admin-btn-warning {
+    background: #f59e0b;
+    color: white;
+}
+
+.studyante-admin-btn-danger {
+    background: #dc2626;
+    color: white;
+}
+
+.studyante-admin-btn-dark {
+    background: #111827;
+    color: white;
+}
+
+.studyante-admin-muted {
+    opacity: .65;
+    font-size: 13px;
+}
+
+.studyante-admin-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #eef2ff;
+    font-size: 12px;
+    margin-left: 6px;
+}
+
+.studyante-admin-log {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media(max-width:800px) {
+
+    .studyante-admin-wrap {
+        padding: 14px;
+    }
+
+    .studyante-admin-stats {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+}
+
+@media(max-width:480px) {
+
+    .studyante-admin-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+<section
+    id="studyanteAdminPage"
+    class="studyante-page"
+    hidden
+>
+    <div class="studyante-admin-wrap">
+
+        <div class="studyante-admin-header">
+            <h1>🛡️ Super Admin</h1>
+            <p>Full STUDYante administration panel</p>
+        </div>
+
+        <div class="studyante-admin-tabs">
+
+            <button
+                class="studyante-admin-tab active"
+                data-admin-tab="overview"
+            >
+                Overview
+            </button>
+
+            <button
+                class="studyante-admin-tab"
+                data-admin-tab="users"
+            >
+                Users
+            </button>
+
+            <button
+                class="studyante-admin-tab"
+                data-admin-tab="materials"
+            >
+                Materials
+            </button>
+
+            <button
+                class="studyante-admin-tab"
+                data-admin-tab="announcements"
+            >
+                Announcements
+            </button>
+
+            <button
+                class="studyante-admin-tab"
+                data-admin-tab="logs"
+            >
+                Activity Logs
+            </button>
+
+        </div>
+
+
+        <div
+            id="adminOverview"
+            class="studyante-admin-section active"
+        >
+            <div
+                id="studyanteAdminStats"
+                class="studyante-admin-stats"
+            ></div>
+        </div>
+
+
+        <div
+            id="adminUsers"
+            class="studyante-admin-section"
+        >
+
+            <div class="studyante-admin-toolbar">
+                <input
+                    id="studyanteAdminUserSearch"
+                    type="search"
+                    placeholder="Search users..."
+                >
+
+                <button
+                    id="studyanteAdminRefreshUsers"
+                    class="studyante-admin-btn studyante-admin-btn-dark"
+                >
+                    Refresh
+                </button>
+            </div>
+
+            <div
+                id="studyanteAdminUsersList"
+                class="studyante-admin-list"
+            ></div>
+
+        </div>
+
+
+        <div
+            id="adminMaterials"
+            class="studyante-admin-section"
+        >
+
+            <div class="studyante-admin-toolbar">
+                <button
+                    id="studyanteAdminRefreshMaterials"
+                    class="studyante-admin-btn studyante-admin-btn-dark"
+                >
+                    Refresh Materials
+                </button>
+            </div>
+
+            <div
+                id="studyanteAdminMaterialsList"
+                class="studyante-admin-list"
+            ></div>
+
+        </div>
+
+
+        <div
+            id="adminAnnouncements"
+            class="studyante-admin-section"
+        >
+
+            <div class="studyante-admin-toolbar">
+
+                <input
+                    id="studyanteAnnouncementTitle"
+                    placeholder="Announcement title"
+                >
+
+                <textarea
+                    id="studyanteAnnouncementMessage"
+                    placeholder="Announcement message"
+                ></textarea>
+
+                <button
+                    id="studyantePublishAnnouncement"
+                    class="studyante-admin-btn studyante-admin-btn-primary"
+                >
+                    Publish
+                </button>
+
+            </div>
+
+            <div
+                id="studyanteAdminAnnouncementsList"
+                class="studyante-admin-list"
+            ></div>
+
+        </div>
+
+
+        <div
+            id="adminLogs"
+            class="studyante-admin-section"
+        >
+
+            <div class="studyante-admin-toolbar">
+                <button
+                    id="studyanteAdminRefreshLogs"
+                    class="studyante-admin-btn studyante-admin-btn-dark"
+                >
+                    Refresh Logs
+                </button>
+            </div>
+
+            <div
+                id="studyanteAdminLogsList"
+                class="studyante-admin-list"
+            ></div>
+
+        </div>
+
+    </div>
+</section>
+
+<script>
+
+(() => {
+
+    const ADMIN_API =
+        "https://stud-ying-production.up.railway.app";
+
+
+    async function adminRequest(url, options = {}) {
+
+        const response =
+            await fetch(
+                ADMIN_API + url,
+                options
+            );
+
+        const data =
+            await response.json()
+                .catch(() => ({}));
+
+        if (!response.ok) {
+            throw new Error(
+                data.message ||
+                "Admin request failed."
+            );
+        }
+
+        return data;
+    }
+
+
+    async function detectAdmin() {
+
+        try {
+
+            const data =
+                await adminRequest(
+                    "/api/admin/me"
+                );
+
+            if (!data.isAdmin) {
+                return;
+            }
+
+            document.body.classList.add(
+                "studyante-is-admin"
+            );
+
+            installAdminSidebar();
+
+        } catch (error) {
+
+            console.log(
+                "Not admin:",
+                error.message
+            );
+        }
+    }
+
+
+    function installAdminSidebar() {
+
+        if (
+            document.getElementById(
+                "studyanteAdminNav"
+            )
+        ) {
+            return;
+        }
+
+        const nav =
+            document.querySelector(
+                ".sidebar nav"
+            );
+
+        if (!nav) {
+            return;
+        }
+
+        const link =
+            document.createElement("a");
+
+        link.id =
+            "studyanteAdminNav";
+
+        link.href =
+            "#studyanteAdminPage";
+
+        link.innerHTML =
+            "🛡️ Admin";
+
+        link.addEventListener(
+            "click",
+            event => {
+
+                event.preventDefault();
+
+                showAdminPage();
+            }
+        );
+
+        nav.appendChild(link);
+    }
+
+
+    function hideNormalPages() {
+
+        document
+            .querySelectorAll(
+                ".studyante-page"
+            )
+            .forEach(page => {
+
+                page.hidden = true;
+
+                page.style.display =
+                    "none";
+            });
+    }
+
+
+    function showAdminPage() {
+
+        hideNormalPages();
+
+        const adminPage =
+            document.getElementById(
+                "studyanteAdminPage"
+            );
+
+        if (!adminPage) {
+            return;
+        }
+
+        adminPage.hidden = false;
+        adminPage.style.display =
+            "block";
+
+        document.body.classList.add(
+            "studyante-admin-page"
+        );
+
+        document
+            .querySelectorAll(
+                ".sidebar a"
+            )
+            .forEach(link =>
+                link.classList.remove(
+                    "active"
+                )
+            );
+
+        const nav =
+            document.getElementById(
+                "studyanteAdminNav"
+            );
+
+        if (nav) {
+            nav.classList.add(
+                "active"
+            );
+        }
+
+        loadDashboard();
+    }
+
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+
+    async function loadDashboard() {
+
+        try {
+
+            const data =
+                await adminRequest(
+                    "/api/admin/dashboard"
+                );
+
+            const stats =
+                data.stats || {};
+
+            const container =
+                document.getElementById(
+                    "studyanteAdminStats"
+                );
+
+            if (!container) {
+                return;
+            }
+
+            container.innerHTML = `
+
+                <div class="studyante-admin-card">
+                    <strong>${stats.users || 0}</strong>
+                    Users
+                </div>
+
+                <div class="studyante-admin-card">
+                    <strong>${stats.admins || 0}</strong>
+                    Admins
+                </div>
+
+                <div class="studyante-admin-card">
+                    <strong>${stats.suspended || 0}</strong>
+                    Suspended
+                </div>
+
+                <div class="studyante-admin-card">
+                    <strong>${stats.pending || 0}</strong>
+                    Pending
+                </div>
+
+                <div class="studyante-admin-card">
+                    <strong>${stats.files || 0}</strong>
+                    Files
+                </div>
+
+                <div class="studyante-admin-card">
+                    <strong>${stats.flashcards || 0}</strong>
+                    Flashcards
+                </div>
+
+                <div class="studyante-admin-card">
+                    <strong>${stats.studyMaterials || 0}</strong>
+                    Study Materials
+                </div>
+
+                <div class="studyante-admin-card">
+                    <strong>${stats.announcements || 0}</strong>
+                    Announcements
+                </div>
+            `;
+
+        } catch (error) {
+
+            alert(error.message);
+        }
+    }
+
+
+    async function loadUsers(search = "") {
+
+        try {
+
+            const data =
+                await adminRequest(
+                    "/api/admin/users?search=" +
+                    encodeURIComponent(search)
+                );
+
+            const list =
+                document.getElementById(
+                    "studyanteAdminUsersList"
+                );
+
+            list.innerHTML = "";
+
+            data.users.forEach(user => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "studyante-admin-item";
+
+                item.innerHTML = `
+
+                    <div class="studyante-admin-item-row">
+
+                        <div>
+                            <strong>
+                                ${escapeHTML(user.name)}
+                            </strong>
+
+                            <span class="studyante-admin-badge">
+                                ${escapeHTML(user.role)}
+                            </span>
+
+                            ${
+                                user.suspended
+                                ? '<span class="studyante-admin-badge">Suspended</span>'
+                                : ''
+                            }
+
+                            <div class="studyante-admin-muted">
+                                ${escapeHTML(user.email)}
+                            </div>
+                        </div>
+
+                        <div class="studyante-admin-actions">
+
+                            <button
+                                class="studyante-admin-btn studyante-admin-btn-primary"
+                                data-action="role"
+                                data-id="${escapeHTML(user.id)}"
+                                data-role="${
+                                    user.role === "admin"
+                                        ? "student"
+                                        : "admin"
+                                }"
+                            >
+                                ${
+                                    user.role === "admin"
+                                        ? "Demote"
+                                        : "Make Admin"
+                                }
+                            </button>
+
+                            <button
+                                class="studyante-admin-btn studyante-admin-btn-warning"
+                                data-action="suspend"
+                                data-id="${escapeHTML(user.id)}"
+                                data-suspended="${
+                                    user.suspended
+                                        ? "false"
+                                        : "true"
+                                }"
+                            >
+                                ${
+                                    user.suspended
+                                        ? "Unsuspend"
+                                        : "Suspend"
+                                }
+                            </button>
+
+                            <button
+                                class="studyante-admin-btn studyante-admin-btn-danger"
+                                data-action="delete-user"
+                                data-id="${escapeHTML(user.id)}"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+                `;
+
+                list.appendChild(item);
+            });
+
+        } catch (error) {
+
+            alert(error.message);
+        }
+    }
+
+
+    async function loadMaterials() {
+
+        try {
+
+            const data =
+                await adminRequest(
+                    "/api/admin/materials"
+                );
+
+            const list =
+                document.getElementById(
+                    "studyanteAdminMaterialsList"
+                );
+
+            list.innerHTML = "";
+
+            data.materials.forEach(item => {
+
+                const title =
+                    item.title ||
+                    item.name ||
+                    "Untitled Material";
+
+                const itemDiv =
+                    document.createElement(
+                        "div"
+                    );
+
+                itemDiv.className =
+                    "studyante-admin-item";
+
+                itemDiv.innerHTML = `
+
+                    <div class="studyante-admin-item-row">
+
+                        <div>
+                            <strong>
+                                ${escapeHTML(title)}
+                            </strong>
+
+                            <span class="studyante-admin-badge">
+                                ${escapeHTML(item.adminType)}
+                            </span>
+
+                            <div class="studyante-admin-muted">
+                                ${
+                                    item.owner
+                                        ? escapeHTML(item.owner.email)
+                                        : "Unknown owner"
+                                }
+                            </div>
+                        </div>
+
+                        <div class="studyante-admin-actions">
+
+                            ${
+                                item.communityStatus === "approved"
+                                ? `
+                                    <button
+                                        class="studyante-admin-btn studyante-admin-btn-warning"
+                                        data-action="unpublish"
+                                        data-id="${escapeHTML(item.id)}"
+                                        data-type="${escapeHTML(item.adminType)}"
+                                    >
+                                        Unpublish
+                                    </button>
+                                `
+                                : ""
+                            }
+
+                            <button
+                                class="studyante-admin-btn studyante-admin-btn-danger"
+                                data-action="delete-material"
+                                data-id="${escapeHTML(item.id)}"
+                                data-type="${escapeHTML(item.adminType)}"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+                `;
+
+                list.appendChild(
+                    itemDiv
+                );
+            });
+
+        } catch (error) {
+
+            alert(error.message);
+        }
+    }
+
+
+    async function loadAnnouncements() {
+
+        try {
+
+            const data =
+                await adminRequest(
+                    "/api/announcements"
+                );
+
+            const list =
+                document.getElementById(
+                    "studyanteAdminAnnouncementsList"
+                );
+
+            list.innerHTML = "";
+
+            data.announcements
+                .forEach(item => {
+
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
+
+                    div.className =
+                        "studyante-admin-item";
+
+                    div.innerHTML = `
+
+                        <div class="studyante-admin-item-row">
+
+                            <div>
+                                <strong>
+                                    ${escapeHTML(item.title)}
+                                </strong>
+
+                                <div>
+                                    ${escapeHTML(item.message)}
+                                </div>
+                            </div>
+
+                            <button
+                                class="studyante-admin-btn studyante-admin-btn-danger"
+                                data-action="delete-announcement"
+                                data-id="${escapeHTML(item.id)}"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+                    `;
+
+                    list.appendChild(div);
+                });
+
+        } catch (error) {
+
+            alert(error.message);
+        }
+    }
+
+
+    async function loadLogs() {
+
+        try {
+
+            const data =
+                await adminRequest(
+                    "/api/admin/logs"
+                );
+
+            const list =
+                document.getElementById(
+                    "studyanteAdminLogsList"
+                );
+
+            list.innerHTML = "";
+
+            data.logs.forEach(log => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+                div.className =
+                    "studyante-admin-item studyante-admin-log";
+
+                div.innerHTML = `
+
+                    <strong>
+                        ${escapeHTML(log.action)}
+                    </strong>
+
+                    <div>
+                        ${escapeHTML(log.adminName)}
+                    </div>
+
+                    <div class="studyante-admin-muted">
+                        ${escapeHTML(log.createdAt)}
+                    </div>
+                `;
+
+                list.appendChild(div);
+            });
+
+        } catch (error) {
+
+            alert(error.message);
+        }
+    }
+
+
+    document.addEventListener(
+        "click",
+        async event => {
+
+            const tab =
+                event.target.closest(
+                    ".studyante-admin-tab"
+                );
+
+            if (tab) {
+
+                document
+                    .querySelectorAll(
+                        ".studyante-admin-tab"
+                    )
+                    .forEach(button =>
+                        button.classList.remove(
+                            "active"
+                        )
+                    );
+
+                tab.classList.add(
+                    "active"
+                );
+
+                document
+                    .querySelectorAll(
+                        ".studyante-admin-section"
+                    )
+                    .forEach(section =>
+                        section.classList.remove(
+                            "active"
+                        )
+                    );
+
+                const name =
+                    tab.dataset.adminTab;
+
+                const map = {
+                    overview:
+                        "adminOverview",
+                    users:
+                        "adminUsers",
+                    materials:
+                        "adminMaterials",
+                    announcements:
+                        "adminAnnouncements",
+                    logs:
+                        "adminLogs"
+                };
+
+                document
+                    .getElementById(
+                        map[name]
+                    )
+                    ?.classList.add(
+                        "active"
+                    );
+
+                if (name === "overview") {
+                    loadDashboard();
+                }
+
+                if (name === "users") {
+                    loadUsers();
+                }
+
+                if (name === "materials") {
+                    loadMaterials();
+                }
+
+                if (name === "announcements") {
+                    loadAnnouncements();
+                }
+
+                if (name === "logs") {
+                    loadLogs();
+                }
+
+                return;
+            }
+
+
+            const actionButton =
+                event.target.closest(
+                    "[data-action]"
+                );
+
+            if (!actionButton) {
+                return;
+            }
+
+            const action =
+                actionButton.dataset.action;
+
+            const id =
+                actionButton.dataset.id;
+
+
+            try {
+
+                if (action === "role") {
+
+                    const role =
+                        actionButton.dataset.role;
+
+                    if (
+                        !confirm(
+                            `Change this user to ${role}?`
+                        )
+                    ) {
+                        return;
+                    }
+
+                    await adminRequest(
+                        `/api/admin/users/${encodeURIComponent(id)}/role`,
+                        {
+                            method: "PATCH",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body:
+                                JSON.stringify({
+                                    role
+                                })
+                        }
+                    );
+
+                    await loadUsers();
+                }
+
+
+                if (action === "suspend") {
+
+                    const suspended =
+                        actionButton.dataset.suspended ===
+                        "true";
+
+                    await adminRequest(
+                        `/api/admin/users/${encodeURIComponent(id)}/suspension`,
+                        {
+                            method: "PATCH",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body:
+                                JSON.stringify({
+                                    suspended
+                                })
+                        }
+                    );
+
+                    await loadUsers();
+                }
+
+
+                if (
+                    action ===
+                    "delete-user"
+                ) {
+
+                    if (
+                        !confirm(
+                            "Delete this user permanently?"
+                        )
+                    ) {
+                        return;
+                    }
+
+                    await adminRequest(
+                        `/api/admin/users/${encodeURIComponent(id)}`,
+                        {
+                            method:
+                                "DELETE"
+                        }
+                    );
+
+                    await loadUsers();
+                    await loadDashboard();
+                }
+
+
+                if (
+                    action ===
+                    "delete-material"
+                ) {
+
+                    if (
+                        !confirm(
+                            "Delete this material permanently?"
+                        )
+                    ) {
+                        return;
+                    }
+
+                    await adminRequest(
+                        `/api/admin/materials/${encodeURIComponent(actionButton.dataset.type)}/${encodeURIComponent(id)}`,
+                        {
+                            method:
+                                "DELETE"
+                        }
+                    );
+
+                    await loadMaterials();
+                    await loadDashboard();
+                }
+
+
+                if (
+                    action ===
+                    "unpublish"
+                ) {
+
+                    await adminRequest(
+                        `/api/admin/materials/${encodeURIComponent(actionButton.dataset.type)}/${encodeURIComponent(id)}/unpublish`,
+                        {
+                            method:
+                                "PATCH"
+                        }
+                    );
+
+                    await loadMaterials();
+                }
+
+
+                if (
+                    action ===
+                    "delete-announcement"
+                ) {
+
+                    if (
+                        !confirm(
+                            "Delete this announcement?"
+                        )
+                    ) {
+                        return;
+                    }
+
+                    await adminRequest(
+                        `/api/admin/announcements/${encodeURIComponent(id)}`,
+                        {
+                            method:
+                                "DELETE"
+                        }
+                    );
+
+                    await loadAnnouncements();
+                    await loadDashboard();
+                }
+
+            } catch (error) {
+
+                alert(
+                    error.message
+                );
+            }
+        }
+    );
+
+
+    const search =
+        document.getElementById(
+            "studyanteAdminUserSearch"
+        );
+
+    search?.addEventListener(
+        "input",
+        () => {
+
+            clearTimeout(
+                search._timer
+            );
+
+            search._timer =
+                setTimeout(
+                    () =>
+                        loadUsers(
+                            search.value
+                        ),
+                    300
+                );
+        }
+    );
+
+
+    document
+        .getElementById(
+            "studyanteAdminRefreshUsers"
+        )
+        ?.addEventListener(
+            "click",
+            () =>
+                loadUsers(
+                    search?.value || ""
+                )
+        );
+
+
+    document
+        .getElementById(
+            "studyanteAdminRefreshMaterials"
+        )
+        ?.addEventListener(
+            "click",
+            loadMaterials
+        );
+
+
+    document
+        .getElementById(
+            "studyanteAdminRefreshLogs"
+        )
+        ?.addEventListener(
+            "click",
+            loadLogs
+        );
+
+
+    document
+        .getElementById(
+            "studyantePublishAnnouncement"
+        )
+        ?.addEventListener(
+            "click",
+            async () => {
+
+                const title =
+                    document
+                        .getElementById(
+                            "studyanteAnnouncementTitle"
+                        )
+                        ?.value
+                        .trim();
+
+                const message =
+                    document
+                        .getElementById(
+                            "studyanteAnnouncementMessage"
+                        )
+                        ?.value
+                        .trim();
+
+                if (!title || !message) {
+
+                    alert(
+                        "Enter title and message."
+                    );
+
+                    return;
+                }
+
+                try {
+
+                    await adminRequest(
+                        "/api/admin/announcements",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    title,
+                                    message
+                                })
+                        }
+                    );
+
+                    document
+                        .getElementById(
+                            "studyanteAnnouncementTitle"
+                        )
+                        .value = "";
+
+                    document
+                        .getElementById(
+                            "studyanteAnnouncementMessage"
+                        )
+                        .value = "";
+
+                    await loadAnnouncements();
+                    await loadDashboard();
+
+                } catch (error) {
+
+                    alert(
+                        error.message
+                    );
+                }
+            }
+        );
+
+
+    detectAdmin();
+
+})();
+
+</script>
+
+<!-- STUDYANTE_SUPER_ADMIN_UI_END -->
+
 </body>
 
 </html>
