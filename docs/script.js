@@ -3743,9 +3743,9 @@ function setStudyingThinking(show) {
   }
 }
 
-/* =========================================================
+/* ==========================================================
    STUDYante SINGLE-PAGE NAVIGATION
-========================================================= */
+   ========================================================== */
 
 (function () {
 
@@ -3762,36 +3762,19 @@ function setStudyingThinking(show) {
         pageId,
         updateHash = true
     ) {
+
         if (
-            !STUDYANTE_PAGES.includes(
-                pageId
-            )
+            !STUDYANTE_PAGES.includes(pageId)
         ) {
-            pageId =
-                "dashboard";
-        }
-
-        const selectedPage =
-            document.getElementById(
-                pageId
-            );
-
-        if (!selectedPage) {
-            console.warn(
-                "STUDYante page not found:",
-                pageId
-            );
-
-            return;
+            pageId = "dashboard";
         }
 
 
         STUDYANTE_PAGES.forEach(
-            id => {
+            function (id) {
+
                 const page =
-                    document.getElementById(
-                        id
-                    );
+                    document.getElementById(id);
 
                 if (!page) {
                     return;
@@ -3800,18 +3783,44 @@ function setStudyingThinking(show) {
                 const active =
                     id === pageId;
 
-                page.hidden =
-                    !active;
 
-                page.style.display =
-                    active
-                        ? ""
-                        : "none";
+                if (active) {
 
-                page.classList.toggle(
-                    "studyante-page-active",
-                    active
-                );
+                    page.hidden = false;
+
+                    page.removeAttribute(
+                        "hidden"
+                    );
+
+                    page.style.setProperty(
+                        "display",
+                        "block",
+                        "important"
+                    );
+
+                    page.classList.add(
+                        "studyante-page-active"
+                    );
+
+                } else {
+
+                    page.hidden = true;
+
+                    page.setAttribute(
+                        "hidden",
+                        ""
+                    );
+
+                    page.style.setProperty(
+                        "display",
+                        "none",
+                        "important"
+                    );
+
+                    page.classList.remove(
+                        "studyante-page-active"
+                    );
+                }
             }
         );
 
@@ -3820,51 +3829,46 @@ function setStudyingThinking(show) {
             .querySelectorAll(
                 ".sidebar nav a"
             )
-            .forEach(link => {
+            .forEach(
+                function (link) {
 
-                const target =
-                    (
-                        link.dataset.page ||
-                        link
-                            .getAttribute(
-                                "href"
-                            ) ||
-                        ""
-                    )
-                        .replace(
-                            "#",
+                    const target =
+                        (
+                            link.dataset.page ||
+                            link.getAttribute("href") ||
                             ""
                         )
+                        .replace("#", "")
                         .trim();
 
-                const active =
-                    target ===
-                    pageId;
+                    const active =
+                        target === pageId;
 
-                link.classList.toggle(
-                    "active",
-                    active
-                );
+                    link.classList.toggle(
+                        "active",
+                        active
+                    );
 
-                if (active) {
-                    link.setAttribute(
-                        "aria-current",
-                        "page"
-                    );
-                } else {
-                    link.removeAttribute(
-                        "aria-current"
-                    );
+                    if (active) {
+
+                        link.setAttribute(
+                            "aria-current",
+                            "page"
+                        );
+
+                    } else {
+
+                        link.removeAttribute(
+                            "aria-current"
+                        );
+                    }
                 }
-            });
+            );
 
 
-        if (
-            updateHash &&
-            window.location.hash !==
-                "#" + pageId
-        ) {
-            history.pushState(
+        if (updateHash) {
+
+            history.replaceState(
                 null,
                 "",
                 "#" + pageId
@@ -3872,158 +3876,167 @@ function setStudyingThinking(show) {
         }
 
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-
         if (
-            pageId ===
-            "library" &&
-            typeof loadLibrary ===
-            "function"
+            pageId === "library" &&
+            typeof loadLibrary === "function"
         ) {
             loadLibrary();
         }
 
 
         if (
-            pageId ===
-            "ai" &&
-            typeof loadChatHistory ===
-            "function"
+            pageId === "community" &&
+            typeof loadCommunity === "function"
+        ) {
+            loadCommunity();
+        }
+
+
+        if (
+            pageId === "ai" &&
+            typeof loadChatHistory === "function"
         ) {
             loadChatHistory();
         }
     }
 
 
-    document.addEventListener(
-        "click",
-        event => {
+    function getStudyantePageFromLink(
+        link
+    ) {
 
-            const link =
-                event.target.closest(
-                    ".sidebar nav a"
-                );
+        if (!link) {
+            return "";
+        }
 
-            if (!link) {
-                return;
-            }
-
-            const pageId =
-                (
-                    link.dataset.page ||
-                    link
-                        .getAttribute(
-                            "href"
-                        ) ||
-                    ""
-                )
-                    .replace(
-                        "#",
-                        ""
-                    )
-                    .trim();
+        return (
+            link.dataset.page ||
+            link.getAttribute("href") ||
+            ""
+        )
+        .replace("#", "")
+        .trim();
+    }
 
 
-            if (
-                !STUDYANTE_PAGES.includes(
-                    pageId
-                )
-            ) {
-                return;
-            }
+    function installStudyanteNavigation() {
+
+        document
+            .querySelectorAll(
+                ".sidebar nav a"
+            )
+            .forEach(
+                function (link) {
+
+                    if (
+                        link.dataset.navReady ===
+                        "true"
+                    ) {
+                        return;
+                    }
+
+                    link.dataset.navReady =
+                        "true";
 
 
-            event.preventDefault();
+                    link.addEventListener(
+                        "click",
+                        function (event) {
 
-            showStudyantePage(
-                pageId
+                            const pageId =
+                                getStudyantePageFromLink(
+                                    link
+                                );
+
+                            if (
+                                !STUDYANTE_PAGES.includes(
+                                    pageId
+                                )
+                            ) {
+                                return;
+                            }
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            showStudyantePage(
+                                pageId,
+                                true
+                            );
+                        },
+                        true
+                    );
+                }
             );
-        },
-        true
-    );
 
 
-    function openInitialPage() {
-
-        let pageId =
+        let initialPage =
             window.location.hash
-                .replace(
-                    "#",
-                    ""
-                )
+                .replace("#", "")
                 .trim();
 
 
         if (
             !STUDYANTE_PAGES.includes(
-                pageId
+                initialPage
             )
         ) {
-            pageId =
+            initialPage =
                 "dashboard";
         }
 
 
         showStudyantePage(
-            pageId,
+            initialPage,
             false
         );
     }
-
-
-    window.addEventListener(
-        "popstate",
-        () => {
-
-            let pageId =
-                window.location.hash
-                    .replace(
-                        "#",
-                        ""
-                    )
-                    .trim();
-
-
-            if (
-                !STUDYANTE_PAGES.includes(
-                    pageId
-                )
-            ) {
-                pageId =
-                    "dashboard";
-            }
-
-
-            showStudyantePage(
-                pageId,
-                false
-            );
-        }
-    );
 
 
     window.showStudyantePage =
         showStudyantePage;
 
 
+    window.addEventListener(
+        "hashchange",
+        function () {
+
+            const pageId =
+                window.location.hash
+                    .replace("#", "")
+                    .trim();
+
+            if (
+                STUDYANTE_PAGES.includes(
+                    pageId
+                )
+            ) {
+
+                showStudyantePage(
+                    pageId,
+                    false
+                );
+            }
+        }
+    );
+
+
     if (
         document.readyState ===
         "loading"
     ) {
+
         document.addEventListener(
             "DOMContentLoaded",
-            openInitialPage
+            installStudyanteNavigation
         );
+
     } else {
-        openInitialPage();
+
+        installStudyanteNavigation();
     }
 
 })();
-
 
 /* ===== STUDYANTE_IMAGE_GENERATION_CLIENT ===== */
 
