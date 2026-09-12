@@ -242,16 +242,16 @@
 
     if (!user) {
       return;
+    }
+
+    studyanteCurrentUser =
+      user;
 
     if (
       typeof studyanteUpdateTopProfileMenu === "function"
     ) {
       studyanteUpdateTopProfileMenu(user);
     }
-}
-
-    studyanteCurrentUser =
-      user;
 
     localStorage.setItem(
       "studyingUser",
