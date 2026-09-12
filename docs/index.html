@@ -2388,6 +2388,93 @@ main,
 </style>
 <!-- STUDYANTE_REAL_SEARCH_POSITION_END -->
 
+
+<!-- STUDYANTE_SEARCH_RESPONSIVE_FINAL_START -->
+<style>
+
+/* MOBILE SEARCH - SIDEBAR OPEN */
+@media (max-width: 700px) {
+
+    #studyanteGlobalSearch,
+    .studyante-global-search {
+        position: fixed !important;
+
+        top: 8px !important;
+
+        /* stays beside the open sidebar */
+        left: 132px !important;
+
+        right: auto !important;
+
+        /* a little wider */
+        width: 185px !important;
+        max-width: 185px !important;
+
+        margin: 0 !important;
+        transform: none !important;
+
+        z-index: 20000 !important;
+    }
+
+    .studyante-global-search-box {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+
+/* SMALL PHONES */
+@media (max-width: 430px) {
+
+    #studyanteGlobalSearch,
+    .studyante-global-search {
+        left: 122px !important;
+
+        width: 180px !important;
+        max-width: 180px !important;
+    }
+}
+
+
+/* SIDEBAR CLOSED = SEARCH AUTOMATICALLY CENTERED */
+@media (max-width: 700px) {
+
+    body.sidebar-closed #studyanteGlobalSearch,
+    body.sidebar-closed .studyante-global-search {
+        left: 50% !important;
+        right: auto !important;
+
+        transform: translateX(-50%) !important;
+
+        width: 230px !important;
+        max-width: 230px !important;
+
+        margin: 0 !important;
+    }
+}
+
+
+/* EXTRA SMALL PHONE */
+@media (max-width: 380px) {
+
+    body:not(.sidebar-closed) #studyanteGlobalSearch,
+    body:not(.sidebar-closed) .studyante-global-search {
+        left: 115px !important;
+
+        width: 165px !important;
+        max-width: 165px !important;
+    }
+
+    body.sidebar-closed #studyanteGlobalSearch,
+    body.sidebar-closed .studyante-global-search {
+        width: 210px !important;
+        max-width: 210px !important;
+    }
+}
+
+</style>
+<!-- STUDYANTE_SEARCH_RESPONSIVE_FINAL_END -->
+
 </head>
 
 <body>
