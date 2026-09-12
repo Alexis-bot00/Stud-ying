@@ -1207,3 +1207,28 @@ body.studyante-dark
 }
 
 /* STUDYANTE_GLOBAL_USER_SEARCH_STYLE_END */
+
+/* STUDYANTE_CENTER_GLOBAL_SEARCH_START */
+
+@media (min-width: 901px) {
+
+    .studyante-global-search {
+        position: fixed !important;
+
+        top: 16px !important;
+
+        left: calc(250px + 50%) !important;
+
+        right: auto !important;
+
+        width: min(620px, calc(100vw - 310px)) !important;
+
+        max-width: 620px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+    }
+}
+
+/* STUDYANTE_CENTER_GLOBAL_SEARCH_END */
