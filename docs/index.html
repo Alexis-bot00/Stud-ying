@@ -2565,6 +2565,214 @@ body.studyante-dark .studyante-admin-badge {
 /* STUDYANTE_ADMIN_THEME_FIX_END */
 </style>
 
+
+<style>
+/* STUDYANTE_DASHBOARD_2D_FIX_START */
+
+/* Make dashboard sections tighter */
+.studyante-dashboard-home {
+    margin-top: 16px !important;
+    gap: 16px !important;
+}
+
+/* Section headers */
+.studyante-dashboard-block-header {
+    margin-bottom: 8px !important;
+}
+
+.studyante-dashboard-block-header h2 {
+    font-size: 19px !important;
+    margin-bottom: 2px !important;
+}
+
+.studyante-dashboard-block-header p {
+    font-size: 13px !important;
+    margin: 0 !important;
+}
+
+
+/* ANNOUNCEMENT = FLAT 2D BOX */
+
+.studyante-dashboard-announcements {
+    gap: 8px !important;
+}
+
+.studyante-dashboard-announcement {
+    background: #ffffff !important;
+    border: 1px solid #dbe2ea !important;
+
+    border-radius: 8px !important;
+
+    padding: 14px 42px 14px 14px !important;
+
+    box-shadow: none !important;
+
+    min-height: 0 !important;
+}
+
+.studyante-dashboard-announcement-title {
+    font-size: 15px !important;
+    margin-bottom: 5px !important;
+    gap: 6px !important;
+}
+
+.studyante-dashboard-announcement-message {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+}
+
+.studyante-dashboard-announcement-date {
+    margin-top: 7px !important;
+    font-size: 11px !important;
+}
+
+.studyante-announcement-dismiss {
+    top: 8px !important;
+    right: 8px !important;
+
+    width: 26px !important;
+    height: 26px !important;
+
+    border-radius: 5px !important;
+}
+
+
+/* RECENT FLASHCARDS = FLAT 2D BOXES */
+
+.studyante-recent-flashcards {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 10px !important;
+}
+
+.studyante-recent-flashcard {
+    background: #ffffff !important;
+
+    border: 1px solid #dbe2ea !important;
+
+    border-radius: 8px !important;
+
+    padding: 14px !important;
+
+    min-height: 100px !important;
+
+    box-shadow: none !important;
+
+    transform: none !important;
+}
+
+.studyante-recent-flashcard:hover {
+    transform: none !important;
+
+    box-shadow: none !important;
+
+    border-color: #2563eb !important;
+
+    background: #f8fafc !important;
+}
+
+.studyante-recent-flashcard-icon {
+    font-size: 20px !important;
+    margin-bottom: 7px !important;
+}
+
+.studyante-recent-flashcard h3 {
+    font-size: 15px !important;
+    margin-bottom: 5px !important;
+}
+
+.studyante-recent-flashcard p {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+}
+
+
+/* EMPTY BOX */
+
+.studyante-dashboard-empty {
+    padding: 14px !important;
+
+    border-radius: 8px !important;
+
+    min-height: 0 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* DARK MODE */
+
+body.studyante-dark
+.studyante-dashboard-announcement,
+body.studyante-dark
+.studyante-recent-flashcard {
+    background: #111827 !important;
+
+    border-color: #334155 !important;
+
+    box-shadow: none !important;
+}
+
+body.studyante-dark
+.studyante-recent-flashcard:hover {
+    background: #172033 !important;
+
+    border-color: #3b82f6 !important;
+
+    box-shadow: none !important;
+}
+
+body.studyante-dark
+.studyante-dashboard-empty {
+    background: #111827 !important;
+
+    border-color: #334155 !important;
+}
+
+
+/* TABLET */
+
+@media (max-width: 850px) {
+
+    .studyante-recent-flashcards {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .studyante-dashboard-home {
+        gap: 14px !important;
+        margin-top: 12px !important;
+    }
+
+    .studyante-recent-flashcards {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+    }
+
+    .studyante-dashboard-announcement {
+        padding:
+            12px
+            38px
+            12px
+            12px !important;
+    }
+
+    .studyante-recent-flashcard {
+        padding: 12px !important;
+        min-height: 85px !important;
+    }
+}
+
+/* STUDYANTE_DASHBOARD_2D_FIX_END */
+</style>
+
 </head>
 
 <body>
