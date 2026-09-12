@@ -1,0 +1,6490 @@
+/* STUDYANTE_GLOBAL_THEME */
+
+.theme-toggle {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #111827;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.theme-toggle:hover {
+    background: #eef2ff;
+}
+
+body.studyante-dark {
+    --background: #0b1120;
+    --white: #111827;
+    --border: #293548;
+    --dark: #f8fafc;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --blue-soft: #172554;
+    --red-soft: #3f151d;
+
+    background: #0b1120 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark main {
+    background: #0b1120 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark .sidebar {
+    background: #111827 !important;
+    border-color: #293548 !important;
+}
+
+body.studyante-dark .sidebar nav a {
+    color: #cbd5e1 !important;
+}
+
+body.studyante-dark .sidebar nav a:hover {
+    background: #172554 !important;
+    color: #93c5fd !important;
+}
+
+body.studyante-dark .sidebar nav a.active {
+    color: #ffffff !important;
+}
+
+body.studyante-dark .theme-toggle {
+    background: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+body.studyante-dark .theme-toggle:hover {
+    background: #334155;
+}
+
+body.studyante-dark .panel,
+body.studyante-dark .library-card,
+body.studyante-dark .provider-card,
+body.studyante-dark .generate-card,
+body.studyante-dark .question-card details,
+body.studyante-dark .modal-card,
+body.studyante-dark .manual-card,
+body.studyante-dark .ai-image-preview-card,
+body.studyante-dark .community-card,
+body.studyante-dark .community-modal {
+    background: #111827 !important;
+    border-color: #293548 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark .topbar,
+body.studyante-dark .library-header,
+body.studyante-dark .generated-header,
+body.studyante-dark .chat-history-panel {
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark h1,
+body.studyante-dark h2,
+body.studyante-dark h3,
+body.studyante-dark h4,
+body.studyante-dark h5,
+body.studyante-dark strong,
+body.studyante-dark label {
+    color: #f8fafc;
+}
+
+body.studyante-dark p,
+body.studyante-dark small {
+    color: #cbd5e1;
+}
+
+body.studyante-dark input,
+body.studyante-dark textarea,
+body.studyante-dark select {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark input::placeholder,
+body.studyante-dark textarea::placeholder {
+    color: #64748b !important;
+}
+
+body.studyante-dark .secondary-btn {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .secondary-btn:hover {
+    background: #334155 !important;
+}
+
+body.studyante-dark .drop-area,
+body.studyante-dark .generated-content,
+body.studyante-dark .chat-messages {
+    background: #0f172a !important;
+    border-color: #293548 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark .message:not(.user) {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .message.user {
+    color: #ffffff !important;
+}
+
+body.studyante-dark .ai-chat-input-bar,
+body.studyante-dark .ai-attach-menu {
+    background: #111827 !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .ai-attach-btn,
+body.studyante-dark .ai-media-btn,
+body.studyante-dark .ai-attach-option {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .ai-attach-btn:hover,
+body.studyante-dark .ai-media-btn:hover,
+body.studyante-dark .ai-attach-option:hover {
+    background: #1e293b !important;
+}
+
+body.studyante-dark .community-empty {
+    background: #0f172a !important;
+    color: #cbd5e1 !important;
+}
+
+body.studyante-dark .community-study-card {
+    background: #111827 !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .community-card-text {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .community-card-side,
+body.studyante-dark .community-flip-hint {
+    color: #94a3b8 !important;
+}
+
+body.studyante-dark .community-study.community-focus-mode {
+    background: #020617 !important;
+}
+
+body.studyante-dark .community-expand-btn {
+    background: #1e293b !important;
+    border-color: #475569 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .ai-camera-box {
+    background: #111827 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .selected-file,
+body.studyante-dark .flashcard,
+body.studyante-dark .game-choice {
+    border-color: #334155 !important;
+    color: #e5e7eb !important;
+}
+
+body.studyante-dark .library-card.active {
+    background: #172554 !important;
+}
+
+body.studyante-dark .profile,
+body.studyante-dark .profile span {
+    color: #e5e7eb !important;
+}
+
+@media (max-width: 800px) {
+    body.studyante-dark .sidebar {
+        background: #111827 !important;
+    }
+
+    .theme-toggle {
+        margin-top: 8px;
+    }
+}
+/* STUDYANTE_THEME_SWITCH_DESIGN */
+
+.theme-toggle {
+    position: relative !important;
+
+    width: 58px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+
+    margin: 14px 0 14px 8px !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 999px !important;
+
+    background: #d1d5db !important;
+
+    font-size: 0 !important;
+    color: transparent !important;
+
+    cursor: pointer;
+    overflow: visible;
+
+    transition:
+        background .25s ease,
+        box-shadow .25s ease !important;
+}
+
+.theme-toggle::before {
+    content: "";
+
+    position: absolute;
+
+    width: 24px;
+    height: 24px;
+
+    top: 3px;
+    left: 3px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, .25);
+
+    transition:
+        transform .25s ease,
+        background .25s ease;
+}
+
+
+/* LIGHT MODE LABEL */
+
+.theme-toggle::after {
+    content: "Dark Mode";
+
+    position: absolute;
+
+    left: 70px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: max-content;
+
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    pointer-events: none;
+}
+
+
+/* DARK MODE */
+
+body.studyante-dark .theme-toggle {
+    background: #2563eb !important;
+}
+
+body.studyante-dark .theme-toggle::before {
+    transform: translateX(28px);
+    background: #ffffff;
+}
+
+body.studyante-dark .theme-toggle::after {
+    content: "Light Mode";
+    color: #e5e7eb;
+}
+
+
+/* KEYBOARD ACCESS */
+
+.theme-toggle:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, .35) !important;
+    outline-offset: 3px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .theme-toggle {
+        width: 52px !important;
+        height: 28px !important;
+        min-height: 28px !important;
+
+        margin:
+            8px 0
+            8px 6px !important;
+    }
+
+    .theme-toggle::before {
+        width: 22px;
+        height: 22px;
+        top: 3px;
+        left: 3px;
+    }
+
+    body.studyante-dark
+    .theme-toggle::before {
+        transform: translateX(24px);
+    }
+
+    .theme-toggle::after {
+        left: 62px;
+        font-size: 13px;
+    }
+}
+
+/* STUDYANTE_SIDEBAR_USER_PANEL */
+
+.sidebar-user-panel {
+    margin-top: 12px;
+    padding: 14px 0 16px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.sidebar-user-panel .topbar-right {
+    display: block !important;
+}
+
+.sidebar-user-panel .profile {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+}
+
+.sidebar-user-panel .avatar {
+    flex: 0 0 auto !important;
+}
+
+.sidebar-user-panel .profile > div:not(.avatar) {
+    min-width: 0;
+}
+
+.sidebar-user-panel .profile strong,
+.sidebar-user-panel .profile span {
+    display: block;
+}
+
+.sidebar-user-panel .logout-btn {
+    width: 100% !important;
+    margin-top: 12px !important;
+    min-height: 40px !important;
+    text-align: center !important;
+}
+
+body.studyante-dark .sidebar-user-panel {
+    border-color: #293548 !important;
+}
+
+@media (max-width: 800px) {
+
+    .sidebar-user-panel {
+        padding:
+            10px 0
+            12px !important;
+    }
+
+    .sidebar-user-panel .profile {
+        gap: 8px !important;
+    }
+
+    .sidebar-user-panel .logout-btn {
+        min-height: 36px !important;
+        margin-top: 10px !important;
+    }
+}
+
+/* STUDYANTE_COMPACT_BOTTOM_CONTROLS */
+
+.sidebar-bottom-controls {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+
+/* SMALLER THEME SWITCH */
+
+.sidebar-bottom-controls .theme-toggle {
+    width: 46px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+
+    margin:
+        0 0
+        10px 4px !important;
+}
+
+.sidebar-bottom-controls .theme-toggle::before {
+    width: 18px !important;
+    height: 18px !important;
+
+    top: 3px !important;
+    left: 3px !important;
+}
+
+.sidebar-bottom-controls .theme-toggle::after {
+    left: 56px !important;
+
+    font-size: 12px !important;
+    font-weight: 700 !important;
+}
+
+body.studyante-dark
+.sidebar-bottom-controls
+.theme-toggle::before {
+    transform: translateX(22px) !important;
+}
+
+
+/* SMALLER PROFILE AREA */
+
+.sidebar-bottom-controls .sidebar-user-panel {
+    margin-top: 4px !important;
+    padding:
+        10px 0
+        0 !important;
+
+    border-top: 1px solid var(--border) !important;
+    border-bottom: 0 !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile {
+    gap: 8px !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .avatar {
+    width: 34px !important;
+    height: 34px !important;
+
+    min-width: 34px !important;
+
+    font-size: 14px !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile strong {
+    font-size: 13px !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile span {
+    font-size: 11px !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .logout-btn {
+    width: auto !important;
+
+    min-height: 32px !important;
+
+    margin-top: 9px !important;
+    padding:
+        6px 12px !important;
+
+    border-radius: 8px !important;
+
+    font-size: 12px !important;
+}
+
+
+/* KEEP CONTROLS AT BOTTOM OF DESKTOP SIDEBAR */
+
+@media (min-width: 801px) {
+
+    .sidebar {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .sidebar-chat-history {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+    }
+
+    .sidebar-bottom-controls {
+        flex: 0 0 auto !important;
+    }
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls {
+        margin-top: 10px !important;
+        padding-top: 10px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle {
+        width: 42px !important;
+        height: 22px !important;
+        min-height: 22px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle::before {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    body.studyante-dark
+    .sidebar-bottom-controls
+    .theme-toggle::before {
+        transform: translateX(20px) !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle::after {
+        left: 51px !important;
+        font-size: 11px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .avatar {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        font-size: 12px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .profile strong {
+        font-size: 12px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .profile span {
+        font-size: 10px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        min-height: 30px !important;
+        padding:
+            5px 10px !important;
+        font-size: 11px !important;
+    }
+}
+
+/* STUDYANTE_SIDEBAR_BOTTOM_SEPARATION */
+
+/*
+   SIDEBAR ORDER
+
+   Navigation
+
+   Chat History
+   ----------------
+
+   Dark Mode
+
+   Student
+   Logout
+*/
+
+
+/* CHAT HISTORY IS ITS OWN AREA */
+
+.sidebar-chat-history {
+    margin-bottom: 0 !important;
+    padding-bottom: 14px !important;
+}
+
+.sidebar-chat-history .chat-history-panel {
+    margin-bottom: 0 !important;
+}
+
+
+/* CLEAR SEPARATION BELOW CHAT HISTORY */
+
+.sidebar-bottom-controls {
+    flex: 0 0 auto !important;
+
+    margin-top: 0 !important;
+    padding-top: 14px !important;
+
+    border-top: 1px solid var(--border) !important;
+}
+
+
+/* DARK MODE AREA */
+
+.sidebar-bottom-controls .theme-toggle {
+    display: block !important;
+
+    margin:
+        0 0
+        14px 4px !important;
+}
+
+
+/* PROFILE AREA */
+
+.sidebar-bottom-controls .sidebar-user-panel {
+    display: flex !important;
+    flex-direction: column !important;
+
+    margin: 0 !important;
+
+    padding:
+        12px 0
+        0 !important;
+
+    border-top: 1px solid var(--border) !important;
+    border-bottom: 0 !important;
+}
+
+
+/* STUDENT INFORMATION */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.profile {
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+}
+
+
+/* LOGOUT DIRECTLY UNDER STUDENT */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.logout-btn {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    margin:
+        8px 0
+        0 !important;
+
+    padding:
+        6px 10px !important;
+
+    min-height: 30px !important;
+
+    border-radius: 8px !important;
+
+    font-size: 11px !important;
+}
+
+
+/* DESKTOP SIDEBAR */
+
+@media (min-width: 801px) {
+
+    .sidebar {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100vh !important;
+    }
+
+    /*
+       Chat History gets remaining space.
+       Bottom controls stay at the bottom.
+    */
+
+    .sidebar-chat-history {
+        flex:
+            1 1 auto !important;
+
+        min-height: 0 !important;
+
+        overflow-y: auto !important;
+    }
+
+    .sidebar-bottom-controls {
+        flex:
+            0 0 auto !important;
+    }
+}
+
+
+/* DARK MODE DIVIDERS */
+
+body.studyante-dark
+.sidebar-bottom-controls,
+
+body.studyante-dark
+.sidebar-bottom-controls
+.sidebar-user-panel {
+    border-color: #293548 !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .sidebar-chat-history {
+        padding-bottom: 10px !important;
+    }
+
+    .sidebar-bottom-controls {
+        margin-top: 0 !important;
+        padding-top: 10px !important;
+    }
+
+    .sidebar-bottom-controls
+    .theme-toggle {
+        margin:
+            0 0
+            10px 4px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel {
+        padding-top: 10px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        margin-top: 6px !important;
+        min-height: 28px !important;
+    }
+}
+
+/* STUDYANTE_SMALLER_LOGOUT */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.logout-btn {
+    width: fit-content !important;
+    min-width: 0 !important;
+    min-height: 26px !important;
+
+    margin-top: 6px !important;
+
+    padding:
+        4px 9px !important;
+
+    border-radius: 7px !important;
+
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+}
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        min-height: 25px !important;
+        padding: 4px 8px !important;
+        font-size: 10px !important;
+    }
+}
+
+/* STUDYANTE_CHATGPT_SIDEBAR_START */
+
+/* =========================================================
+   CHATGPT-STYLE STUDYANTE SIDEBAR
+   ========================================================= */
+
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    padding: 12px 10px 10px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* -----------------------------
+   BRAND AREA
+------------------------------ */
+
+.sidebar .brand,
+.sidebar .logo-container,
+.sidebar .sidebar-logo {
+    flex: 0 0 auto !important;
+}
+
+
+/* -----------------------------
+   MAIN NAVIGATION
+------------------------------ */
+
+.sidebar nav,
+.sidebar .nav-links,
+.sidebar .sidebar-nav {
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    gap: 2px !important;
+
+    margin-top: 12px !important;
+    margin-bottom: 12px !important;
+}
+
+
+/* ChatGPT-like navigation rows */
+
+.sidebar nav a,
+.sidebar .nav-links a,
+.sidebar .sidebar-nav a {
+    display: flex !important;
+    align-items: center !important;
+
+    min-height: 42px !important;
+
+    padding: 9px 10px !important;
+
+    margin: 0 !important;
+
+    border-radius: 9px !important;
+
+    border: 0 !important;
+    box-shadow: none !important;
+
+    font-size: 14px !important;
+    font-weight: 500 !important;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease !important;
+}
+
+
+/* Hover */
+
+.sidebar nav a:hover,
+.sidebar .nav-links a:hover,
+.sidebar .sidebar-nav a:hover {
+    transform: none !important;
+}
+
+
+/* Active page */
+
+.sidebar nav a.active,
+.sidebar nav a[aria-current="page"],
+.sidebar .nav-links a.active,
+.sidebar .sidebar-nav a.active {
+    box-shadow: none !important;
+}
+
+
+/* -----------------------------
+   CHAT HISTORY
+------------------------------ */
+
+.sidebar-chat-history {
+    flex: 1 1 auto !important;
+
+    min-height: 0 !important;
+
+    margin: 4px 0 0 !important;
+    padding: 0 2px 8px !important;
+
+    border: 0 !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    scrollbar-width: thin;
+}
+
+
+/* Chat History title */
+
+.sidebar-chat-history h2,
+.sidebar-chat-history h3,
+.sidebar-chat-history h4,
+.sidebar-chat-history .chat-history-title {
+    margin: 8px 8px 7px !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+
+    opacity: 0.65 !important;
+
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+}
+
+
+/* Individual history items */
+
+.sidebar-chat-history button,
+.sidebar-chat-history a,
+.sidebar-chat-history .chat-history-item {
+    display: block !important;
+
+    width: 100% !important;
+
+    min-height: 36px !important;
+
+    margin: 1px 0 !important;
+    padding: 8px 9px !important;
+
+    border: 0 !important;
+    border-radius: 8px !important;
+
+    box-shadow: none !important;
+
+    text-align: left !important;
+
+    font-size: 13px !important;
+    font-weight: 400 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    transform: none !important;
+}
+
+
+/* -----------------------------
+   BOTTOM FIXED CONTROLS
+------------------------------ */
+
+.sidebar-bottom-controls {
+    flex: 0 0 auto !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 9px 2px 0 !important;
+
+    border-top: 1px solid rgba(128,128,128,0.20) !important;
+}
+
+
+/* -----------------------------
+   DARK MODE SWITCH
+------------------------------ */
+
+.sidebar-bottom-controls .theme-toggle {
+    display: block !important;
+
+    width: 44px !important;
+    height: 23px !important;
+
+    min-width: 44px !important;
+    min-height: 23px !important;
+
+    margin: 0 0 9px 6px !important;
+
+    padding: 0 !important;
+
+    border-radius: 999px !important;
+}
+
+
+/* knob */
+
+.sidebar-bottom-controls .theme-toggle::before {
+    width: 17px !important;
+    height: 17px !important;
+
+    top: 3px !important;
+    left: 3px !important;
+}
+
+
+/* Hide long label to keep it clean */
+
+.sidebar-bottom-controls .theme-toggle::after {
+    font-size: 10px !important;
+}
+
+
+/* -----------------------------
+   STUDENT PROFILE
+------------------------------ */
+
+.sidebar-bottom-controls .sidebar-user-panel {
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 7px 5px 2px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/* Profile row */
+
+.sidebar-bottom-controls .sidebar-user-panel .profile {
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    gap: 9px !important;
+
+    margin: 0 !important;
+    padding: 4px 2px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+}
+
+
+/* Avatar */
+
+.sidebar-bottom-controls .sidebar-user-panel .avatar {
+    flex: 0 0 32px !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+
+    border-radius: 50% !important;
+
+    font-size: 12px !important;
+}
+
+
+/* Student name */
+
+.sidebar-bottom-controls .sidebar-user-panel .profile strong {
+    display: block !important;
+
+    margin: 0 !important;
+
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+
+/* Student label */
+
+.sidebar-bottom-controls .sidebar-user-panel .profile span {
+    display: block !important;
+
+    margin-top: 2px !important;
+
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+
+    opacity: 0.65 !important;
+}
+
+
+/* -----------------------------
+   SMALL LOGOUT BUTTON
+------------------------------ */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.logout-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    align-self: flex-start !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+
+    min-height: 24px !important;
+
+    margin: 5px 0 0 41px !important;
+
+    padding: 4px 9px !important;
+
+    border-radius: 6px !important;
+
+    font-size: 10px !important;
+    line-height: 1 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+body:not(.studyante-dark) .sidebar {
+    background: #ffffff !important;
+}
+
+body:not(.studyante-dark) .sidebar nav a,
+body:not(.studyante-dark) .sidebar .nav-links a,
+body:not(.studyante-dark) .sidebar .sidebar-nav a {
+    background: transparent !important;
+    color: #202123 !important;
+}
+
+body:not(.studyante-dark) .sidebar nav a:hover,
+body:not(.studyante-dark) .sidebar .nav-links a:hover,
+body:not(.studyante-dark) .sidebar .sidebar-nav a:hover {
+    background: #f2f2f2 !important;
+}
+
+body:not(.studyante-dark) .sidebar nav a.active,
+body:not(.studyante-dark) .sidebar .nav-links a.active,
+body:not(.studyante-dark) .sidebar .sidebar-nav a.active {
+    background: #ececec !important;
+}
+
+body:not(.studyante-dark) .sidebar-chat-history button,
+body:not(.studyante-dark) .sidebar-chat-history a,
+body:not(.studyante-dark) .sidebar-chat-history .chat-history-item {
+    background: transparent !important;
+    color: #202123 !important;
+}
+
+body:not(.studyante-dark) .sidebar-chat-history button:hover,
+body:not(.studyante-dark) .sidebar-chat-history a:hover,
+body:not(.studyante-dark) .sidebar-chat-history .chat-history-item:hover {
+    background: #f2f2f2 !important;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+body.studyante-dark .sidebar {
+    background: #171717 !important;
+    color: #f5f5f5 !important;
+}
+
+body.studyante-dark .sidebar nav a,
+body.studyante-dark .sidebar .nav-links a,
+body.studyante-dark .sidebar .sidebar-nav a {
+    background: transparent !important;
+    color: #f5f5f5 !important;
+}
+
+body.studyante-dark .sidebar nav a:hover,
+body.studyante-dark .sidebar .nav-links a:hover,
+body.studyante-dark .sidebar .sidebar-nav a:hover {
+    background: #2f2f2f !important;
+}
+
+body.studyante-dark .sidebar nav a.active,
+body.studyante-dark .sidebar .nav-links a.active,
+body.studyante-dark .sidebar .sidebar-nav a.active {
+    background: #2f2f2f !important;
+}
+
+body.studyante-dark .sidebar-chat-history h2,
+body.studyante-dark .sidebar-chat-history h3,
+body.studyante-dark .sidebar-chat-history h4,
+body.studyante-dark .sidebar-chat-history .chat-history-title {
+    color: #b4b4b4 !important;
+}
+
+body.studyante-dark .sidebar-chat-history button,
+body.studyante-dark .sidebar-chat-history a,
+body.studyante-dark .sidebar-chat-history .chat-history-item {
+    background: transparent !important;
+    color: #ececec !important;
+}
+
+body.studyante-dark .sidebar-chat-history button:hover,
+body.studyante-dark .sidebar-chat-history a:hover,
+body.studyante-dark .sidebar-chat-history .chat-history-item:hover {
+    background: #2f2f2f !important;
+}
+
+body.studyante-dark .sidebar-bottom-controls {
+    border-top-color: #333333 !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        padding: 10px 8px !important;
+    }
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        min-height: 38px !important;
+
+        padding: 8px 9px !important;
+
+        font-size: 13px !important;
+    }
+
+    .sidebar-bottom-controls {
+        padding-top: 7px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle {
+        width: 42px !important;
+        height: 22px !important;
+
+        min-width: 42px !important;
+        min-height: 22px !important;
+
+        margin-bottom: 7px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle::before {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .sidebar-bottom-controls .sidebar-user-panel .avatar {
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+
+        flex-basis: 30px !important;
+    }
+
+    .sidebar-bottom-controls .sidebar-user-panel .profile strong {
+        font-size: 12px !important;
+    }
+
+    .sidebar-bottom-controls .sidebar-user-panel .profile span {
+        font-size: 9px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        min-height: 23px !important;
+
+        margin-left: 39px !important;
+
+        padding: 4px 8px !important;
+
+        font-size: 9px !important;
+    }
+}
+
+/* STUDYANTE_CHATGPT_SIDEBAR_END */
+
+/* STUDYANTE_SIDEBAR_FINAL_FIX_START */
+
+
+/* =========================================================
+   SIDEBAR STRUCTURE
+   ========================================================= */
+
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+
+    height: 100vh !important;
+    max-height: 100vh !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Navigation stays at top */
+
+.sidebar nav,
+.sidebar .nav-links,
+.sidebar .sidebar-nav {
+    flex: 0 0 auto !important;
+}
+
+
+/* =========================================================
+   CHAT HISTORY
+   ========================================================= */
+
+.sidebar-chat-history {
+    flex: 1 1 auto !important;
+
+    min-height: 0 !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    margin: 8px 0 0 !important;
+    padding: 0 6px 10px !important;
+
+    border: 0 !important;
+}
+
+
+/* Keep each history item compact */
+
+.sidebar-chat-history .chat-history-item {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    min-height: 36px !important;
+
+    margin: 2px 0 !important;
+    padding: 8px 32px 8px 10px !important;
+
+    border-radius: 8px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* History title/text */
+
+.sidebar-chat-history .chat-history-item span,
+.sidebar-chat-history .chat-history-item .title,
+.sidebar-chat-history .chat-history-item .chat-title {
+    flex: 1 1 auto !important;
+
+    min-width: 0 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+
+/* IMPORTANT:
+   stop tiny delete/trash buttons becoming full-width rows */
+
+.sidebar-chat-history .chat-history-item button {
+    position: absolute !important;
+
+    right: 5px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 12px !important;
+}
+
+
+/* Extra protection for known delete-like buttons */
+
+.sidebar-chat-history button[class*="delete"],
+.sidebar-chat-history button[class*="remove"],
+.sidebar-chat-history .delete-chat,
+.sidebar-chat-history .delete-chat-btn,
+.sidebar-chat-history .chat-delete-btn {
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 12px !important;
+}
+
+
+/* Do not turn miscellaneous history buttons into huge rows */
+
+.sidebar-chat-history button:not(.chat-history-item) {
+    max-width: 28px !important;
+}
+
+
+/* =========================================================
+   BOTTOM AREA
+   ========================================================= */
+
+.sidebar-bottom-controls {
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin-top: auto !important;
+
+    padding: 10px 6px 6px !important;
+
+    border-top: 1px solid rgba(128,128,128,0.22) !important;
+
+    background: inherit !important;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+.sidebar-bottom-controls .theme-toggle {
+    order: 1 !important;
+
+    flex: 0 0 auto !important;
+
+    width: 44px !important;
+    height: 23px !important;
+
+    min-width: 44px !important;
+    min-height: 23px !important;
+
+    margin: 0 0 10px 3px !important;
+}
+
+
+/* =========================================================
+   USER AREA
+   ========================================================= */
+
+.sidebar-bottom-controls .sidebar-user-panel {
+    order: 2 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/* Student ALWAYS above Logout */
+
+.sidebar-bottom-controls .sidebar-user-panel .profile {
+    order: 1 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    gap: 9px !important;
+
+    margin: 0 !important;
+    padding: 5px 3px !important;
+
+    background: transparent !important;
+    border: 0 !important;
+}
+
+
+/* Avatar */
+
+.sidebar-bottom-controls .sidebar-user-panel .avatar {
+    flex: 0 0 32px !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    min-height: 32px !important;
+
+    font-size: 12px !important;
+}
+
+
+/* Student text */
+
+.sidebar-bottom-controls .sidebar-user-panel .profile strong {
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile span {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+}
+
+
+/* =========================================================
+   LOGOUT — VERY BOTTOM
+   ========================================================= */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.logout-btn {
+    order: 2 !important;
+
+    position: static !important;
+
+    align-self: flex-start !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: auto !important;
+    max-width: max-content !important;
+
+    min-width: 0 !important;
+    min-height: 24px !important;
+
+    margin: 5px 0 0 41px !important;
+
+    padding: 4px 9px !important;
+
+    border-radius: 6px !important;
+
+    font-size: 10px !important;
+    line-height: 1 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   REMOVE OLD GIANT LOGOUT APPEARANCE
+   ========================================================= */
+
+.sidebar .logout-btn {
+    height: auto !important;
+
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+
+    font-size: 10px !important;
+
+    transform: none !important;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+body.studyante-dark .sidebar-bottom-controls {
+    border-top-color: #333333 !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls {
+        padding: 8px 5px 5px !important;
+    }
+
+    .sidebar-bottom-controls .sidebar-user-panel .avatar {
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+        min-height: 30px !important;
+    }
+
+    .sidebar-bottom-controls .sidebar-user-panel .profile strong {
+        font-size: 12px !important;
+    }
+
+    .sidebar-bottom-controls .sidebar-user-panel .profile span {
+        font-size: 9px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        min-height: 23px !important;
+
+        margin-left: 39px !important;
+
+        padding: 4px 8px !important;
+
+        font-size: 9px !important;
+    }
+}
+
+
+/* STUDYANTE_SIDEBAR_FINAL_FIX_END */
+
+
+/* STUDYANTE_SIDEBAR_CLEAN_FINAL */
+
+/* SIDEBAR */
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+}
+
+/* NAVIGATION */
+.sidebar nav {
+    flex: 0 0 auto !important;
+}
+
+/* =========================================================
+   CHAT HISTORY
+   ========================================================= */
+
+.sidebar-chat-history {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+
+    margin: 10px 0 0 !important;
+    padding: 0 4px 10px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    border: 0 !important;
+}
+
+/* Chat History heading */
+.sidebar-chat-history h3,
+.sidebar-chat-history h4,
+.sidebar-chat-history .chat-history-title {
+    margin: 7px 7px 8px !important;
+    padding: 0 !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+
+    opacity: .65 !important;
+}
+
+/* Chat list */
+.sidebar-chat-history .chat-history-list,
+.sidebar-chat-history #chatHistoryList {
+    display: flex !important;
+    flex-direction: column !important;
+
+    gap: 2px !important;
+
+    width: 100% !important;
+}
+
+/* ONE CHAT = ONE ROW */
+.sidebar-chat-history .chat-history-item {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 8px 34px 8px 9px !important;
+
+    border: 0 !important;
+    border-radius: 8px !important;
+
+    box-shadow: none !important;
+
+    overflow: hidden !important;
+}
+
+/* Chat title */
+.sidebar-chat-history .chat-history-item span,
+.sidebar-chat-history .chat-history-item .title,
+.sidebar-chat-history .chat-history-item .chat-title {
+    flex: 1 1 auto !important;
+
+    min-width: 0 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* DELETE BUTTON — SMALL AND INSIDE CHAT ROW */
+.sidebar-chat-history .chat-history-item button,
+.sidebar-chat-history .delete-chat,
+.sidebar-chat-history .delete-chat-btn,
+.sidebar-chat-history .chat-delete-btn {
+    position: absolute !important;
+
+    top: 50% !important;
+    right: 5px !important;
+
+    transform: translateY(-50%) !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 11px !important;
+}
+
+/* Prevent old CSS from creating giant buttons */
+.sidebar-chat-history button {
+    flex: 0 0 24px !important;
+}
+
+/* =========================================================
+   BOTTOM SECTION
+   Dark/Light
+   Student
+   Logout
+   ========================================================= */
+
+.sidebar-bottom-controls {
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin-top: auto !important;
+    padding: 10px 5px 5px !important;
+
+    border-top: 1px solid rgba(128,128,128,.22) !important;
+
+    background: inherit !important;
+}
+
+/* =========================================================
+   DARK / LIGHT MODE ROW
+   ========================================================= */
+
+.sidebar-bottom-controls .theme-toggle {
+    order: 1 !important;
+
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 44px !important;
+    height: 23px !important;
+
+    min-width: 44px !important;
+    min-height: 23px !important;
+
+    margin: 0 0 11px 3px !important;
+    padding: 0 !important;
+
+    border-radius: 999px !important;
+}
+
+/* Toggle knob */
+.sidebar-bottom-controls .theme-toggle::before {
+    width: 17px !important;
+    height: 17px !important;
+
+    top: 3px !important;
+    left: 3px !important;
+}
+
+/* Keep Dark Mode / Light Mode text visible */
+.sidebar-bottom-controls .theme-toggle::after {
+    position: absolute !important;
+
+    left: 52px !important;
+    top: 50% !important;
+
+    transform: translateY(-50%) !important;
+
+    width: max-content !important;
+
+    font-size: 11px !important;
+    font-weight: 500 !important;
+
+    white-space: nowrap !important;
+}
+
+/* =========================================================
+   STUDENT
+   ========================================================= */
+
+.sidebar-bottom-controls .sidebar-user-panel {
+    order: 2 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.sidebar-bottom-controls .sidebar-user-panel .profile {
+    order: 1 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    gap: 9px !important;
+
+    margin: 0 !important;
+    padding: 5px 3px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Avatar */
+.sidebar-bottom-controls .sidebar-user-panel .avatar {
+    flex: 0 0 32px !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+    min-height: 32px !important;
+
+    font-size: 12px !important;
+}
+
+/* Student name */
+.sidebar-bottom-controls .sidebar-user-panel .profile strong {
+    display: block !important;
+
+    margin: 0 !important;
+
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+}
+
+/* Student label */
+.sidebar-bottom-controls .sidebar-user-panel .profile span {
+    display: block !important;
+
+    margin-top: 2px !important;
+
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+
+    opacity: .65 !important;
+}
+
+/* =========================================================
+   LOGOUT — DIRECTLY BELOW STUDENT AND LAST ITEM
+   ========================================================= */
+
+.sidebar-bottom-controls
+.sidebar-user-panel
+.logout-btn {
+    order: 2 !important;
+
+    position: static !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    align-self: flex-start !important;
+
+    width: auto !important;
+    height: 24px !important;
+
+    min-width: 0 !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+
+    margin: 4px 0 0 44px !important;
+
+    padding: 3px 9px !important;
+
+    border-radius: 6px !important;
+
+    font-size: 10px !important;
+    line-height: 1 !important;
+
+    box-shadow: none !important;
+
+    transform: none !important;
+}
+
+/* =========================================================
+   LIGHT MODE
+   ========================================================= */
+
+body:not(.studyante-dark)
+.sidebar-chat-history
+.chat-history-item {
+    background: transparent !important;
+}
+
+body:not(.studyante-dark)
+.sidebar-chat-history
+.chat-history-item:hover {
+    background: #f2f2f2 !important;
+}
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+body.studyante-dark
+.sidebar-chat-history
+.chat-history-item {
+    background: transparent !important;
+}
+
+body.studyante-dark
+.sidebar-chat-history
+.chat-history-item:hover {
+    background: #2f2f2f !important;
+}
+
+body.studyante-dark
+.sidebar-bottom-controls {
+    border-top-color: #333333 !important;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls {
+        padding: 8px 4px 4px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle {
+        width: 42px !important;
+        height: 22px !important;
+
+        min-width: 42px !important;
+        min-height: 22px !important;
+
+        margin-bottom: 9px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle::before {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .sidebar-bottom-controls .theme-toggle::after {
+        left: 49px !important;
+        font-size: 10px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .avatar {
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+        min-height: 30px !important;
+
+        flex-basis: 30px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .profile strong {
+        font-size: 12px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .profile span {
+        font-size: 9px !important;
+    }
+
+    .sidebar-bottom-controls
+    .sidebar-user-panel
+    .logout-btn {
+        height: 23px !important;
+        min-height: 23px !important;
+
+        margin-left: 42px !important;
+
+        padding: 3px 8px !important;
+
+        font-size: 9px !important;
+    }
+}
+
+
+/* STUDYANTE_REAL_SIDEBAR_FIX */
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+
+    height: 100vh !important;
+    max-height: 100vh !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   CHAT HISTORY
+   ========================================================= */
+
+.sidebar-chat-history {
+    flex: 1 1 auto !important;
+
+    min-height: 0 !important;
+
+    margin: 12px 0 0 !important;
+    padding: 0 4px 10px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    border: 0 !important;
+}
+
+
+.chat-history-panel {
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+#chatHistoryList {
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    gap: 2px !important;
+}
+
+
+/* ONE CHAT ROW */
+
+.chat-history-item {
+    display: flex !important;
+    align-items: center !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    border-radius: 8px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/* CHAT TITLE BUTTON */
+
+.chat-history-open {
+    position: static !important;
+
+    flex: 1 1 auto !important;
+
+    display: block !important;
+
+    width: auto !important;
+    max-width: none !important;
+
+    min-width: 0 !important;
+    min-height: 36px !important;
+
+    margin: 0 !important;
+
+    padding: 8px 34px 8px 9px !important;
+
+    border: 0 !important;
+    border-radius: 8px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    text-align: left !important;
+
+    font-size: 13px !important;
+    font-weight: 400 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+
+/* DELETE ICON */
+
+.chat-history-delete {
+    position: absolute !important;
+
+    top: 50% !important;
+    right: 5px !important;
+
+    transform: translateY(-50%) !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: 0 0 24px !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 11px !important;
+}
+
+
+/* =========================================================
+   BOTTOM CONTROLS
+   ========================================================= */
+
+.sidebar-bottom-controls {
+    flex: 0 0 auto !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin-top: auto !important;
+
+    padding: 10px 5px 5px !important;
+
+    border-top: 1px solid rgba(128,128,128,.22) !important;
+
+    background: inherit !important;
+}
+
+
+/* =========================================================
+   DARK/LIGHT TOGGLE
+   ========================================================= */
+
+#studyanteThemeToggle {
+    order: 1 !important;
+
+    position: relative !important;
+
+    width: 44px !important;
+    height: 23px !important;
+
+    min-width: 44px !important;
+    min-height: 23px !important;
+
+    margin: 0 0 10px 3px !important;
+    padding: 0 !important;
+
+    border-radius: 999px !important;
+}
+
+
+/* =========================================================
+   STUDENT + LOGOUT
+   ========================================================= */
+
+.sidebar-user-panel {
+    order: 2 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+.sidebar-user-panel .profile {
+    order: 1 !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    gap: 9px !important;
+
+    margin: 0 !important;
+    padding: 5px 3px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+
+/* LOGOUT DIRECTLY BELOW STUDENT */
+
+.sidebar-user-panel #logoutButton {
+    order: 2 !important;
+
+    position: static !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    align-self: flex-start !important;
+
+    width: auto !important;
+    height: 24px !important;
+
+    min-width: 0 !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+
+    margin: 4px 0 0 44px !important;
+
+    padding: 3px 9px !important;
+
+    border-radius: 6px !important;
+
+    font-size: 10px !important;
+    line-height: 1 !important;
+
+    transform: none !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+body:not(.studyante-dark)
+.chat-history-item:hover {
+    background: #f2f2f2 !important;
+}
+
+
+body.studyante-dark
+.chat-history-item:hover {
+    background: #2f2f2f !important;
+}
+
+
+body.studyante-dark
+.sidebar-bottom-controls {
+    border-top-color: #333333 !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom-controls {
+        padding: 8px 4px 4px !important;
+    }
+
+    #studyanteThemeToggle {
+        width: 42px !important;
+        height: 22px !important;
+
+        min-width: 42px !important;
+        min-height: 22px !important;
+    }
+
+    .sidebar-user-panel #logoutButton {
+        height: 23px !important;
+        min-height: 23px !important;
+
+        margin-left: 42px !important;
+
+        padding: 3px 8px !important;
+
+        font-size: 9px !important;
+    }
+}
+
+
+/* STUDYANTE_CHAT_NAME_DELETE_SAME_ROW */
+
+/*
+   CORRECT:
+   Chat Name                  Delete
+
+   NOT:
+   Chat Name
+   Delete
+*/
+
+#chatHistoryList .chat-history-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 38px !important;
+
+    margin: 2px 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    border-radius: 8px !important;
+}
+
+
+/* CHAT NAME */
+
+#chatHistoryList .chat-history-open {
+    position: static !important;
+
+    display: block !important;
+
+    flex: 1 1 auto !important;
+
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 38px !important;
+    min-height: 38px !important;
+
+    margin: 0 !important;
+
+    padding: 0 34px 0 10px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    text-align: left !important;
+
+    font-size: 13px !important;
+    font-weight: 400 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    line-height: 38px !important;
+}
+
+
+/* DELETE BUTTON — SAME ROW, RIGHT SIDE */
+
+#chatHistoryList .chat-history-delete {
+    position: absolute !important;
+
+    top: 50% !important;
+    right: 6px !important;
+
+    transform: translateY(-50%) !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: none !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+
+    max-width: 24px !important;
+    max-height: 24px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+
+    box-shadow: none !important;
+
+    font-size: 11px !important;
+    line-height: 1 !important;
+
+    z-index: 2 !important;
+}
+
+
+/* HOVER */
+
+body:not(.studyante-dark)
+#chatHistoryList .chat-history-item:hover {
+    background: #f2f2f2 !important;
+}
+
+body.studyante-dark
+#chatHistoryList .chat-history-item:hover {
+    background: #2f2f2f !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    #chatHistoryList .chat-history-item {
+        min-height: 36px !important;
+    }
+
+    #chatHistoryList .chat-history-open {
+        height: 36px !important;
+        min-height: 36px !important;
+
+        padding-left: 9px !important;
+        padding-right: 32px !important;
+
+        font-size: 12px !important;
+
+        line-height: 36px !important;
+    }
+
+    #chatHistoryList .chat-history-delete {
+        right: 5px !important;
+
+        width: 22px !important;
+        height: 22px !important;
+
+        min-width: 22px !important;
+        min-height: 22px !important;
+
+        max-width: 22px !important;
+        max-height: 22px !important;
+    }
+}
+
+
+/* STUDYANTE_CHAT_HISTORY_GRID_FIX */
+
+/* ================================
+   CHAT HISTORY HEADER
+   ================================ */
+
+.sidebar-chat-history .chat-history-panel {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+}
+
+/* Heading + New Chat button */
+.sidebar-chat-history .chat-history-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    width: 100% !important;
+
+    margin: 0 0 7px !important;
+    padding: 0 5px !important;
+}
+
+/* Chat History text */
+.sidebar-chat-history .chat-history-header h3,
+.sidebar-chat-history .chat-history-header h4,
+.sidebar-chat-history .chat-history-title {
+    flex: 1 1 auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 12px !important;
+    line-height: 28px !important;
+}
+
+/* + New Chat button */
+#newChatButton {
+    position: static !important;
+
+    flex: 0 0 28px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 28px !important;
+    height: 28px !important;
+
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 16px !important;
+    line-height: 1 !important;
+}
+
+
+/* ================================
+   CHAT LIST
+   ================================ */
+
+#chatHistoryList {
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+
+    gap: 2px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+/* ================================
+   CHAT NAME + DELETE SAME ROW
+   ================================ */
+
+#chatHistoryList .chat-history-item {
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        28px !important;
+
+    align-items: center !important;
+
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 4px 0 0 !important;
+
+    border: 0 !important;
+    border-radius: 8px !important;
+
+    overflow: hidden !important;
+
+    box-shadow: none !important;
+}
+
+
+/* CHAT NAME */
+
+#chatHistoryList .chat-history-open {
+    grid-column: 1 !important;
+
+    position: static !important;
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    height: 38px !important;
+    min-height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 8px !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    text-align: left !important;
+
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 38px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    transform: none !important;
+}
+
+
+/* DELETE BUTTON */
+
+#chatHistoryList .chat-history-delete {
+    grid-column: 2 !important;
+
+    position: static !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 24px !important;
+    height: 24px !important;
+
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 6px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    font-size: 11px !important;
+    line-height: 1 !important;
+
+    transform: none !important;
+}
+
+
+/* Remove old button constraints */
+
+.sidebar-chat-history #chatHistoryList .chat-history-open {
+    flex: unset !important;
+}
+
+.sidebar-chat-history #chatHistoryList .chat-history-delete {
+    flex: unset !important;
+}
+
+
+/* HOVER */
+
+body:not(.studyante-dark)
+#chatHistoryList .chat-history-item:hover {
+    background: #f2f2f2 !important;
+}
+
+body.studyante-dark
+#chatHistoryList .chat-history-item:hover {
+    background: #2f2f2f !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    #chatHistoryList .chat-history-item {
+        grid-template-columns:
+            minmax(0, 1fr)
+            26px !important;
+
+        min-height: 36px !important;
+    }
+
+    #chatHistoryList .chat-history-open {
+        height: 36px !important;
+        min-height: 36px !important;
+
+        line-height: 36px !important;
+
+        font-size: 12px !important;
+    }
+
+    #chatHistoryList .chat-history-delete {
+        width: 22px !important;
+        height: 22px !important;
+
+        min-width: 22px !important;
+        min-height: 22px !important;
+
+        max-width: 22px !important;
+        max-height: 22px !important;
+    }
+}
+
+
+/* STUDYANTE_HEADER_TOGGLE_FINAL_FIX */
+
+
+/* =========================================================
+   CHAT HISTORY HEADER
+   Chat History                       +
+   ========================================================= */
+
+.sidebar-chat-history .chat-history-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    width: 100% !important;
+
+    margin: 0 0 8px 0 !important;
+    padding: 0 4px !important;
+
+    overflow: visible !important;
+}
+
+.sidebar-chat-history .chat-history-header h3,
+.sidebar-chat-history .chat-history-header h4,
+.sidebar-chat-history .chat-history-title {
+    flex: 1 1 auto !important;
+
+    width: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 28px !important;
+
+    white-space: nowrap !important;
+}
+
+
+/* NEW CHAT = PLUS ONLY */
+
+#newChatButton {
+    position: relative !important;
+
+    flex: 0 0 28px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 28px !important;
+    height: 28px !important;
+
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    border-radius: 7px !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    overflow: hidden !important;
+
+    font-size: 0 !important;
+    line-height: 1 !important;
+
+    color: inherit !important;
+}
+
+
+/* Hide "New Chat" text and display + */
+
+#newChatButton::before {
+    content: "+" !important;
+
+    position: static !important;
+
+    display: block !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    background: none !important;
+
+    transform: none !important;
+
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+
+    color: currentColor !important;
+}
+
+#newChatButton::after {
+    display: none !important;
+    content: none !important;
+}
+
+
+body:not(.studyante-dark) #newChatButton:hover {
+    background: #eeeeee !important;
+}
+
+body.studyante-dark #newChatButton:hover {
+    background: #2f2f2f !important;
+}
+
+
+/* =========================================================
+   DARK / LIGHT MODE
+   Proper switch + label
+   ========================================================= */
+
+.sidebar-bottom-controls #studyanteThemeToggle {
+    order: 1 !important;
+
+    position: relative !important;
+
+    display: block !important;
+
+    width: 125px !important;
+    height: 28px !important;
+
+    min-width: 125px !important;
+    min-height: 28px !important;
+    max-width: 125px !important;
+
+    margin: 0 0 10px 3px !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    overflow: visible !important;
+
+    font-size: 0 !important;
+
+    cursor: pointer !important;
+}
+
+
+/* SWITCH TRACK */
+
+.sidebar-bottom-controls #studyanteThemeToggle::before {
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 0 !important;
+    top: 3px !important;
+
+    width: 42px !important;
+    height: 22px !important;
+
+    border-radius: 999px !important;
+
+    background: #d4d4d4 !important;
+
+    transform: none !important;
+
+    transition: background .2s ease !important;
+}
+
+
+/* MODE LABEL */
+
+.sidebar-bottom-controls #studyanteThemeToggle::after {
+    content: "Dark Mode" !important;
+
+    position: absolute !important;
+
+    left: 52px !important;
+    top: 50% !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    transform: translateY(-50%) !important;
+
+    background: none !important;
+
+    color: inherit !important;
+
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+}
+
+
+/* SWITCH KNOB */
+
+.sidebar-bottom-controls #studyanteThemeToggle {
+    background-image:
+        radial-gradient(
+            circle at 11px 14px,
+            #ffffff 0,
+            #ffffff 7px,
+            transparent 7.5px
+        ) !important;
+
+    background-repeat: no-repeat !important;
+}
+
+
+/* DARK MODE TRACK + KNOB */
+
+body.studyante-dark
+.sidebar-bottom-controls
+#studyanteThemeToggle::before {
+    background: #2563eb !important;
+}
+
+body.studyante-dark
+.sidebar-bottom-controls
+#studyanteThemeToggle {
+    background-image:
+        radial-gradient(
+            circle at 31px 14px,
+            #ffffff 0,
+            #ffffff 7px,
+            transparent 7.5px
+        ) !important;
+}
+
+body.studyante-dark
+.sidebar-bottom-controls
+#studyanteThemeToggle::after {
+    content: "Light Mode" !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    #newChatButton {
+        width: 26px !important;
+        height: 26px !important;
+
+        min-width: 26px !important;
+        min-height: 26px !important;
+        max-width: 26px !important;
+        max-height: 26px !important;
+    }
+
+    #newChatButton::before {
+        font-size: 17px !important;
+    }
+
+    .sidebar-bottom-controls #studyanteThemeToggle {
+        width: 115px !important;
+        min-width: 115px !important;
+        max-width: 115px !important;
+    }
+
+    .sidebar-bottom-controls #studyanteThemeToggle::after {
+        left: 49px !important;
+        font-size: 10px !important;
+    }
+}
+
+
+/* STUDYANTE_AI_DARK_CONTRAST_FIX */
+
+
+/* =========================================
+   AI ASSISTANT MESSAGE — LIGHT MODE
+   ========================================= */
+
+body:not(.studyante-dark) .message.assistant .message-text,
+body:not(.studyante-dark) .assistant-message .message-text,
+body:not(.studyante-dark) .message.bot .message-text {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+
+    border: 1px solid #e5e7eb !important;
+}
+
+
+/* =========================================
+   AI ASSISTANT MESSAGE — DARK MODE
+   ========================================= */
+
+body.studyante-dark .message.assistant .message-text,
+body.studyante-dark .assistant-message .message-text,
+body.studyante-dark .message.bot .message-text {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+}
+
+
+/* Text inside assistant response */
+
+body.studyante-dark .message.assistant .message-text *,
+body.studyante-dark .assistant-message .message-text *,
+body.studyante-dark .message.bot .message-text * {
+    color: #f8fafc !important;
+}
+
+
+/* Paragraphs */
+
+body.studyante-dark .message.assistant p,
+body.studyante-dark .assistant-message p,
+body.studyante-dark .message.bot p {
+    color: #f8fafc !important;
+}
+
+
+/* Lists */
+
+body.studyante-dark .message.assistant li,
+body.studyante-dark .assistant-message li,
+body.studyante-dark .message.bot li {
+    color: #f8fafc !important;
+}
+
+
+/* Strong text */
+
+body.studyante-dark .message.assistant strong,
+body.studyante-dark .assistant-message strong,
+body.studyante-dark .message.bot strong {
+    color: #ffffff !important;
+}
+
+
+/* =========================================
+   AI CHAT INPUT — DARK MODE
+   ========================================= */
+
+body.studyante-dark .ai-input-bar,
+body.studyante-dark .chat-input-container,
+body.studyante-dark .ai-input-container {
+    background: #1e293b !important;
+
+    border-color: #334155 !important;
+}
+
+
+body.studyante-dark #question,
+body.studyante-dark .ai-input-bar textarea,
+body.studyante-dark .chat-input-container textarea {
+    background: transparent !important;
+
+    color: #f8fafc !important;
+}
+
+
+body.studyante-dark #question::placeholder,
+body.studyante-dark .ai-input-bar textarea::placeholder,
+body.studyante-dark .chat-input-container textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+
+/* Plus attachment button */
+
+body.studyante-dark .ai-input-bar button:not(.send-btn),
+body.studyante-dark .attachment-button,
+body.studyante-dark .attach-button {
+    color: #cbd5e1 !important;
+}
+
+
+/* =========================================
+   CHAT AREA
+   ========================================= */
+
+body.studyante-dark .chat-box,
+body.studyante-dark .chat-messages,
+body.studyante-dark .ai-chat {
+    color: #f8fafc !important;
+}
+
+
+/* Keep USER bubble blue */
+
+body.studyante-dark .message.user .message-text,
+body.studyante-dark .user-message .message-text {
+    color: #ffffff !important;
+}
+
+
+/* STUDYANTE_DARK_TEXT_ICONS_FIX */
+
+/* GENERAL TEXT */
+body.studyante-dark,
+body.studyante-dark main,
+body.studyante-dark .main,
+body.studyante-dark .content,
+body.studyante-dark .panel,
+body.studyante-dark .card,
+body.studyante-dark .modal,
+body.studyante-dark .sidebar {
+    color: #f8fafc !important;
+}
+
+/* HEADINGS + NORMAL TEXT */
+body.studyante-dark h1,
+body.studyante-dark h2,
+body.studyante-dark h3,
+body.studyante-dark h4,
+body.studyante-dark h5,
+body.studyante-dark h6,
+body.studyante-dark p,
+body.studyante-dark span,
+body.studyante-dark label,
+body.studyante-dark small,
+body.studyante-dark strong,
+body.studyante-dark b,
+body.studyante-dark li,
+body.studyante-dark dt,
+body.studyante-dark dd {
+    color: #f8fafc !important;
+}
+
+/* LINKS */
+body.studyante-dark a {
+    color: #e2e8f0 !important;
+}
+
+/* BUTTON TEXT + ICONS */
+body.studyante-dark button {
+    color: #f8fafc !important;
+}
+
+/* SVG ICONS */
+body.studyante-dark svg {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark svg path,
+body.studyante-dark svg circle,
+body.studyante-dark svg line,
+body.studyante-dark svg polyline,
+body.studyante-dark svg polygon,
+body.studyante-dark svg rect {
+    stroke: currentColor !important;
+}
+
+/* ICON FONTS / SYMBOLS */
+body.studyante-dark i,
+body.studyante-dark .icon,
+body.studyante-dark [class*="icon"],
+body.studyante-dark .material-icons {
+    color: #f8fafc !important;
+}
+
+/* INPUTS */
+body.studyante-dark input,
+body.studyante-dark textarea,
+body.studyante-dark select {
+    color: #f8fafc !important;
+}
+
+/* PLACEHOLDERS */
+body.studyante-dark input::placeholder,
+body.studyante-dark textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* TABLES */
+body.studyante-dark table,
+body.studyante-dark th,
+body.studyante-dark td {
+    color: #f8fafc !important;
+}
+
+/* CHAT HISTORY */
+body.studyante-dark .chat-history-title,
+body.studyante-dark .chat-history-open,
+body.studyante-dark .chat-history-delete {
+    color: #e5e7eb !important;
+}
+
+/* SIDEBAR */
+body.studyante-dark .sidebar nav a,
+body.studyante-dark .sidebar-user-panel,
+body.studyante-dark .sidebar-user-panel strong,
+body.studyante-dark .sidebar-user-panel span {
+    color: #f8fafc !important;
+}
+
+/* FLASHCARDS / GENERATED CONTENT */
+body.studyante-dark .generated-content,
+body.studyante-dark .generated-content *,
+body.studyante-dark .flashcard,
+body.studyante-dark .flashcard *,
+body.studyante-dark .community-card,
+body.studyante-dark .community-card * {
+    color: #f8fafc !important;
+}
+
+/* AI CHAT */
+body.studyante-dark .message,
+body.studyante-dark .message *,
+body.studyante-dark .ai-chat,
+body.studyante-dark .ai-chat * {
+    color: #f8fafc !important;
+}
+
+/* KEEP USER MESSAGE WHITE */
+body.studyante-dark .message.user .message-text,
+body.studyante-dark .message.user .message-text * {
+    color: #ffffff !important;
+}
+
+/* DISABLED / MUTED TEXT */
+body.studyante-dark .muted,
+body.studyante-dark .secondary-text,
+body.studyante-dark .hint,
+body.studyante-dark .subtitle {
+    color: #94a3b8 !important;
+}
+
+/* DARK MODE TOGGLE LABEL */
+body.studyante-dark #studyanteThemeToggle::after {
+    color: #f8fafc !important;
+}
+
+
+/* STUDYANTE_AI_DARK_FINAL_FIX */
+
+
+/* =========================================================
+   LIGHT MODE — KEEP CURRENT CLEAN DESIGN
+   ========================================================= */
+
+body:not(.studyante-dark) #ai .message.assistant,
+body:not(.studyante-dark) #ai .message.assistant .message-text {
+    color: #111827 !important;
+}
+
+body:not(.studyante-dark) #ai .message.assistant .message-text {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+
+/* =========================================================
+   DARK MODE — ASSISTANT MESSAGE
+   ========================================================= */
+
+/* Remove the broken blue block/background */
+
+body.studyante-dark #ai .message.assistant {
+    background: transparent !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark #ai .message.assistant .message-text {
+    display: block !important;
+
+    background: #1e293b !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+    border-radius: 14px !important;
+
+    box-shadow: none !important;
+
+    text-decoration: none !important;
+}
+
+
+/* Everything inside AI answer stays readable */
+
+body.studyante-dark #ai .message.assistant .message-text *,
+body.studyante-dark #ai .message.assistant p,
+body.studyante-dark #ai .message.assistant span,
+body.studyante-dark #ai .message.assistant strong,
+body.studyante-dark #ai .message.assistant li {
+    background: transparent !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    text-decoration: none !important;
+}
+
+
+/* =========================================================
+   USER MESSAGE
+   ========================================================= */
+
+body.studyante-dark #ai .message.user .message-text {
+    background: #2563eb !important;
+    background-image: none !important;
+
+    color: #ffffff !important;
+
+    border: 0 !important;
+}
+
+body.studyante-dark #ai .message.user .message-text * {
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   AI CHAT AREA
+   ========================================================= */
+
+body.studyante-dark #ai .chat-box,
+body.studyante-dark #ai .chat-messages,
+body.studyante-dark #ai #chatMessages {
+    background: #0f172a !important;
+
+    color: #f8fafc !important;
+
+    border-color: #334155 !important;
+}
+
+
+/* =========================================================
+   INPUT BAR — FIX WHITE BAR IN DARK MODE
+   ========================================================= */
+
+/* The element directly containing the textarea */
+
+body.studyante-dark #ai :has(> #question) {
+    background: #1e293b !important;
+    background-image: none !important;
+
+    border-color: #334155 !important;
+
+    color: #f8fafc !important;
+}
+
+
+/* Textarea */
+
+body.studyante-dark #ai #question {
+    background: transparent !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+/* Placeholder */
+
+body.studyante-dark #ai #question::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+
+/* Attachment + controls near textarea */
+
+body.studyante-dark #ai :has(> #question) button:not(.send-btn),
+body.studyante-dark #ai :has(> #question) .attachment-button,
+body.studyante-dark #ai :has(> #question) .attach-button {
+    background: transparent !important;
+
+    color: #e2e8f0 !important;
+
+    border-color: transparent !important;
+}
+
+
+/* =========================================================
+   AI PANEL
+   ========================================================= */
+
+body.studyante-dark #ai {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark #ai h1,
+body.studyante-dark #ai h2,
+body.studyante-dark #ai h3,
+body.studyante-dark #ai p {
+    color: #f8fafc !important;
+}
+
+
+/* =========================================================
+   PREVENT GLOBAL DARK CSS FROM TURNING AI CONTENT BLUE
+   ========================================================= */
+
+body.studyante-dark #ai .message.assistant *,
+body.studyante-dark #ai .message-text * {
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+
+/* Selection should only appear while ACTUALLY selecting text */
+
+body.studyante-dark #ai ::selection {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+
+/* STUDYANTE_LIBRARY_DARK_CONTRAST_FIX */
+
+
+/* =========================================================
+   LIBRARY FILTER PILLS
+   ========================================================= */
+
+/* Inactive folder/category filters */
+body.studyante-dark .library-filter,
+body.studyante-dark .folder-filter,
+body.studyante-dark .category-filter,
+body.studyante-dark .filter-pill,
+body.studyante-dark [class*="filter-btn"]:not(.active) {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+
+    border-color: #334155 !important;
+}
+
+/* Everything inside filter pills */
+body.studyante-dark .library-filter *,
+body.studyante-dark .folder-filter *,
+body.studyante-dark .category-filter *,
+body.studyante-dark .filter-pill *,
+body.studyante-dark [class*="filter-btn"] * {
+    color: inherit !important;
+}
+
+
+/* ACTIVE FILTER */
+
+body.studyante-dark .library-filter.active,
+body.studyante-dark .folder-filter.active,
+body.studyante-dark .category-filter.active,
+body.studyante-dark .filter-pill.active,
+body.studyante-dark [class*="filter-btn"].active {
+    background: #2563eb !important;
+    color: #ffffff !important;
+
+    border-color: #2563eb !important;
+}
+
+
+/* =========================================================
+   LIBRARY CARDS
+   ========================================================= */
+
+body.studyante-dark .library-card,
+body.studyante-dark .flashcard-set-card,
+body.studyante-dark .saved-flashcard-card,
+body.studyante-dark [class*="flashcard"][class*="card"] {
+    background: #111827 !important;
+    color: #f8fafc !important;
+
+    border-color: #334155 !important;
+}
+
+body.studyante-dark .library-card *,
+body.studyante-dark .flashcard-set-card *,
+body.studyante-dark .saved-flashcard-card * {
+    color: #f8fafc !important;
+}
+
+
+/* =========================================================
+   CATEGORY SELECT
+   ========================================================= */
+
+body.studyante-dark .library-card select,
+body.studyante-dark .flashcard-set-card select,
+body.studyante-dark .saved-flashcard-card select {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+
+    border-color: #475569 !important;
+}
+
+body.studyante-dark .library-card select option,
+body.studyante-dark .flashcard-set-card select option,
+body.studyante-dark .saved-flashcard-card select option {
+    background: #111827 !important;
+    color: #f8fafc !important;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
+
+/* PRIVATE */
+body.studyante-dark .status-private,
+body.studyante-dark .private-badge,
+body.studyante-dark [class*="badge"][class*="private"] {
+    background: #334155 !important;
+    color: #f8fafc !important;
+
+    border-color: #475569 !important;
+}
+
+/* APPROVED */
+body.studyante-dark .status-approved,
+body.studyante-dark .approved-badge,
+body.studyante-dark [class*="badge"][class*="approved"] {
+    background: #14532d !important;
+    color: #dcfce7 !important;
+
+    border-color: #22c55e !important;
+}
+
+/* PENDING */
+body.studyante-dark .status-pending,
+body.studyante-dark .pending-badge,
+body.studyante-dark [class*="badge"][class*="pending"] {
+    background: #78350f !important;
+    color: #fef3c7 !important;
+
+    border-color: #f59e0b !important;
+}
+
+/* REJECTED */
+body.studyante-dark .status-rejected,
+body.studyante-dark .rejected-badge,
+body.studyante-dark [class*="badge"][class*="rejected"] {
+    background: #7f1d1d !important;
+    color: #fee2e2 !important;
+
+    border-color: #ef4444 !important;
+}
+
+
+/* =========================================================
+   GENERIC STATUS PILLS
+   Prevent white text on white backgrounds
+   ========================================================= */
+
+body.studyante-dark [class*="status"],
+body.studyante-dark [class*="badge"] {
+    text-shadow: none !important;
+}
+
+body.studyante-dark [class*="status"] *,
+body.studyante-dark [class*="badge"] * {
+    color: inherit !important;
+}
+
+
+/* =========================================================
+   SUBMIT FOR APPROVAL
+   ========================================================= */
+
+body.studyante-dark .submit-approval-btn,
+body.studyante-dark [class*="submit"][class*="approval"],
+body.studyante-dark [class*="approval-btn"] {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+
+    border-color: #475569 !important;
+}
+
+body.studyante-dark .submit-approval-btn:hover,
+body.studyante-dark [class*="submit"][class*="approval"]:hover,
+body.studyante-dark [class*="approval-btn"]:hover {
+    background: #334155 !important;
+}
+
+
+/* =========================================================
+   FOLDER TEXT / ICONS
+   ========================================================= */
+
+body.studyante-dark .library-card .folder,
+body.studyante-dark .flashcard-set-card .folder,
+body.studyante-dark .folder-name,
+body.studyante-dark [class*="folder-label"] {
+    color: #e2e8f0 !important;
+}
+
+
+/* =========================================================
+   KEEP STUDY BUTTON WHITE TEXT
+   ========================================================= */
+
+body.studyante-dark .study-btn,
+body.studyante-dark [class*="study-btn"] {
+    color: #ffffff !important;
+}
+
+body.studyante-dark .study-btn *,
+body.studyante-dark [class*="study-btn"] * {
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   KEEP DELETE BUTTON READABLE
+   ========================================================= */
+
+body.studyante-dark .delete-btn,
+body.studyante-dark [class*="delete-btn"] {
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE — DO NOT CHANGE
+   ========================================================= */
+
+body:not(.studyante-dark) .status-private,
+body:not(.studyante-dark) .private-badge {
+    color: #374151 !important;
+}
+
+
+/* STUDYANTE_AI_BUBBLE_FIT_TEXT */
+
+/*
+   Assistant bubble now sizes according to its text
+   instead of using a large fixed box.
+*/
+
+#ai .message.assistant {
+    display: flex !important;
+    align-items: flex-start !important;
+}
+
+#ai .message.assistant .message-text {
+    display: inline-block !important;
+
+    width: fit-content !important;
+    max-width: min(75%, 760px) !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    height: auto !important;
+
+    margin: 0 !important;
+
+    padding: 12px 16px !important;
+
+    border-radius: 14px !important;
+
+    line-height: 1.5 !important;
+
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+}
+
+
+/* Short message = small bubble */
+
+#ai .message.assistant .message-text p:first-child {
+    margin-top: 0 !important;
+}
+
+#ai .message.assistant .message-text p:last-child {
+    margin-bottom: 0 !important;
+}
+
+
+/* Remove extra spacing from direct text elements */
+
+#ai .message.assistant .message-text > *:first-child {
+    margin-top: 0 !important;
+}
+
+#ai .message.assistant .message-text > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+
+/* User messages also fit their content */
+
+#ai .message.user {
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+#ai .message.user .message-text {
+    width: fit-content !important;
+    max-width: min(75%, 760px) !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    height: auto !important;
+
+    padding: 10px 14px !important;
+
+    line-height: 1.45 !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    #ai .message.assistant .message-text,
+    #ai .message.user .message-text {
+        max-width: 85% !important;
+    }
+
+    #ai .message.assistant .message-text {
+        padding: 10px 13px !important;
+    }
+}
+
+
+/* STUDYANTE_PRACTICE_TEST_DARK_FIX */
+
+
+/* =========================================================
+   PRACTICE TEST OPTIONS — DARK MODE
+   ========================================================= */
+
+/* Choice rows */
+body.studyante-dark .practice-test [class*="option"],
+body.studyante-dark .practice-test [class*="choice"],
+body.studyante-dark .quiz-question [class*="option"],
+body.studyante-dark .quiz-question [class*="choice"],
+body.studyante-dark .test-question [class*="option"],
+body.studyante-dark .test-question [class*="choice"],
+body.studyante-dark .practice-question [class*="option"],
+body.studyante-dark .practice-question [class*="choice"] {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+
+    border-color: #334155 !important;
+
+    box-shadow: none !important;
+}
+
+
+/* Text inside choices */
+body.studyante-dark .practice-test [class*="option"] *,
+body.studyante-dark .practice-test [class*="choice"] *,
+body.studyante-dark .quiz-question [class*="option"] *,
+body.studyante-dark .quiz-question [class*="choice"] *,
+body.studyante-dark .test-question [class*="option"] *,
+body.studyante-dark .test-question [class*="choice"] *,
+body.studyante-dark .practice-question [class*="option"] *,
+body.studyante-dark .practice-question [class*="choice"] * {
+    color: #f8fafc !important;
+}
+
+
+/* Radio / checkbox labels */
+body.studyante-dark .practice-test label,
+body.studyante-dark .quiz-question label,
+body.studyante-dark .test-question label,
+body.studyante-dark .practice-question label {
+    color: #f8fafc !important;
+}
+
+
+/* Buttons used as answers */
+body.studyante-dark .practice-test button[class*="option"],
+body.studyante-dark .practice-test button[class*="choice"],
+body.studyante-dark .quiz-question button,
+body.studyante-dark .test-question button[class*="option"] {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+}
+
+
+/* Hover */
+body.studyante-dark .practice-test [class*="option"]:hover,
+body.studyante-dark .practice-test [class*="choice"]:hover,
+body.studyante-dark .quiz-question [class*="option"]:hover,
+body.studyante-dark .quiz-question [class*="choice"]:hover,
+body.studyante-dark .test-question [class*="option"]:hover,
+body.studyante-dark .test-question [class*="choice"]:hover {
+    background: #334155 !important;
+}
+
+
+/* Selected answer */
+body.studyante-dark .practice-test [class*="option"].selected,
+body.studyante-dark .practice-test [class*="choice"].selected,
+body.studyante-dark .quiz-question [class*="option"].selected,
+body.studyante-dark .test-question [class*="option"].selected,
+body.studyante-dark input[type="radio"]:checked + label,
+body.studyante-dark input[type="checkbox"]:checked + label {
+    background: #1d4ed8 !important;
+    color: #ffffff !important;
+
+    border-color: #3b82f6 !important;
+}
+
+
+/* Correct answer */
+body.studyante-dark [class*="option"].correct,
+body.studyante-dark [class*="choice"].correct {
+    background: #14532d !important;
+    color: #dcfce7 !important;
+
+    border-color: #22c55e !important;
+}
+
+
+/* Wrong answer */
+body.studyante-dark [class*="option"].incorrect,
+body.studyante-dark [class*="option"].wrong,
+body.studyante-dark [class*="choice"].incorrect,
+body.studyante-dark [class*="choice"].wrong {
+    background: #7f1d1d !important;
+    color: #fee2e2 !important;
+
+    border-color: #ef4444 !important;
+}
+
+
+/* Show Answer */
+body.studyante-dark details,
+body.studyante-dark summary {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark summary {
+    cursor: pointer !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE UNCHANGED
+   ========================================================= */
+
+
+/* STUDYANTE_TEST_CHOICE_EXACT_DARK_FIX */
+
+/*
+   Exact Practice Test classes:
+   .question-card
+   .test-choice
+*/
+
+/* QUESTION CARD */
+
+body.studyante-dark .question-card {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+
+
+/* QUESTION */
+
+body.studyante-dark .question-card h3 {
+    color: #f8fafc !important;
+}
+
+
+/* ANSWER CHOICES — EXACT CLASS */
+
+body.studyante-dark .question-card .test-choice,
+body.studyante-dark .test-choice {
+    background: #1e293b !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+    border-radius: 9px !important;
+
+    box-shadow: none !important;
+}
+
+
+/* Make absolutely sure text stays visible */
+
+body.studyante-dark .test-choice,
+body.studyante-dark .test-choice * {
+    color: #f8fafc !important;
+}
+
+
+/* HOVER */
+
+body.studyante-dark .test-choice:hover {
+    background: #334155 !important;
+    border-color: #475569 !important;
+}
+
+
+/* SHOW ANSWER */
+
+body.studyante-dark .question-card details {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .question-card summary {
+    color: #f8fafc !important;
+    cursor: pointer !important;
+}
+
+body.studyante-dark .question-card details p {
+    color: #e2e8f0 !important;
+}
+
+
+/* LIGHT MODE — preserve original */
+
+body:not(.studyante-dark) .test-choice {
+    background: #f7f8fa !important;
+    color: #111827 !important;
+}
+
+
+/* STUDYANTE_STUDY_GAME_DARK_FIX */
+
+/* EXACT STUDY GAME BUTTON CLASS */
+body.studyante-dark .game-choice {
+    background: #1e293b !important;
+    background-image: none !important;
+
+    color: #f8fafc !important;
+
+    border: 1px solid #334155 !important;
+
+    box-shadow: none !important;
+}
+
+body.studyante-dark .game-choice * {
+    color: #f8fafc !important;
+}
+
+
+/* HOVER */
+body.studyante-dark .game-choice:hover:not(:disabled) {
+    background: #334155 !important;
+    border-color: #475569 !important;
+}
+
+
+/* CORRECT ANSWER */
+body.studyante-dark .game-choice.correct {
+    background: #14532d !important;
+    color: #dcfce7 !important;
+
+    border-color: #22c55e !important;
+}
+
+body.studyante-dark .game-choice.correct * {
+    color: #dcfce7 !important;
+}
+
+
+/* WRONG ANSWER */
+body.studyante-dark .game-choice.wrong {
+    background: #7f1d1d !important;
+    color: #fee2e2 !important;
+
+    border-color: #ef4444 !important;
+}
+
+body.studyante-dark .game-choice.wrong * {
+    color: #fee2e2 !important;
+}
+
+
+/* DISABLED AFTER ANSWERING */
+body.studyante-dark .game-choice:disabled {
+    opacity: 1 !important;
+}
+
+
+/* QUESTION CARD */
+body.studyante-dark .question-card {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+
+    border-color: #334155 !important;
+}
+
+body.studyante-dark .question-card h3 {
+    color: #f8fafc !important;
+}
+
+
+/* LIGHT MODE STAYS ORIGINAL */
+body:not(.studyante-dark) .game-choice {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+
+/* ==========================================================
+   STUDYANTE_SAVED_STUDY_MATERIALS_STYLE
+   ========================================================== */
+
+.studyante-save-generated {
+    margin-top: 18px;
+}
+
+.studyante-saved-material {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.studyante-saved-material-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.studyante-saved-material-header h3 {
+    margin: 0 0 4px;
+}
+
+.studyante-saved-material-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #f1f5f9;
+
+    font-size: 21px;
+}
+
+.studyante-saved-material-type,
+.studyante-saved-material-folder {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.studyante-saved-material-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.studyante-saved-material-actions select {
+    min-width: 140px;
+}
+
+
+/* DARK MODE */
+
+body.studyante-dark
+.studyante-saved-material {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+
+body.studyante-dark
+.studyante-saved-material h3,
+body.studyante-dark
+.studyante-saved-material-type,
+body.studyante-dark
+.studyante-saved-material-folder {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark
+.studyante-saved-material-icon {
+    background: #1e293b !important;
+}
+
+body.studyante-dark
+.studyante-saved-material-actions select {
+    background: #111827 !important;
+    color: #f8fafc !important;
+    border-color: #475569 !important;
+}
+
+body.studyante-dark
+.studyante-saved-material-actions option {
+    background: #111827 !important;
+    color: #f8fafc !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .studyante-saved-material-actions {
+        align-items: stretch;
+    }
+
+    .studyante-saved-material-actions button,
+    .studyante-saved-material-actions select {
+        width: 100%;
+    }
+}
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_CARD_LAYOUT_FIX
+   ========================================================== */
+
+/* Keep the header inside the library card */
+.studyante-saved-material {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.studyante-saved-material-header {
+    width: 100%;
+    min-width: 0;
+}
+
+.studyante-saved-material-header > div:last-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Prevent long saved-material names from leaving the card */
+.studyante-saved-material-header h3 {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    box-sizing: border-box;
+}
+
+/* Make Notes / Test / Game controls match the flashcard cards */
+.studyante-saved-material-actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+}
+
+.studyante-saved-material-actions > button:first-child {
+    flex: 1 1 150px;
+    min-width: 110px;
+}
+
+.studyante-saved-material-actions > select {
+    flex: 0 1 140px;
+    min-width: 115px;
+    max-width: 140px;
+}
+
+.studyante-saved-material-actions > button:last-child {
+    flex: 0 0 auto;
+    min-width: 98px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .studyante-saved-material-header h3 {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .studyante-saved-material-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .studyante-saved-material-actions > button:first-child,
+    .studyante-saved-material-actions > select,
+    .studyante-saved-material-actions > button:last-child {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        flex: none;
+    }
+}
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_MATCH_FLASHCARDS
+   ========================================================== */
+
+.studyante-saved-material {
+    min-height: 272px;
+    padding: 18px;
+    border: 1px solid #dbe2ea;
+    border-radius: 14px;
+    box-sizing: border-box;
+}
+
+.studyante-saved-material-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.studyante-saved-material-header > div:last-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.studyante-saved-material-header h3 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.studyante-saved-material-type {
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.studyante-saved-material-folder {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.studyante-saved-material-actions {
+    margin-top: 12px;
+
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 0.95fr;
+    gap: 8px;
+
+    width: 100%;
+}
+
+.studyante-saved-material-actions button,
+.studyante-saved-material-actions select {
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+
+    box-sizing: border-box;
+}
+
+.studyante-saved-material-actions button:first-child {
+    font-weight: 700;
+}
+
+.studyante-saved-material-actions button:last-child {
+    font-weight: 700;
+}
+
+@media (max-width: 600px) {
+
+    .studyante-saved-material {
+        min-height: 0;
+    }
+
+    .studyante-saved-material-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .studyante-saved-material-header h3 {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_EXACT_CARD_MATCH
+   ========================================================== */
+
+.studyante-saved-material {
+    height: 272px !important;
+    min-height: 272px !important;
+
+    padding: 18px !important;
+    margin: 0 !important;
+
+    border: 1px solid #dbe2ea !important;
+    border-radius: 14px !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+
+    align-self: stretch !important;
+}
+
+.studyante-saved-material-header {
+    margin: 0 !important;
+}
+
+.studyante-saved-material-folder {
+    margin-top: 10px !important;
+    margin-bottom: 0 !important;
+}
+
+.studyante-saved-material-actions {
+    margin-top: 14px !important;
+
+    display: grid !important;
+    grid-template-columns: 1fr 0.9fr 0.9fr !important;
+    gap: 8px !important;
+
+    width: 100% !important;
+}
+
+.studyante-saved-material-actions button,
+.studyante-saved-material-actions select {
+    height: 48px !important;
+    min-height: 48px !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+.studyante-saved-material-header h3 {
+    font-size: 20px !important;
+    line-height: 24px !important;
+    margin: 0 0 4px !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.studyante-saved-material-type {
+    font-size: 16px !important;
+    line-height: 22px !important;
+}
+
+@media (max-width: 600px) {
+
+    .studyante-saved-material {
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    .studyante-saved-material-actions {
+        grid-template-columns: 1fr !important;
+    }
+
+    .studyante-saved-material-header h3 {
+        white-space: normal !important;
+    }
+}
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_TYPE_UNDER_TITLE
+   ========================================================== */
+
+/* Keep title and Practice Test / Notes / Study Game
+   directly underneath each other */
+
+.studyante-saved-material-header > div:last-child {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    min-width: 0 !important;
+}
+
+.studyante-saved-material-header h3 {
+    width: 100% !important;
+    margin: 0 0 5px 0 !important;
+}
+
+.studyante-saved-material-type {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+}
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_VERTICAL_HEADER
+   ========================================================== */
+
+.studyante-saved-material-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+}
+
+.studyante-saved-material-header > div:last-child {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.studyante-saved-material-header h3 {
+    width: 100% !important;
+    margin: 0 0 5px 0 !important;
+}
+
+.studyante-saved-material-type {
+    display: block !important;
+    margin: 0 !important;
+}
+
+/* ==========================================================
+   STUDYANTE_SAVED_MATERIAL_FLASHCARD_LAYOUT
+   ========================================================== */
+
+.studyante-saved-material {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    height: auto !important;
+    min-height: 272px !important;
+    padding: 18px !important;
+}
+
+/* Remove side-by-side icon/title layout */
+.studyante-saved-material-header {
+    display: block !important;
+    width: 100% !important;
+}
+
+.studyante-saved-material-icon {
+    display: none !important;
+}
+
+/* Main title line */
+.studyante-saved-material-header > div:last-child {
+    width: 100% !important;
+}
+
+.studyante-saved-material-header h3 {
+    margin: 0 !important;
+    font-size: 20px !important;
+    line-height: 1.25 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+/* Material type underneath */
+.studyante-saved-material-type {
+    display: block !important;
+    margin-top: 4px !important;
+    font-size: 15px !important;
+}
+
+/* Folder line like flashcards */
+.studyante-saved-material-folder {
+    margin: 4px 0 0 0 !important;
+    font-size: 14px !important;
+}
+
+/* Same horizontal controls */
+.studyante-saved-material-actions {
+    margin-top: 2px !important;
+
+    display: grid !important;
+    grid-template-columns:
+        minmax(110px, 1fr)
+        minmax(120px, 1fr)
+        minmax(90px, 0.9fr) !important;
+
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+.studyante-saved-material-actions button,
+.studyante-saved-material-actions select {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    box-sizing: border-box !important;
+}
+
+/* Keep actions aligned near bottom like flashcard cards */
+.studyante-saved-material-actions {
+    margin-top: auto !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .studyante-saved-material {
+        min-height: 0 !important;
+    }
+
+    .studyante-saved-material-actions {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ==========================================================
+   STUDYANTE_EXACT_FLASHCARD_CARD_MATCH_FINAL
+   ========================================================== */
+
+/* EXACT SAME BASE CARD DIMENSIONS AS .library-card */
+.studyante-saved-material {
+    min-width: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 18px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+
+    border: 1px solid var(--border) !important;
+    border-radius: 15px !important;
+    background: white;
+
+    box-sizing: border-box !important;
+}
+
+
+/* ICON ON TOP JUST LIKE FLASHCARD */
+.studyante-saved-material-header {
+    display: contents !important;
+}
+
+.studyante-saved-material-icon {
+    display: grid !important;
+
+    width: 46px !important;
+    height: 46px !important;
+
+    place-items: center !important;
+
+    border-radius: 12px !important;
+
+    font-size: 24px !important;
+
+    background: linear-gradient(
+        135deg,
+        var(--red-soft),
+        var(--blue-soft)
+    ) !important;
+}
+
+
+/* TITLE + TYPE */
+.studyante-saved-material-header > div:last-child {
+    display: contents !important;
+}
+
+.studyante-saved-material-header h3 {
+    margin: 0 !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+
+    font-size: inherit !important;
+    line-height: inherit !important;
+}
+
+.studyante-saved-material-type {
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: inherit !important;
+    line-height: inherit !important;
+
+    color: var(--muted);
+}
+
+
+/* FOLDER SAME SPACING */
+.studyante-saved-material-folder {
+    display: block !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    font-size: inherit !important;
+    line-height: inherit !important;
+}
+
+
+/* EXACT SAME ACTION BEHAVIOR AS .library-actions */
+.studyante-saved-material-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+
+    gap: 7px !important;
+
+    width: 100% !important;
+
+    margin-top: 9px !important;
+}
+
+.studyante-saved-material-actions button,
+.studyante-saved-material-actions select {
+    flex: 1 1 0 !important;
+
+    width: auto !important;
+    min-width: 75px !important;
+    max-width: none !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    box-sizing: border-box !important;
+}
+
+.studyante-saved-material-actions select {
+    padding: 9px !important;
+
+    border: 1px solid var(--border) !important;
+    border-radius: 9px !important;
+
+    background: white;
+}
+
+
+/* DARK MODE */
+body.studyante-dark .studyante-saved-material {
+    background: #111827 !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.studyante-dark
+.studyante-saved-material-actions select {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: #475569 !important;
+}
+
+
+/* PHONE — SAME BEHAVIOR AS LIBRARY ACTIONS */
+@media (max-width: 600px) {
+
+    .studyante-saved-material {
+        width: 100% !important;
+        padding: 15px !important;
+    }
+
+    .studyante-saved-material-actions {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .studyante-saved-material-actions button,
+    .studyante-saved-material-actions select {
+        width: 100% !important;
+    }
+}
+
+/* ==========================================================
+   STUDYANTE_INTERACTIVE_TEST_CHOICE_STYLE
+   ========================================================== */
+
+.test-choice {
+    width: 100%;
+    display: block;
+    margin: 7px 0;
+    padding: 10px 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #f7f8fa;
+    cursor: pointer;
+}
+
+.test-choice:hover:not(:disabled) {
+    border-color: var(--blue);
+}
+
+.test-choice.correct {
+    border-color: #22c55e !important;
+    background: #dcfce7 !important;
+    color: #166534 !important;
+}
+
+.test-choice.wrong {
+    border-color: #ef4444 !important;
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+}
+
+.test-choice:disabled {
+    opacity: 1;
+    cursor: default;
+}
+
+body.studyante-dark .test-choice.correct {
+    background: #14532d !important;
+    border-color: #22c55e !important;
+    color: #dcfce7 !important;
+}
+
+body.studyante-dark .test-choice.wrong {
+    background: #7f1d1d !important;
+    border-color: #ef4444 !important;
+    color: #fee2e2 !important;
+}
+
+/* ==========================================================
+   STUDYANTE_TEST_FINAL_RESULTS_STYLE
+   ========================================================== */
+
+.test-choice.selected {
+    border-color: #2563eb !important;
+    background: #dbeafe !important;
+    color: #1e3a8a !important;
+}
+
+body.studyante-dark .test-choice.selected {
+    border-color: #3b82f6 !important;
+    background: #1e3a8a !important;
+    color: #eff6ff !important;
+}
+
+.studyante-test-submit-area {
+    margin-top: 24px;
+    text-align: center;
+}
+
+#submitPracticeTest {
+    min-width: 180px;
+}
+
+.studyante-test-result {
+    margin-top: 22px;
+}
+
+.studyante-test-result-card {
+    padding: 24px;
+    border: 1px solid #dbe2ea;
+    border-radius: 16px;
+    text-align: center;
+    background: #ffffff;
+}
+
+.studyante-test-result-card h2 {
+    margin-top: 0;
+}
+
+.studyante-test-score {
+    margin: 12px 0;
+    font-size: 38px;
+    font-weight: 800;
+}
+
+.studyante-test-answer {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.studyante-test-answer[hidden] {
+    display: none !important;
+}
+
+body.studyante-dark .studyante-test-result-card {
+    background: #111827;
+    border-color: #334155;
+}
+
+body.studyante-dark .studyante-test-answer {
+    background: #172033;
+}
+
+/* ==========================================================
+   STUDYANTE_FLASHCARD_SWIPE_STYLE
+   ========================================================== */
+
+.flashcard {
+    position: relative;
+    touch-action: pan-y;
+    user-select: none;
+    will-change: transform;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.flashcard.swiping {
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.flashcard.swipe-know {
+    border-color: #22c55e !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(34, 197, 94, 0.18);
+}
+
+.flashcard.swipe-learning {
+    border-color: #ef4444 !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(239, 68, 68, 0.18);
+}
+
+
+.flashcard.swipe-know::before,
+.flashcard.swipe-learning::before {
+    position: absolute;
+    top: 20px;
+    z-index: 10;
+
+    padding: 8px 12px;
+
+    border: 2px solid currentColor;
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    font-size: 14px;
+    font-weight: 900;
+
+    pointer-events: none;
+}
+
+
+.flashcard.swipe-know::before {
+    content: "KNOW IT";
+    left: 20px;
+
+    color: #16a34a;
+}
+
+
+.flashcard.swipe-learning::before {
+    content: "STILL LEARNING";
+    right: 20px;
+
+    color: #dc2626;
+}
+
+
+.flashcard.swipe-out-right {
+    transform:
+        translateX(130%)
+        rotate(15deg) !important;
+
+    opacity: 0;
+}
+
+
+.flashcard.swipe-out-left {
+    transform:
+        translateX(-130%)
+        rotate(-15deg) !important;
+
+    opacity: 0;
+}
+
+
+.studyante-flashcard-result {
+    max-width: 520px;
+
+    margin:
+        20px auto;
+
+    padding: 28px;
+
+    border:
+        1px solid #dbe2ea;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    text-align: center;
+}
+
+
+.studyante-flashcard-result h2 {
+    margin-top: 0;
+}
+
+
+.studyante-flashcard-result-score {
+    margin: 16px 0;
+
+    font-size: 42px;
+    font-weight: 900;
+}
+
+
+.studyante-flashcard-result p {
+    margin: 10px 0;
+}
+
+
+#restartFlashcards {
+    margin-top: 18px;
+}
+
+
+body.studyante-dark
+.flashcard.swipe-know::before,
+body.studyante-dark
+.flashcard.swipe-learning::before {
+    background: #111827;
+}
+
+
+body.studyante-dark
+.studyante-flashcard-result {
+    background: #111827;
+
+    border-color: #334155;
+
+    color: #f8fafc;
+}
+
+
+@media (max-width: 600px) {
+
+    .flashcard {
+        min-height: 260px;
+    }
+
+    .flashcard.swipe-know::before,
+    .flashcard.swipe-learning::before {
+        top: 12px;
+
+        font-size: 12px;
+    }
+}
+
+/* ==========================================================
+   STUDYANTE_FLASHCARD_FOCUS_STYLE
+   ========================================================== */
+
+.studyante-flashcard-topbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    margin-bottom: 12px;
+}
+
+.studyante-flashcard-topbar .flashcard-progress {
+    margin: 0;
+}
+
+.studyante-flashcard-expand {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    min-height: 36px;
+    padding: 7px 13px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #0f172a;
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.studyante-flashcard-expand:hover {
+    background: #f1f5f9;
+}
+
+
+/* Prevent page scrolling while expanded */
+
+body.studyante-flashcard-focus-active {
+    overflow: hidden !important;
+}
+
+
+/* Full-screen study mode */
+
+.flashcard-area.studyante-flashcard-focus-mode {
+    position: fixed !important;
+    inset: 0 !important;
+
+    z-index: 999999 !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding:
+        max(22px, env(safe-area-inset-top))
+        5vw
+        max(22px, env(safe-area-inset-bottom)) !important;
+
+    box-sizing: border-box !important;
+
+    background: #f7f8fb !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Top card counter / Exit button */
+
+.flashcard-area.studyante-flashcard-focus-mode
+.studyante-flashcard-topbar {
+    flex: 0 0 auto;
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin:
+        0 auto 18px;
+}
+
+
+/* Flashcard fills available screen */
+
+.flashcard-area.studyante-flashcard-focus-mode
+.flashcard {
+    flex: 1 1 auto !important;
+
+    width: 100% !important;
+    max-width: 1200px !important;
+
+    min-height: 0 !important;
+    height: auto !important;
+
+    margin:
+        0 auto !important;
+
+    border-radius: 24px !important;
+}
+
+
+/* Larger question/answer while expanded */
+
+.flashcard-area.studyante-flashcard-focus-mode
+.flashcard h2 {
+    font-size:
+        clamp(
+            28px,
+            4vw,
+            52px
+        ) !important;
+
+    line-height: 1.2 !important;
+}
+
+
+/* Controls remain at bottom */
+
+.flashcard-area.studyante-flashcard-focus-mode
+.flashcard-navigation {
+    flex: 0 0 auto;
+
+    width: 100%;
+    max-width: 760px;
+
+    margin:
+        20px auto 0 !important;
+}
+
+
+.flashcard-area.studyante-flashcard-focus-mode
+.flashcard-navigation button {
+    min-height: 52px;
+
+    font-size: 16px;
+}
+
+
+/* Dark mode */
+
+body.studyante-dark
+.flashcard-area.studyante-flashcard-focus-mode {
+    background: #020617 !important;
+}
+
+
+body.studyante-dark
+.studyante-flashcard-expand {
+    background: #1e293b;
+
+    border-color: #475569;
+
+    color: #f8fafc;
+}
+
+
+body.studyante-dark
+.studyante-flashcard-expand:hover {
+    background: #334155;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .studyante-flashcard-topbar {
+        min-height: 38px;
+    }
+
+    .studyante-flashcard-expand {
+        min-height: 34px;
+
+        padding: 6px 9px;
+
+        font-size: 12px;
+    }
+
+
+    .flashcard-area.studyante-flashcard-focus-mode {
+        padding:
+            max(
+                14px,
+                env(safe-area-inset-top)
+            )
+            14px
+            max(
+                14px,
+                env(safe-area-inset-bottom)
+            ) !important;
+    }
+
+
+    .flashcard-area.studyante-flashcard-focus-mode
+    .studyante-flashcard-topbar {
+        margin-bottom: 12px;
+    }
+
+
+    .flashcard-area.studyante-flashcard-focus-mode
+    .flashcard {
+        min-height: 0 !important;
+
+        padding: 24px 18px !important;
+
+        border-radius: 18px !important;
+    }
+
+
+    .flashcard-area.studyante-flashcard-focus-mode
+    .flashcard h2 {
+        font-size:
+            clamp(
+                22px,
+                7vw,
+                34px
+            ) !important;
+    }
+
+
+    .flashcard-area.studyante-flashcard-focus-mode
+    .flashcard-navigation {
+        margin-top: 12px !important;
+    }
+}
+
+/* STUDYANTE_RESPONSIVE_DEVICE_LAYOUT_START */
+
+/* ==========================================================
+   STUDYANTE RESPONSIVE DEVICE LAYOUT
+
+   Small phone     <= 480px
+   Phone           <= 600px
+   Tablet          601px - 800px
+   Laptop/Desktop  >= 801px
+   Large desktop   >= 1440px
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   TABLETS + PHONES
+
+   IMPORTANT:
+   The desktop sidebar uses 100vh.
+   On stacked layouts that creates a giant blank section.
+   Reset its height so content begins immediately after nav.
+   ---------------------------------------------------------- */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        overflow: visible !important;
+
+        position: relative !important;
+        inset: auto !important;
+
+        box-sizing: border-box !important;
+
+        flex: 0 0 auto !important;
+    }
+
+
+    /* Navigation should size itself naturally */
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        flex: none !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* Chat history must not force sidebar to fill viewport */
+
+    .sidebar-chat-history {
+        flex: none !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* Bottom controls stay part of normal document flow */
+
+    .sidebar-bottom-controls {
+        flex: none !important;
+
+        margin-top: 10px !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+
+    /* Main page/content follows sidebar immediately */
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin-left: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    .studyante-page {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   TABLET
+   ---------------------------------------------------------- */
+
+@media (min-width: 601px) and (max-width: 800px) {
+
+    .sidebar {
+        padding:
+            18px
+            clamp(20px, 5vw, 48px)
+            16px !important;
+    }
+
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        max-width: 680px !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        min-height: 44px !important;
+
+        padding:
+            10px
+            14px !important;
+
+        font-size: 15px !important;
+    }
+
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        padding-left: clamp(18px, 4vw, 40px) !important;
+        padding-right: clamp(18px, 4vw, 40px) !important;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   PHONE
+   ---------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    .sidebar {
+        padding:
+            14px
+            12px
+            12px !important;
+    }
+
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        margin-top: 8px !important;
+        margin-bottom: 8px !important;
+
+        gap: 3px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        width: 100% !important;
+
+        min-height: 42px !important;
+
+        padding:
+            9px
+            12px !important;
+
+        font-size: 14px !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+
+    .panel,
+    .studyante-page {
+        max-width: 100% !important;
+
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    img,
+    video,
+    canvas {
+        max-width: 100%;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   SMALL PHONE
+   ---------------------------------------------------------- */
+
+@media (max-width: 480px) {
+
+    .sidebar {
+        padding:
+            12px
+            8px
+            10px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        min-height: 40px !important;
+
+        padding:
+            8px
+            10px !important;
+
+        font-size: 13px !important;
+    }
+
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   LAPTOP + DESKTOP
+
+   Preserve current desktop sidebar behavior.
+   ---------------------------------------------------------- */
+
+@media (min-width: 801px) {
+
+    .sidebar {
+        height: 100vh !important;
+        max-height: 100vh !important;
+    }
+
+
+    .sidebar-chat-history {
+        flex: 1 1 auto !important;
+
+        min-height: 0 !important;
+
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+
+    .sidebar-bottom-controls {
+        flex: 0 0 auto !important;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   LARGE DESKTOP
+
+   Prevent content from becoming excessively stretched.
+   ---------------------------------------------------------- */
+
+@media (min-width: 1440px) {
+
+    .studyante-page:not(#ai) {
+        max-width: 1400px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* STUDYANTE_RESPONSIVE_DEVICE_LAYOUT_END */
+
+/* STUDYANTE_PHONE_LAYOUT_FIX_START */
+
+
+/* ==========================================================
+   PHONE + TABLET
+   ========================================================== */
+
+@media (max-width: 800px) {
+
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+    }
+
+
+    /* ------------------------------------------------------
+       SIDEBAR
+       Keep it compact instead of taking most of the screen.
+       ------------------------------------------------------ */
+
+    .sidebar {
+        width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+
+        overflow: visible !important;
+    }
+
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        height: auto !important;
+        min-height: 0 !important;
+
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+
+        gap: 1px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        min-height: 38px !important;
+
+        padding-top: 7px !important;
+        padding-bottom: 7px !important;
+
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+
+    /* Do not allow hidden sidebar sections to reserve space */
+
+    .sidebar-chat-history:empty {
+        display: none !important;
+    }
+
+
+    /* ------------------------------------------------------
+       PAGE
+       ------------------------------------------------------ */
+
+    main,
+    .main,
+    .main-content,
+    .content,
+    .content-area {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        margin: 0 !important;
+
+        box-sizing: border-box !important;
+
+        overflow-x: hidden !important;
+    }
+
+
+    .studyante-page,
+    .panel {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* ------------------------------------------------------
+       AI PAGE
+       ------------------------------------------------------ */
+
+    #ai {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        box-sizing: border-box !important;
+
+        overflow-x: hidden !important;
+    }
+
+
+    #ai * {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    /* Prevent flex children from forcing horizontal overflow */
+
+    #ai div,
+    #ai form {
+        min-width: 0;
+    }
+
+
+    /* ------------------------------------------------------
+       AI INPUT AREA
+       Fix Send button going outside screen.
+       ------------------------------------------------------ */
+
+    #ai textarea,
+    #ai input[type="text"] {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+
+    #ai button {
+        max-width: 100%;
+    }
+
+
+    /* Any composer/form row must remain inside viewport */
+
+    #ai form {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+
+/* ==========================================================
+   PHONE
+   ========================================================== */
+
+@media (max-width: 600px) {
+
+    /* ------------------------------------------------------
+       SIDEBAR NAV
+       ------------------------------------------------------ */
+
+    .sidebar {
+        padding:
+            8px
+            8px
+            8px !important;
+    }
+
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        gap: 0 !important;
+
+        margin-top: 3px !important;
+        margin-bottom: 3px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        min-height: 36px !important;
+
+        padding:
+            6px
+            10px !important;
+
+        border-radius: 10px !important;
+
+        font-size: 13px !important;
+    }
+
+
+    /* ------------------------------------------------------
+       AI PAGE SPACING
+       ------------------------------------------------------ */
+
+    #ai.panel,
+    #ai.studyante-page {
+        padding:
+            14px
+            10px !important;
+
+        margin: 0 !important;
+    }
+
+
+    #ai h1,
+    #ai h2 {
+        font-size: clamp(
+            22px,
+            7vw,
+            30px
+        ) !important;
+
+        line-height: 1.15 !important;
+    }
+
+
+    #ai p {
+        overflow-wrap: anywhere;
+    }
+
+
+    /* ------------------------------------------------------
+       CHAT AREA
+       ------------------------------------------------------ */
+
+    #ai .ai-chat,
+    #ai .chat-container,
+    #ai .chat-box,
+    #ai .chat-messages,
+    #ai .ai-chat-box,
+    #ai .ai-chat-container {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* Messages cannot overflow */
+
+    #ai .message,
+    #ai .chat-message,
+    #ai .ai-message,
+    #ai .assistant-message,
+    #ai .user-message {
+        max-width: 88% !important;
+
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+    }
+
+
+    /* ------------------------------------------------------
+       COMPOSER
+       ------------------------------------------------------ */
+
+    #ai .chat-input,
+    #ai .chat-input-area,
+    #ai .chat-input-container,
+    #ai .ai-input,
+    #ai .ai-input-area,
+    #ai .ai-input-container,
+    #ai .composer,
+    #ai .composer-row {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    #ai textarea,
+    #ai input[type="text"] {
+        width: 100% !important;
+
+        min-width: 0 !important;
+
+        font-size: 16px !important;
+    }
+
+
+    /* Keep Send from inheriting a huge desktop width */
+
+    #ai button[type="submit"],
+    #ai .send-btn,
+    #ai .send-button,
+    #ai #sendButton,
+    #ai #sendBtn {
+        width: auto !important;
+
+        min-width: 82px !important;
+        max-width: 110px !important;
+
+        flex:
+            0 0 auto !important;
+
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
+
+
+/* ==========================================================
+   VERY SMALL PHONES
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    #ai.panel,
+    #ai.studyante-page {
+        padding:
+            12px
+            8px !important;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        font-size: 12.5px !important;
+    }
+
+
+    #ai button[type="submit"],
+    #ai .send-btn,
+    #ai .send-button,
+    #ai #sendButton,
+    #ai #sendBtn {
+        min-width: 72px !important;
+        max-width: 90px !important;
+
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+}
+
+
+/* STUDYANTE_PHONE_LAYOUT_FIX_END */
+
+/* STUDYANTE_MOBILE_HORIZONTAL_NAV_COMPOSER_START */
+
+
+/* ==========================================================
+   MOBILE / TABLET NAVIGATION
+   Dashboard | Upload Material | My Library |
+   Community Notes | STUDYante AI
+   ========================================================== */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+
+        overflow: visible !important;
+    }
+
+
+    .sidebar nav,
+    .sidebar .nav-links,
+    .sidebar .sidebar-nav {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        width: 100% !important;
+
+        gap: 4px !important;
+
+        margin:
+            6px
+            0 !important;
+
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+
+    .sidebar nav::-webkit-scrollbar,
+    .sidebar .nav-links::-webkit-scrollbar,
+    .sidebar .sidebar-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        flex:
+            0 0 auto !important;
+
+        width: auto !important;
+        min-width: auto !important;
+
+        min-height: 36px !important;
+
+        padding:
+            7px
+            10px !important;
+
+        margin: 0 !important;
+
+        white-space: nowrap !important;
+
+        font-size: 12px !important;
+        line-height: 1.2 !important;
+
+        border-radius: 9px !important;
+
+        justify-content: center !important;
+    }
+
+
+    .sidebar nav a:last-child,
+    .sidebar .nav-links a:last-child,
+    .sidebar .sidebar-nav a:last-child {
+        grid-column: auto !important;
+    }
+}
+
+
+/* ==========================================================
+   AI PAGE WIDTH PROTECTION
+   ========================================================== */
+
+@media (max-width: 800px) {
+
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: hidden !important;
+    }
+
+
+    #ai {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+
+        overflow-x: hidden !important;
+    }
+
+
+    #ai *,
+    #ai *::before,
+    #ai *::after {
+        box-sizing: border-box;
+    }
+
+
+    #ai > *,
+    #ai div,
+    #ai form {
+        min-width: 0;
+    }
+}
+
+
+/* ==========================================================
+   AI COMPOSER
+   Prevent Send button from overflowing
+   ========================================================== */
+
+@media (max-width: 600px) {
+
+    #ai form,
+    #ai .chat-input,
+    #ai .chat-input-area,
+    #ai .chat-input-container,
+    #ai .ai-input,
+    #ai .ai-input-area,
+    #ai .ai-input-container,
+    #ai .composer,
+    #ai .composer-row {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        align-items: center !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        gap: 7px !important;
+
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+
+        box-sizing: border-box !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* Attachment / plus button */
+
+    #ai form > button:first-child,
+    #ai .chat-input > button:first-child,
+    #ai .chat-input-area > button:first-child,
+    #ai .chat-input-container > button:first-child,
+    #ai .ai-input > button:first-child,
+    #ai .ai-input-area > button:first-child,
+    #ai .ai-input-container > button:first-child,
+    #ai .composer > button:first-child,
+    #ai .composer-row > button:first-child {
+        flex:
+            0 0 42px !important;
+
+        width: 42px !important;
+        min-width: 42px !important;
+        max-width: 42px !important;
+
+        padding:
+            0 !important;
+    }
+
+
+    /* Message input */
+
+    #ai textarea,
+    #ai input[type="text"] {
+        flex:
+            1 1 auto !important;
+
+        width: 1% !important;
+
+        min-width: 0 !important;
+        max-width: none !important;
+
+        font-size: 16px !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* Send button */
+
+    #ai form > button:last-child,
+    #ai .chat-input > button:last-child,
+    #ai .chat-input-area > button:last-child,
+    #ai .chat-input-container > button:last-child,
+    #ai .ai-input > button:last-child,
+    #ai .ai-input-area > button:last-child,
+    #ai .ai-input-container > button:last-child,
+    #ai .composer > button:last-child,
+    #ai .composer-row > button:last-child,
+    #ai button[type="submit"],
+    #ai .send-btn,
+    #ai .send-button,
+    #ai #sendButton,
+    #ai #sendBtn {
+        flex:
+            0 0 86px !important;
+
+        width: 86px !important;
+        min-width: 86px !important;
+        max-width: 86px !important;
+
+        padding:
+            0
+            12px !important;
+
+        white-space: nowrap !important;
+    }
+}
+
+
+/* ==========================================================
+   VERY SMALL PHONES
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    .sidebar nav a,
+    .sidebar .nav-links a,
+    .sidebar .sidebar-nav a {
+        padding:
+            6px
+            8px !important;
+
+        font-size: 11.5px !important;
+    }
+
+
+    #ai form > button:last-child,
+    #ai .chat-input > button:last-child,
+    #ai .chat-input-area > button:last-child,
+    #ai .chat-input-container > button:last-child,
+    #ai .ai-input > button:last-child,
+    #ai .ai-input-area > button:last-child,
+    #ai .ai-input-container > button:last-child,
+    #ai .composer > button:last-child,
+    #ai .composer-row > button:last-child,
+    #ai button[type="submit"],
+    #ai .send-btn,
+    #ai .send-button,
+    #ai #sendButton,
+    #ai #sendBtn {
+        flex-basis: 74px !important;
+
+        width: 74px !important;
+        min-width: 74px !important;
+        max-width: 74px !important;
+
+        padding:
+            0
+            8px !important;
+    }
+}
+
+
+/* STUDYANTE_MOBILE_HORIZONTAL_NAV_COMPOSER_END */
+
+/* STUDYANTE_MOBILE_AI_MESSAGES_FIX_START */
+
+@media (max-width: 600px) {
+
+    /* ======================================================
+       AI CHAT CONTAINER
+       ====================================================== */
+
+    #ai .ai-chat,
+    #ai .chat-container,
+    #ai .chat-box,
+    #ai .chat-messages,
+    #ai .ai-chat-box,
+    #ai .ai-chat-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+
+        overflow-x: hidden !important;
+    }
+
+
+    /* ======================================================
+       MESSAGE ROWS
+       ====================================================== */
+
+    #ai .message-row,
+    #ai .chat-message-row,
+    #ai .ai-message-row {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /* ======================================================
+       AI + USER MESSAGE BUBBLES
+
+       Previous mobile rule used 88%.
+       Give messages more usable horizontal space.
+       ====================================================== */
+
+    #ai .message,
+    #ai .chat-message,
+    #ai .ai-message,
+    #ai .assistant-message,
+    #ai .user-message {
+        width: auto !important;
+        max-width: 94% !important;
+        min-width: 0 !important;
+
+        box-sizing: border-box !important;
+
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+
+        white-space: normal !important;
+
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+    }
+
+
+    /* ======================================================
+       AI RESPONSE
+       ====================================================== */
+
+    #ai .assistant-message,
+    #ai .ai-message {
+        flex:
+            1 1 auto !important;
+
+        max-width:
+            calc(100% - 46px) !important;
+
+        padding:
+            14px
+            15px !important;
+    }
+
+
+    /* ======================================================
+       USER MESSAGE
+       ====================================================== */
+
+    #ai .user-message {
+        max-width: 85% !important;
+
+        margin-left: auto !important;
+
+        padding:
+            11px
+            14px !important;
+    }
+
+
+    /* ======================================================
+       AVATAR
+       ====================================================== */
+
+    #ai .avatar,
+    #ai .ai-avatar,
+    #ai .message-avatar {
+        flex:
+            0 0 34px !important;
+
+        width: 34px !important;
+        height: 34px !important;
+
+        min-width: 34px !important;
+        max-width: 34px !important;
+    }
+
+
+    /* ======================================================
+       LONG AI CONTENT
+       ====================================================== */
+
+    #ai .assistant-message p,
+    #ai .assistant-message div,
+    #ai .ai-message p,
+    #ai .ai-message div {
+        max-width: 100% !important;
+
+        overflow-wrap: anywhere !important;
+
+        white-space: normal !important;
+    }
+
+
+    #ai .assistant-message pre,
+    #ai .ai-message pre {
+        max-width: 100% !important;
+
+        overflow-x: auto !important;
+
+        white-space: pre-wrap !important;
+    }
+
+
+    /* ======================================================
+       AI PAGE HEADER
+       Prevent title from touching browser top
+       ====================================================== */
+
+    #ai {
+        padding-top: 16px !important;
+    }
+
+
+    #ai h1,
+    #ai h2 {
+        margin-top: 0 !important;
+    }
+}
+
+
+/* EXTRA SMALL PHONE */
+
+@media (max-width: 420px) {
+
+    #ai .message,
+    #ai .chat-message,
+    #ai .ai-message,
+    #ai .assistant-message {
+        font-size: 15px !important;
+        line-height: 1.45 !important;
+    }
+
+
+    #ai .assistant-message,
+    #ai .ai-message {
+        max-width:
+            calc(100% - 40px) !important;
+
+        padding:
+            12px
+            13px !important;
+    }
+
+
+    #ai .avatar,
+    #ai .ai-avatar,
+    #ai .message-avatar {
+        flex-basis: 30px !important;
+
+        width: 30px !important;
+        height: 30px !important;
+
+        min-width: 30px !important;
+        max-width: 30px !important;
+    }
+}
+
+/* STUDYANTE_MOBILE_AI_MESSAGES_FIX_END */

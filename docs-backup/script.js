@@ -22,7 +22,8 @@ let activeLibraryId = null;
 let libraryData = {
   folders: [],
   files: [],
-  flashcardSets: []
+  flashcardSets: [],
+  studyMaterials: []
 };
 
 let activeFolderFilter = "";
@@ -127,6 +128,7 @@ document
     );
   });
 
+if (logoutButton) {
 logoutButton.addEventListener(
   "click",
   () => {
@@ -150,6 +152,8 @@ logoutButton.addEventListener(
     });
   }
 );
+
+}
 
 chooseFileButton.addEventListener(
   "click",
@@ -250,7 +254,7 @@ function handleFile(file) {
   fileName.textContent = file.name;
 
   fileSize.textContent =
-    `${formatFileSize(file.size)} • Saving to My Library...`;
+    `${formatFileSize(file.size)} � Saving to My Library...`;
 
   selectedFile.hidden = false;
   generateSection.hidden = false;
@@ -311,7 +315,7 @@ async function saveUploadedFile(file) {
       activeLibraryId = data.file.id;
 
       fileSize.textContent =
-        `${formatFileSize(data.file.size)} • Saved in My Library ✅`;
+        `${formatFileSize(data.file.size)} � Saved in My Library ?`;
     }
 
     await loadLibrary();
@@ -320,7 +324,7 @@ async function saveUploadedFile(file) {
 
     if (uploadedFile === file) {
       fileSize.textContent =
-        `${formatFileSize(file.size)} • Could not save to My Library`;
+        `${formatFileSize(file.size)} � Could not save to My Library`;
     }
   }
 }
@@ -363,6 +367,11 @@ async function loadLibrary() {
       flashcardSets:
         Array.isArray(data.flashcardSets)
           ? data.flashcardSets
+          : [],
+
+      studyMaterials:
+        Array.isArray(data.studyMaterials)
+          ? data.studyMaterials
           : []
     };
 
@@ -375,7 +384,7 @@ async function loadLibrary() {
     libraryStatus.hidden = false;
 
     libraryStatus.innerHTML =
-      `⚠️ ${escapeHTML(error.message)}`;
+      `?? ${escapeHTML(error.message)}`;
   }
 }
 
@@ -403,7 +412,7 @@ function renderFolderFilters() {
         folder.id;
 
       button.textContent =
-        `📁 ${folder.name}`;
+        `?? ${folder.name}`;
 
       if (
         activeFolderFilter ===
@@ -536,7 +545,7 @@ function createFileCard(item) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      📄
+      ??
     </div>
 
     <h3>
@@ -551,12 +560,12 @@ function createFileCard(item) {
           .replace(".", "")
           .toUpperCase()
       )}
-      •
+      �
       ${formatFileSize(item.size)}
     </p>
 
     <small>
-      📁 ${
+      ?? ${
         folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
@@ -656,7 +665,7 @@ function createFlashcardSetCard(set) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      🧠
+      ??
     </div>
 
     <h3>
@@ -673,7 +682,7 @@ function createFlashcardSetCard(set) {
     </p>
 
     <small>
-      📁 ${
+      ?? ${
         folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
@@ -793,7 +802,7 @@ function selectLibraryFile(item) {
     item.name;
 
   fileSize.textContent =
-    `${formatFileSize(item.size)} • From My Library`;
+    `${formatFileSize(item.size)} � From My Library`;
 
   selectedFile.hidden = false;
   generateSection.hidden = false;
@@ -1109,7 +1118,7 @@ function addManualFlashcard() {
       type="button"
       class="remove-manual-card"
     >
-      ✕
+      ?
     </button>
 
     <label class="field-label">
@@ -1366,14 +1375,14 @@ function showLoading(type) {
   };
 
   generatedContent.hidden = false;
-  generatedIcon.textContent = "✨";
+  generatedIcon.textContent = "?";
 
   generatedTitle.textContent =
     `Creating ${titles[type]}...`;
 
   generatedBody.innerHTML = `
     <div class="loading-box">
-      🧠 Studying AI is reading your lesson...
+      ?? Studying AI is reading your lesson...
     </div>
   `;
 
@@ -1390,7 +1399,7 @@ function displayGenerated(
   generatedContent.hidden = false;
 
   if (type === "notes") {
-    generatedIcon.textContent = "📝";
+    generatedIcon.textContent = "??";
     generatedTitle.textContent =
       "Study Notes";
 
@@ -1422,7 +1431,7 @@ function displayGenerated(
           )} Flashcards`
         : "Study Flashcards";
 
-    generatedIcon.textContent = "🧠";
+    generatedIcon.textContent = "??";
 
     generatedTitle.textContent =
       `${flashcards.length} Flashcards`;
@@ -1433,73 +1442,133 @@ function displayGenerated(
   }
 
   if (type === "test") {
-    generatedIcon.textContent = "✅";
+
+    generatedIcon.textContent = "?";
     generatedTitle.textContent =
       "Practice Test";
 
     const questions =
-      data.questions || [];
+      Array.isArray(data.questions)
+        ? data.questions
+        : [];
 
-    generatedBody.innerHTML =
-      questions
-        .map(
-          (item, index) => `
-            <div class="question-card">
+    generatedBody.innerHTML = `
+      <div class="studyante-test-container">
 
-              <h3>
-                ${index + 1}.
-                ${escapeHTML(
-                  item.question
-                )}
-              </h3>
+        ${questions
+          .map(
+            (item, index) => `
+              <div
+                class="question-card"
+                data-question-index="${index}"
+              >
 
-              ${(item.choices || [])
-                .map(
-                  (choice, choiceIndex) => `
-                    <div class="test-choice">
-                      ${String.fromCharCode(
-                        65 + choiceIndex
-                      )}.
-                      ${escapeHTML(choice)}
-                    </div>
-                  `
-                )
-                .join("")}
-
-              <details>
-
-                <summary>
-                  Show Answer
-                </summary>
-
-                <p>
-                  Answer:
-                  ${String.fromCharCode(
-                    65 +
-                      Number(
-                        item.answer || 0
-                      )
-                  )}
-                </p>
-
-                <p>
+                <h3>
+                  ${index + 1}.
                   ${escapeHTML(
-                    item.explanation || ""
+                    item.question
                   )}
-                </p>
+                </h3>
 
-              </details>
+                ${(item.choices || [])
+                  .map(
+                    (choice, choiceIndex) => `
+                      <button
+                        type="button"
+                        class="test-choice"
+                        data-selected="${choiceIndex}"
+                        data-correct="${Number(
+                          item.answer || 0
+                        )}"
+                      >
+                        ${String.fromCharCode(
+                          65 + choiceIndex
+                        )}.
+                        ${escapeHTML(choice)}
+                      </button>
+                    `
+                  )
+                  .join("")}
 
-            </div>
-          `
-        )
-        .join("");
+                <div
+                  class="studyante-test-answer"
+                  hidden
+                >
+                  <p class="studyante-test-answer-text"></p>
+
+                  <p>
+                    ${escapeHTML(
+                      item.explanation || ""
+                    )}
+                  </p>
+                </div>
+
+              </div>
+            `
+          )
+          .join("")}
+
+        ${
+          questions.length
+            ? `
+              <div class="studyante-test-submit-area">
+
+                <button
+                  id="submitPracticeTest"
+                  class="primary-btn"
+                  type="button"
+                >
+                  Submit Test
+                </button>
+
+                <div
+                  id="practiceTestResult"
+                  class="studyante-test-result"
+                  hidden
+                ></div>
+
+              </div>
+            `
+            : `
+              <div class="error-box">
+                No test questions found.
+              </div>
+            `
+        }
+
+      </div>
+    `;
+
+    generatedBody
+      .querySelectorAll(".test-choice")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+            selectTestAnswer(button);
+          }
+        );
+      });
+
+    const submitButton =
+      generatedBody.querySelector(
+        "#submitPracticeTest"
+      );
+
+    if (submitButton) {
+
+      submitButton.addEventListener(
+        "click",
+        submitPracticeTest
+      );
+    }
 
     return;
   }
 
   if (type === "game") {
-    generatedIcon.textContent = "🎮";
+    generatedIcon.textContent = "??";
     generatedTitle.textContent =
       "Study Game";
 
@@ -1553,6 +1622,206 @@ function displayGenerated(
   }
 }
 
+/* ==========================================================
+   STUDYANTE_FLASHCARD_SWIPE_SYSTEM
+   ========================================================== */
+
+let studyanteFlashcardRatings = [];
+
+/* Keep Expand mode active when changing/swiping cards */
+let studyanteFlashcardFocusActive = false;
+
+
+function resetFlashcardSwipeResults() {
+
+  studyanteFlashcardRatings =
+    Array(flashcards.length).fill(null);
+}
+
+
+function ensureFlashcardSwipeResults() {
+
+  if (
+    !Array.isArray(
+      studyanteFlashcardRatings
+    ) ||
+    studyanteFlashcardRatings.length !==
+      flashcards.length
+  ) {
+    resetFlashcardSwipeResults();
+  }
+}
+
+
+function rateFlashcard(
+  knows,
+  showSaveButton
+) {
+
+  ensureFlashcardSwipeResults();
+
+  studyanteFlashcardRatings[
+    currentFlashcard
+  ] = knows
+    ? "known"
+    : "learning";
+
+  const activeFlashcard =
+    document.getElementById(
+      "activeFlashcard"
+    );
+
+  if (!activeFlashcard) {
+    return;
+  }
+
+  activeFlashcard.classList.add(
+    knows
+      ? "swipe-out-right"
+      : "swipe-out-left"
+  );
+
+  setTimeout(() => {
+
+    const finished =
+      studyanteFlashcardRatings.every(
+        rating => rating !== null
+      );
+
+    if (finished) {
+
+      showFlashcardSwipeResult(
+        showSaveButton
+      );
+
+      return;
+    }
+
+
+    let nextIndex =
+      (
+        currentFlashcard + 1
+      ) % flashcards.length;
+
+    let checked = 0;
+
+    while (
+      studyanteFlashcardRatings[
+        nextIndex
+      ] !== null &&
+      checked < flashcards.length
+    ) {
+
+      nextIndex =
+        (
+          nextIndex + 1
+        ) % flashcards.length;
+
+      checked++;
+    }
+
+    currentFlashcard =
+      nextIndex;
+
+    renderFlashcard(
+      showSaveButton
+    );
+
+  }, 250);
+}
+
+
+function showFlashcardSwipeResult(
+  showSaveButton
+) {
+
+  studyanteFlashcardFocusActive = false;
+
+  document.body.classList.remove(
+    "studyante-flashcard-focus-active"
+  );
+
+  ensureFlashcardSwipeResults();
+
+  const known =
+    studyanteFlashcardRatings.filter(
+      rating => rating === "known"
+    ).length;
+
+  const learning =
+    studyanteFlashcardRatings.filter(
+      rating => rating === "learning"
+    ).length;
+
+  const total =
+    flashcards.length;
+
+  const mastery =
+    total
+      ? Math.round(
+          known / total * 100
+        )
+      : 0;
+
+
+  generatedBody.innerHTML = `
+    <div class="studyante-flashcard-result">
+
+      <h2>
+        Flashcard Result
+      </h2>
+
+      <div class="studyante-flashcard-result-score">
+        ${known}/${total}
+      </div>
+
+      <p>
+        Know It:
+        <strong>${known}</strong>
+      </p>
+
+      <p>
+        Still Learning:
+        <strong>${learning}</strong>
+      </p>
+
+      <p>
+        Mastery:
+        <strong>${mastery}%</strong>
+      </p>
+
+      <button
+        id="restartFlashcards"
+        type="button"
+        class="primary-btn"
+      >
+        Study Again
+      </button>
+
+    </div>
+  `;
+
+
+  const restart =
+    document.getElementById(
+      "restartFlashcards"
+    );
+
+  if (restart) {
+
+    restart.onclick = () => {
+
+      resetFlashcardSwipeResults();
+
+      currentFlashcard = 0;
+
+      renderFlashcard(
+        showSaveButton
+      );
+    };
+  }
+}
+
 function renderFlashcard(
   showSaveButton = false
 ) {
@@ -1571,12 +1840,24 @@ function renderFlashcard(
   generatedBody.innerHTML = `
     <div class="flashcard-area">
 
+      <div class="studyante-flashcard-topbar">
+
       <div class="flashcard-progress">
         Card
         ${currentFlashcard + 1}
         of
         ${flashcards.length}
       </div>
+
+      <button
+        id="studyanteExpandFlashcard"
+        class="studyante-flashcard-expand"
+        type="button"
+      >
+        ? Expand
+      </button>
+
+    </div>
 
       <div
         id="activeFlashcard"
@@ -1624,7 +1905,7 @@ function renderFlashcard(
           class="secondary-btn"
           type="button"
         >
-          ← Previous
+          ? Previous
         </button>
 
         <button
@@ -1632,7 +1913,7 @@ function renderFlashcard(
           class="primary-btn"
           type="button"
         >
-          Next →
+          Next ?
         </button>
 
         ${
@@ -1643,7 +1924,7 @@ function renderFlashcard(
                 class="secondary-btn"
                 type="button"
               >
-                💾 Save to My Library
+                ?? Save to My Library
               </button>
             `
             : ""
@@ -1653,14 +1934,222 @@ function renderFlashcard(
 
     </div>
   `;
+  /* STUDYANTE_FLASHCARD_POINTER_SWIPE */
 
-  $("activeFlashcard").onclick =
+  ensureFlashcardSwipeResults();
+
+  const activeFlashcard =
+    $("activeFlashcard");
+
+  let swipeStartX = 0;
+  let swipeCurrentX = 0;
+  let swipeDragging = false;
+  let swipeMoved = false;
+
+
+  activeFlashcard.addEventListener(
+    "pointerdown",
     event => {
-      event.currentTarget
-        .classList.toggle(
+
+      swipeDragging = true;
+      swipeMoved = false;
+
+      swipeStartX =
+        event.clientX;
+
+      swipeCurrentX =
+        event.clientX;
+
+      activeFlashcard.classList.add(
+        "swiping"
+      );
+
+      try {
+        activeFlashcard.setPointerCapture(
+          event.pointerId
+        );
+      } catch (error) {}
+    }
+  );
+
+
+  activeFlashcard.addEventListener(
+    "pointermove",
+    event => {
+
+      if (!swipeDragging) {
+        return;
+      }
+
+      swipeCurrentX =
+        event.clientX;
+
+      const distance =
+        swipeCurrentX -
+        swipeStartX;
+
+      if (
+        Math.abs(distance) > 6
+      ) {
+        swipeMoved = true;
+      }
+
+      activeFlashcard.style.transform =
+        `translateX(${distance}px) rotate(${distance / 25}deg)`;
+
+      activeFlashcard.classList.toggle(
+        "swipe-know",
+        distance > 35
+      );
+
+      activeFlashcard.classList.toggle(
+        "swipe-learning",
+        distance < -35
+      );
+    }
+  );
+
+
+  const finishFlashcardSwipe =
+    event => {
+
+      if (!swipeDragging) {
+        return;
+      }
+
+      swipeDragging = false;
+
+      activeFlashcard.classList.remove(
+        "swiping"
+      );
+
+      const distance =
+        swipeCurrentX -
+        swipeStartX;
+
+
+      if (
+        Math.abs(distance) >= 90
+      ) {
+
+        rateFlashcard(
+          distance > 0,
+          showSaveButton
+        );
+
+        return;
+      }
+
+
+      activeFlashcard.style.transform = "";
+
+      activeFlashcard.classList.remove(
+        "swipe-know",
+        "swipe-learning"
+      );
+
+
+      if (!swipeMoved) {
+
+        activeFlashcard.classList.toggle(
           "flipped"
         );
+      }
     };
+
+
+  activeFlashcard.addEventListener(
+    "pointerup",
+    finishFlashcardSwipe
+  );
+
+  activeFlashcard.addEventListener(
+    "pointercancel",
+    finishFlashcardSwipe
+  );
+
+  /* ==========================================================
+     STUDYANTE_FLASHCARD_FOCUS_MODE
+     ========================================================== */
+
+  const flashcardExpandButton =
+    document.getElementById(
+      "studyanteExpandFlashcard"
+    );
+
+  /* STUDYANTE_RESTORE_FLASHCARD_FOCUS */
+  if (studyanteFlashcardFocusActive) {
+
+    const restoredFlashcardArea =
+      activeFlashcard.closest(
+        ".flashcard-area"
+      );
+
+    if (restoredFlashcardArea) {
+
+      restoredFlashcardArea.classList.add(
+        "studyante-flashcard-focus-mode"
+      );
+
+      document.body.classList.add(
+        "studyante-flashcard-focus-active"
+      );
+
+      flashcardExpandButton.textContent =
+        "? Exit";
+    }
+  }
+
+  const flashcardViewer =
+    activeFlashcard.closest(
+      ".flashcard-area"
+    );
+
+
+  function setFlashcardFocusMode(enabled) {
+
+    if (
+      !flashcardViewer ||
+      !flashcardExpandButton
+    ) {
+      return;
+    }
+
+    studyanteFlashcardFocusActive =
+      enabled;
+
+    flashcardViewer.classList.toggle(
+      "studyante-flashcard-focus-mode",
+      enabled
+    );
+
+    document.body.classList.toggle(
+      "studyante-flashcard-focus-active",
+      enabled
+    );
+
+    flashcardExpandButton.textContent =
+      enabled
+        ? "? Exit"
+        : "? Expand";
+  }
+
+
+  if (flashcardExpandButton) {
+
+    flashcardExpandButton.onclick =
+      () => {
+
+        const enabled =
+          !flashcardViewer.classList.contains(
+            "studyante-flashcard-focus-mode"
+          );
+
+        setFlashcardFocusMode(
+          enabled
+        );
+      };
+  }
 
   $("previousCard").onclick =
     () => {
@@ -1713,6 +2202,9 @@ function openSavedFlashcards(set) {
 
   currentFlashcard = 0;
 
+  /* STUDYANTE_SAVED_FLASHCARD_SWIPE_RESET */
+  resetFlashcardSwipeResults();
+
   if (flashcards.length === 0) {
     alert("This flashcard set is empty.");
     return;
@@ -1748,7 +2240,7 @@ function openSavedFlashcards(set) {
 
   generatedContent.hidden = false;
 
-  generatedIcon.textContent = "🧠";
+  generatedIcon.textContent = "??";
 
   generatedTitle.textContent =
     set.name || "Study Flashcards";
@@ -1796,13 +2288,220 @@ confirmSaveAIFlashcards.addEventListener(
       await loadLibrary();
 
       alert(
-        "Flashcards saved to My Library! ✅"
+        "Flashcards saved to My Library! ?"
       );
     } catch (error) {
       alert(error.message);
     }
   }
 );
+
+/* ==========================================================
+   STUDYANTE PRACTICE TEST FINAL RESULTS
+   ========================================================== */
+
+function selectTestAnswer(button) {
+
+  const card =
+    button.closest(
+      ".question-card"
+    );
+
+  if (!card) {
+    return;
+  }
+
+  const choices =
+    card.querySelectorAll(
+      ".test-choice"
+    );
+
+  choices.forEach(choice => {
+    choice.classList.remove(
+      "selected",
+      "correct",
+      "wrong"
+    );
+  });
+
+  button.classList.add(
+    "selected"
+  );
+
+  card.dataset.selected =
+    button.dataset.selected;
+}
+
+
+function submitPracticeTest() {
+
+  const cards =
+    generatedBody.querySelectorAll(
+      ".question-card"
+    );
+
+  if (!cards.length) {
+    return;
+  }
+
+  let answered = 0;
+  let correctCount = 0;
+
+  cards.forEach(card => {
+
+    if (
+      typeof card.dataset.selected !==
+      "undefined"
+    ) {
+      answered++;
+    }
+  });
+
+  if (answered < cards.length) {
+
+    alert(
+      `Please answer all questions first. ` +
+      `${answered}/${cards.length} answered.`
+    );
+
+    return;
+  }
+
+
+  cards.forEach(card => {
+
+    const choices =
+      card.querySelectorAll(
+        ".test-choice"
+      );
+
+    const selected =
+      Number(
+        card.dataset.selected
+      );
+
+    const correct =
+      Number(
+        choices[0]?.dataset.correct || 0
+      );
+
+    if (selected === correct) {
+      correctCount++;
+    }
+
+    choices.forEach(
+      (choice, index) => {
+
+        choice.disabled = true;
+
+        choice.classList.remove(
+          "selected",
+          "correct",
+          "wrong"
+        );
+
+        if (index === correct) {
+          choice.classList.add(
+            "correct"
+          );
+        }
+
+        if (
+          index === selected &&
+          selected !== correct
+        ) {
+          choice.classList.add(
+            "wrong"
+          );
+        }
+      }
+    );
+
+    const answerBox =
+      card.querySelector(
+        ".studyante-test-answer"
+      );
+
+    const answerText =
+      card.querySelector(
+        ".studyante-test-answer-text"
+      );
+
+    if (answerText) {
+
+      answerText.textContent =
+        "Correct Answer: " +
+        String.fromCharCode(
+          65 + correct
+        );
+    }
+
+    if (answerBox) {
+      answerBox.hidden = false;
+    }
+  });
+
+
+  const percentage =
+    Math.round(
+      (
+        correctCount /
+        cards.length
+      ) * 100
+    );
+
+
+  const result =
+    generatedBody.querySelector(
+      "#practiceTestResult"
+    );
+
+  if (result) {
+
+    result.hidden = false;
+
+    result.innerHTML = `
+      <div class="studyante-test-result-card">
+
+        <h2>
+          Test Result
+        </h2>
+
+        <div class="studyante-test-score">
+          ${correctCount}/${cards.length}
+        </div>
+
+        <p>
+          Score: ${correctCount} out of
+          ${cards.length}
+        </p>
+
+        <p>
+          Percentage: ${percentage}%
+        </p>
+
+      </div>
+    `;
+
+    result.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+
+
+  const submitButton =
+    generatedBody.querySelector(
+      "#submitPracticeTest"
+    );
+
+  if (submitButton) {
+
+    submitButton.disabled = true;
+    submitButton.textContent =
+      "Test Submitted";
+  }
+}
 
 function checkGameAnswer(button) {
   const selected =
@@ -1841,7 +2540,7 @@ function checkGameAnswer(button) {
 
 function showError(message) {
   generatedContent.hidden = false;
-  generatedIcon.textContent = "⚠️";
+  generatedIcon.textContent = "??";
   generatedTitle.textContent =
     "Could not generate";
 
@@ -2165,7 +2864,40 @@ if (aiCameraButton) {
     aiCameraButton.addEventListener(
         "click",
         () => {
+
             closeAIAttachMenu();
+
+            /* STUDYANTE_CROSS_DEVICE_CAMERA */
+
+            const isTouchDevice =
+                navigator.maxTouchPoints > 0 ||
+                "ontouchstart" in window;
+
+            const looksLikeMobile =
+                /Android|iPhone|iPad|iPod|Mobile/i.test(
+                    navigator.userAgent || ""
+                );
+
+            /*
+             * Phones/tablets:
+             * use the native camera input.
+             *
+             * Laptop/desktop:
+             * use the existing live camera.
+             */
+
+            if (
+                aiCameraInput &&
+                (isTouchDevice || looksLikeMobile)
+            ) {
+
+                aiCameraInput.value = "";
+
+                aiCameraInput.click();
+
+                return;
+            }
+
             openAICamera();
         }
     );
@@ -2224,7 +2956,17 @@ if (aiImageButton) {
     aiImageButton.addEventListener(
         "click",
         () => {
+
             closeAIAttachMenu();
+
+            /* STUDYANTE_CROSS_DEVICE_IMAGE_UPLOAD */
+
+            if (!aiImageInput) {
+                return;
+            }
+
+            aiImageInput.value = "";
+
             aiImageInput.click();
         }
     );
@@ -2453,12 +3195,30 @@ async function sendQuestion() {
             data.chatId ||
             activeChatId;
 
-        loading
-            .querySelector(
+        const assistantMessageText =
+            loading.querySelector(
                 ".message-text"
-            )
-            .textContent =
-                data.answer;
+            );
+
+        if (assistantMessageText) {
+            const answer =
+                String(
+                    data.answer || ""
+                );
+
+            if (
+                typeof window.studyanteRenderMarkdown ===
+                "function"
+            ) {
+                assistantMessageText.innerHTML =
+                    window.studyanteRenderMarkdown(
+                        answer
+                    );
+            } else {
+                assistantMessageText.textContent =
+                    answer;
+            }
+        }
 
         if (imageForRequest) {
             clearAIImage();
@@ -2501,7 +3261,7 @@ function addMessage(
     ) {
         message.innerHTML = `
             <span class="message-avatar">
-                🤖
+                ??
             </span>
 
             <div class="message-text"></div>
@@ -2512,12 +3272,24 @@ function addMessage(
         `;
     }
 
-    message
-        .querySelector(
+    const messageText =
+        message.querySelector(
             ".message-text"
-        )
-        .textContent =
+        );
+
+    if (
+        role === "assistant" &&
+        typeof window.studyanteRenderMarkdown ===
+            "function"
+    ) {
+        messageText.innerHTML =
+            window.studyanteRenderMarkdown(
+                String(text || "")
+            );
+    } else {
+        messageText.textContent =
             text;
+    }
 
     aiMessages.appendChild(
         message
@@ -2686,7 +3458,7 @@ function renderChatHistory() {
                 "chat-history-delete";
 
             deleteButton.textContent =
-                "🗑";
+                "??";
 
             deleteButton.title =
                 "Delete chat";
@@ -3004,9 +3776,9 @@ function setStudyingThinking(show) {
   }
 }
 
-/* =========================================================
+/* ==========================================================
    STUDYante SINGLE-PAGE NAVIGATION
-========================================================= */
+   ========================================================== */
 
 (function () {
 
@@ -3023,36 +3795,19 @@ function setStudyingThinking(show) {
         pageId,
         updateHash = true
     ) {
+
         if (
-            !STUDYANTE_PAGES.includes(
-                pageId
-            )
+            !STUDYANTE_PAGES.includes(pageId)
         ) {
-            pageId =
-                "dashboard";
-        }
-
-        const selectedPage =
-            document.getElementById(
-                pageId
-            );
-
-        if (!selectedPage) {
-            console.warn(
-                "STUDYante page not found:",
-                pageId
-            );
-
-            return;
+            pageId = "dashboard";
         }
 
 
         STUDYANTE_PAGES.forEach(
-            id => {
+            function (id) {
+
                 const page =
-                    document.getElementById(
-                        id
-                    );
+                    document.getElementById(id);
 
                 if (!page) {
                     return;
@@ -3061,18 +3816,44 @@ function setStudyingThinking(show) {
                 const active =
                     id === pageId;
 
-                page.hidden =
-                    !active;
 
-                page.style.display =
-                    active
-                        ? ""
-                        : "none";
+                if (active) {
 
-                page.classList.toggle(
-                    "studyante-page-active",
-                    active
-                );
+                    page.hidden = false;
+
+                    page.removeAttribute(
+                        "hidden"
+                    );
+
+                    page.style.setProperty(
+                        "display",
+                        "block",
+                        "important"
+                    );
+
+                    page.classList.add(
+                        "studyante-page-active"
+                    );
+
+                } else {
+
+                    page.hidden = true;
+
+                    page.setAttribute(
+                        "hidden",
+                        ""
+                    );
+
+                    page.style.setProperty(
+                        "display",
+                        "none",
+                        "important"
+                    );
+
+                    page.classList.remove(
+                        "studyante-page-active"
+                    );
+                }
             }
         );
 
@@ -3081,51 +3862,46 @@ function setStudyingThinking(show) {
             .querySelectorAll(
                 ".sidebar nav a"
             )
-            .forEach(link => {
+            .forEach(
+                function (link) {
 
-                const target =
-                    (
-                        link.dataset.page ||
-                        link
-                            .getAttribute(
-                                "href"
-                            ) ||
-                        ""
-                    )
-                        .replace(
-                            "#",
+                    const target =
+                        (
+                            link.dataset.page ||
+                            link.getAttribute("href") ||
                             ""
                         )
+                        .replace("#", "")
                         .trim();
 
-                const active =
-                    target ===
-                    pageId;
+                    const active =
+                        target === pageId;
 
-                link.classList.toggle(
-                    "active",
-                    active
-                );
+                    link.classList.toggle(
+                        "active",
+                        active
+                    );
 
-                if (active) {
-                    link.setAttribute(
-                        "aria-current",
-                        "page"
-                    );
-                } else {
-                    link.removeAttribute(
-                        "aria-current"
-                    );
+                    if (active) {
+
+                        link.setAttribute(
+                            "aria-current",
+                            "page"
+                        );
+
+                    } else {
+
+                        link.removeAttribute(
+                            "aria-current"
+                        );
+                    }
                 }
-            });
+            );
 
 
-        if (
-            updateHash &&
-            window.location.hash !==
-                "#" + pageId
-        ) {
-            history.pushState(
+        if (updateHash) {
+
+            history.replaceState(
                 null,
                 "",
                 "#" + pageId
@@ -3133,158 +3909,167 @@ function setStudyingThinking(show) {
         }
 
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-
         if (
-            pageId ===
-            "library" &&
-            typeof loadLibrary ===
-            "function"
+            pageId === "library" &&
+            typeof loadLibrary === "function"
         ) {
             loadLibrary();
         }
 
 
         if (
-            pageId ===
-            "ai" &&
-            typeof loadChatHistory ===
-            "function"
+            pageId === "community" &&
+            typeof loadCommunity === "function"
+        ) {
+            loadCommunity();
+        }
+
+
+        if (
+            pageId === "ai" &&
+            typeof loadChatHistory === "function"
         ) {
             loadChatHistory();
         }
     }
 
 
-    document.addEventListener(
-        "click",
-        event => {
+    function getStudyantePageFromLink(
+        link
+    ) {
 
-            const link =
-                event.target.closest(
-                    ".sidebar nav a"
-                );
+        if (!link) {
+            return "";
+        }
 
-            if (!link) {
-                return;
-            }
-
-            const pageId =
-                (
-                    link.dataset.page ||
-                    link
-                        .getAttribute(
-                            "href"
-                        ) ||
-                    ""
-                )
-                    .replace(
-                        "#",
-                        ""
-                    )
-                    .trim();
+        return (
+            link.dataset.page ||
+            link.getAttribute("href") ||
+            ""
+        )
+        .replace("#", "")
+        .trim();
+    }
 
 
-            if (
-                !STUDYANTE_PAGES.includes(
-                    pageId
-                )
-            ) {
-                return;
-            }
+    function installStudyanteNavigation() {
+
+        document
+            .querySelectorAll(
+                ".sidebar nav a"
+            )
+            .forEach(
+                function (link) {
+
+                    if (
+                        link.dataset.navReady ===
+                        "true"
+                    ) {
+                        return;
+                    }
+
+                    link.dataset.navReady =
+                        "true";
 
 
-            event.preventDefault();
+                    link.addEventListener(
+                        "click",
+                        function (event) {
 
-            showStudyantePage(
-                pageId
+                            const pageId =
+                                getStudyantePageFromLink(
+                                    link
+                                );
+
+                            if (
+                                !STUDYANTE_PAGES.includes(
+                                    pageId
+                                )
+                            ) {
+                                return;
+                            }
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            showStudyantePage(
+                                pageId,
+                                true
+                            );
+                        },
+                        true
+                    );
+                }
             );
-        },
-        true
-    );
 
 
-    function openInitialPage() {
-
-        let pageId =
+        let initialPage =
             window.location.hash
-                .replace(
-                    "#",
-                    ""
-                )
+                .replace("#", "")
                 .trim();
 
 
         if (
             !STUDYANTE_PAGES.includes(
-                pageId
+                initialPage
             )
         ) {
-            pageId =
+            initialPage =
                 "dashboard";
         }
 
 
         showStudyantePage(
-            pageId,
+            initialPage,
             false
         );
     }
-
-
-    window.addEventListener(
-        "popstate",
-        () => {
-
-            let pageId =
-                window.location.hash
-                    .replace(
-                        "#",
-                        ""
-                    )
-                    .trim();
-
-
-            if (
-                !STUDYANTE_PAGES.includes(
-                    pageId
-                )
-            ) {
-                pageId =
-                    "dashboard";
-            }
-
-
-            showStudyantePage(
-                pageId,
-                false
-            );
-        }
-    );
 
 
     window.showStudyantePage =
         showStudyantePage;
 
 
+    window.addEventListener(
+        "hashchange",
+        function () {
+
+            const pageId =
+                window.location.hash
+                    .replace("#", "")
+                    .trim();
+
+            if (
+                STUDYANTE_PAGES.includes(
+                    pageId
+                )
+            ) {
+
+                showStudyantePage(
+                    pageId,
+                    false
+                );
+            }
+        }
+    );
+
+
     if (
         document.readyState ===
         "loading"
     ) {
+
         document.addEventListener(
             "DOMContentLoaded",
-            openInitialPage
+            installStudyanteNavigation
         );
+
     } else {
-        openInitialPage();
+
+        installStudyanteNavigation();
     }
 
 })();
-
 
 /* ===== STUDYANTE_IMAGE_GENERATION_CLIENT ===== */
 
@@ -3559,7 +4344,7 @@ function setStudyingThinking(show) {
         button.className = "ai-attach-menu-item";
 
         button.innerHTML =
-            '<span class="ai-attach-menu-icon">🎨</span>' +
+            '<span class="ai-attach-menu-icon">??</span>' +
             '<span>Generate Image</span>';
 
         button.addEventListener("click", function (event) {
@@ -3769,1448 +4554,1036 @@ function setStudyingThinking(show) {
 })();
 
 
+/* STUDYANTE_NOTES_MARKDOWN_CLEANUP */
+
+/*
+   Cleans raw Markdown symbols from generated Study Notes.
+
+   Example:
+   ### Overview
+   * **Course:** Personal Development
+
+   becomes:
+
+   Overview
+   Course: Personal Development
+*/
+
+function cleanStudyanteNotesMarkdown(text) {
+    if (!text) return "";
+
+    return String(text)
+
+        /* Remove escaped Markdown characters */
+        .replace(/\\([*#_`~>])/g, "$1")
+
+        /* Remove heading symbols: # ## ### etc. */
+        .replace(/^\s*#{1,6}\s*/gm, "")
+
+        /* Remove bullet *, but keep the text */
+        .replace(/^\s*\*\s+/gm, "")
+
+        /* Remove bullet - */
+        .replace(/^\s*-\s+/gm, "")
+
+        /* Remove bold/italic **text**, *text* */
+        .replace(/\*\*(.*?)\*\*/g, "$1")
+        .replace(/\*(.*?)\*/g, "$1")
+
+        /* Remove underscores used for Markdown emphasis */
+        .replace(/__(.*?)__/g, "$1")
+        .replace(/_(.*?)_/g, "$1")
+
+        /* Remove leftover Markdown stars */
+        .replace(/\*+/g, "")
+
+        /* Remove leftover heading hashes at line beginnings */
+        .replace(/^\s*#+\s*/gm, "")
+
+        /* Clean excessive spaces */
+        .replace(/[ \t]+/g, " ")
+
+        /* Keep paragraph breaks clean */
+        .replace(/\n[ \t]+/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+
+        .trim();
+}
+
+
+/*
+   Automatically clean generated Notes when they are rendered.
+*/
+
+const studyanteNotesObserver = new MutationObserver(() => {
+
+    const generatedArea =
+        document.querySelector("#generatedContent") ||
+        document.querySelector(".generated-content");
+
+    if (!generatedArea) return;
+
+    const notesHeading = Array.from(
+        generatedArea.querySelectorAll("h1, h2, h3, strong")
+    ).find(el =>
+        /study notes/i.test(el.textContent || "")
+    );
+
+    if (!notesHeading) return;
+
+    generatedArea.querySelectorAll("p, div, pre").forEach(element => {
+
+        if (element.children.length > 0) return;
+
+        const original = element.textContent || "";
+
+        if (
+            original.includes("###") ||
+            original.includes("**") ||
+            original.includes("\\*") ||
+            original.includes("\\#")
+        ) {
+            element.textContent =
+                cleanStudyanteNotesMarkdown(original);
+        }
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    studyanteNotesObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+});
+
 
 /* ==========================================================
-   STUDYANTE_COMMUNITY_FRONTEND
+   STUDYANTE_SAVED_STUDY_MATERIALS_FRONTEND
    ========================================================== */
 
-let studyanteCommunityData = {
-    files: [],
-    flashcardSets: []
-};
+let studyanteGeneratedMaterial =
+  null;
 
-let studyanteCommunityIsAdmin = false;
+let studyanteOpeningSavedMaterial =
+  false;
 
 
-/* ----------------------------------------------------------
-   STATUS BADGE
----------------------------------------------------------- */
+function studyanteMaterialInfo(type) {
 
-function getStudyanteCommunityStatus(item) {
+  const types = {
 
-    const status =
-        String(
-            item.communityStatus ||
-            "private"
-        ).toLowerCase();
+    notes: {
+      icon: "??",
+      title: "Notes",
+      action: "Open"
+    },
 
-    if (status === "pending") {
-        return {
-            text: "? Pending",
-            className:
-                "community-status-pending"
-        };
+    test: {
+      icon: "?",
+      title: "Practice Test",
+      action: "Study"
+    },
+
+    game: {
+      icon: "??",
+      title: "Study Game",
+      action: "Play"
     }
+  };
 
-    if (status === "approved") {
-        return {
-            text: "? Approved",
-            className:
-                "community-status-approved"
-        };
-    }
-
-    if (status === "rejected") {
-        return {
-            text: "? Rejected",
-            className:
-                "community-status-rejected"
-        };
-    }
-
-    return {
-        text: "?? Private",
-        className:
-            "community-status-private"
-    };
+  return types[type] || {
+    icon: "??",
+    title: "Study Material",
+    action: "Open"
+  };
 }
 
 
 /* ----------------------------------------------------------
-   ADD SUBMIT BUTTONS TO MY LIBRARY
+   Capture generated Notes / Test / Game
 ---------------------------------------------------------- */
 
-if (
-    typeof createFileCard ===
-    "function"
-) {
+const studyanteOriginalDisplayGenerated =
+  displayGenerated;
 
-    const originalStudyanteCreateFileCard =
-        createFileCard;
-
-    createFileCard =
-        function(item) {
-
-            const card =
-                originalStudyanteCreateFileCard(
-                    item
-                );
-
-            addStudyanteSubmitControls(
-                card,
-                item,
-                "file"
-            );
-
-            return card;
-        };
-}
-
-
-if (
-    typeof createFlashcardSetCard ===
-    "function"
-) {
-
-    const originalStudyanteCreateFlashcardCard =
-        createFlashcardSetCard;
-
-    createFlashcardSetCard =
-        function(set) {
-
-            const card =
-                originalStudyanteCreateFlashcardCard(
-                    set
-                );
-
-            addStudyanteSubmitControls(
-                card,
-                set,
-                "flashcards"
-            );
-
-            return card;
-        };
-}
-
-
-function addStudyanteSubmitControls(
-    card,
-    item,
-    type
-) {
-
-    if (
-        !card ||
-        card.querySelector(
-            ".community-owner-controls"
-        )
-    ) {
-        return;
-    }
-
-
-    const status =
-        getStudyanteCommunityStatus(
-            item
-        );
-
-
-    const wrapper =
-        document.createElement(
-            "div"
-        );
-
-    wrapper.className =
-        "community-owner-controls";
-
-
-    const badge =
-        document.createElement(
-            "span"
-        );
-
-    badge.className =
-        `community-status-badge ${status.className}`;
-
-    badge.textContent =
-        status.text;
-
-    wrapper.appendChild(
-        badge
-    );
-
-
-    const currentStatus =
-        String(
-            item.communityStatus ||
-            "private"
-        ).toLowerCase();
-
-
-    if (
-        currentStatus === "private" ||
-        currentStatus === "rejected"
-    ) {
-
-        const submitButton =
-            document.createElement(
-                "button"
-            );
-
-        submitButton.type =
-            "button";
-
-        submitButton.className =
-            "secondary-btn community-submit-button";
-
-        submitButton.textContent =
-            currentStatus ===
-            "rejected"
-                ? "? Submit Again"
-                : "?? Submit for Approval";
-
-
-        submitButton.addEventListener(
-            "click",
-            async event => {
-
-                event.stopPropagation();
-
-                await submitStudyanteCommunityMaterial(
-                    type,
-                    item.id,
-                    submitButton
-                );
-            }
-        );
-
-
-        wrapper.appendChild(
-            submitButton
-        );
-    }
-
-
-    card.appendChild(
-        wrapper
-    );
-}
-
-
-/* ----------------------------------------------------------
-   SUBMIT OWN MATERIAL
----------------------------------------------------------- */
-
-async function submitStudyanteCommunityMaterial(
+displayGenerated =
+  function(
     type,
-    id,
-    button
-) {
+    data,
+    sourceFile
+  ) {
+
+    studyanteOriginalDisplayGenerated(
+      type,
+      data,
+      sourceFile
+    );
+
 
     if (
-        !confirm(
-            "Submit this study material for administrator approval?"
-        )
+      ![
+        "notes",
+        "test",
+        "game"
+      ].includes(type)
     ) {
-        return;
+      return;
     }
 
 
-    const originalText =
-        button
-            ? button.textContent
-            : "";
+    studyanteGeneratedMaterial = {
+      type,
+      data:
+        JSON.parse(
+          JSON.stringify(
+            data || {}
+          )
+        ),
+      sourceFile:
+        sourceFile || ""
+    };
 
 
-    if (button) {
-        button.disabled = true;
-        button.textContent =
-            "Submitting...";
+    if (
+      studyanteOpeningSavedMaterial
+    ) {
+
+      studyanteOpeningSavedMaterial =
+        false;
+
+      return;
     }
 
 
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/community/submit/${type}/${encodeURIComponent(
-                    id
-                )}`,
-                {
-                    method:
-                        "POST"
-                }
-            );
+    studyanteAddSaveButton();
+  };
 
 
-        const data =
-            await readResponse(
-                response
-            );
+function studyanteAddSaveButton() {
+
+  const old =
+    document.getElementById(
+      "studyanteSaveGenerated"
+    );
+
+  if (old) {
+    old.remove();
+  }
 
 
-        if (
-            !response.ok ||
-            !data.success
-        ) {
+  const button =
+    document.createElement(
+      "button"
+    );
 
-            throw new Error(
-                data.message ||
-                "Could not submit material."
-            );
+  button.id =
+    "studyanteSaveGenerated";
+
+  button.type =
+    "button";
+
+  button.className =
+    "secondary-btn studyante-save-generated";
+
+  button.textContent =
+    "?? Save to My Library";
+
+
+  button.onclick =
+    studyanteSaveGenerated;
+
+
+  generatedBody.appendChild(
+    button
+  );
+}
+
+
+async function studyanteSaveGenerated() {
+
+  const material =
+    studyanteGeneratedMaterial;
+
+  if (!material) {
+    return;
+  }
+
+
+  const info =
+    studyanteMaterialInfo(
+      material.type
+    );
+
+
+  let baseName =
+    material.sourceFile
+      ? String(
+          material.sourceFile
+        ).replace(
+          /\.[^.]+$/,
+          ""
+        )
+      : "";
+
+
+  const suggested =
+    baseName
+      ? `${baseName} ${info.title}`
+      : info.title;
+
+
+  const entered =
+    window.prompt(
+      `Name this ${info.title}:`,
+      suggested
+    );
+
+
+  if (entered === null) {
+    return;
+  }
+
+
+  const name =
+    entered.trim();
+
+
+  if (!name) {
+
+    alert(
+      "Enter a name."
+    );
+
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        `${API_BASE}/api/library/study-materials`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              type:
+                material.type,
+
+              name,
+
+              folderId:
+                null,
+
+              data:
+                material.data
+            })
         }
+      );
 
 
-        alert(
-            "Submitted for approval! ?"
+    const result =
+      await readResponse(
+        response
+      );
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+      throw new Error(
+        result.message ||
+        "Could not save study material."
+      );
+    }
+
+
+    await loadLibrary();
+
+
+    alert(
+      `${info.title} saved to My Library! ?`
+    );
+
+  } catch (error) {
+
+    alert(
+      error.message
+    );
+  }
+}
+
+
+/* ----------------------------------------------------------
+   Extend My Library
+---------------------------------------------------------- */
+
+const studyanteOriginalRenderLibrary =
+  renderLibrary;
+
+renderLibrary =
+  function() {
+
+    studyanteOriginalRenderLibrary();
+
+    studyanteRenderMaterialCards();
+  };
+
+
+function studyanteRenderMaterialCards() {
+
+  let items =
+    Array.isArray(
+      libraryData.studyMaterials
+    )
+      ? [
+          ...libraryData.studyMaterials
+        ]
+      : [];
+
+
+  if (
+    activeFolderFilter ===
+      "uncategorized"
+  ) {
+
+    items =
+      items.filter(
+        item =>
+          !item.folderId
+      );
+
+  } else if (
+    activeFolderFilter
+  ) {
+
+    items =
+      items.filter(
+        item =>
+          item.folderId ===
+            activeFolderFilter
+      );
+  }
+
+
+  if (
+    items.length > 0 &&
+    libraryStatus
+  ) {
+    libraryStatus.hidden =
+      true;
+  }
+
+
+  items.forEach(
+    item => {
+
+      libraryGrid.appendChild(
+        studyanteCreateMaterialCard(
+          item
+        )
+      );
+    }
+  );
+}
+
+
+function studyanteCreateMaterialCard(
+  item
+) {
+
+  const info =
+    studyanteMaterialInfo(
+      item.type
+    );
+
+
+  const card =
+    document.createElement(
+      "div"
+    );
+
+  card.className =
+    "library-card studyante-saved-material";
+
+
+  const folder =
+    item.folderId
+      ? getFolder(
+          item.folderId
+        )
+      : null;
+
+
+  card.innerHTML = `
+
+    <div class="studyante-saved-material-header">
+
+      <div class="studyante-saved-material-icon">
+        ${info.icon}
+      </div>
+
+      <div>
+        <h3>
+          ${escapeHTML(item.name)}
+        </h3>
+
+        <span class="studyante-saved-material-type">
+          ${escapeHTML(info.title)}
+        </span>
+      </div>
+
+    </div>
+
+
+    <div class="studyante-saved-material-folder">
+
+      ${
+        folder
+          ? `?? ${escapeHTML(folder.name)}`
+          : "?? Uncategorized"
+      }
+
+    </div>
+
+
+    <div class="studyante-saved-material-actions">
+
+      <button
+        type="button"
+        class="secondary-btn studyante-open-material"
+      >
+        ${escapeHTML(info.action)}
+      </button>
+
+
+      <select
+        class="studyante-move-material"
+      >
+        ${folderOptions(item.folderId || "")}
+      </select>
+
+
+      <button
+        type="button"
+        class="delete-btn studyante-delete-material"
+      >
+        Delete
+      </button>
+
+    </div>
+  `;
+
+
+  card
+    .querySelector(
+      ".studyante-open-material"
+    )
+    .onclick =
+      () =>
+        studyanteOpenMaterial(
+          item
         );
 
 
-        if (
-            typeof loadLibrary ===
-            "function"
-        ) {
-
-            await loadLibrary();
-        }
-
-    }
-    catch (error) {
-
-        alert(
-            error.message
+  card
+    .querySelector(
+      ".studyante-move-material"
+    )
+    .onchange =
+      event =>
+        studyanteMoveMaterial(
+          item.id,
+          event.target.value
         );
+
+
+  card
+    .querySelector(
+      ".studyante-delete-material"
+    )
+    .onclick =
+      () =>
+        studyanteDeleteMaterial(
+          item
+        );
+
+
+  return card;
+}
+
+
+function studyanteOpenMaterial(
+  item
+) {
+
+  if (
+    !item ||
+    !item.data
+  ) {
+
+    alert(
+      "Saved material is empty."
+    );
+
+    return;
+  }
+
+
+  if (
+    typeof window.showStudyantePage ===
+      "function"
+  ) {
+
+    window.showStudyantePage(
+      "upload"
+    );
+  }
+
+
+  studyanteOpeningSavedMaterial =
+    true;
+
+
+  displayGenerated(
+    item.type,
+    JSON.parse(
+      JSON.stringify(
+        item.data
+      )
+    ),
+    item.name
+  );
+
+  if (item.type === "game") {
+    studyanteRebindGameChoices();
+  }
+
+
+  setTimeout(
+    () => {
+
+      generatedContent.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    },
+    100
+  );
+}
+
+
+async function studyanteMoveMaterial(
+  id,
+  folderId
+) {
+
+  try {
+
+    const response =
+      await fetch(
+        `${API_BASE}/api/library/study-materials/${encodeURIComponent(id)}`,
+        {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              folderId:
+                folderId || null
+            })
+        }
+      );
+
+
+    const result =
+      await readResponse(
+        response
+      );
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+      throw new Error(
+        result.message ||
+        "Could not move study material."
+      );
+    }
+
+
+    await loadLibrary();
+
+  } catch (error) {
+
+    alert(
+      error.message
+    );
+  }
+}
+
+
+async function studyanteDeleteMaterial(
+  item
+) {
+
+  if (
+    !window.confirm(
+      `Delete "${item.name}" from My Library?`
+    )
+  ) {
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        `${API_BASE}/api/library/study-materials/${encodeURIComponent(item.id)}`,
+        {
+          method: "DELETE"
+        }
+      );
+
+
+    const result =
+      await readResponse(
+        response
+      );
+
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+      throw new Error(
+        result.message ||
+        "Could not delete study material."
+      );
+    }
+
+
+    await loadLibrary();
+
+  } catch (error) {
+
+    alert(
+      error.message
+    );
+  }
+}
+
+/* ==========================================================
+   STUDYANTE_GAME_REBIND_FIX
+   ========================================================== */
+
+function studyanteRebindGameChoices() {
+
+  if (!generatedBody) {
+    return;
+  }
+
+  generatedBody
+    .querySelectorAll(".game-choice")
+    .forEach(button => {
+
+      button.disabled = false;
+
+      button.onclick = () => {
+        checkGameAnswer(button);
+      };
+    });
+}
+
+/* STUDYANTE_MOBILE_ATTACHMENT_FIX_START */
+
+(function installStudyanteMobileAttachments() {
+
+    function getElement(id) {
+        return document.getElementById(id);
+    }
+
+    function closeMenu() {
+
+        const menu = getElement("aiAttachMenu");
+        const button = getElement("aiAttachButton");
+
+        if (menu) {
+            menu.hidden = true;
+        }
 
         if (button) {
-            button.disabled = false;
-            button.textContent =
-                originalText;
-        }
-    }
-}
-
-
-/* ----------------------------------------------------------
-   LOAD COMMUNITY
----------------------------------------------------------- */
-
-async function loadStudyanteCommunity() {
-
-    const status =
-        document.getElementById(
-            "communityStatus"
-        );
-
-    const grid =
-        document.getElementById(
-            "communityGrid"
-        );
-
-
-    if (
-        !status ||
-        !grid
-    ) {
-        return;
-    }
-
-
-    status.hidden = false;
-
-    status.textContent =
-        "Loading community materials...";
-
-    grid.innerHTML = "";
-
-
-    try {
-
-        const [
-            communityResponse,
-            statusResponse
-        ] =
-            await Promise.all([
-                fetch(
-                    `${API_BASE}/api/community`
-                ),
-
-                fetch(
-                    `${API_BASE}/api/community/status`
-                )
-            ]);
-
-
-        const communityData =
-            await readResponse(
-                communityResponse
-            );
-
-
-        const accountData =
-            await readResponse(
-                statusResponse
-            );
-
-
-        if (
-            !communityResponse.ok ||
-            !communityData.success
-        ) {
-
-            throw new Error(
-                communityData.message ||
-                "Could not load Community Notes."
+            button.setAttribute(
+                "aria-expanded",
+                "false"
             );
         }
-
-
-        studyanteCommunityData = {
-            files:
-                Array.isArray(
-                    communityData.files
-                )
-                    ? communityData.files
-                    : [],
-
-            flashcardSets:
-                Array.isArray(
-                    communityData.flashcardSets
-                )
-                    ? communityData.flashcardSets
-                    : []
-        };
-
-
-        studyanteCommunityIsAdmin =
-            Boolean(
-                accountData &&
-                accountData.isAdmin
-            );
-
-
-        renderStudyanteCommunity();
-
-
-        const adminPanel =
-            document.getElementById(
-                "communityAdminPanel"
-            );
-
-
-        if (adminPanel) {
-
-            adminPanel.hidden =
-                !studyanteCommunityIsAdmin;
-        }
-
-
-        if (
-            studyanteCommunityIsAdmin
-        ) {
-
-            await loadStudyantePendingCommunity();
-        }
-
-    }
-    catch (error) {
-
-        grid.innerHTML = "";
-
-        status.hidden = false;
-
-        status.textContent =
-            `?? ${error.message}`;
-    }
-}
-
-
-/* ----------------------------------------------------------
-   RENDER APPROVED MATERIALS
----------------------------------------------------------- */
-
-function renderStudyanteCommunity() {
-
-    const status =
-        document.getElementById(
-            "communityStatus"
-        );
-
-    const grid =
-        document.getElementById(
-            "communityGrid"
-        );
-
-
-    if (
-        !status ||
-        !grid
-    ) {
-        return;
     }
 
 
-    grid.innerHTML = "";
+    function openMenu() {
 
+        const menu = getElement("aiAttachMenu");
+        const button = getElement("aiAttachButton");
 
-    const files =
-        studyanteCommunityData.files;
-
-    const sets =
-        studyanteCommunityData
-            .flashcardSets;
-
-
-    if (
-        files.length === 0 &&
-        sets.length === 0
-    ) {
-
-        status.hidden = false;
-
-        status.textContent =
-            "No approved community materials yet.";
-
-        return;
-    }
-
-
-    status.hidden = true;
-
-
-    files.forEach(
-        item => {
-
-            grid.appendChild(
-                createStudyanteCommunityFileCard(
-                    item
-                )
-            );
-        }
-    );
-
-
-    sets.forEach(
-        item => {
-
-            grid.appendChild(
-                createStudyanteCommunityFlashcardCard(
-                    item
-                )
-            );
-        }
-    );
-}
-
-
-/* ----------------------------------------------------------
-   COMMUNITY FILE CARD
----------------------------------------------------------- */
-
-function createStudyanteCommunityFileCard(
-    item
-) {
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-    card.className =
-        "library-card community-card";
-
-
-    card.innerHTML = `
-        <div class="library-card-icon">
-            ??
-        </div>
-
-        <span class="community-public-badge">
-            ? Approved
-        </span>
-
-        <h3>
-            ${escapeHTML(
-                item.name || "Study Material"
-            )}
-        </h3>
-
-        <p class="community-author">
-            ?? ${escapeHTML(
-                item.author ||
-                "STUDYante User"
-            )}
-        </p>
-
-        <div class="library-actions">
-            <button
-                type="button"
-                class="primary-btn community-view-file"
-            >
-                View
-            </button>
-        </div>
-    `;
-
-
-    card
-        .querySelector(
-            ".community-view-file"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                viewStudyanteCommunityFile(
-                    item
-                );
-            }
-        );
-
-
-    return card;
-}
-
-
-/* ----------------------------------------------------------
-   COMMUNITY FLASHCARD CARD
----------------------------------------------------------- */
-
-function createStudyanteCommunityFlashcardCard(
-    set
-) {
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-    card.className =
-        "library-card community-card";
-
-
-    const count =
-        Array.isArray(
-            set.flashcards
-        )
-            ? set.flashcards.length
-            : 0;
-
-
-    card.innerHTML = `
-        <div class="library-card-icon">
-            ??
-        </div>
-
-        <span class="community-public-badge">
-            ? Approved
-        </span>
-
-        <h3>
-            ${escapeHTML(
-                set.name ||
-                "Flashcards"
-            )}
-        </h3>
-
-        <p>
-            ${count} flashcard${
-                count === 1
-                    ? ""
-                    : "s"
-            }
-        </p>
-
-        <p class="community-author">
-            ?? ${escapeHTML(
-                set.author ||
-                "STUDYante User"
-            )}
-        </p>
-
-        <div class="library-actions">
-
-            <button
-                type="button"
-                class="primary-btn community-study-set"
-            >
-                Study
-            </button>
-
-            <button
-                type="button"
-                class="secondary-btn community-copy-set"
-            >
-                ?? Save Copy
-            </button>
-
-        </div>
-    `;
-
-
-    card
-        .querySelector(
-            ".community-study-set"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                showStudyanteCommunityFlashcards(
-                    set
-                );
-            }
-        );
-
-
-    card
-        .querySelector(
-            ".community-copy-set"
-        )
-        .addEventListener(
-            "click",
-            async event => {
-
-                await copyStudyanteCommunityFlashcards(
-                    set,
-                    event.currentTarget
-                );
-            }
-        );
-
-
-    return card;
-}
-
-
-/* ----------------------------------------------------------
-   VIEW COMMUNITY FILE
----------------------------------------------------------- */
-
-async function viewStudyanteCommunityFile(
-    item
-) {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/community/file/${encodeURIComponent(
-                    item.id
-                )}/content`
-            );
-
-
-        const data =
-            await readResponse(
-                response
-            );
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Could not open material."
-            );
-        }
-
-
-        const material =
-            data.material || {};
-
-
-        showStudyanteCommunityModal(
-            material.name ||
-            "Study Material",
-
-            `
-                <p class="community-modal-author">
-                    ?? ${escapeHTML(
-                        material.author ||
-                        "STUDYante User"
-                    )}
-                </p>
-
-                <div class="community-note-content">
-                    ${escapeHTML(
-                        material.text ||
-                        "No readable text is available for this material."
-                    )}
-                </div>
-            `
-        );
-
-    }
-    catch (error) {
-
-        alert(
-            error.message
-        );
-    }
-}
-
-
-/* ----------------------------------------------------------
-   STUDY COMMUNITY FLASHCARDS
----------------------------------------------------------- */
-
-function showStudyanteCommunityFlashcards(
-    set
-) {
-
-    const cards =
-        Array.isArray(
-            set.flashcards
-        )
-            ? set.flashcards
-            : [];
-
-
-    if (!cards.length) {
-
-        alert(
-            "This flashcard set has no cards."
-        );
-
-        return;
-    }
-
-
-    const content =
-        cards
-            .map(
-                (card, index) => `
-                    <div class="community-flashcard-preview">
-
-                        <strong>
-                            ${index + 1}.
-                            ${escapeHTML(
-                                card.question || ""
-                            )}
-                        </strong>
-
-                        <p>
-                            ${escapeHTML(
-                                card.answer || ""
-                            )}
-                        </p>
-
-                    </div>
-                `
-            )
-            .join("");
-
-
-    showStudyanteCommunityModal(
-        set.name ||
-        "Community Flashcards",
-
-        `
-            <p class="community-modal-author">
-                ?? ${escapeHTML(
-                    set.author ||
-                    "STUDYante User"
-                )}
-            </p>
-
-            ${content}
-        `
-    );
-}
-
-
-/* ----------------------------------------------------------
-   SAVE FLASHCARD COPY
----------------------------------------------------------- */
-
-async function copyStudyanteCommunityFlashcards(
-    set,
-    button
-) {
-
-    const originalText =
-        button.textContent;
-
-
-    button.disabled = true;
-    button.textContent =
-        "Saving...";
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/community/flashcards/${encodeURIComponent(
-                    set.id
-                )}/copy`,
-                {
-                    method:
-                        "POST"
-                }
-            );
-
-
-        const data =
-            await readResponse(
-                response
-            );
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Could not save copy."
-            );
-        }
-
-
-        alert(
-            "Saved privately to My Library! ?"
-        );
-
-
-        if (
-            typeof loadLibrary ===
-            "function"
-        ) {
-
-            await loadLibrary();
-        }
-
-    }
-    catch (error) {
-
-        alert(
-            error.message
-        );
-    }
-    finally {
-
-        button.disabled = false;
-        button.textContent =
-            originalText;
-    }
-}
-
-
-/* ----------------------------------------------------------
-   COMMUNITY MODAL
----------------------------------------------------------- */
-
-function showStudyanteCommunityModal(
-    title,
-    html
-) {
-
-    let modal =
-        document.getElementById(
-            "studyanteCommunityModal"
-        );
-
-
-    if (!modal) {
-
-        modal =
-            document.createElement(
-                "div"
-            );
-
-        modal.id =
-            "studyanteCommunityModal";
-
-        modal.className =
-            "community-modal-overlay";
-
-        modal.innerHTML = `
-            <div class="community-modal">
-
-                <div class="community-modal-header">
-
-                    <h2 id="communityModalTitle"></h2>
-
-                    <button
-                        id="communityModalClose"
-                        type="button"
-                        class="modal-close"
-                    >
-                        ?
-                    </button>
-
-                </div>
-
-                <div
-                    id="communityModalBody"
-                    class="community-modal-body"
-                ></div>
-
-            </div>
-        `;
-
-
-        document.body.appendChild(
-            modal
-        );
-
-
-        modal
-            .querySelector(
-                "#communityModalClose"
-            )
-            .addEventListener(
-                "click",
-                () => {
-
-                    modal.classList.remove(
-                        "show"
-                    );
-                }
-            );
-
-
-        modal.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target ===
-                    modal
-                ) {
-
-                    modal.classList.remove(
-                        "show"
-                    );
-                }
-            }
-        );
-    }
-
-
-    modal
-        .querySelector(
-            "#communityModalTitle"
-        )
-        .textContent =
-            title;
-
-
-    modal
-        .querySelector(
-            "#communityModalBody"
-        )
-        .innerHTML =
-            html;
-
-
-    modal.classList.add(
-        "show"
-    );
-}
-
-
-/* ----------------------------------------------------------
-   ADMIN PENDING
----------------------------------------------------------- */
-
-async function loadStudyantePendingCommunity() {
-
-    if (
-        !studyanteCommunityIsAdmin
-    ) {
-        return;
-    }
-
-
-    const status =
-        document.getElementById(
-            "communityPendingStatus"
-        );
-
-    const grid =
-        document.getElementById(
-            "communityPendingGrid"
-        );
-
-
-    if (
-        !status ||
-        !grid
-    ) {
-        return;
-    }
-
-
-    status.hidden = false;
-
-    status.textContent =
-        "Loading pending submissions...";
-
-    grid.innerHTML = "";
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/admin/community/pending`
-            );
-
-
-        const data =
-            await readResponse(
-                response
-            );
-
-
-        if (
-            !response.ok ||
-            !data.success
-        ) {
-
-            throw new Error(
-                data.message ||
-                "Could not load pending materials."
-            );
-        }
-
-
-        const files =
-            Array.isArray(
-                data.files
-            )
-                ? data.files
-                : [];
-
-
-        const sets =
-            Array.isArray(
-                data.flashcardSets
-            )
-                ? data.flashcardSets
-                : [];
-
-
-        if (
-            files.length === 0 &&
-            sets.length === 0
-        ) {
-
-            status.hidden = false;
-
-            status.textContent =
-                "No materials are waiting for approval.";
-
+        if (!menu) {
             return;
         }
 
+        menu.hidden = false;
 
-        status.hidden = true;
-
-
-        files.forEach(
-            item => {
-
-                grid.appendChild(
-                    createStudyanteAdminCommunityCard(
-                        item,
-                        "file"
-                    )
-                );
-            }
-        );
-
-
-        sets.forEach(
-            item => {
-
-                grid.appendChild(
-                    createStudyanteAdminCommunityCard(
-                        item,
-                        "flashcards"
-                    )
-                );
-            }
-        );
-
-    }
-    catch (error) {
-
-        status.hidden = false;
-
-        status.textContent =
-            `?? ${error.message}`;
-    }
-}
-
-
-/* ----------------------------------------------------------
-   ADMIN CARD
----------------------------------------------------------- */
-
-function createStudyanteAdminCommunityCard(
-    item,
-    type
-) {
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-    card.className =
-        "library-card community-admin-card";
-
-
-    const authorName =
-        item.author &&
-        item.author.name
-            ? item.author.name
-            : "Unknown User";
-
-
-    const authorEmail =
-        item.author &&
-        item.author.email
-            ? item.author.email
-            : "";
-
-
-    card.innerHTML = `
-        <div class="library-card-icon">
-            ${type === "file"
-                ? "??"
-                : "??"
-            }
-        </div>
-
-        <span class="community-status-badge community-status-pending">
-            ? Pending
-        </span>
-
-        <h3>
-            ${escapeHTML(
-                item.name ||
-                "Untitled"
-            )}
-        </h3>
-
-        <p>
-            ?? ${escapeHTML(
-                authorName
-            )}
-        </p>
-
-        ${
-            authorEmail
-                ? `
-                    <small>
-                        ${escapeHTML(
-                            authorEmail
-                        )}
-                    </small>
-                `
-                : ""
+        if (button) {
+            button.setAttribute(
+                "aria-expanded",
+                "true"
+            );
         }
-
-        <div class="library-actions">
-
-            <button
-                type="button"
-                class="primary-btn community-approve"
-            >
-                ? Approve
-            </button>
-
-            <button
-                type="button"
-                class="danger-btn community-reject"
-            >
-                ? Reject
-            </button>
-
-        </div>
-    `;
-
-
-    card
-        .querySelector(
-            ".community-approve"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                reviewStudyanteCommunityMaterial(
-                    type,
-                    item.id,
-                    "approve"
-                );
-            }
-        );
-
-
-    card
-        .querySelector(
-            ".community-reject"
-        )
-        .addEventListener(
-            "click",
-            () => {
-
-                reviewStudyanteCommunityMaterial(
-                    type,
-                    item.id,
-                    "reject"
-                );
-            }
-        );
-
-
-    return card;
-}
-
-
-/* ----------------------------------------------------------
-   ADMIN APPROVE / REJECT
----------------------------------------------------------- */
-
-async function reviewStudyanteCommunityMaterial(
-    type,
-    id,
-    action
-) {
-
-    const actionWord =
-        action === "approve"
-            ? "approve"
-            : "reject";
-
-
-    if (
-        !confirm(
-            `Are you sure you want to ${actionWord} this material?`
-        )
-    ) {
-        return;
     }
 
 
-    try {
+    /*
+     * Delegated handling makes the controls reliable
+     * even if the AI area gets rebuilt/re-rendered.
+     */
 
-        const response =
-            await fetch(
-                `${API_BASE}/api/admin/community/${type}/${encodeURIComponent(
-                    id
-                )}/${action}`,
-                {
-                    method:
-                        "POST"
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            const target =
+                event.target instanceof Element
+                    ? event.target
+                    : null;
+
+            if (!target) {
+                return;
+            }
+
+
+            /*
+             * + BUTTON
+             */
+
+            const attachButton =
+                target.closest("#aiAttachButton");
+
+            if (attachButton) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const menu =
+                    getElement("aiAttachMenu");
+
+                if (!menu) {
+                    return;
                 }
-            );
+
+                if (menu.hidden) {
+                    openMenu();
+                } else {
+                    closeMenu();
+                }
+
+                return;
+            }
 
 
-        const data =
-            await readResponse(
-                response
-            );
+            /*
+             * UPLOAD FILE
+             */
+
+            const uploadButton =
+                target.closest("#aiImageButton");
+
+            if (uploadButton) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const input =
+                    getElement("aiImageInput");
+
+                closeMenu();
+
+                if (!input) {
+                    alert(
+                        "Image upload is not available."
+                    );
+
+                    return;
+                }
+
+                input.value = "";
+
+                input.click();
+
+                return;
+            }
 
 
-        if (
-            !response.ok ||
-            !data.success
-        ) {
+            /*
+             * CAMERA
+             */
 
-            throw new Error(
-                data.message ||
-                "Could not review material."
-            );
-        }
+            const cameraButton =
+                target.closest("#aiCameraButton");
 
+            if (cameraButton) {
 
-        alert(
-            action === "approve"
-                ? "Material approved and published! ?"
-                : "Material rejected."
-        );
+                event.preventDefault();
+                event.stopPropagation();
 
+                closeMenu();
 
-        await loadStudyanteCommunity();
+                const cameraInput =
+                    getElement("aiCameraInput");
 
-    }
-    catch (error) {
+                const touchDevice =
+                    navigator.maxTouchPoints > 0 ||
+                    "ontouchstart" in window;
 
-        alert(
-            error.message
-        );
-    }
-}
+                const mobileBrowser =
+                    /Android|iPhone|iPad|iPod|Mobile/i.test(
+                        navigator.userAgent || ""
+                    );
 
 
-/* ----------------------------------------------------------
-   BUTTON EVENTS
----------------------------------------------------------- */
+                /*
+                 * PHONE / TABLET
+                 */
 
-const studyanteRefreshCommunity =
-    document.getElementById(
-        "refreshCommunity"
+                if (
+                    cameraInput &&
+                    (touchDevice || mobileBrowser)
+                ) {
+
+                    cameraInput.value = "";
+
+                    cameraInput.click();
+
+                    return;
+                }
+
+
+                /*
+                 * LAPTOP / DESKTOP
+                 */
+
+                if (
+                    typeof openAICamera ===
+                    "function"
+                ) {
+
+                    openAICamera();
+
+                    return;
+                }
+
+
+                /*
+                 * FALLBACK
+                 */
+
+                if (cameraInput) {
+
+                    cameraInput.value = "";
+
+                    cameraInput.click();
+
+                    return;
+                }
+
+
+                alert(
+                    "Camera is not available on this device."
+                );
+
+                return;
+            }
+
+
+            /*
+             * Click outside menu
+             */
+
+            const menu =
+                getElement("aiAttachMenu");
+
+            if (
+                menu &&
+                !menu.hidden &&
+                !target.closest("#aiAttachMenu")
+            ) {
+                closeMenu();
+            }
+
+        },
+        true
     );
 
 
-if (studyanteRefreshCommunity) {
+    /*
+     * Make sure file inputs always react.
+     */
 
-    studyanteRefreshCommunity
-        .addEventListener(
-            "click",
-            loadStudyanteCommunity
-        );
-}
+    document.addEventListener(
+        "change",
+        function (event) {
 
+            const target = event.target;
 
-const studyanteRefreshPending =
-    document.getElementById(
-        "refreshPendingCommunity"
+            if (
+                !(target instanceof HTMLInputElement)
+            ) {
+                return;
+            }
+
+            if (
+                target.id !== "aiImageInput" &&
+                target.id !== "aiCameraInput"
+            ) {
+                return;
+            }
+
+            const file =
+                target.files &&
+                target.files.length
+                    ? target.files[0]
+                    : null;
+
+            if (!file) {
+                return;
+            }
+
+            if (
+                typeof setAIImage ===
+                "function"
+            ) {
+                setAIImage(file);
+            }
+
+        },
+        true
     );
 
+})();
 
-if (studyanteRefreshPending) {
-
-    studyanteRefreshPending
-        .addEventListener(
-            "click",
-            loadStudyantePendingCommunity
-        );
-}
-
-
-/* ----------------------------------------------------------
-   LOAD COMMUNITY WHEN PAGE IS OPENED
----------------------------------------------------------- */
-
-document.addEventListener(
-    "click",
-    event => {
-
-        const link =
-            event.target.closest(
-                '[data-page="community"]'
-            );
-
-
-        if (link) {
-
-            setTimeout(
-                loadStudyanteCommunity,
-                50
-            );
-        }
-    }
-);
-
-
-/* Reload library so approval controls appear */
-if (
-    typeof loadLibrary ===
-    "function"
-) {
-
-    loadLibrary();
-}
-
+/* STUDYANTE_MOBILE_ATTACHMENT_FIX_END */

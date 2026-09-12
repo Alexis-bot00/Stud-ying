@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -13,7 +13,7 @@
 
   <link
     rel="stylesheet"
-    href="style.css?v=20260912-markdown1"
+    href="style.css"
   >
 <style id="studying-hide-ai-provider">
 #providerSection,
@@ -142,499 +142,6 @@
 
 </style>
 
-  <link rel="stylesheet" href="community.css?v=20260912-globalusers1">
-  <link rel="stylesheet" href="theme.css?v=20260908-sidebar1">
-
-<!-- STUDYANTE_RESPONSIVE_FIX_START -->
-<style>
-
-/* ==========================================
-   STUDYante FULL RESPONSIVE DESIGN
-   Desktop / Laptop / Tablet / Mobile
-========================================== */
-
-html,
-body {
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    overflow-x: hidden;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-
-/* ==========================================
-   DESKTOP
-========================================== */
-
-.sidebar {
-    flex-shrink: 0;
-}
-
-main,
-.main-content,
-.content,
-.page-content,
-.dashboard,
-.dashboard-content {
-    min-width: 0;
-}
-
-
-/* Search bar */
-input[placeholder*="Search students"],
-input[placeholder*="Search Students"],
-input[placeholder*="search students"] {
-    width: 100% !important;
-    max-width: 560px !important;
-    min-width: 0 !important;
-}
-
-
-/* Top profile */
-.studyante-top-profile-wrap {
-    position: fixed !important;
-    top: 12px !important;
-    right: 18px !important;
-    z-index: 9999 !important;
-}
-
-.studyante-top-profile-button {
-    flex-shrink: 0 !important;
-}
-
-
-/* ==========================================
-   TABLET
-========================================== */
-
-@media screen and (max-width: 1024px) {
-
-    .sidebar {
-        width: 190px !important;
-        min-width: 190px !important;
-    }
-
-    main,
-    .main-content,
-    .content,
-    .page-content {
-        margin-left: 190px !important;
-        width: calc(100% - 190px) !important;
-        max-width: calc(100% - 190px) !important;
-        padding-left: 24px !important;
-        padding-right: 24px !important;
-    }
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"],
-    input[placeholder*="search students"] {
-        max-width: 430px !important;
-    }
-
-    .studyante-top-profile-wrap {
-        right: 14px !important;
-    }
-
-}
-
-
-/* ==========================================
-   MOBILE
-========================================== */
-
-@media screen and (max-width: 768px) {
-
-    html,
-    body {
-        width: 100% !important;
-        min-width: 0 !important;
-        overflow-x: hidden !important;
-    }
-
-
-    /* SIDEBAR */
-
-    .sidebar {
-        width: 68px !important;
-        min-width: 68px !important;
-        max-width: 68px !important;
-
-        padding: 8px 5px !important;
-
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
-    }
-
-    .studyante-brand {
-        width: 100% !important;
-        padding: 8px 2px 18px !important;
-        text-align: center !important;
-    }
-
-    .studyante-logo {
-        width: 55px !important;
-        max-width: 55px !important;
-        height: auto !important;
-    }
-
-
-    /* SIDEBAR LINKS */
-
-    .sidebar a,
-    .sidebar button {
-        max-width: 100% !important;
-    }
-
-
-    /* MAIN CONTENT */
-
-    main,
-    .main-content,
-    .content,
-    .page-content {
-        margin-left: 68px !important;
-
-        width: calc(100% - 68px) !important;
-        max-width: calc(100% - 68px) !important;
-
-        min-width: 0 !important;
-
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-
-        overflow-x: hidden !important;
-    }
-
-
-    .dashboard,
-    .dashboard-content,
-    .container {
-        width: 100% !important;
-        max-width: 100% !important;
-
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-    }
-
-
-    /* =========================
-       SEARCH BAR
-    ========================= */
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"],
-    input[placeholder*="search students"] {
-        width: calc(100vw - 150px) !important;
-        max-width: calc(100vw - 150px) !important;
-        min-width: 120px !important;
-
-        height: 38px !important;
-
-        font-size: 13px !important;
-
-        padding-left: 34px !important;
-        padding-right: 10px !important;
-    }
-
-
-    /* Search containers */
-
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar,
-    .top-search {
-        width: auto !important;
-        max-width: calc(100vw - 145px) !important;
-        min-width: 0 !important;
-
-        margin-left: 0 !important;
-        margin-right: 65px !important;
-    }
-
-
-    /* Search button */
-
-    .search-container button,
-    .search-wrapper button,
-    .student-search button,
-    .search-bar button {
-        width: auto !important;
-        min-width: 0 !important;
-
-        padding-left: 10px !important;
-        padding-right: 10px !important;
-
-        font-size: 12px !important;
-    }
-
-
-    /* =========================
-       PROFILE
-    ========================= */
-
-    .studyante-top-profile-wrap {
-        position: fixed !important;
-
-        top: 8px !important;
-        right: 8px !important;
-
-        margin: 0 !important;
-
-        z-index: 10000 !important;
-    }
-
-    .studyante-top-profile-button {
-        width: 38px !important;
-        height: 38px !important;
-
-        min-width: 38px !important;
-
-        padding: 0 !important;
-
-        border-radius: 50% !important;
-
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-
-
-    /* Profile dropdown */
-
-    .studyante-profile-dropdown,
-    .studyante-top-profile-menu {
-        position: fixed !important;
-
-        top: 52px !important;
-        right: 8px !important;
-        left: auto !important;
-
-        width: min(260px, calc(100vw - 20px)) !important;
-        max-width: calc(100vw - 20px) !important;
-
-        z-index: 10001 !important;
-    }
-
-
-    /* =========================
-       DASHBOARD TITLE
-    ========================= */
-
-    h1 {
-        font-size: 22px !important;
-        line-height: 1.25 !important;
-    }
-
-    h2 {
-        font-size: 18px !important;
-        line-height: 1.3 !important;
-    }
-
-    p {
-        max-width: 100% !important;
-    }
-
-
-    /* =========================
-       CARDS / SECTIONS
-    ========================= */
-
-    .grid,
-    .card-grid,
-    .cards,
-    .dashboard-grid {
-        width: 100% !important;
-        max-width: 100% !important;
-
-        grid-template-columns: 1fr !important;
-
-        gap: 12px !important;
-    }
-
-    .card {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
-
-    /* TABLES */
-
-    table {
-        width: 100% !important;
-    }
-
-    .table-container {
-        width: 100% !important;
-        overflow-x: auto !important;
-    }
-
-
-    /* FORMS */
-
-    input,
-    select,
-    textarea,
-    button {
-        max-width: 100%;
-    }
-
-}
-
-
-/* ==========================================
-   SMALL MOBILE
-========================================== */
-
-@media screen and (max-width: 480px) {
-
-    .sidebar {
-        width: 60px !important;
-        min-width: 60px !important;
-        max-width: 60px !important;
-    }
-
-    .studyante-logo {
-        width: 48px !important;
-        max-width: 48px !important;
-    }
-
-
-    main,
-    .main-content,
-    .content,
-    .page-content {
-        margin-left: 60px !important;
-
-        width: calc(100% - 60px) !important;
-        max-width: calc(100% - 60px) !important;
-
-        padding-left: 9px !important;
-        padding-right: 9px !important;
-    }
-
-
-    /* Search */
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"],
-    input[placeholder*="search students"] {
-        width: calc(100vw - 135px) !important;
-        max-width: calc(100vw - 135px) !important;
-
-        height: 35px !important;
-
-        font-size: 11px !important;
-    }
-
-    .search-container,
-    .search-wrapper,
-    .student-search,
-    .search-bar,
-    .top-search {
-        max-width: calc(100vw - 125px) !important;
-        margin-right: 52px !important;
-    }
-
-
-    /* Profile */
-
-    .studyante-top-profile-wrap {
-        top: 7px !important;
-        right: 6px !important;
-    }
-
-    .studyante-top-profile-button {
-        width: 34px !important;
-        height: 34px !important;
-
-        min-width: 34px !important;
-
-        font-size: 12px !important;
-    }
-
-
-    .studyante-profile-dropdown,
-    .studyante-top-profile-menu {
-        top: 48px !important;
-
-        right: 6px !important;
-
-        width: calc(100vw - 72px) !important;
-        max-width: 260px !important;
-    }
-
-
-    /* Text */
-
-    h1 {
-        font-size: 19px !important;
-    }
-
-    h2 {
-        font-size: 17px !important;
-    }
-
-}
-
-
-/* ==========================================
-   EXTRA SMALL PHONE
-========================================== */
-
-@media screen and (max-width: 360px) {
-
-    .sidebar {
-        width: 54px !important;
-        min-width: 54px !important;
-        max-width: 54px !important;
-    }
-
-    .studyante-logo {
-        width: 43px !important;
-    }
-
-    main,
-    .main-content,
-    .content,
-    .page-content {
-        margin-left: 54px !important;
-
-        width: calc(100% - 54px) !important;
-        max-width: calc(100% - 54px) !important;
-
-        padding-left: 7px !important;
-        padding-right: 7px !important;
-    }
-
-    input[placeholder*="Search students"],
-    input[placeholder*="Search Students"],
-    input[placeholder*="search students"] {
-        width: calc(100vw - 120px) !important;
-        max-width: calc(100vw - 120px) !important;
-
-        font-size: 10px !important;
-    }
-
-}
-
-</style>
-<!-- STUDYANTE_RESPONSIVE_FIX_END -->
-
 </head>
 
 <body>
@@ -646,42 +153,34 @@ input[placeholder*="search students"] {
     <nav>
 
       <a href="#dashboard" data-page="dashboard">
-        🏠 Dashboard
+        ðŸ  Dashboard
       </a>
 
       <a href="#upload" data-page="upload">
-        📤 Upload Material
+        ðŸ“¤ Upload Material
       </a>
 
       <a href="#library" data-page="library">
-        📚 My Library
+        ðŸ“š My Library
       </a>
-
       <a href="#community" data-page="community">
-        &#127760; Community Notes
+        🌐 Community Notes
       </a>
 
       <a href="#ai" data-page="ai">
-        🤖 STUDYante AI
+        ðŸ¤– STUDYante AI
       </a>
 
 
     </nav>
 
-
-
-
-    </div>
-
-
-
     <div class="sidebar-chat-history">
       <div class="chat-history-panel">
-
+      
                 <div class="chat-history-header">
-
+      
                   <h3>Chat History</h3>
-
+      
                   <button
                     id="newChatButton"
                     class="new-chat-btn"
@@ -689,9 +188,9 @@ input[placeholder*="search students"] {
                   >
                     + New Chat
                   </button>
-
+      
                 </div>
-
+      
                 <div
                   id="chatHistoryList"
                   class="chat-history-list"
@@ -700,83 +199,14 @@ input[placeholder*="search students"] {
                     Loading chats...
                   </div>
                 </div>
-    <div class="sidebar-bottom-controls">
-
-
-
-<div class="sidebar-user-panel">
-
-        <!-- STUDYANTE_BOTTOM_LOGOUT_REMOVED -->
-
-    </div>
-
-
+      
               </div>
     </div>
 
   </aside>
 
 
-
-
-  <!-- STUDYANTE_GLOBAL_USER_SEARCH_START -->
-
-  <div
-    id="studyanteGlobalSearch"
-    class="studyante-global-search"
-  >
-
-    <div class="studyante-global-search-box">
-
-      <span
-        class="studyante-global-search-icon"
-        aria-hidden="true"
-      >
-        &#128269;
-      </span>
-
-      <input
-        id="communityUserSearchInput"
-        type="search"
-        placeholder="Search students..."
-        autocomplete="off"
-        aria-label="Search STUDYante students"
-      >
-
-      <button
-        id="communityUserSearchButton"
-        type="button"
-        class="studyante-global-search-button"
-      >
-        Search
-      </button>
-
-    </div>
-
-    <div
-      id="communityUserSearchPanel"
-      class="studyante-global-search-panel"
-      hidden
-    >
-
-      <div
-        id="communityUserSearchStatus"
-        class="community-user-search-status"
-        hidden
-      ></div>
-
-      <div
-        id="communityUserResults"
-        class="community-user-results"
-      ></div>
-
-    </div>
-
-  </div>
-
-  <!-- STUDYANTE_GLOBAL_USER_SEARCH_END -->
-
-<main>
+  <main>
 
     <section
       id="dashboard"
@@ -787,28 +217,53 @@ input[placeholder*="search students"] {
     <header class="topbar">
 
       <div>
-        <h3>Welcome back 👋</h3>
+        <h3>Welcome back ðŸ‘‹</h3>
         <p>What are we studying today?</p>
       </div>
 
-      </header>
+      <div class="topbar-right">
+
+        <div class="profile">
+
+          <div class="avatar">
+            A
+          </div>
+
+          <div>
+            <strong>Student</strong>
+            <small>BSIT Student</small>
+          </div>
+
+        </div>
+
+        <button
+          id="logoutButton"
+          class="logout-btn"
+          type="button"
+        >
+          Logout
+        </button>
+
+      </div>
+
+    </header>
 
 
+    
 
 
-
-
+    
     </section>
 
     <section
       id="upload"
       class="panel studyante-page"
-     hidden>
+    >
 
       <div class="section-title">
         <h2>Upload Study Material</h2>
         <p>
-          PDF, DOCX, PPTX or TXT • Maximum 20 MB
+          PDF, DOCX, PPTX or TXT â€¢ Maximum 20 MB
         </p>
       </div>
 
@@ -819,7 +274,7 @@ input[placeholder*="search students"] {
       >
 
         <div class="big-icon">
-          📄
+          ðŸ“„
         </div>
 
         <h3>
@@ -855,7 +310,7 @@ input[placeholder*="search students"] {
       >
 
         <span class="file-icon">
-          📄
+          ðŸ“„
         </span>
 
         <div>
@@ -868,7 +323,7 @@ input[placeholder*="search students"] {
           type="button"
           class="icon-btn"
         >
-          ✕
+          âœ•
         </button>
 
       </div>
@@ -998,7 +453,7 @@ input[placeholder*="search students"] {
             data-type="notes"
             type="button"
           >
-            <span>📝</span>
+            <span>ðŸ“</span>
             <strong>Notes</strong>
             <small>Easy study notes</small>
           </button>
@@ -1009,7 +464,7 @@ input[placeholder*="search students"] {
             data-type="flashcards"
             type="button"
           >
-            <span>🧠</span>
+            <span>ðŸ§ </span>
             <strong>Flashcards</strong>
             <small>Up to 50 cards</small>
           </button>
@@ -1020,7 +475,7 @@ input[placeholder*="search students"] {
             data-type="test"
             type="button"
           >
-            <span>✅</span>
+            <span>âœ…</span>
             <strong>Practice Test</strong>
             <small>Up to 100 questions</small>
           </button>
@@ -1031,7 +486,7 @@ input[placeholder*="search students"] {
             data-type="game"
             type="button"
           >
-            <span>🎮</span>
+            <span>ðŸŽ®</span>
             <strong>Study Game</strong>
             <small>Up to 100 questions</small>
           </button>
@@ -1050,7 +505,7 @@ input[placeholder*="search students"] {
         <div class="generated-header">
 
           <span id="generatedIcon">
-            ✨
+            âœ¨
           </span>
 
           <div>
@@ -1075,14 +530,14 @@ input[placeholder*="search students"] {
     <section
       id="library"
       class="panel studyante-page"
-     hidden>
+    >
 
       <div class="library-header">
 
         <div class="section-title">
 
           <h2>
-            📚 My Library
+            ðŸ“š My Library
           </h2>
 
           <p>
@@ -1099,7 +554,7 @@ input[placeholder*="search students"] {
             type="button"
             class="secondary-btn"
           >
-            📁 + New Folder
+            ðŸ“ + New Folder
           </button>
 
           <button
@@ -1107,7 +562,7 @@ input[placeholder*="search students"] {
             type="button"
             class="primary-btn"
           >
-            🧠 + Create Flashcards
+            ðŸ§  + Create Flashcards
           </button>
 
           <button
@@ -1115,7 +570,7 @@ input[placeholder*="search students"] {
             type="button"
             class="secondary-btn"
           >
-            ↻ Refresh
+            â†» Refresh
           </button>
 
         </div>
@@ -1162,8 +617,9 @@ input[placeholder*="search students"] {
     </section>
 
 
+    
 
-<section
+    <section
       id="community"
       class="panel studyante-page"
       hidden
@@ -1172,10 +628,10 @@ input[placeholder*="search students"] {
       <div class="community-header">
 
         <div class="section-title">
-          <h2>&#127760; Community Notes</h2>
+          <h2>🌐 Community Notes</h2>
 
           <p>
-            Explore study materials shared by students and approved by STUDYante.
+            Discover study materials shared and approved by STUDYante.
           </p>
         </div>
 
@@ -1184,36 +640,38 @@ input[placeholder*="search students"] {
           type="button"
           class="secondary-btn"
         >
-          Refresh
+          🔄 Refresh
         </button>
 
       </div>
-<div
+
+
+      <div
         id="communityStatus"
         class="library-status"
       >
         Loading community materials...
       </div>
 
+
       <div
         id="communityGrid"
-        class="community-grid"
+        class="library-grid community-grid"
       ></div>
 
 
       <div
-        id="communityAdmin"
-        class="community-admin"
+        id="communityAdminPanel"
+        class="community-admin-panel"
         hidden
       >
 
-        <div class="community-admin-header">
-
+        <div class="community-admin-heading">
           <div>
-            <h2>Admin Review</h2>
+            <h2>🛡️ Admin Review</h2>
 
             <p>
-              Approve or reject submitted study materials.
+              Review study materials submitted by students.
             </p>
           </div>
 
@@ -1222,29 +680,31 @@ input[placeholder*="search students"] {
             type="button"
             class="secondary-btn"
           >
-            Refresh
+            🔄 Refresh
           </button>
-
         </div>
+
 
         <div
           id="communityPendingStatus"
           class="library-status"
-        ></div>
+        >
+          Loading pending submissions...
+        </div>
+
 
         <div
           id="communityPendingGrid"
-          class="community-grid"
+          class="library-grid community-grid"
         ></div>
 
       </div>
 
     </section>
-
 <section
       id="ai"
       class="panel studyante-page"
-     hidden>
+    >
 
       <div class="section-title">
         <h2>&#x1F916; STUDYante AI</h2>
@@ -1311,14 +771,14 @@ input[placeholder*="search students"] {
             <input
               id="aiImageInput"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               hidden
             >
 
             <input
               id="aiCameraInput"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               capture="environment"
               hidden
             >
@@ -1456,7 +916,7 @@ input[placeholder*="search students"] {
       <div class="modal-header">
 
         <div>
-          <h2>📁 New Folder</h2>
+          <h2>ðŸ“ New Folder</h2>
           <p>
             Create a folder for your study materials.
           </p>
@@ -1467,7 +927,7 @@ input[placeholder*="search students"] {
           data-close="folderModal"
           type="button"
         >
-          ✕
+          âœ•
         </button>
 
       </div>
@@ -1518,7 +978,7 @@ input[placeholder*="search students"] {
       <div class="modal-header">
 
         <div>
-          <h2>🧠 Create Flashcards</h2>
+          <h2>ðŸ§  Create Flashcards</h2>
           <p>
             Make your own flashcard set.
           </p>
@@ -1529,7 +989,7 @@ input[placeholder*="search students"] {
           data-close="flashcardModal"
           type="button"
         >
-          ✕
+          âœ•
         </button>
 
       </div>
@@ -1618,7 +1078,7 @@ input[placeholder*="search students"] {
       <div class="modal-header">
 
         <div>
-          <h2>💾 Save Flashcards</h2>
+          <h2>ðŸ’¾ Save Flashcards</h2>
           <p>
             Save your AI-generated flashcards to My Library.
           </p>
@@ -1629,7 +1089,7 @@ input[placeholder*="search students"] {
           data-close="saveAIFlashcardsModal"
           type="button"
         >
-          ✕
+          âœ•
         </button>
 
       </div>
@@ -1684,324 +1144,9 @@ input[placeholder*="search students"] {
 
   </div>
 
-
-  <!-- STUDYANTE_ACCOUNT_SETTINGS_MODAL_START -->
-
-  <div
-    id="accountSettingsModal"
-    class="studyante-account-modal"
-    hidden
-  >
-
-    <div class="studyante-account-card">
-
-      <div class="studyante-account-header">
-
-        <div>
-          <h2>Account Settings</h2>
-          <p>
-            Update your STUDYante profile and password.
-          </p>
-        </div>
-
-        <button
-          id="closeAccountSettings"
-          class="studyante-account-close"
-          type="button"
-          aria-label="Close account settings"
-        >
-          &#10005;
-        </button>
-
-      </div>
-
-
-      <section class="studyante-account-section">
-
-        <h3>Profile</h3>
-
-        <div class="studyante-profile-photo-editor">
-
-          <div class="studyante-settings-avatar">
-
-            <img
-              id="settingsProfilePreview"
-              alt="Profile picture preview"
-              hidden
-            >
-
-            <span
-              id="settingsProfileInitial"
-            >
-              S
-            </span>
-
-          </div>
-
-          <div class="studyante-photo-buttons">
-
-            <label
-              for="settingsProfilePicture"
-              class="secondary-btn studyante-photo-label"
-            >
-              Change Photo
-            </label>
-
-            <input
-              id="settingsProfilePicture"
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              hidden
-            >
-
-            <button
-              id="removeSettingsProfilePicture"
-              type="button"
-              class="secondary-btn"
-            >
-              Remove
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <label class="studyante-settings-label">
-          Profile Name
-
-          <input
-            id="settingsProfileName"
-            type="text"
-            autocomplete="name"
-            maxlength="80"
-            placeholder="Your name"
-          >
-        </label>
-
-
-        <label class="studyante-settings-label">
-          Email
-
-          <input
-            id="settingsProfileEmail"
-            type="email"
-            autocomplete="email"
-            placeholder="Your email"
-          >
-        </label>
-
-
-        <div
-          id="profileSettingsMessage"
-          class="studyante-settings-message"
-        ></div>
-
-
-        <button
-          id="saveProfileSettings"
-          type="button"
-          class="primary-btn studyante-settings-save"
-        >
-          Save Profile
-        </button>
-
-      </section>
-
-
-      <section class="studyante-account-section">
-
-        <h3>Change Password</h3>
-
-        <label class="studyante-settings-label">
-          Current Password
-
-          <input
-            id="settingsCurrentPassword"
-            type="password"
-            autocomplete="current-password"
-            placeholder="Enter current password"
-          >
-        </label>
-
-
-        <label class="studyante-settings-label">
-          New Password
-
-          <input
-            id="settingsNewPassword"
-            type="password"
-            minlength="6"
-            autocomplete="new-password"
-            placeholder="At least 6 characters"
-          >
-        </label>
-
-
-        <label class="studyante-settings-label">
-          Confirm New Password
-
-          <input
-            id="settingsConfirmPassword"
-            type="password"
-            minlength="6"
-            autocomplete="new-password"
-            placeholder="Repeat new password"
-          >
-        </label>
-
-
-        <div
-          id="passwordSettingsMessage"
-          class="studyante-settings-message"
-        ></div>
-
-
-        <button
-          id="changeAccountPassword"
-          type="button"
-          class="primary-btn studyante-settings-save"
-        >
-          Change Password
-        </button>
-
-      </section>
-
-    </div>
-
-  </div>
-
-  <!-- STUDYANTE_ACCOUNT_SETTINGS_MODAL_END -->
-
-  <script src="navigation.js?v=20260912-independent1"></script>
-<script src="auth.js?v=20260912-profile-reflect1"></script>
-    <script src="ai-markdown.js?v=20260912-markdown-direct2"></script>
-<script src="script.js?v=20260912-markdown-direct2"></script>
-
-  <script src="community.js?v=20260912-profile1"></script>
-  <script src="theme.js?v=20260908-theme1"></script>
-
-  <!-- STUDYANTE_TOP_PROFILE_MENU_START -->
-
-  <div class="studyante-top-profile-wrap">
-
-    <button
-      id="studyanteTopProfileButton"
-      class="studyante-top-profile-button"
-      type="button"
-      aria-label="Open profile menu"
-      aria-expanded="false"
-    >
-      <span class="studyante-top-avatar">
-
-        <img
-          id="topProfileAvatarImage"
-          alt="Profile picture"
-          hidden
-        >
-
-        <span id="topProfileAvatarInitial">
-          S
-        </span>
-
-      </span>
-    </button>
-
-
-    <div
-      id="studyanteProfileDropdown"
-      class="studyante-profile-dropdown"
-      hidden
-    >
-
-      <div class="studyante-profile-dropdown-header">
-
-        <div class="studyante-profile-dropdown-avatar">
-
-          <img
-            id="dropdownProfileAvatarImage"
-            alt="Profile picture"
-            hidden
-          >
-
-          <span id="dropdownProfileAvatarInitial">
-            S
-          </span>
-
-        </div>
-
-        <div class="studyante-profile-dropdown-user">
-
-          <strong id="dropdownProfileName">
-            Student
-          </strong>
-
-          <small id="dropdownProfileEmail">
-            student@example.com
-          </small>
-
-        </div>
-
-      </div>
-
-
-      <div class="studyante-profile-dropdown-divider"></div>
-
-
-      <button
-        id="dropdownAccountSettings"
-        class="studyante-profile-menu-item"
-        type="button"
-      >
-        <span class="studyante-profile-menu-icon">
-          &#9881;
-        </span>
-
-        <span>
-          Account Settings
-        </span>
-      </button>
-
-
-      <button
-        id="dropdownThemeToggle"
-        class="studyante-profile-menu-item"
-        type="button"
-      >
-        <span class="studyante-profile-menu-icon">
-          &#9788;
-        </span>
-
-        <span id="dropdownThemeText">
-          Dark Mode
-        </span>
-      </button>
-
-
-      <div class="studyante-profile-dropdown-divider"></div>
-
-
-      <button
-        id="dropdownLogoutButton"
-        class="studyante-profile-menu-item studyante-profile-menu-logout"
-        type="button"
-      >
-        <span class="studyante-profile-menu-icon">
-          &#10162;
-        </span>
-
-        <span>
-          Log out
-        </span>
-      </button>
-
-    </div>
-
-  </div>
-
-  <!-- STUDYANTE_TOP_PROFILE_MENU_END -->
+<script src="auth.js"></script> 
+  <script src="script.js"></script>
 
 </body>
 
 </html>
-

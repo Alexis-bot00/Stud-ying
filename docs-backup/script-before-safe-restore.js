@@ -1,4 +1,4 @@
-let studyingChatBusy = false;
+﻿let studyingChatBusy = false;
 
 function cleanAIAnswer(text) {
   return String(text || "")
@@ -250,7 +250,7 @@ function handleFile(file) {
   fileName.textContent = file.name;
 
   fileSize.textContent =
-    `${formatFileSize(file.size)} • Saving to My Library...`;
+    `${formatFileSize(file.size)} â€¢ Saving to My Library...`;
 
   selectedFile.hidden = false;
   generateSection.hidden = false;
@@ -311,7 +311,7 @@ async function saveUploadedFile(file) {
       activeLibraryId = data.file.id;
 
       fileSize.textContent =
-        `${formatFileSize(data.file.size)} • Saved in My Library ✅`;
+        `${formatFileSize(data.file.size)} â€¢ Saved in My Library âœ…`;
     }
 
     await loadLibrary();
@@ -320,7 +320,7 @@ async function saveUploadedFile(file) {
 
     if (uploadedFile === file) {
       fileSize.textContent =
-        `${formatFileSize(file.size)} • Could not save to My Library`;
+        `${formatFileSize(file.size)} â€¢ Could not save to My Library`;
     }
   }
 }
@@ -375,7 +375,7 @@ async function loadLibrary() {
     libraryStatus.hidden = false;
 
     libraryStatus.innerHTML =
-      `⚠️ ${escapeHTML(error.message)}`;
+      `âš ï¸ ${escapeHTML(error.message)}`;
   }
 }
 
@@ -403,7 +403,7 @@ function renderFolderFilters() {
         folder.id;
 
       button.textContent =
-        `📁 ${folder.name}`;
+        `ðŸ“ ${folder.name}`;
 
       if (
         activeFolderFilter ===
@@ -536,7 +536,7 @@ function createFileCard(item) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      📄
+      ðŸ“„
     </div>
 
     <h3>
@@ -551,12 +551,12 @@ function createFileCard(item) {
           .replace(".", "")
           .toUpperCase()
       )}
-      •
+      â€¢
       ${formatFileSize(item.size)}
     </p>
 
     <small>
-      📁 ${
+      ðŸ“ ${
         folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
@@ -656,7 +656,7 @@ function createFlashcardSetCard(set) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      🧠
+      ðŸ§ 
     </div>
 
     <h3>
@@ -673,7 +673,7 @@ function createFlashcardSetCard(set) {
     </p>
 
     <small>
-      📁 ${
+      ðŸ“ ${
         folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
@@ -793,7 +793,7 @@ function selectLibraryFile(item) {
     item.name;
 
   fileSize.textContent =
-    `${formatFileSize(item.size)} • From My Library`;
+    `${formatFileSize(item.size)} â€¢ From My Library`;
 
   selectedFile.hidden = false;
   generateSection.hidden = false;
@@ -1109,7 +1109,7 @@ function addManualFlashcard() {
       type="button"
       class="remove-manual-card"
     >
-      ✕
+      âœ•
     </button>
 
     <label class="field-label">
@@ -1366,14 +1366,14 @@ function showLoading(type) {
   };
 
   generatedContent.hidden = false;
-  generatedIcon.textContent = "✨";
+  generatedIcon.textContent = "âœ¨";
 
   generatedTitle.textContent =
     `Creating ${titles[type]}...`;
 
   generatedBody.innerHTML = `
     <div class="loading-box">
-      🧠 Studying AI is reading your lesson...
+      ðŸ§  Studying AI is reading your lesson...
     </div>
   `;
 
@@ -1390,7 +1390,7 @@ function displayGenerated(
   generatedContent.hidden = false;
 
   if (type === "notes") {
-    generatedIcon.textContent = "📝";
+    generatedIcon.textContent = "ðŸ“";
     generatedTitle.textContent =
       "Study Notes";
 
@@ -1422,7 +1422,7 @@ function displayGenerated(
           )} Flashcards`
         : "Study Flashcards";
 
-    generatedIcon.textContent = "🧠";
+    generatedIcon.textContent = "ðŸ§ ";
 
     generatedTitle.textContent =
       `${flashcards.length} Flashcards`;
@@ -1433,7 +1433,7 @@ function displayGenerated(
   }
 
   if (type === "test") {
-    generatedIcon.textContent = "✅";
+    generatedIcon.textContent = "âœ…";
     generatedTitle.textContent =
       "Practice Test";
 
@@ -1499,7 +1499,7 @@ function displayGenerated(
   }
 
   if (type === "game") {
-    generatedIcon.textContent = "🎮";
+    generatedIcon.textContent = "ðŸŽ®";
     generatedTitle.textContent =
       "Study Game";
 
@@ -1624,7 +1624,7 @@ function renderFlashcard(
           class="secondary-btn"
           type="button"
         >
-          ← Previous
+          â† Previous
         </button>
 
         <button
@@ -1632,7 +1632,7 @@ function renderFlashcard(
           class="primary-btn"
           type="button"
         >
-          Next →
+          Next â†’
         </button>
 
         ${
@@ -1643,7 +1643,7 @@ function renderFlashcard(
                 class="secondary-btn"
                 type="button"
               >
-                💾 Save to My Library
+                ðŸ’¾ Save to My Library
               </button>
             `
             : ""
@@ -1748,7 +1748,7 @@ function openSavedFlashcards(set) {
 
   generatedContent.hidden = false;
 
-  generatedIcon.textContent = "🧠";
+  generatedIcon.textContent = "ðŸ§ ";
 
   generatedTitle.textContent =
     set.name || "Study Flashcards";
@@ -1796,7 +1796,7 @@ confirmSaveAIFlashcards.addEventListener(
       await loadLibrary();
 
       alert(
-        "Flashcards saved to My Library! ✅"
+        "Flashcards saved to My Library! âœ…"
       );
     } catch (error) {
       alert(error.message);
@@ -1841,7 +1841,7 @@ function checkGameAnswer(button) {
 
 function showError(message) {
   generatedContent.hidden = false;
-  generatedIcon.textContent = "⚠️";
+  generatedIcon.textContent = "âš ï¸";
   generatedTitle.textContent =
     "Could not generate";
 
@@ -2501,7 +2501,7 @@ function addMessage(
     ) {
         message.innerHTML = `
             <span class="message-avatar">
-                🤖
+                ðŸ¤–
             </span>
 
             <div class="message-text"></div>
@@ -2686,7 +2686,7 @@ function renderChatHistory() {
                 "chat-history-delete";
 
             deleteButton.textContent =
-                "🗑";
+                "ðŸ—‘";
 
             deleteButton.title =
                 "Delete chat";
@@ -3559,7 +3559,7 @@ function setStudyingThinking(show) {
         button.className = "ai-attach-menu-item";
 
         button.innerHTML =
-            '<span class="ai-attach-menu-icon">🎨</span>' +
+            '<span class="ai-attach-menu-icon">ðŸŽ¨</span>' +
             '<span>Generate Image</span>';
 
         button.addEventListener("click", function (event) {
@@ -3796,7 +3796,7 @@ function getStudyanteCommunityStatus(item) {
 
     if (status === "pending") {
         return {
-            text: "? Pending",
+            text: "⏳ Pending",
             className:
                 "community-status-pending"
         };
@@ -3804,7 +3804,7 @@ function getStudyanteCommunityStatus(item) {
 
     if (status === "approved") {
         return {
-            text: "? Approved",
+            text: "✅ Approved",
             className:
                 "community-status-approved"
         };
@@ -3812,14 +3812,14 @@ function getStudyanteCommunityStatus(item) {
 
     if (status === "rejected") {
         return {
-            text: "? Rejected",
+            text: "❌ Rejected",
             className:
                 "community-status-rejected"
         };
     }
 
     return {
-        text: "?? Private",
+        text: "🔒 Private",
         className:
             "community-status-private"
     };
@@ -3957,8 +3957,8 @@ function addStudyanteSubmitControls(
         submitButton.textContent =
             currentStatus ===
             "rejected"
-                ? "? Submit Again"
-                : "?? Submit for Approval";
+                ? "↻ Submit Again"
+                : "🌐 Submit for Approval";
 
 
         submitButton.addEventListener(
@@ -4053,7 +4053,7 @@ async function submitStudyanteCommunityMaterial(
 
 
         alert(
-            "Submitted for approval! ?"
+            "Submitted for approval! ✅"
         );
 
 
@@ -4210,7 +4210,7 @@ async function loadStudyanteCommunity() {
         status.hidden = false;
 
         status.textContent =
-            `?? ${error.message}`;
+            `⚠️ ${error.message}`;
     }
 }
 
@@ -4312,11 +4312,11 @@ function createStudyanteCommunityFileCard(
 
     card.innerHTML = `
         <div class="library-card-icon">
-            ??
+            📄
         </div>
 
         <span class="community-public-badge">
-            ? Approved
+            ✅ Approved
         </span>
 
         <h3>
@@ -4326,7 +4326,7 @@ function createStudyanteCommunityFileCard(
         </h3>
 
         <p class="community-author">
-            ?? ${escapeHTML(
+            👤 ${escapeHTML(
                 item.author ||
                 "STUDYante User"
             )}
@@ -4389,11 +4389,11 @@ function createStudyanteCommunityFlashcardCard(
 
     card.innerHTML = `
         <div class="library-card-icon">
-            ??
+            🧠
         </div>
 
         <span class="community-public-badge">
-            ? Approved
+            ✅ Approved
         </span>
 
         <h3>
@@ -4412,7 +4412,7 @@ function createStudyanteCommunityFlashcardCard(
         </p>
 
         <p class="community-author">
-            ?? ${escapeHTML(
+            👤 ${escapeHTML(
                 set.author ||
                 "STUDYante User"
             )}
@@ -4431,7 +4431,7 @@ function createStudyanteCommunityFlashcardCard(
                 type="button"
                 class="secondary-btn community-copy-set"
             >
-                ?? Save Copy
+                💾 Save Copy
             </button>
 
         </div>
@@ -4519,7 +4519,7 @@ async function viewStudyanteCommunityFile(
 
             `
                 <p class="community-modal-author">
-                    ?? ${escapeHTML(
+                    👤 ${escapeHTML(
                         material.author ||
                         "STUDYante User"
                     )}
@@ -4601,7 +4601,7 @@ function showStudyanteCommunityFlashcards(
 
         `
             <p class="community-modal-author">
-                ?? ${escapeHTML(
+                👤 ${escapeHTML(
                     set.author ||
                     "STUDYante User"
                 )}
@@ -4664,7 +4664,7 @@ async function copyStudyanteCommunityFlashcards(
 
 
         alert(
-            "Saved privately to My Library! ?"
+            "Saved privately to My Library! ✅"
         );
 
 
@@ -4732,7 +4732,7 @@ function showStudyanteCommunityModal(
                         type="button"
                         class="modal-close"
                     >
-                        ?
+                        ✕
                     </button>
 
                 </div>
@@ -4936,7 +4936,7 @@ async function loadStudyantePendingCommunity() {
         status.hidden = false;
 
         status.textContent =
-            `?? ${error.message}`;
+            `⚠️ ${error.message}`;
     }
 }
 
@@ -4976,13 +4976,13 @@ function createStudyanteAdminCommunityCard(
     card.innerHTML = `
         <div class="library-card-icon">
             ${type === "file"
-                ? "??"
-                : "??"
+                ? "📄"
+                : "🧠"
             }
         </div>
 
         <span class="community-status-badge community-status-pending">
-            ? Pending
+            ⏳ Pending
         </span>
 
         <h3>
@@ -4993,7 +4993,7 @@ function createStudyanteAdminCommunityCard(
         </h3>
 
         <p>
-            ?? ${escapeHTML(
+            👤 ${escapeHTML(
                 authorName
             )}
         </p>
@@ -5016,14 +5016,14 @@ function createStudyanteAdminCommunityCard(
                 type="button"
                 class="primary-btn community-approve"
             >
-                ? Approve
+                ✅ Approve
             </button>
 
             <button
                 type="button"
                 class="danger-btn community-reject"
             >
-                ? Reject
+                ❌ Reject
             </button>
 
         </div>
@@ -5127,7 +5127,7 @@ async function reviewStudyanteCommunityMaterial(
 
         alert(
             action === "approve"
-                ? "Material approved and published! ?"
+                ? "Material approved and published! ✅"
                 : "Material rejected."
         );
 

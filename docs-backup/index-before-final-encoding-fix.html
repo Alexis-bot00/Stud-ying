@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>STUDYante</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+<style id="studying-hide-ai-provider">
+#providerSection,
+#providerSettings,
+#aiProvider,
+#aiProviderSection,
+#geminiSettings,
+#ollamaNotice,
+.provider-section,
+.provider-settings,
+.provider-selector,
+.ai-provider,
+.ai-provider-section,
+.ai-options,
+.provider-options {
+  display: none !important;
+}
+</style>
+    <link rel="icon" type="image/png" href="assets/studyante-logo.png">
+</head>
+
+<body>
+
+  <aside class="sidebar">
+
+    <div class="studyante-brand">
+    <img
+        src="assets/studyante-logo.png"
+        alt="STUDYante"
+        class="studyante-logo"
+    >
+</div>
+
+    <nav>
+
+      <a href="#dashboard">&#x1F3E0; Dashboard</a>
+
+      <a href="#upload">&#x1F4E4; Upload Material</a>
+
+      <a href="#library">&#x1F4DA; My Library</a>
+
+      <a href="#ai">&#x1F916; STUDYante AI</a>
+
+    </nav>
+
+  </aside>
+
+
+  <main>
+
+    <header class="topbar">
+
+      <div>
+        <h3>Welcome back &#x1F44B;</h3>
+        <p>What are we studying today?</p>
+      </div>
+
+      <div class="topbar-right">
+
+        <div class="profile">
+
+          <div class="avatar">
+            A
+          </div>
+
+          <div>
+            <strong>Student</strong>
+            <small>BSIT Student</small>
+          </div>
+
+        </div>
+
+        <button
+          id="logoutButton"
+          class="logout-btn"
+          type="button"
+        >
+          Logout
+        </button>
+
+      </div>
+
+    </header>
+
+
+    
+
+
+    <section
+      id="upload"
+      class="panel"
+    >
+
+      <div class="section-title">
+        <h2>&#x1F4BE; Save Flashcards</h2>
+          <p>
+            Save your AI-generated flashcards to My Library.
+          </p>
+        </div>
+
+        <button
+          class="modal-close"
+          data-close="saveAIFlashcardsModal"
+          type="button"
+        >&#x2715;</button>
+
+      </div>
+
+
+      <label class="field-label">
+        Flashcard Set Name
+      </label>
+
+      <input
+        id="aiFlashcardSetName"
+        class="full-input"
+        placeholder="Example: Chapter 1 Flashcards"
+      >
+
+
+      <label class="field-label top-space">
+        Save to Folder
+      </label>
+
+      <select
+        id="aiFlashcardFolder"
+        class="full-input"
+      >
+        <option value="">
+          Uncategorized
+        </option>
+      </select>
+
+
+      <div class="modal-actions">
+
+        <button
+          class="secondary-btn"
+          data-close="saveAIFlashcardsModal"
+          type="button"
+        >
+          Cancel
+        </button>
+
+        <button
+          id="confirmSaveAIFlashcards"
+          class="primary-btn"
+          type="button"
+        >
+          Save to My Library
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<script src="auth.js"></script> 
+  <script src="script.js"></script>
+
+    <script src="brand.js"></script>
+
+<script id="studyante-brand-fix">
+document.addEventListener("DOMContentLoaded", function () {
+
+    const selectors = [
+        ".brand",
+        ".logo",
+        ".brand-name",
+        ".sidebar-brand",
+        ".sidebar-logo",
+        ".navbar-brand",
+        ".app-brand",
+        ".login-brand",
+        ".auth-brand"
+    ];
+
+    function cleanText(element) {
+        return (element.textContent || "")
+            .replace(/\s+/g, "")
+            .toLowerCase();
+    }
+
+    let found = false;
+
+    selectors.forEach(function (selector) {
+
+        document
+            .querySelectorAll(selector)
+            .forEach(function (element) {
+
+                if (found) {
+                    return;
+                }
+
+                const text =
+                    cleanText(element);
+
+                if (
+                    text === "studying"
+                ) {
+
+                    element.innerHTML =
+                        '<img src="assets/studyante-logo.png" ' +
+                        'alt="STUDYante" ' +
+                        'class="studyante-logo">';
+
+                    element.classList.add(
+                        "studyante-brand"
+                    );
+
+                    found = true;
+                }
+            });
+    });
+
+
+    if (!found) {
+
+        const elements =
+            document.querySelectorAll(
+                "h1,h2,a,div"
+            );
+
+        elements.forEach(
+            function (element) {
+
+                if (found) {
+                    return;
+                }
+
+                const text =
+                    cleanText(element);
+
+                const rect =
+                    element
+                        .getBoundingClientRect();
+
+                if (
+                    text === "studying" &&
+                    rect.top < 180
+                ) {
+
+                    element.innerHTML =
+                        '<img src="assets/studyante-logo.png" ' +
+                        'alt="STUDYante" ' +
+                        'class="studyante-logo">';
+
+                    element.classList.add(
+                        "studyante-brand"
+                    );
+
+                    found = true;
+                }
+            }
+        );
+    }
+
+});
+</script>
+
+</body>
+
+</html>
+
+
+

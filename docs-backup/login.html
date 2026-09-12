@@ -16,11 +16,16 @@
     href="login.css"
   >
 
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/studyante-logo.png"
+  >
+
   <script
     src="login.js"
     defer
   ></script>
-    <link rel="icon" type="image/png" href="assets/studyante-logo.png">
 </head>
 
 <body>
@@ -30,9 +35,11 @@
     <section class="auth-left">
 
       <div class="logo">
-        <span class="logo-red">
-          Study
-        </span><span class="logo-blue">ing</span>
+        <img
+          src="assets/studyante-logo.png"
+          alt="STUDYante"
+          class="studyante-login-logo"
+        >
       </div>
 
       <div class="hero-content">
@@ -55,71 +62,22 @@
         <div class="feature-list">
 
           <div class="feature">
-
-            <div class="feature-icon red">
-              📚
-            </div>
+            <div class="feature-icon red">&#129504;</div>
 
             <div>
-              <strong>
-                Your own library
-              </strong>
-
-              <span>
-                Your files and study materials
-                stay inside your account.
-              </span>
-            </div>
-
-          </div>
-
-
-          <div class="feature">
-
-            <div class="feature-icon blue">
-              ✦
-            </div>
-
-            <div>
-              <strong>
-                Studying AI
-              </strong>
-
-              <span>
-                Ask questions based on your
-                uploaded lessons.
-              </span>
-            </div>
-
-          </div>
-
-
-          <div class="feature">
-
-            <div class="feature-icon red">
-              🧠
-            </div>
-
-            <div>
-              <strong>
-                Practice your lessons
-              </strong>
-
+              <strong>Practice your lessons</strong>
               <span>
                 Create flashcards, tests and
                 study games.
               </span>
             </div>
-
           </div>
 
         </div>
 
       </div>
 
-      <div class="copyright">
-        © 2026 STUDYante
-      </div>
+      <div class="copyright">&copy; 2026 STUDYante</div>
 
     </section>
 
@@ -129,9 +87,11 @@
       <div class="auth-card">
 
         <div class="mobile-logo">
-          <span class="logo-red">
-            Study
-          </span><span class="logo-blue">ing</span>
+          <img
+            src="assets/studyante-logo.png"
+            alt="STUDYante"
+            class="studyante-login-logo"
+          >
         </div>
 
 
@@ -141,16 +101,12 @@
         >
 
           <div class="auth-header">
-
-            <h2>
-              Welcome back
-            </h2>
+            <h2>Welcome back</h2>
 
             <p>
               Login to continue to your
-              Studying account.
+              STUDYante account.
             </p>
-
           </div>
 
 
@@ -160,7 +116,6 @@
           >
 
             <div class="form-group">
-
               <label for="loginEmail">
                 Email
               </label>
@@ -172,18 +127,15 @@
                 autocomplete="email"
                 required
               >
-
             </div>
 
 
             <div class="form-group">
-
               <label for="loginPassword">
                 Password
               </label>
 
               <div class="password-wrapper">
-
                 <input
                   type="password"
                   id="loginPassword"
@@ -199,9 +151,7 @@
                 >
                   Show
                 </button>
-
               </div>
-
             </div>
 
 
@@ -223,7 +173,6 @@
 
 
           <div class="auth-switch">
-
             <span>
               Don't have an account?
             </span>
@@ -234,7 +183,6 @@
             >
               Create account
             </button>
-
           </div>
 
         </section>
@@ -246,16 +194,12 @@
         >
 
           <div class="auth-header">
-
-            <h2>
-              Create your account
-            </h2>
+            <h2>Create your account</h2>
 
             <p>
               Create your own personal
-              Studying workspace.
+              STUDYante workspace.
             </p>
-
           </div>
 
 
@@ -265,7 +209,6 @@
           >
 
             <div class="form-group">
-
               <label for="registerName">
                 Full Name
               </label>
@@ -277,12 +220,10 @@
                 autocomplete="name"
                 required
               >
-
             </div>
 
 
             <div class="form-group">
-
               <label for="registerEmail">
                 Email
               </label>
@@ -294,18 +235,15 @@
                 autocomplete="email"
                 required
               >
-
             </div>
 
 
             <div class="form-group">
-
               <label for="registerPassword">
                 Password
               </label>
 
               <div class="password-wrapper">
-
                 <input
                   type="password"
                   id="registerPassword"
@@ -322,20 +260,16 @@
                 >
                   Show
                 </button>
-
               </div>
-
             </div>
 
 
             <div class="form-group">
-
               <label for="confirmPassword">
                 Confirm Password
               </label>
 
               <div class="password-wrapper">
-
                 <input
                   type="password"
                   id="confirmPassword"
@@ -352,9 +286,7 @@
                 >
                   Show
                 </button>
-
               </div>
-
             </div>
 
 
@@ -376,7 +308,6 @@
 
 
           <div class="auth-switch">
-
             <span>
               Already have an account?
             </span>
@@ -387,7 +318,6 @@
             >
               Login
             </button>
-
           </div>
 
         </section>
@@ -398,110 +328,6 @@
 
   </main>
 
-    <script src="brand.js"></script>
-
-<script id="studyante-brand-fix">
-document.addEventListener("DOMContentLoaded", function () {
-
-    const selectors = [
-        ".brand",
-        ".logo",
-        ".brand-name",
-        ".sidebar-brand",
-        ".sidebar-logo",
-        ".navbar-brand",
-        ".app-brand",
-        ".login-brand",
-        ".auth-brand"
-    ];
-
-    function cleanText(element) {
-        return (element.textContent || "")
-            .replace(/\s+/g, "")
-            .toLowerCase();
-    }
-
-    let found = false;
-
-    selectors.forEach(function (selector) {
-
-        document
-            .querySelectorAll(selector)
-            .forEach(function (element) {
-
-                if (found) {
-                    return;
-                }
-
-                const text =
-                    cleanText(element);
-
-                if (
-                    text === "studying"
-                ) {
-
-                    element.innerHTML =
-                        '<img src="assets/studyante-logo.png" ' +
-                        'alt="STUDYante" ' +
-                        'class="studyante-logo">';
-
-                    element.classList.add(
-                        "studyante-brand"
-                    );
-
-                    found = true;
-                }
-            });
-    });
-
-
-    if (!found) {
-
-        const elements =
-            document.querySelectorAll(
-                "h1,h2,a,div"
-            );
-
-        elements.forEach(
-            function (element) {
-
-                if (found) {
-                    return;
-                }
-
-                const text =
-                    cleanText(element);
-
-                const rect =
-                    element
-                        .getBoundingClientRect();
-
-                if (
-                    text === "studying" &&
-                    rect.top < 180
-                ) {
-
-                    element.innerHTML =
-                        '<img src="assets/studyante-logo.png" ' +
-                        'alt="STUDYante" ' +
-                        'class="studyante-logo">';
-
-                    element.classList.add(
-                        "studyante-brand"
-                    );
-
-                    found = true;
-                }
-            }
-        );
-    }
-
-});
-</script>
-
 </body>
 
 </html>
-
-
-
