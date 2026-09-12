@@ -1496,4 +1496,39 @@
 
   /* STUDYANTE_TOP_PROFILE_MENU_END */
 
+  /* STUDYANTE_TOP_PROFILE_MENU_INIT_FIX_START */
+
+  function initializeStudyanteTopProfileMenu() {
+
+    installStudyanteTopProfileMenu();
+
+    if (
+      studyanteCurrentUser &&
+      typeof studyanteUpdateTopProfileMenu ===
+      "function"
+    ) {
+
+      studyanteUpdateTopProfileMenu(
+        studyanteCurrentUser
+      );
+    }
+  }
+
+
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeStudyanteTopProfileMenu,
+      { once: true }
+    );
+
+  } else {
+
+    initializeStudyanteTopProfileMenu();
+  }
+
+  /* STUDYANTE_TOP_PROFILE_MENU_INIT_FIX_END */
+
+
 })();
