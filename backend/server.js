@@ -6271,6 +6271,11 @@ app.post(
     "/api/auth/forgot-password",
     async (req, res) => {
         try {
+
+            console.log("[FORGOT DEBUG] Request received", {
+                origin: req.headers.origin || "none",
+                email: String(req.body?.email || "").trim().toLowerCase()
+            });
             const email =
                 String(req.body?.email || "")
                     .trim()
