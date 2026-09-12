@@ -238,10 +238,8 @@
                 "studyante-reset-message " +
                 (success ? "success" : "error");
         }
-
         async function sendResetCode() {
-            const email =
-                emailInput.value.trim().toLowerCase();
+            const email = emailInput.value.trim().toLowerCase();
 
             if (!email) {
                 setMessage(
@@ -262,41 +260,74 @@
             );
 
             try {
-const response = await fetch(
-                    API + "/api/auth/forgot-password",
-                    {
-method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            email
+                const data = await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+
+                    xhr.open(
+                        "POST",
+                        API + "/api/auth/forgot-password",
+                        true
+                    );
+
+                    xhr.setRequestHeader(
+                        "Content-Type",
+                        "application/json"
+                    );
+
+                    xhr.timeout = 15000;
+
+                    xhr.onload = function () {
+                        let result;
+
+                        try {
+                            result = JSON.parse(xhr.responseText);
+                        } catch {
+                            reject(
+                                new Error(
+                                    "Server returned an invalid response."
+                                )
+                            );
+                            return;
+                        }
+
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            resolve(result);
+                        } else {
+                            reject(
+                                new Error(
+                                    result.message ||
+                                    "Could not send reset code."
+                                )
+                            );
+                        }
+                    };
+
+                    xhr.onerror = function () {
+                        reject(
+                            new Error(
+                                "Network error. Please try again."
+                            )
+                        );
+                    };
+
+                    xhr.ontimeout = function () {
+                        reject(
+                            new Error(
+                                "Request timed out. Please try again."
+                            )
+                        );
+                    };
+
+                    xhr.send(
+                        JSON.stringify({
+                            email: email
                         })
-                    }
-                );
-const text = await response.text();
-
-                let data;
-
-                try {
-                    data = JSON.parse(text);
-                } catch {
-                    throw new Error(
-                        "Server returned an invalid response."
                     );
-                }
-
-                if (!response.ok) {
-                    throw new Error(
-                        data.message ||
-                        "Could not send reset code."
-                    );
-                }
+                });
 
                 setMessage(
                     forgotMessage,
-                    data.message ||
-                    "Reset code sent.",
+                    data.message || "Reset code sent.",
                     true
                 );
 
@@ -315,12 +346,12 @@ const text = await response.text();
                     "Could not send reset code.",
                     false
                 );
+
             } finally {
                 sendButton.disabled = false;
                 sendButton.textContent = "Send Reset Code";
             }
         }
-
         forgot.addEventListener("click", () => {
             const loginEmail =
                 document.getElementById("loginEmail");
