@@ -242,7 +242,13 @@
 
     if (!user) {
       return;
+
+    if (
+      typeof studyanteUpdateTopProfileMenu === "function"
+    ) {
+      studyanteUpdateTopProfileMenu(user);
     }
+}
 
     studyanteCurrentUser =
       user;
