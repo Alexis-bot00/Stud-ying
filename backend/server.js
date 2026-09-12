@@ -9,6 +9,8 @@ import { OfficeParser } from "officeparser";
 import { GoogleGenAI } from "@google/genai";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import crypto from "crypto";
 
 dotenv.config();
 
@@ -6223,6 +6225,371 @@ app.get(
 
 /* STUDYANTE_SUPER_ADMIN_END */
 
+
+
+/* STUDYANTE_FORGOT_PASSWORD_START */
+
+const studyantePasswordResetCodes = new Map();
+
+function studyanteHashResetCode(code) {
+    return crypto
+        .createHash("sha256")
+        .update(String(code))
+        .digest("hex");
+}
+
+function studyanteGetMailTransporter() {
+    const host =
+        process.env.SMTP_HOST ||
+        "smtp.gmail.com";
+
+    const port =
+        Number(process.env.SMTP_PORT || 465);
+
+    const user =
+        process.env.SMTP_USER;
+
+    const pass =
+        process.env.SMTP_PASS;
+
+    if (!user || !pass) {
+        return null;
+    }
+
+    return nodemailer.createTransport({
+        host,
+        port,
+        secure: port === 465,
+        auth: {
+            user,
+            pass
+        }
+    });
+}
+
+app.post(
+    "/api/auth/forgot-password",
+    async (req, res) => {
+        try {
+            const email =
+                String(req.body?.email || "")
+                    .trim()
+                    .toLowerCase();
+
+            if (!email) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Email is required."
+                });
+            }
+
+            const users = readUsers();
+
+            const user = users.find(
+                item =>
+                    String(item.email || "")
+                        .trim()
+                        .toLowerCase() === email
+            );
+
+            const genericMessage =
+                "If an account exists with that email, a reset code has been sent.";
+
+            if (!user) {
+                return res.json({
+                    success: true,
+                    message: genericMessage
+                });
+            }
+
+            const existing =
+                studyantePasswordResetCodes.get(email);
+
+            if (
+                existing &&
+                existing.lastSentAt &&
+                Date.now() - existing.lastSentAt < 60000
+            ) {
+                return res.status(429).json({
+                    success: false,
+                    message:
+                        "Please wait 1 minute before requesting another code."
+                });
+            }
+
+            const transporter =
+                studyanteGetMailTransporter();
+
+            if (!transporter) {
+                console.error(
+                    "SMTP_USER or SMTP_PASS is missing."
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message:
+                        "Email service is not configured."
+                });
+            }
+
+            const code =
+                String(
+                    crypto.randomInt(
+                        100000,
+                        1000000
+                    )
+                );
+
+            const expiresAt =
+                Date.now() +
+                10 * 60 * 1000;
+
+            studyantePasswordResetCodes.set(
+                email,
+                {
+                    codeHash:
+                        studyanteHashResetCode(code),
+
+                    expiresAt,
+
+                    attempts: 0,
+
+                    lastSentAt:
+                        Date.now()
+                }
+            );
+
+            const from =
+                process.env.SMTP_FROM ||
+                process.env.SMTP_USER;
+
+            await transporter.sendMail({
+                from,
+                to: email,
+
+                subject:
+                    "STUDYante Password Reset Code",
+
+                text:
+                    "Your STUDYante password reset code is: " +
+                    code +
+                    "\n\nThis code expires in 10 minutes.",
+
+                html: `
+                    <div style="
+                        font-family:Arial,sans-serif;
+                        max-width:500px;
+                        margin:auto;
+                        padding:24px;
+                    ">
+                        <h2>STUDYante Password Reset</h2>
+
+                        <p>
+                            Use this code to reset your password:
+                        </p>
+
+                        <div style="
+                            font-size:32px;
+                            font-weight:bold;
+                            letter-spacing:8px;
+                            margin:24px 0;
+                        ">
+                            ${code}
+                        </div>
+
+                        <p>
+                            This code expires in 10 minutes.
+                        </p>
+
+                        <p>
+                            If you did not request this,
+                            you can ignore this email.
+                        </p>
+                    </div>
+                `
+            });
+
+            return res.json({
+                success: true,
+                message: genericMessage
+            });
+
+        } catch (error) {
+            console.error(
+                "Forgot password error:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message:
+                    "Could not send reset code."
+            });
+        }
+    }
+);
+
+app.post(
+    "/api/auth/reset-password",
+    async (req, res) => {
+        try {
+            const email =
+                String(req.body?.email || "")
+                    .trim()
+                    .toLowerCase();
+
+            const code =
+                String(req.body?.code || "")
+                    .trim();
+
+            const newPassword =
+                String(
+                    req.body?.newPassword || ""
+                );
+
+            if (!email) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Email is required."
+                });
+            }
+
+            if (!/^\d{6}$/.test(code)) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Enter a valid 6-digit code."
+                });
+            }
+
+            if (newPassword.length < 6) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Password must be at least 6 characters."
+                });
+            }
+
+            const reset =
+                studyantePasswordResetCodes.get(
+                    email
+                );
+
+            if (!reset) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "No active password reset request was found."
+                });
+            }
+
+            if (
+                !reset.expiresAt ||
+                Date.now() > reset.expiresAt
+            ) {
+                studyantePasswordResetCodes.delete(
+                    email
+                );
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "The reset code has expired."
+                });
+            }
+
+            if (reset.attempts >= 5) {
+                studyantePasswordResetCodes.delete(
+                    email
+                );
+
+                return res.status(429).json({
+                    success: false,
+                    message:
+                        "Too many incorrect attempts. Request a new code."
+                });
+            }
+
+            const receivedHash =
+                studyanteHashResetCode(code);
+
+            if (
+                receivedHash !==
+                reset.codeHash
+            ) {
+                reset.attempts += 1;
+
+                studyantePasswordResetCodes.set(
+                    email,
+                    reset
+                );
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Incorrect reset code."
+                });
+            }
+
+            const users = readUsers();
+
+            const index =
+                users.findIndex(
+                    item =>
+                        String(item.email || "")
+                            .trim()
+                            .toLowerCase() === email
+                );
+
+            if (index === -1) {
+                studyantePasswordResetCodes.delete(
+                    email
+                );
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Account could not be found."
+                });
+            }
+
+            users[index].password =
+                await bcrypt.hash(
+                    newPassword,
+                    10
+                );
+
+            users[index].passwordChangedAt =
+                new Date().toISOString();
+
+            writeUsers(users);
+
+            studyantePasswordResetCodes.delete(
+                email
+            );
+
+            return res.json({
+                success: true,
+                message:
+                    "Password changed successfully."
+            });
+
+        } catch (error) {
+            console.error(
+                "Reset password error:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message:
+                    "Could not reset password."
+            });
+        }
+    }
+);
+
+/* STUDYANTE_FORGOT_PASSWORD_END */
 
 app.listen(
   PORT,
