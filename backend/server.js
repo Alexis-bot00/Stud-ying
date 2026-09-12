@@ -5209,6 +5209,1021 @@ app.patch(
 
 /* STUDYANTE_ACCOUNT_SETTINGS_BACKEND_END */
 
+
+/* STUDYANTE_SUPER_ADMIN_START */
+
+/* ==========================================================
+   STUDYANTE SUPER ADMIN
+========================================================== */
+
+const studyanteAdminLogFile =
+    path.join(libraryFolder, "admin-logs.json");
+
+const studyanteAnnouncementFile =
+    path.join(libraryFolder, "announcements.json");
+
+
+function studyanteReadJSON(file, fallback = []) {
+    try {
+        if (!fs.existsSync(file)) {
+            return fallback;
+        }
+
+        const data =
+            JSON.parse(
+                fs.readFileSync(file, "utf8")
+            );
+
+        return data;
+    } catch (error) {
+        console.error(
+            "Admin JSON read error:",
+            error
+        );
+
+        return fallback;
+    }
+}
+
+
+function studyanteWriteJSON(file, data) {
+    fs.writeFileSync(
+        file,
+        JSON.stringify(data, null, 2),
+        "utf8"
+    );
+}
+
+
+function studyantePublicUser(user) {
+    return {
+        id: user.id,
+        name: user.name || "",
+        email: user.email || "",
+        role:
+            user.role === "admin"
+                ? "admin"
+                : "student",
+        suspended:
+            user.suspended === true,
+        createdAt:
+            user.createdAt || null,
+        updatedAt:
+            user.updatedAt || null,
+        profilePicture:
+            user.profilePicture || null
+    };
+}
+
+
+function studyanteAdminLog(
+    req,
+    action,
+    details = {}
+) {
+    try {
+        const logs =
+            studyanteReadJSON(
+                studyanteAdminLogFile,
+                []
+            );
+
+        const users = readUsers();
+
+        const admin =
+            users.find(
+                user =>
+                    user.id === req.user.id
+            );
+
+        logs.unshift({
+            id:
+                "adminlog_" +
+                Date.now() +
+                "_" +
+                Math.random()
+                    .toString(36)
+                    .slice(2, 8),
+
+            adminId:
+                req.user.id,
+
+            adminName:
+                admin?.name || "Administrator",
+
+            adminEmail:
+                admin?.email || "",
+
+            action,
+
+            details,
+
+            createdAt:
+                new Date().toISOString()
+        });
+
+        studyanteWriteJSON(
+            studyanteAdminLogFile,
+            logs.slice(0, 1000)
+        );
+
+    } catch (error) {
+        console.error(
+            "Admin log error:",
+            error
+        );
+    }
+}
+
+
+/* ----------------------------------------------------------
+   ADMIN STATUS
+---------------------------------------------------------- */
+
+app.get(
+    "/api/admin/me",
+    requireAuth,
+    (req, res) => {
+
+        const users = readUsers();
+
+        const user =
+            users.find(
+                account =>
+                    account.id === req.user.id
+            );
+
+        if (!user) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message:
+                        "User not found."
+                });
+        }
+
+        return res.json({
+            success: true,
+
+            isAdmin:
+                isStudyanteAdmin(
+                    req.user.id
+                ),
+
+            user:
+                studyantePublicUser(user)
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   ADMIN DASHBOARD STATS
+---------------------------------------------------------- */
+
+app.get(
+    "/api/admin/dashboard",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const users = readUsers();
+        const library = readLibrary();
+
+        const files =
+            Array.isArray(library.files)
+                ? library.files
+                : [];
+
+        const flashcards =
+            Array.isArray(
+                library.flashcardSets
+            )
+                ? library.flashcardSets
+                : [];
+
+        const studyMaterials =
+            Array.isArray(
+                library.studyMaterials
+            )
+                ? library.studyMaterials
+                : [];
+
+        const pendingFiles =
+            files.filter(
+                item =>
+                    item.communityStatus ===
+                    "pending"
+            );
+
+        const pendingFlashcards =
+            flashcards.filter(
+                item =>
+                    item.communityStatus ===
+                    "pending"
+            );
+
+        const announcements =
+            studyanteReadJSON(
+                studyanteAnnouncementFile,
+                []
+            );
+
+        const logs =
+            studyanteReadJSON(
+                studyanteAdminLogFile,
+                []
+            );
+
+        return res.json({
+            success: true,
+
+            stats: {
+                users:
+                    users.length,
+
+                admins:
+                    users.filter(
+                        user =>
+                            isStudyanteAdmin(
+                                user.id
+                            )
+                    ).length,
+
+                suspended:
+                    users.filter(
+                        user =>
+                            user.suspended === true
+                    ).length,
+
+                files:
+                    files.length,
+
+                flashcards:
+                    flashcards.length,
+
+                studyMaterials:
+                    studyMaterials.length,
+
+                pending:
+                    pendingFiles.length +
+                    pendingFlashcards.length,
+
+                announcements:
+                    announcements.length
+            },
+
+            recentActivity:
+                logs.slice(0, 20)
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   GET ALL USERS
+---------------------------------------------------------- */
+
+app.get(
+    "/api/admin/users",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const search =
+            String(
+                req.query.search || ""
+            )
+                .trim()
+                .toLowerCase();
+
+        let users =
+            readUsers()
+                .map(studyantePublicUser);
+
+        if (search) {
+            users =
+                users.filter(
+                    user =>
+                        user.name
+                            .toLowerCase()
+                            .includes(search) ||
+                        user.email
+                            .toLowerCase()
+                            .includes(search)
+                );
+        }
+
+        users.sort(
+            (a, b) =>
+                String(a.name)
+                    .localeCompare(
+                        String(b.name)
+                    )
+        );
+
+        return res.json({
+            success: true,
+            users
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   CHANGE USER ROLE
+---------------------------------------------------------- */
+
+app.patch(
+    "/api/admin/users/:id/role",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const targetId =
+            req.params.id;
+
+        const role =
+            String(
+                req.body?.role || ""
+            ).toLowerCase();
+
+        if (
+            role !== "admin" &&
+            role !== "student"
+        ) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message:
+                        "Role must be admin or student."
+                });
+        }
+
+        if (
+            targetId === req.user.id &&
+            role !== "admin"
+        ) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message:
+                        "You cannot remove your own admin access."
+                });
+        }
+
+        const users = readUsers();
+
+        const index =
+            users.findIndex(
+                user =>
+                    user.id === targetId
+            );
+
+        if (index === -1) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message:
+                        "User not found."
+                });
+        }
+
+        users[index].role = role;
+        users[index].updatedAt =
+            new Date().toISOString();
+
+        writeUsers(users);
+
+        studyanteAdminLog(
+            req,
+            "CHANGE_USER_ROLE",
+            {
+                targetUserId:
+                    targetId,
+                role
+            }
+        );
+
+        return res.json({
+            success: true,
+            message:
+                `User role changed to ${role}.`,
+            user:
+                studyantePublicUser(
+                    users[index]
+                )
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   SUSPEND / UNSUSPEND USER
+---------------------------------------------------------- */
+
+app.patch(
+    "/api/admin/users/:id/suspension",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const targetId =
+            req.params.id;
+
+        if (targetId === req.user.id) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message:
+                        "You cannot suspend yourself."
+                });
+        }
+
+        const users = readUsers();
+
+        const index =
+            users.findIndex(
+                user =>
+                    user.id === targetId
+            );
+
+        if (index === -1) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message:
+                        "User not found."
+                });
+        }
+
+        const suspended =
+            req.body?.suspended === true;
+
+        users[index].suspended =
+            suspended;
+
+        users[index].updatedAt =
+            new Date().toISOString();
+
+        writeUsers(users);
+
+        studyanteAdminLog(
+            req,
+            suspended
+                ? "SUSPEND_USER"
+                : "UNSUSPEND_USER",
+            {
+                targetUserId:
+                    targetId
+            }
+        );
+
+        return res.json({
+            success: true,
+
+            message:
+                suspended
+                    ? "User suspended."
+                    : "User unsuspended.",
+
+            user:
+                studyantePublicUser(
+                    users[index]
+                )
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   DELETE USER
+---------------------------------------------------------- */
+
+app.delete(
+    "/api/admin/users/:id",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const targetId =
+            req.params.id;
+
+        if (targetId === req.user.id) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message:
+                        "You cannot delete your own administrator account."
+                });
+        }
+
+        const users = readUsers();
+
+        const index =
+            users.findIndex(
+                user =>
+                    user.id === targetId
+            );
+
+        if (index === -1) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message:
+                        "User not found."
+                });
+        }
+
+        const removedUser =
+            users[index];
+
+        users.splice(index, 1);
+
+        writeUsers(users);
+
+        studyanteAdminLog(
+            req,
+            "DELETE_USER",
+            {
+                targetUserId:
+                    targetId,
+
+                email:
+                    removedUser.email || ""
+            }
+        );
+
+        return res.json({
+            success: true,
+            message:
+                "User account deleted."
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   GET ALL MATERIALS
+---------------------------------------------------------- */
+
+app.get(
+    "/api/admin/materials",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const library = readLibrary();
+        const users = readUsers();
+
+        const owner = userId => {
+
+            const user =
+                users.find(
+                    account =>
+                        account.id === userId
+                );
+
+            return user
+                ? {
+                    id:
+                        user.id,
+                    name:
+                        user.name,
+                    email:
+                        user.email
+                }
+                : null;
+        };
+
+        const materials = [];
+
+        (
+            Array.isArray(library.files)
+                ? library.files
+                : []
+        ).forEach(item => {
+
+            materials.push({
+                ...item,
+                adminType: "file",
+                owner:
+                    owner(
+                        item.userId ||
+                        item.ownerId
+                    )
+            });
+        });
+
+        (
+            Array.isArray(
+                library.flashcardSets
+            )
+                ? library.flashcardSets
+                : []
+        ).forEach(item => {
+
+            materials.push({
+                ...item,
+                adminType:
+                    "flashcards",
+                owner:
+                    owner(
+                        item.userId ||
+                        item.ownerId
+                    )
+            });
+        });
+
+        (
+            Array.isArray(
+                library.studyMaterials
+            )
+                ? library.studyMaterials
+                : []
+        ).forEach(item => {
+
+            materials.push({
+                ...item,
+                adminType:
+                    "study-material",
+                owner:
+                    owner(
+                        item.userId ||
+                        item.ownerId
+                    )
+            });
+        });
+
+        return res.json({
+            success: true,
+            materials
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   DELETE ANY MATERIAL
+---------------------------------------------------------- */
+
+app.delete(
+    "/api/admin/materials/:type/:id",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const library = readLibrary();
+
+        const type =
+            req.params.type;
+
+        let collection = null;
+
+        if (type === "file") {
+            collection =
+                library.files;
+        }
+
+        if (type === "flashcards") {
+            collection =
+                library.flashcardSets;
+        }
+
+        if (
+            type === "study-material"
+        ) {
+            collection =
+                library.studyMaterials;
+        }
+
+        if (!Array.isArray(collection)) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message:
+                        "Invalid material type."
+                });
+        }
+
+        const index =
+            collection.findIndex(
+                item =>
+                    String(item.id) ===
+                    String(req.params.id)
+            );
+
+        if (index === -1) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message:
+                        "Material not found."
+                });
+        }
+
+        const removed =
+            collection[index];
+
+        collection.splice(index, 1);
+
+        writeLibrary(library);
+
+        studyanteAdminLog(
+            req,
+            "DELETE_MATERIAL",
+            {
+                type,
+                materialId:
+                    req.params.id,
+                title:
+                    removed.title ||
+                    removed.name ||
+                    ""
+            }
+        );
+
+        return res.json({
+            success: true,
+            message:
+                "Material deleted."
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   REMOVE MATERIAL FROM COMMUNITY
+---------------------------------------------------------- */
+
+app.patch(
+    "/api/admin/materials/:type/:id/unpublish",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const library = readLibrary();
+
+        const collection =
+            req.params.type ===
+            "flashcards"
+                ? library.flashcardSets
+                : req.params.type ===
+                  "file"
+                    ? library.files
+                    : null;
+
+        if (!Array.isArray(collection)) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message:
+                        "Invalid community material type."
+                });
+        }
+
+        const item =
+            collection.find(
+                material =>
+                    String(material.id) ===
+                    String(req.params.id)
+            );
+
+        if (!item) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message:
+                        "Material not found."
+                });
+        }
+
+        item.communityStatus =
+            "private";
+
+        item.approvedAt = null;
+        item.approvedBy = null;
+
+        writeLibrary(library);
+
+        studyanteAdminLog(
+            req,
+            "UNPUBLISH_COMMUNITY_MATERIAL",
+            {
+                type:
+                    req.params.type,
+                materialId:
+                    req.params.id
+            }
+        );
+
+        return res.json({
+            success: true,
+            message:
+                "Material removed from Community."
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   ANNOUNCEMENTS
+---------------------------------------------------------- */
+
+app.get(
+    "/api/announcements",
+    requireAuth,
+    (req, res) => {
+
+        const announcements =
+            studyanteReadJSON(
+                studyanteAnnouncementFile,
+                []
+            );
+
+        return res.json({
+            success: true,
+            announcements
+        });
+    }
+);
+
+
+app.post(
+    "/api/admin/announcements",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const title =
+            String(
+                req.body?.title || ""
+            ).trim();
+
+        const message =
+            String(
+                req.body?.message || ""
+            ).trim();
+
+        if (!title || !message) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message:
+                        "Title and message are required."
+                });
+        }
+
+        const announcements =
+            studyanteReadJSON(
+                studyanteAnnouncementFile,
+                []
+            );
+
+        const announcement = {
+            id:
+                "announcement_" +
+                Date.now(),
+
+            title,
+            message,
+
+            createdBy:
+                req.user.id,
+
+            createdAt:
+                new Date().toISOString()
+        };
+
+        announcements.unshift(
+            announcement
+        );
+
+        studyanteWriteJSON(
+            studyanteAnnouncementFile,
+            announcements
+        );
+
+        studyanteAdminLog(
+            req,
+            "CREATE_ANNOUNCEMENT",
+            {
+                announcementId:
+                    announcement.id,
+                title
+            }
+        );
+
+        return res.json({
+            success: true,
+            message:
+                "Announcement published.",
+            announcement
+        });
+    }
+);
+
+
+app.delete(
+    "/api/admin/announcements/:id",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const announcements =
+            studyanteReadJSON(
+                studyanteAnnouncementFile,
+                []
+            );
+
+        const index =
+            announcements.findIndex(
+                item =>
+                    item.id ===
+                    req.params.id
+            );
+
+        if (index === -1) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message:
+                        "Announcement not found."
+                });
+        }
+
+        const removed =
+            announcements[index];
+
+        announcements.splice(
+            index,
+            1
+        );
+
+        studyanteWriteJSON(
+            studyanteAnnouncementFile,
+            announcements
+        );
+
+        studyanteAdminLog(
+            req,
+            "DELETE_ANNOUNCEMENT",
+            {
+                announcementId:
+                    removed.id
+            }
+        );
+
+        return res.json({
+            success: true,
+            message:
+                "Announcement deleted."
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   ADMIN ACTIVITY LOGS
+---------------------------------------------------------- */
+
+app.get(
+    "/api/admin/logs",
+    requireAuth,
+    requireStudyanteAdmin,
+    (req, res) => {
+
+        const logs =
+            studyanteReadJSON(
+                studyanteAdminLogFile,
+                []
+            );
+
+        return res.json({
+            success: true,
+            logs
+        });
+    }
+);
+
+
+/* STUDYANTE_SUPER_ADMIN_END */
+
+
 app.listen(
   PORT,
   () => {
