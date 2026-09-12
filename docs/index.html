@@ -2321,6 +2321,74 @@ main,
 
 </style>
 
+
+<!-- STUDYANTE_REAL_SEARCH_POSITION_START -->
+<style>
+
+/* REAL STUDYANTE SEARCH BAR */
+
+@media (max-width: 700px) {
+
+    #studyanteGlobalSearch,
+    .studyante-global-search {
+        position: fixed !important;
+
+        top: 8px !important;
+
+        /* MOVE LEFT */
+        left: 92px !important;
+
+        right: auto !important;
+
+        width: 175px !important;
+        max-width: 175px !important;
+
+        margin: 0 !important;
+        transform: none !important;
+
+        z-index: 20000 !important;
+    }
+
+    .studyante-global-search-box {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+}
+
+
+/* SMALLER PHONES */
+
+@media (max-width: 430px) {
+
+    #studyanteGlobalSearch,
+    .studyante-global-search {
+        left: 82px !important;
+
+        width: 170px !important;
+        max-width: 170px !important;
+    }
+
+}
+
+
+/* WHEN SIDEBAR IS CLOSED */
+
+@media (max-width: 700px) {
+
+    body.sidebar-closed #studyanteGlobalSearch,
+    body.sidebar-closed .studyante-global-search {
+        left: 48px !important;
+
+        width: 210px !important;
+        max-width: 210px !important;
+    }
+
+}
+
+</style>
+<!-- STUDYANTE_REAL_SEARCH_POSITION_END -->
+
 </head>
 
 <body>
