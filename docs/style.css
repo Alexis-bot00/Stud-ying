@@ -3677,3 +3677,189 @@ body.studyante-dark .studyante-settings-label input {
 }
 
 /* STUDYANTE_ACCOUNT_SETTINGS_STYLE_END */
+
+/* STUDYANTE_TOP_PROFILE_MENU_STYLE_START */
+
+.studyante-top-profile-wrap {
+    position: fixed;
+    top: 14px;
+    right: 22px;
+    z-index: 4000;
+}
+
+.studyante-top-profile-button {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 2px solid rgba(255, 255, 255, .7);
+    border-radius: 50%;
+    overflow: hidden;
+    background: #163a70;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, .18);
+}
+
+.studyante-top-avatar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+}
+
+.studyante-top-avatar img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.studyante-profile-dropdown {
+    position: absolute;
+    top: 54px;
+    right: 0;
+    width: 310px;
+    overflow: hidden;
+    border: 1px solid #d7deea;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 20px 55px rgba(15, 23, 42, .24);
+}
+
+.studyante-profile-dropdown[hidden] {
+    display: none !important;
+}
+
+.studyante-profile-dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+}
+
+.studyante-profile-dropdown-avatar {
+    width: 58px;
+    height: 58px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: #e7efff;
+    color: #163a70;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.studyante-profile-dropdown-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.studyante-profile-dropdown-user {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.studyante-profile-dropdown-user strong,
+.studyante-profile-dropdown-user small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.studyante-profile-dropdown-user strong {
+    font-size: 15px;
+}
+
+.studyante-profile-dropdown-user small {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.studyante-profile-dropdown-divider {
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.studyante-profile-menu-item {
+    width: 100%;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 12px 18px;
+    border: 0;
+    background: transparent;
+    color: #172033;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.studyante-profile-menu-item:hover {
+    background: #f6f8fc;
+}
+
+.studyante-profile-menu-icon {
+    width: 24px;
+    flex: 0 0 auto;
+    text-align: center;
+    font-size: 18px;
+}
+
+.studyante-profile-menu-logout {
+    color: #c62828;
+}
+
+body.studyante-dark .studyante-profile-dropdown {
+    border-color: #334155;
+    background: #0f172a;
+}
+
+body.studyante-dark .studyante-profile-dropdown-user small {
+    color: #94a3b8;
+}
+
+body.studyante-dark .studyante-profile-dropdown-divider {
+    background: #334155;
+}
+
+body.studyante-dark .studyante-profile-menu-item {
+    color: #f8fafc;
+}
+
+body.studyante-dark .studyante-profile-menu-item:hover {
+    background: #1e293b;
+}
+
+body.studyante-dark .studyante-profile-menu-logout {
+    color: #f87171;
+}
+
+@media (max-width: 900px) {
+
+    .studyante-top-profile-wrap {
+        top: 8px;
+        right: 12px;
+    }
+
+    .studyante-top-profile-button {
+        width: 40px;
+        height: 40px;
+    }
+
+    .studyante-profile-dropdown {
+        top: 48px;
+        width: min(310px, calc(100vw - 24px));
+    }
+}
+
+/* STUDYANTE_TOP_PROFILE_MENU_STYLE_END */

@@ -13,7 +13,7 @@
 
   <link
     rel="stylesheet"
-    href="style.css?v=20260912-profile1"
+    href="style.css?v=20260912-profilemenu1"
   >
 <style id="studying-hide-ai-provider">
 #providerSection,
@@ -222,54 +222,7 @@
 
 <div class="sidebar-user-panel">
 
-        <button
-          id="openAccountSettings"
-          class="profile studyante-profile-button"
-          type="button"
-          title="Account Settings"
-        >
-
-          <div
-            id="profileAvatar"
-            class="avatar"
-          >
-            <img
-              id="profileAvatarImage"
-              alt="Profile picture"
-              hidden
-            >
-            <span id="profileAvatarInitial">S</span>
-          </div>
-
-          <div class="studyante-sidebar-profile-text">
-
-            <strong id="profileName">
-              Student
-            </strong>
-
-            <small id="userEmail">
-              Account Settings
-            </small>
-
-          </div>
-
-          <span
-            class="studyante-profile-settings-icon"
-            aria-hidden="true"
-          >
-            &#9881;
-          </span>
-
-        </button>
-
-        <!-- STUDYANTE_BOTTOM_LOGOUT -->
-        <button
-          id="logoutButton"
-          class="logout-btn"
-          type="button"
-        >
-          Logout
-        </button>
+        <!-- STUDYANTE_BOTTOM_LOGOUT_REMOVED -->
 
     </div>
 
@@ -1436,11 +1389,132 @@
 
   <!-- STUDYANTE_ACCOUNT_SETTINGS_MODAL_END -->
 
-<script src="auth.js?v=20260912-profile1"></script>
+<script src="auth.js?v=20260912-profilemenu1"></script>
   <script src="script.js?v=20260912-camera3"></script>
 
   <script src="community.js?v=20260912-profile1"></script>
   <script src="theme.js?v=20260908-theme1"></script>
+
+  <!-- STUDYANTE_TOP_PROFILE_MENU_START -->
+
+  <div class="studyante-top-profile-wrap">
+
+    <button
+      id="studyanteTopProfileButton"
+      class="studyante-top-profile-button"
+      type="button"
+      aria-label="Open profile menu"
+      aria-expanded="false"
+    >
+      <span class="studyante-top-avatar">
+
+        <img
+          id="topProfileAvatarImage"
+          alt="Profile picture"
+          hidden
+        >
+
+        <span id="topProfileAvatarInitial">
+          S
+        </span>
+
+      </span>
+    </button>
+
+
+    <div
+      id="studyanteProfileDropdown"
+      class="studyante-profile-dropdown"
+      hidden
+    >
+
+      <div class="studyante-profile-dropdown-header">
+
+        <div class="studyante-profile-dropdown-avatar">
+
+          <img
+            id="dropdownProfileAvatarImage"
+            alt="Profile picture"
+            hidden
+          >
+
+          <span id="dropdownProfileAvatarInitial">
+            S
+          </span>
+
+        </div>
+
+        <div class="studyante-profile-dropdown-user">
+
+          <strong id="dropdownProfileName">
+            Student
+          </strong>
+
+          <small id="dropdownProfileEmail">
+            student@example.com
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="studyante-profile-dropdown-divider"></div>
+
+
+      <button
+        id="dropdownAccountSettings"
+        class="studyante-profile-menu-item"
+        type="button"
+      >
+        <span class="studyante-profile-menu-icon">
+          &#9881;
+        </span>
+
+        <span>
+          Account Settings
+        </span>
+      </button>
+
+
+      <button
+        id="dropdownThemeToggle"
+        class="studyante-profile-menu-item"
+        type="button"
+      >
+        <span class="studyante-profile-menu-icon">
+          &#9788;
+        </span>
+
+        <span id="dropdownThemeText">
+          Dark Mode
+        </span>
+      </button>
+
+
+      <div class="studyante-profile-dropdown-divider"></div>
+
+
+      <button
+        id="dropdownLogoutButton"
+        class="studyante-profile-menu-item studyante-profile-menu-logout"
+        type="button"
+      >
+        <span class="studyante-profile-menu-icon">
+          &#10162;
+        </span>
+
+        <span>
+          Log out
+        </span>
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- STUDYANTE_TOP_PROFILE_MENU_END -->
+
 </body>
 
 </html>

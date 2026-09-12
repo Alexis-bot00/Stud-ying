@@ -1104,4 +1104,396 @@
 
   /* STUDYANTE_ACCOUNT_SETTINGS_FRONTEND_END */
 
+
+  /* STUDYANTE_TOP_PROFILE_MENU_START */
+
+  function studyanteSetMenuAvatar(
+    imageId,
+    initialId,
+    user
+  ) {
+
+    const image =
+      document.getElementById(
+        imageId
+      );
+
+    const initial =
+      document.getElementById(
+        initialId
+      );
+
+    if (!image || !initial) {
+      return;
+    }
+
+
+    const picture =
+      user?.profilePicture || "";
+
+    const name =
+      user?.name || "Student";
+
+
+    if (picture) {
+
+      image.src =
+        picture;
+
+      image.hidden =
+        false;
+
+      initial.hidden =
+        true;
+
+    } else {
+
+      image.removeAttribute(
+        "src"
+      );
+
+      image.hidden =
+        true;
+
+      initial.hidden =
+        false;
+
+      initial.textContent =
+        studyanteInitial(name);
+    }
+  }
+
+
+  function studyanteUpdateTopProfileMenu(user) {
+
+    if (!user) {
+      return;
+    }
+
+
+    studyanteSetMenuAvatar(
+      "topProfileAvatarImage",
+      "topProfileAvatarInitial",
+      user
+    );
+
+
+    studyanteSetMenuAvatar(
+      "dropdownProfileAvatarImage",
+      "dropdownProfileAvatarInitial",
+      user
+    );
+
+
+    const name =
+      document.getElementById(
+        "dropdownProfileName"
+      );
+
+    const email =
+      document.getElementById(
+        "dropdownProfileEmail"
+      );
+
+
+    if (name) {
+      name.textContent =
+        user.name || "Student";
+    }
+
+
+    if (email) {
+      email.textContent =
+        user.email || "";
+    }
+  }
+
+
+  function studyanteOpenProfileDropdown() {
+
+    const dropdown =
+      document.getElementById(
+        "studyanteProfileDropdown"
+      );
+
+    const button =
+      document.getElementById(
+        "studyanteTopProfileButton"
+      );
+
+
+    if (!dropdown) {
+      return;
+    }
+
+
+    dropdown.hidden =
+      false;
+
+
+    if (button) {
+
+      button.setAttribute(
+        "aria-expanded",
+        "true"
+      );
+    }
+  }
+
+
+  function studyanteCloseProfileDropdown() {
+
+    const dropdown =
+      document.getElementById(
+        "studyanteProfileDropdown"
+      );
+
+    const button =
+      document.getElementById(
+        "studyanteTopProfileButton"
+      );
+
+
+    if (dropdown) {
+
+      dropdown.hidden =
+        true;
+    }
+
+
+    if (button) {
+
+      button.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+    }
+  }
+
+
+  function studyanteToggleProfileDropdown() {
+
+    const dropdown =
+      document.getElementById(
+        "studyanteProfileDropdown"
+      );
+
+
+    if (!dropdown) {
+      return;
+    }
+
+
+    if (dropdown.hidden) {
+
+      studyanteOpenProfileDropdown();
+
+    } else {
+
+      studyanteCloseProfileDropdown();
+    }
+  }
+
+
+  function studyanteSyncDropdownThemeText() {
+
+    const text =
+      document.getElementById(
+        "dropdownThemeText"
+      );
+
+
+    if (!text) {
+      return;
+    }
+
+
+    const darkMode =
+      document.body.classList.contains(
+        "studyante-dark"
+      );
+
+
+    text.textContent =
+      darkMode
+        ? "Light Mode"
+        : "Dark Mode";
+  }
+
+
+  function installStudyanteTopProfileMenu() {
+
+    const button =
+      document.getElementById(
+        "studyanteTopProfileButton"
+      );
+
+    const dropdown =
+      document.getElementById(
+        "studyanteProfileDropdown"
+      );
+
+    const settings =
+      document.getElementById(
+        "dropdownAccountSettings"
+      );
+
+    const theme =
+      document.getElementById(
+        "dropdownThemeToggle"
+      );
+
+    const logout =
+      document.getElementById(
+        "dropdownLogoutButton"
+      );
+
+
+    if (
+      button &&
+      !button.dataset.profileMenuReady
+    ) {
+
+      button.dataset.profileMenuReady =
+        "true";
+
+
+      button.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+          studyanteToggleProfileDropdown();
+        }
+      );
+    }
+
+
+    if (
+      dropdown &&
+      !dropdown.dataset.profileMenuReady
+    ) {
+
+      dropdown.dataset.profileMenuReady =
+        "true";
+
+
+      dropdown.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+        }
+      );
+    }
+
+
+    if (
+      settings &&
+      !settings.dataset.profileMenuReady
+    ) {
+
+      settings.dataset.profileMenuReady =
+        "true";
+
+
+      settings.addEventListener(
+        "click",
+        () => {
+
+          studyanteCloseProfileDropdown();
+
+          openStudyanteAccountSettings();
+        }
+      );
+    }
+
+
+    if (
+      theme &&
+      !theme.dataset.profileMenuReady
+    ) {
+
+      theme.dataset.profileMenuReady =
+        "true";
+
+
+      theme.addEventListener(
+        "click",
+        () => {
+
+          const oldThemeButton =
+            document.getElementById(
+              "studyanteThemeToggle"
+            );
+
+
+          if (oldThemeButton) {
+
+            oldThemeButton.click();
+
+          } else {
+
+            document.body.classList.toggle(
+              "studyante-dark"
+            );
+          }
+
+
+          setTimeout(
+            studyanteSyncDropdownThemeText,
+            50
+          );
+        }
+      );
+    }
+
+
+    if (
+      logout &&
+      !logout.dataset.profileMenuReady
+    ) {
+
+      logout.dataset.profileMenuReady =
+        "true";
+
+
+      logout.addEventListener(
+        "click",
+        logoutStudying
+      );
+    }
+
+
+    document.addEventListener(
+      "click",
+      () => {
+
+        studyanteCloseProfileDropdown();
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (event.key === "Escape") {
+
+          studyanteCloseProfileDropdown();
+        }
+      }
+    );
+
+
+    studyanteSyncDropdownThemeText();
+  }
+
+
+  window.studyanteUpdateTopProfileMenu =
+    studyanteUpdateTopProfileMenu;
+
+  /* STUDYANTE_TOP_PROFILE_MENU_END */
+
 })();
