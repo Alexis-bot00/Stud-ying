@@ -254,7 +254,7 @@ function handleFile(file) {
   fileName.textContent = file.name;
 
   fileSize.textContent =
-    `${formatFileSize(file.size)} • Saving to My Library...`;
+    `${formatFileSize(file.size)} � Saving to My Library...`;
 
   selectedFile.hidden = false;
   generateSection.hidden = false;
@@ -315,7 +315,7 @@ async function saveUploadedFile(file) {
       activeLibraryId = data.file.id;
 
       fileSize.textContent =
-        `${formatFileSize(data.file.size)} • Saved in My Library ✅`;
+        `${formatFileSize(data.file.size)} � Saved in My Library ?`;
     }
 
     await loadLibrary();
@@ -324,7 +324,7 @@ async function saveUploadedFile(file) {
 
     if (uploadedFile === file) {
       fileSize.textContent =
-        `${formatFileSize(file.size)} • Could not save to My Library`;
+        `${formatFileSize(file.size)} � Could not save to My Library`;
     }
   }
 }
@@ -384,7 +384,7 @@ async function loadLibrary() {
     libraryStatus.hidden = false;
 
     libraryStatus.innerHTML =
-      `⚠️ ${escapeHTML(error.message)}`;
+      `?? ${escapeHTML(error.message)}`;
   }
 }
 
@@ -412,7 +412,7 @@ function renderFolderFilters() {
         folder.id;
 
       button.textContent =
-        `📁 ${folder.name}`;
+        `?? ${folder.name}`;
 
       if (
         activeFolderFilter ===
@@ -545,7 +545,7 @@ function createFileCard(item) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      📄
+      ??
     </div>
 
     <h3>
@@ -560,12 +560,12 @@ function createFileCard(item) {
           .replace(".", "")
           .toUpperCase()
       )}
-      •
+      �
       ${formatFileSize(item.size)}
     </p>
 
     <small>
-      📁 ${
+      ?? ${
         folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
@@ -665,7 +665,7 @@ function createFlashcardSetCard(set) {
 
   card.innerHTML = `
     <div class="library-card-icon">
-      🧠
+      ??
     </div>
 
     <h3>
@@ -682,7 +682,7 @@ function createFlashcardSetCard(set) {
     </p>
 
     <small>
-      📁 ${
+      ?? ${
         folder
           ? escapeHTML(folder.name)
           : "Uncategorized"
@@ -802,7 +802,7 @@ function selectLibraryFile(item) {
     item.name;
 
   fileSize.textContent =
-    `${formatFileSize(item.size)} • From My Library`;
+    `${formatFileSize(item.size)} � From My Library`;
 
   selectedFile.hidden = false;
   generateSection.hidden = false;
@@ -1118,7 +1118,7 @@ function addManualFlashcard() {
       type="button"
       class="remove-manual-card"
     >
-      ✕
+      ?
     </button>
 
     <label class="field-label">
@@ -1375,14 +1375,14 @@ function showLoading(type) {
   };
 
   generatedContent.hidden = false;
-  generatedIcon.textContent = "✨";
+  generatedIcon.textContent = "?";
 
   generatedTitle.textContent =
     `Creating ${titles[type]}...`;
 
   generatedBody.innerHTML = `
     <div class="loading-box">
-      🧠 Studying AI is reading your lesson...
+      ?? Studying AI is reading your lesson...
     </div>
   `;
 
@@ -1399,7 +1399,7 @@ function displayGenerated(
   generatedContent.hidden = false;
 
   if (type === "notes") {
-    generatedIcon.textContent = "📝";
+    generatedIcon.textContent = "??";
     generatedTitle.textContent =
       "Study Notes";
 
@@ -1431,7 +1431,7 @@ function displayGenerated(
           )} Flashcards`
         : "Study Flashcards";
 
-    generatedIcon.textContent = "🧠";
+    generatedIcon.textContent = "??";
 
     generatedTitle.textContent =
       `${flashcards.length} Flashcards`;
@@ -1443,7 +1443,7 @@ function displayGenerated(
 
   if (type === "test") {
 
-    generatedIcon.textContent = "✅";
+    generatedIcon.textContent = "?";
     generatedTitle.textContent =
       "Practice Test";
 
@@ -1568,7 +1568,7 @@ function displayGenerated(
   }
 
   if (type === "game") {
-    generatedIcon.textContent = "🎮";
+    generatedIcon.textContent = "??";
     generatedTitle.textContent =
       "Study Game";
 
@@ -1854,7 +1854,7 @@ function renderFlashcard(
         class="studyante-flashcard-expand"
         type="button"
       >
-        ⛶ Expand
+        ? Expand
       </button>
 
     </div>
@@ -1905,7 +1905,7 @@ function renderFlashcard(
           class="secondary-btn"
           type="button"
         >
-          ← Previous
+          ? Previous
         </button>
 
         <button
@@ -1913,7 +1913,7 @@ function renderFlashcard(
           class="primary-btn"
           type="button"
         >
-          Next →
+          Next ?
         </button>
 
         ${
@@ -1924,7 +1924,7 @@ function renderFlashcard(
                 class="secondary-btn"
                 type="button"
               >
-                💾 Save to My Library
+                ?? Save to My Library
               </button>
             `
             : ""
@@ -2096,7 +2096,7 @@ function renderFlashcard(
       );
 
       flashcardExpandButton.textContent =
-        "✕ Exit";
+        "? Exit";
     }
   }
 
@@ -2130,8 +2130,8 @@ function renderFlashcard(
 
     flashcardExpandButton.textContent =
       enabled
-        ? "✕ Exit"
-        : "⛶ Expand";
+        ? "? Exit"
+        : "? Expand";
   }
 
 
@@ -2240,7 +2240,7 @@ function openSavedFlashcards(set) {
 
   generatedContent.hidden = false;
 
-  generatedIcon.textContent = "🧠";
+  generatedIcon.textContent = "??";
 
   generatedTitle.textContent =
     set.name || "Study Flashcards";
@@ -2288,7 +2288,7 @@ confirmSaveAIFlashcards.addEventListener(
       await loadLibrary();
 
       alert(
-        "Flashcards saved to My Library! ✅"
+        "Flashcards saved to My Library! ?"
       );
     } catch (error) {
       alert(error.message);
@@ -2540,7 +2540,7 @@ function checkGameAnswer(button) {
 
 function showError(message) {
   generatedContent.hidden = false;
-  generatedIcon.textContent = "⚠️";
+  generatedIcon.textContent = "??";
   generatedTitle.textContent =
     "Could not generate";
 
@@ -3261,7 +3261,7 @@ function addMessage(
     ) {
         message.innerHTML = `
             <span class="message-avatar">
-                🤖
+                ??
             </span>
 
             <div class="message-text"></div>
@@ -3458,7 +3458,7 @@ function renderChatHistory() {
                 "chat-history-delete";
 
             deleteButton.textContent =
-                "🗑";
+                "??";
 
             deleteButton.title =
                 "Delete chat";
@@ -4344,7 +4344,7 @@ function setStudyingThinking(show) {
         button.className = "ai-attach-menu-item";
 
         button.innerHTML =
-            '<span class="ai-attach-menu-icon">🎨</span>' +
+            '<span class="ai-attach-menu-icon">??</span>' +
             '<span>Generate Image</span>';
 
         button.addEventListener("click", function (event) {
@@ -4676,26 +4676,26 @@ function studyanteMaterialInfo(type) {
   const types = {
 
     notes: {
-      icon: "📝",
+      icon: "??",
       title: "Notes",
       action: "Open"
     },
 
     test: {
-      icon: "✅",
+      icon: "?",
       title: "Practice Test",
       action: "Study"
     },
 
     game: {
-      icon: "🎮",
+      icon: "??",
       title: "Study Game",
       action: "Play"
     }
   };
 
   return types[type] || {
-    icon: "📚",
+    icon: "??",
     title: "Study Material",
     action: "Open"
   };
@@ -4789,7 +4789,7 @@ function studyanteAddSaveButton() {
     "secondary-btn studyante-save-generated";
 
   button.textContent =
-    "💾 Save to My Library";
+    "?? Save to My Library";
 
 
   button.onclick =
@@ -4912,7 +4912,7 @@ async function studyanteSaveGenerated() {
 
 
     alert(
-      `${info.title} saved to My Library! ✅`
+      `${info.title} saved to My Library! ?`
     );
 
   } catch (error) {
@@ -5050,8 +5050,8 @@ function studyanteCreateMaterialCard(
 
       ${
         folder
-          ? `📁 ${escapeHTML(folder.name)}`
-          : "📁 Uncategorized"
+          ? `?? ${escapeHTML(folder.name)}`
+          : "?? Uncategorized"
       }
 
     </div>

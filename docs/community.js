@@ -638,7 +638,7 @@
             studyContainer.innerHTML =
                 '<div class="community-flashcard-result">' +
 
-                    '<div class="community-result-icon">✓</div>' +
+                    '<div class="community-result-icon">?</div>' +
 
                     '<h2>Flashcard Result</h2>' +
 
@@ -1863,7 +1863,7 @@
                                         ? ''
                                         : 's'
                                 ) +
-                                ' • ' +
+                                ' � ' +
                                 Number(
                                     user.flashcardsCount || 0
                                 ) +
