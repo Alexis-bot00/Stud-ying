@@ -2475,6 +2475,107 @@ main,
 </style>
 <!-- STUDYANTE_SEARCH_RESPONSIVE_FINAL_END -->
 
+
+<!-- STUDYANTE_SEARCH_SMART_CENTER_START -->
+<style>
+
+@media (max-width: 700px) {
+
+    /* SIDEBAR OPEN */
+    body:not(.sidebar-closed) #studyanteGlobalSearch,
+    body:not(.sidebar-closed) .studyante-global-search {
+        position: fixed !important;
+
+        top: 8px !important;
+        left: 132px !important;
+
+        width: 190px !important;
+        max-width: 190px !important;
+
+        right: auto !important;
+        margin: 0 !important;
+        transform: none !important;
+
+        z-index: 20000 !important;
+    }
+
+
+    /* SIDEBAR CLOSED */
+    body.sidebar-closed #studyanteGlobalSearch,
+    body.sidebar-closed .studyante-global-search {
+        position: fixed !important;
+
+        top: 8px !important;
+
+        /* center between menu and profile */
+        left: calc(50% - 12px) !important;
+
+        width: 240px !important;
+        max-width: 240px !important;
+
+        right: auto !important;
+        margin: 0 !important;
+
+        transform: translateX(-50%) !important;
+
+        z-index: 20000 !important;
+    }
+
+
+    .studyante-global-search-box {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+}
+
+
+/* SMALL PHONE */
+@media (max-width: 430px) {
+
+    body:not(.sidebar-closed) #studyanteGlobalSearch,
+    body:not(.sidebar-closed) .studyante-global-search {
+        left: 122px !important;
+
+        width: 185px !important;
+        max-width: 185px !important;
+    }
+
+
+    body.sidebar-closed #studyanteGlobalSearch,
+    body.sidebar-closed .studyante-global-search {
+        left: calc(50% - 10px) !important;
+
+        width: 235px !important;
+        max-width: 235px !important;
+    }
+
+}
+
+
+/* VERY SMALL PHONE */
+@media (max-width: 380px) {
+
+    body:not(.sidebar-closed) #studyanteGlobalSearch,
+    body:not(.sidebar-closed) .studyante-global-search {
+        left: 112px !important;
+
+        width: 170px !important;
+        max-width: 170px !important;
+    }
+
+
+    body.sidebar-closed #studyanteGlobalSearch,
+    body.sidebar-closed .studyante-global-search {
+        width: 215px !important;
+        max-width: 215px !important;
+    }
+
+}
+
+</style>
+<!-- STUDYANTE_SEARCH_SMART_CENTER_END -->
+
 </head>
 
 <body>
