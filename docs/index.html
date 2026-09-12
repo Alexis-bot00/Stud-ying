@@ -2449,39 +2449,35 @@ body.studyante-admin-page.sidebar-closed #studyanteAdminPage {
 
 
 <style>
+
+</style>
+
+
+<style>
 /* STUDYANTE_ADMIN_THEME_FIX_START */
 
-/* Admin page */
-body.studyante-admin-page #studyanteAdminPage {
-    color: var(--text-color, #111827) !important;
+/* LIGHT MODE */
+
+#studyanteAdminPage {
+    color: #111827 !important;
 }
 
-/* Header */
-.studyante-admin-header h1 {
-    color: inherit !important;
+.studyante-admin-card,
+.studyante-admin-item {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border-color: #e5e7eb !important;
 }
 
-.studyante-admin-header p {
-    color: inherit !important;
-    opacity: .7 !important;
+.studyante-admin-card strong,
+.studyante-admin-item strong {
+    color: #111827 !important;
 }
 
-/* STAT CARDS */
-.studyante-admin-card {
-    background: var(--card-bg, #ffffff) !important;
-    color: var(--text-color, #111827) !important;
-    border: 1px solid var(--border-color, #e5e7eb) !important;
-}
-
-.studyante-admin-card strong {
-    color: inherit !important;
-}
-
-/* TABS */
 .studyante-admin-tab {
-    background: var(--card-bg, #ffffff) !important;
-    color: var(--text-color, #111827) !important;
-    border: 1px solid var(--border-color, #d1d5db) !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    border-color: #d1d5db !important;
 }
 
 .studyante-admin-tab.active {
@@ -2490,69 +2486,80 @@ body.studyante-admin-page #studyanteAdminPage {
     border-color: #2563eb !important;
 }
 
-/* USER / MATERIAL / LOG CARDS */
-.studyante-admin-item {
-    background: var(--card-bg, #ffffff) !important;
-    color: var(--text-color, #111827) !important;
-    border-color: var(--border-color, #e5e7eb) !important;
-}
-
 .studyante-admin-muted {
-    color: inherit !important;
-    opacity: .65 !important;
+    color: #6b7280 !important;
 }
 
-/* INPUTS */
 .studyante-admin-toolbar input,
 .studyante-admin-toolbar textarea {
-    background: var(--card-bg, #ffffff) !important;
-    color: var(--text-color, #111827) !important;
-    border-color: var(--border-color, #d1d5db) !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    border-color: #d1d5db !important;
 }
 
 .studyante-admin-toolbar input::placeholder,
 .studyante-admin-toolbar textarea::placeholder {
-    color: inherit !important;
-    opacity: .55 !important;
+    color: #6b7280 !important;
 }
 
-/* DARK MODE */
-body.dark-mode .studyante-admin-card,
-body.dark-mode .studyante-admin-item,
-html[data-theme="dark"] .studyante-admin-card,
-html[data-theme="dark"] .studyante-admin-item,
-body[data-theme="dark"] .studyante-admin-card,
-body[data-theme="dark"] .studyante-admin-item {
+
+/* DARK MODE - ACTUAL STUDYante CLASS */
+
+body.studyante-dark #studyanteAdminPage {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .studyante-admin-header h1 {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .studyante-admin-header p {
+    color: #cbd5e1 !important;
+}
+
+body.studyante-dark .studyante-admin-card,
+body.studyante-dark .studyante-admin-item {
     background: #111827 !important;
     color: #f8fafc !important;
     border-color: #334155 !important;
 }
 
-body.dark-mode .studyante-admin-tab,
-html[data-theme="dark"] .studyante-admin-tab,
-body[data-theme="dark"] .studyante-admin-tab {
+body.studyante-dark .studyante-admin-card strong,
+body.studyante-dark .studyante-admin-item strong {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark .studyante-admin-tab {
     background: #172033 !important;
     color: #f8fafc !important;
     border-color: #475569 !important;
 }
 
-body.dark-mode .studyante-admin-tab.active,
-html[data-theme="dark"] .studyante-admin-tab.active,
-body[data-theme="dark"] .studyante-admin-tab.active {
+body.studyante-dark .studyante-admin-tab.active {
     background: #2563eb !important;
-    color: white !important;
+    color: #ffffff !important;
     border-color: #3b82f6 !important;
 }
 
-body.dark-mode .studyante-admin-toolbar input,
-body.dark-mode .studyante-admin-toolbar textarea,
-html[data-theme="dark"] .studyante-admin-toolbar input,
-html[data-theme="dark"] .studyante-admin-toolbar textarea,
-body[data-theme="dark"] .studyante-admin-toolbar input,
-body[data-theme="dark"] .studyante-admin-toolbar textarea {
-    background: #111827 !important;
+body.studyante-dark .studyante-admin-muted {
+    color: #94a3b8 !important;
+}
+
+body.studyante-dark .studyante-admin-toolbar input,
+body.studyante-dark .studyante-admin-toolbar textarea {
+    background: #0f172a !important;
     color: #f8fafc !important;
     border-color: #475569 !important;
+}
+
+body.studyante-dark .studyante-admin-toolbar input::placeholder,
+body.studyante-dark .studyante-admin-toolbar textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+body.studyante-dark .studyante-admin-badge {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
 }
 
 /* STUDYANTE_ADMIN_THEME_FIX_END */
