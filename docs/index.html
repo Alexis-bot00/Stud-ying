@@ -3367,6 +3367,148 @@ body:not(.studyante-dark)
 })();
 </script>
 
+
+<style>
+/* STUDYANTE_CONTINUE_FIX_START */
+
+.studyante-recent-flashcard {
+    padding-bottom: 80px !important;
+}
+
+.studyante-recent-continue-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    position: absolute !important;
+
+    left: 28px !important;
+    bottom: 22px !important;
+
+    width: auto !important;
+    min-width: 110px !important;
+    height: 42px !important;
+
+    padding: 0 22px !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: none !important;
+    border-radius: 999px !important;
+
+    background: #3155f5 !important;
+    color: #ffffff !important;
+
+    font-size: 14px !important;
+    font-weight: 700 !important;
+
+    line-height: 1 !important;
+
+    cursor: pointer !important;
+
+    z-index: 999 !important;
+}
+
+.studyante-recent-continue-btn:hover {
+    background: #2448ed !important;
+}
+
+@media(max-width:650px) {
+
+    .studyante-recent-continue-btn {
+        left: 20px !important;
+        bottom: 18px !important;
+    }
+}
+
+/* STUDYANTE_CONTINUE_FIX_END */
+</style>
+
+<script>
+(() => {
+
+    function installContinueButtons() {
+
+        document
+            .querySelectorAll(
+                ".studyante-recent-flashcard"
+            )
+            .forEach(card => {
+
+                let button =
+                    card.querySelector(
+                        ".studyante-recent-continue-btn"
+                    );
+
+                if (button) {
+                    return;
+                }
+
+                button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.type = "button";
+
+                button.className =
+                    "studyante-recent-continue-btn";
+
+                button.textContent =
+                    "Continue";
+
+                button.addEventListener(
+                    "click",
+                    event => {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        const library =
+                            document.querySelector(
+                                '.sidebar a[data-page="library"]'
+                            );
+
+                        if (library) {
+                            library.click();
+                        }
+                    }
+                );
+
+                card.appendChild(button);
+            });
+    }
+
+
+    installContinueButtons();
+
+
+    const observer =
+        new MutationObserver(() => {
+
+            installContinueButtons();
+
+        });
+
+
+    observer.observe(
+        document.body,
+        {
+            childList: true,
+            subtree: true
+        }
+    );
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        installContinueButtons
+    );
+
+})();
+</script>
+
 </head>
 
 <body>
