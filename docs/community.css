@@ -774,3 +774,255 @@ body.studyante-dark
         padding: 28px 18px;
     }
 }
+
+/* STUDYANTE_USER_SEARCH_PROFILES_STYLE_START */
+
+.community-user-search {
+    margin-bottom: 24px;
+    padding: 18px;
+    border: 1px solid #e6e9ef;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.community-search-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 12px;
+}
+
+.community-search-copy strong {
+    font-size: 16px;
+}
+
+.community-search-copy small {
+    opacity: .7;
+}
+
+.community-search-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#communityUserSearchInput {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+    outline: none;
+}
+
+#communityUserSearchInput:focus {
+    border-color: #2563eb;
+}
+
+.community-user-search-status {
+    margin-top: 12px;
+    font-size: 14px;
+    opacity: .7;
+}
+
+.community-user-results {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.community-user-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.community-user-card:hover {
+    border-color: #94a3b8;
+}
+
+.community-user-avatar,
+.community-profile-avatar {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e8efff;
+    color: #1d4ed8;
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.community-user-info {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.community-user-info strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.community-user-info small {
+    opacity: .65;
+}
+
+.community-user-open {
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.community-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.community-profile-header h3,
+.community-profile-header p {
+    margin: 0;
+}
+
+.community-profile-header p {
+    margin-top: 4px;
+    opacity: .65;
+}
+
+.community-profile-sections {
+    display: grid;
+    gap: 24px;
+}
+
+.community-profile-sections > section > h3 {
+    margin: 0 0 10px;
+}
+
+.community-profile-materials {
+    display: grid;
+    gap: 9px;
+}
+
+.community-profile-material {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.community-profile-material > div:first-child {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.community-profile-material strong {
+    overflow-wrap: anywhere;
+}
+
+.community-profile-material small {
+    opacity: .65;
+}
+
+.community-profile-actions {
+    flex-shrink: 0;
+    display: flex;
+    gap: 7px;
+}
+
+.community-profile-empty {
+    opacity: .65;
+}
+
+body.studyante-dark .community-user-search,
+body.studyante-dark .community-user-card,
+body.studyante-dark .community-profile-material {
+    background: #111827;
+    border-color: #334155;
+    color: #e5e7eb;
+}
+
+body.studyante-dark #communityUserSearchInput {
+    background: #0f172a;
+    border-color: #475569;
+    color: #f8fafc;
+}
+
+body.studyante-dark .community-profile-header {
+    border-color: #334155;
+}
+
+@media (max-width: 600px) {
+
+    .community-user-search {
+        padding: 14px;
+    }
+
+    .community-search-controls {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 7px;
+    }
+
+    #communityUserSearchInput {
+        font-size: 16px;
+    }
+
+    .community-user-open {
+        display: none;
+    }
+
+    .community-user-card {
+        padding: 11px;
+    }
+
+    .community-user-avatar,
+    .community-profile-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .community-profile-material {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .community-profile-actions {
+        width: 100%;
+    }
+
+    .community-profile-actions button {
+        flex: 1;
+    }
+}
+
+/* STUDYANTE_USER_SEARCH_PROFILES_STYLE_END */

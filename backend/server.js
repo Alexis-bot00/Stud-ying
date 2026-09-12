@@ -4520,6 +4520,266 @@ app.delete(
     });
   }
 );
+
+/* STUDYANTE_PUBLIC_USER_PROFILES_START */
+
+
+/* ----------------------------------------------------------
+   SEARCH PUBLIC STUDYANTE USERS
+
+   SECURITY:
+   Only users with APPROVED community materials are searchable.
+   Email addresses and private library data are never returned.
+---------------------------------------------------------- */
+
+app.get(
+    "/api/community/users",
+    requireAuth,
+    (req, res) => {
+
+        const users =
+            readUsers();
+
+        const library =
+            readLibrary();
+
+        const query =
+            String(
+                req.query.q || ""
+            )
+                .trim()
+                .toLowerCase();
+
+
+        const files =
+            Array.isArray(library.files)
+                ? library.files
+                : [];
+
+        const flashcardSets =
+            Array.isArray(library.flashcardSets)
+                ? library.flashcardSets
+                : [];
+
+
+        const results =
+            users
+                .map(user => {
+
+                    const publicFiles =
+                        files.filter(
+                            item =>
+                                item.userId === user.id &&
+                                item.communityStatus ===
+                                    "approved"
+                        );
+
+                    const publicFlashcards =
+                        flashcardSets.filter(
+                            item =>
+                                item.userId === user.id &&
+                                item.communityStatus ===
+                                    "approved"
+                        );
+
+
+                    return {
+                        id:
+                            user.id,
+
+                        name:
+                            String(
+                                user.name ||
+                                "STUDYante User"
+                            ),
+
+                        notesCount:
+                            publicFiles.length,
+
+                        flashcardsCount:
+                            publicFlashcards.length,
+
+                        totalShared:
+                            publicFiles.length +
+                            publicFlashcards.length
+                    };
+                })
+                .filter(
+                    user =>
+                        user.totalShared > 0
+                )
+                .filter(
+                    user =>
+                        !query ||
+                        user.name
+                            .toLowerCase()
+                            .includes(query)
+                )
+                .sort(
+                    (a, b) =>
+                        a.name.localeCompare(
+                            b.name
+                        )
+                );
+
+
+        return res.json({
+            success: true,
+            users: results
+        });
+    }
+);
+
+
+/* ----------------------------------------------------------
+   PUBLIC USER PROFILE
+
+   Only APPROVED community materials are returned.
+---------------------------------------------------------- */
+
+app.get(
+    "/api/community/users/:id",
+    requireAuth,
+    (req, res) => {
+
+        const users =
+            readUsers();
+
+        const library =
+            readLibrary();
+
+
+        const user =
+            users.find(
+                account =>
+                    account.id ===
+                    req.params.id
+            );
+
+
+        if (!user) {
+
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message:
+                        "User not found."
+                });
+        }
+
+
+        const files =
+            (
+                Array.isArray(library.files)
+                    ? library.files
+                    : []
+            )
+                .filter(
+                    item =>
+                        item.userId ===
+                            user.id &&
+                        item.communityStatus ===
+                            "approved"
+                )
+                .map(
+                    item => ({
+                        id:
+                            item.id,
+
+                        type:
+                            "file",
+
+                        name:
+                            item.name,
+
+                        size:
+                            item.size,
+
+                        createdAt:
+                            item.createdAt,
+
+                        approvedAt:
+                            item.approvedAt
+                    })
+                );
+
+
+        const flashcardSets =
+            (
+                Array.isArray(
+                    library.flashcardSets
+                )
+                    ? library.flashcardSets
+                    : []
+            )
+                .filter(
+                    item =>
+                        item.userId ===
+                            user.id &&
+                        item.communityStatus ===
+                            "approved"
+                )
+                .map(
+                    item => ({
+                        id:
+                            item.id,
+
+                        type:
+                            "flashcards",
+
+                        name:
+                            item.name,
+
+                        flashcards:
+                            Array.isArray(
+                                item.flashcards
+                            )
+                                ? item.flashcards
+                                : [],
+
+                        createdAt:
+                            item.createdAt,
+
+                        approvedAt:
+                            item.approvedAt,
+
+                        author:
+                            String(
+                                user.name ||
+                                "STUDYante User"
+                            )
+                    })
+                );
+
+
+        /*
+         * Do not expose private account fields.
+         */
+
+        return res.json({
+            success: true,
+
+            user: {
+                id:
+                    user.id,
+
+                name:
+                    String(
+                        user.name ||
+                        "STUDYante User"
+                    )
+            },
+
+            files,
+            flashcardSets
+        });
+    }
+);
+
+
+/* STUDYANTE_PUBLIC_USER_PROFILES_END */
+
 app.listen(
   PORT,
   () => {

@@ -142,7 +142,7 @@
 
 </style>
 
-  <link rel="stylesheet" href="community.css?v=20260908-focus1">
+  <link rel="stylesheet" href="community.css?v=20260912-users1">
   <link rel="stylesheet" href="theme.css?v=20260908-sidebar1">
 </head>
 
@@ -176,21 +176,21 @@
 
 
     </nav>
-    
-    
 
-        
+
+
+
     </div>
 
 
 
     <div class="sidebar-chat-history">
       <div class="chat-history-panel">
-      
+
                 <div class="chat-history-header">
-      
+
                   <h3>Chat History</h3>
-      
+
                   <button
                     id="newChatButton"
                     class="new-chat-btn"
@@ -198,9 +198,9 @@
                   >
                     + New Chat
                   </button>
-      
+
                 </div>
-      
+
                 <div
                   id="chatHistoryList"
                   class="chat-history-list"
@@ -244,7 +244,7 @@
 
     </div>
 
-      
+
               </div>
     </div>
 
@@ -269,10 +269,10 @@
       </header>
 
 
-    
 
 
-    
+
+
     </section>
 
     <section
@@ -637,7 +637,7 @@
     </section>
 
 
-    
+
 <section
       id="community"
       class="panel studyante-page"
@@ -664,7 +664,52 @@
 
       </div>
 
-      <div
+
+      <!-- STUDYANTE_USER_SEARCH_START -->
+
+      <div class="community-user-search">
+
+        <div class="community-search-copy">
+          <strong>Find Students</strong>
+          <small>
+            Search students who shared approved study materials.
+          </small>
+        </div>
+
+        <div class="community-search-controls">
+
+          <input
+            id="communityUserSearchInput"
+            type="search"
+            placeholder="Search student name..."
+            autocomplete="off"
+          >
+
+          <button
+            id="communityUserSearchButton"
+            type="button"
+            class="primary-btn"
+          >
+            Search
+          </button>
+
+        </div>
+
+        <div
+          id="communityUserSearchStatus"
+          class="community-user-search-status"
+          hidden
+        ></div>
+
+        <div
+          id="communityUserResults"
+          class="community-user-results"
+        ></div>
+
+      </div>
+
+      <!-- STUDYANTE_USER_SEARCH_END -->
+<div
         id="communityStatus"
         class="library-status"
       >
@@ -1160,10 +1205,10 @@
 
   </div>
 
-<script src="auth.js"></script> 
+<script src="auth.js"></script>
   <script src="script.js?v=20260912-camera3"></script>
 
-  <script src="community.js?v=20260908-focus1"></script>
+  <script src="community.js?v=20260912-users1"></script>
   <script src="theme.js?v=20260908-theme1"></script>
 </body>
 

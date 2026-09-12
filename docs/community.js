@@ -1687,4 +1687,658 @@
     window.loadStudyanteCommunity =
         loadCommunity;
 
+
+    /* STUDYANTE_USER_SEARCH_PROFILES_START */
+
+
+    function communityPublicInitial(name) {
+
+        var value =
+            String(
+                name ||
+                "S"
+            )
+                .trim();
+
+        return value
+            ? value.charAt(0).toUpperCase()
+            : "S";
+    }
+
+
+    async function searchCommunityUsers() {
+
+        var input =
+            document.getElementById(
+                "communityUserSearchInput"
+            );
+
+        var results =
+            document.getElementById(
+                "communityUserResults"
+            );
+
+        var status =
+            document.getElementById(
+                "communityUserSearchStatus"
+            );
+
+
+        if (!input || !results || !status) {
+            return;
+        }
+
+
+        var query =
+            String(
+                input.value || ""
+            ).trim();
+
+
+        results.innerHTML = "";
+
+        status.hidden = false;
+
+        status.textContent =
+            query
+                ? "Searching students..."
+                : "Loading students...";
+
+
+        try {
+
+            var url =
+                API_BASE +
+                "/api/community/users";
+
+            if (query) {
+
+                url +=
+                    "?q=" +
+                    encodeURIComponent(
+                        query
+                    );
+            }
+
+
+            var response =
+                await fetch(url);
+
+            var data =
+                await communityRead(
+                    response
+                );
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Could not search students."
+                );
+            }
+
+
+            var users =
+                Array.isArray(data.users)
+                    ? data.users
+                    : [];
+
+
+            if (!users.length) {
+
+                status.hidden =
+                    false;
+
+                status.textContent =
+                    query
+                        ? "No students found."
+                        : "No students have shared materials yet.";
+
+                return;
+            }
+
+
+            status.hidden =
+                true;
+
+
+            users.forEach(
+                function (user) {
+
+                    var card =
+                        document.createElement(
+                            "button"
+                        );
+
+                    card.type =
+                        "button";
+
+                    card.className =
+                        "community-user-card";
+
+
+                    var initial =
+                        communityPublicInitial(
+                            user.name
+                        );
+
+
+                    card.innerHTML =
+                        '<span class="community-user-avatar">' +
+                            communityEscape(initial) +
+                        '</span>' +
+
+                        '<span class="community-user-info">' +
+
+                            '<strong>' +
+                                communityEscape(
+                                    user.name ||
+                                    "STUDYante User"
+                                ) +
+                            '</strong>' +
+
+                            '<small>' +
+                                Number(
+                                    user.notesCount || 0
+                                ) +
+                                ' note' +
+                                (
+                                    Number(
+                                        user.notesCount || 0
+                                    ) === 1
+                                        ? ''
+                                        : 's'
+                                ) +
+                                ' • ' +
+                                Number(
+                                    user.flashcardsCount || 0
+                                ) +
+                                ' flashcard set' +
+                                (
+                                    Number(
+                                        user.flashcardsCount || 0
+                                    ) === 1
+                                        ? ''
+                                        : 's'
+                                ) +
+                            '</small>' +
+
+                        '</span>' +
+
+                        '<span class="community-user-open">' +
+                            'View Profile' +
+                        '</span>';
+
+
+                    card.addEventListener(
+                        "click",
+                        function () {
+
+                            openCommunityUserProfile(
+                                user.id
+                            );
+                        }
+                    );
+
+
+                    results.appendChild(
+                        card
+                    );
+                }
+            );
+
+
+        } catch (error) {
+
+            status.hidden =
+                false;
+
+            status.textContent =
+                "Search error: " +
+                error.message;
+        }
+    }
+
+
+
+    async function openCommunityUserProfile(
+        userId
+    ) {
+
+        try {
+
+            var response =
+                await fetch(
+                    API_BASE +
+                    "/api/community/users/" +
+                    encodeURIComponent(
+                        userId
+                    )
+                );
+
+
+            var data =
+                await communityRead(
+                    response
+                );
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                throw new Error(
+                    data.message ||
+                    "Could not open user profile."
+                );
+            }
+
+
+            var user =
+                data.user || {};
+
+            var files =
+                Array.isArray(
+                    data.files
+                )
+                    ? data.files
+                    : [];
+
+            var sets =
+                Array.isArray(
+                    data.flashcardSets
+                )
+                    ? data.flashcardSets
+                    : [];
+
+
+            var total =
+                files.length +
+                sets.length;
+
+
+            var html =
+                '<div class="community-public-profile">' +
+
+                    '<div class="community-profile-header">' +
+
+                        '<div class="community-profile-avatar">' +
+                            communityEscape(
+                                communityPublicInitial(
+                                    user.name
+                                )
+                            ) +
+                        '</div>' +
+
+                        '<div>' +
+
+                            '<h3>' +
+                                communityEscape(
+                                    user.name ||
+                                    "STUDYante User"
+                                ) +
+                            '</h3>' +
+
+                            '<p>' +
+                                total +
+                                ' shared material' +
+                                (
+                                    total === 1
+                                        ? ''
+                                        : 's'
+                                ) +
+                            '</p>' +
+
+                        '</div>' +
+
+                    '</div>' +
+
+                    '<div class="community-profile-sections">' +
+
+                        '<section>' +
+
+                            '<h3>Shared Notes</h3>' +
+
+                            '<div id="communityProfileNotes" class="community-profile-materials"></div>' +
+
+                        '</section>' +
+
+                        '<section>' +
+
+                            '<h3>Shared Flashcards</h3>' +
+
+                            '<div id="communityProfileFlashcards" class="community-profile-materials"></div>' +
+
+                        '</section>' +
+
+                    '</div>' +
+
+                '</div>';
+
+
+            showCommunityModal(
+                user.name ||
+                    "Student Profile",
+                html
+            );
+
+
+            var notesContainer =
+                document.getElementById(
+                    "communityProfileNotes"
+                );
+
+            var flashcardsContainer =
+                document.getElementById(
+                    "communityProfileFlashcards"
+                );
+
+
+            if (notesContainer) {
+
+                if (!files.length) {
+
+                    notesContainer.innerHTML =
+                        '<p class="community-profile-empty">' +
+                            'No shared notes.' +
+                        '</p>';
+
+                } else {
+
+                    files.forEach(
+                        function (item) {
+
+                            var row =
+                                document.createElement(
+                                    "article"
+                                );
+
+                            row.className =
+                                "community-profile-material";
+
+
+                            row.innerHTML =
+                                '<div>' +
+
+                                    '<strong>' +
+                                        communityEscape(
+                                            item.name ||
+                                            "Study Notes"
+                                        ) +
+                                    '</strong>' +
+
+                                    '<small>Shared Note</small>' +
+
+                                '</div>';
+
+
+                            var button =
+                                communityButton(
+                                    "Open",
+                                    "primary-btn"
+                                );
+
+
+                            button.addEventListener(
+                                "click",
+                                function () {
+
+                                    viewCommunityFile(
+                                        item
+                                    );
+                                }
+                            );
+
+
+                            row.appendChild(
+                                button
+                            );
+
+                            notesContainer.appendChild(
+                                row
+                            );
+                        }
+                    );
+                }
+            }
+
+
+            if (flashcardsContainer) {
+
+                if (!sets.length) {
+
+                    flashcardsContainer.innerHTML =
+                        '<p class="community-profile-empty">' +
+                            'No shared flashcards.' +
+                        '</p>';
+
+                } else {
+
+                    sets.forEach(
+                        function (set) {
+
+                            var cards =
+                                Array.isArray(
+                                    set.flashcards
+                                )
+                                    ? set.flashcards
+                                    : [];
+
+
+                            var row =
+                                document.createElement(
+                                    "article"
+                                );
+
+                            row.className =
+                                "community-profile-material";
+
+
+                            var info =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            info.innerHTML =
+                                '<strong>' +
+                                    communityEscape(
+                                        set.name ||
+                                        "Flashcards"
+                                    ) +
+                                '</strong>' +
+
+                                '<small>' +
+                                    cards.length +
+                                    ' card' +
+                                    (
+                                        cards.length === 1
+                                            ? ''
+                                            : 's'
+                                    ) +
+                                '</small>';
+
+
+                            var actions =
+                                document.createElement(
+                                    "div"
+                                );
+
+                            actions.className =
+                                "community-profile-actions";
+
+
+                            var study =
+                                communityButton(
+                                    "Study",
+                                    "primary-btn"
+                                );
+
+
+                            study.addEventListener(
+                                "click",
+                                function () {
+
+                                    openCommunityFlashcards(
+                                        set,
+                                        cards
+                                    );
+                                }
+                            );
+
+
+                            var save =
+                                communityButton(
+                                    "Save Copy",
+                                    "secondary-btn"
+                                );
+
+
+                            save.addEventListener(
+                                "click",
+                                function () {
+
+                                    saveCommunityFlashcards(
+                                        set,
+                                        save
+                                    );
+                                }
+                            );
+
+
+                            actions.appendChild(
+                                study
+                            );
+
+                            actions.appendChild(
+                                save
+                            );
+
+                            row.appendChild(
+                                info
+                            );
+
+                            row.appendChild(
+                                actions
+                            );
+
+                            flashcardsContainer.appendChild(
+                                row
+                            );
+                        }
+                    );
+                }
+            }
+
+
+        } catch (error) {
+
+            alert(
+                error.message
+            );
+        }
+    }
+
+
+
+    function installCommunityUserSearch() {
+
+        var input =
+            document.getElementById(
+                "communityUserSearchInput"
+            );
+
+        var button =
+            document.getElementById(
+                "communityUserSearchButton"
+            );
+
+
+        if (
+            button &&
+            !button.dataset.studyanteSearchReady
+        ) {
+
+            button.dataset.studyanteSearchReady =
+                "true";
+
+            button.addEventListener(
+                "click",
+                searchCommunityUsers
+            );
+        }
+
+
+        if (
+            input &&
+            !input.dataset.studyanteSearchReady
+        ) {
+
+            input.dataset.studyanteSearchReady =
+                "true";
+
+
+            input.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key ===
+                        "Enter"
+                    ) {
+
+                        event.preventDefault();
+
+                        searchCommunityUsers();
+                    }
+                }
+            );
+
+
+            var timer = null;
+
+            input.addEventListener(
+                "input",
+                function () {
+
+                    clearTimeout(
+                        timer
+                    );
+
+                    timer =
+                        setTimeout(
+                            searchCommunityUsers,
+                            350
+                        );
+                }
+            );
+        }
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            installCommunityUserSearch();
+        }
+    );
+
+
+    if (
+        document.readyState !==
+        "loading"
+    ) {
+
+        installCommunityUserSearch();
+    }
+
+
+    /* STUDYANTE_USER_SEARCH_PROFILES_END */
+
 })();
