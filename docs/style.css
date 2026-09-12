@@ -3384,3 +3384,53 @@ textarea {
     }
 }
 
+/* STUDYANTE_MOBILE_ATTACHMENT_TOUCH_FIX_START */
+
+#ai .ai-attach-wrap {
+    position: relative;
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+#ai #aiAttachButton {
+    position: relative;
+    z-index: 1001;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#ai #aiAttachMenu {
+    position: absolute;
+    z-index: 100000 !important;
+    pointer-events: auto !important;
+}
+
+#ai #aiAttachMenu[hidden] {
+    display: none !important;
+}
+
+#ai #aiAttachMenu:not([hidden]) {
+    display: flex !important;
+}
+
+#ai #aiImageButton,
+#ai #aiCameraButton {
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    cursor: pointer;
+}
+
+@media (max-width: 800px) {
+
+    #ai .ai-attach-wrap,
+    #ai #aiAttachButton,
+    #ai #aiAttachMenu,
+    #ai #aiImageButton,
+    #ai #aiCameraButton {
+        pointer-events: auto !important;
+    }
+
+}
+
+/* STUDYANTE_MOBILE_ATTACHMENT_TOUCH_FIX_END */

@@ -5265,3 +5265,279 @@ function studyanteRebindGameChoices() {
       };
     });
 }
+
+/* STUDYANTE_MOBILE_ATTACHMENT_FIX_START */
+
+(function installStudyanteMobileAttachments() {
+
+    function getElement(id) {
+        return document.getElementById(id);
+    }
+
+    function closeMenu() {
+
+        const menu = getElement("aiAttachMenu");
+        const button = getElement("aiAttachButton");
+
+        if (menu) {
+            menu.hidden = true;
+        }
+
+        if (button) {
+            button.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+    }
+
+
+    function openMenu() {
+
+        const menu = getElement("aiAttachMenu");
+        const button = getElement("aiAttachButton");
+
+        if (!menu) {
+            return;
+        }
+
+        menu.hidden = false;
+
+        if (button) {
+            button.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+        }
+    }
+
+
+    /*
+     * Delegated handling makes the controls reliable
+     * even if the AI area gets rebuilt/re-rendered.
+     */
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            const target =
+                event.target instanceof Element
+                    ? event.target
+                    : null;
+
+            if (!target) {
+                return;
+            }
+
+
+            /*
+             * + BUTTON
+             */
+
+            const attachButton =
+                target.closest("#aiAttachButton");
+
+            if (attachButton) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const menu =
+                    getElement("aiAttachMenu");
+
+                if (!menu) {
+                    return;
+                }
+
+                if (menu.hidden) {
+                    openMenu();
+                } else {
+                    closeMenu();
+                }
+
+                return;
+            }
+
+
+            /*
+             * UPLOAD FILE
+             */
+
+            const uploadButton =
+                target.closest("#aiImageButton");
+
+            if (uploadButton) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const input =
+                    getElement("aiImageInput");
+
+                closeMenu();
+
+                if (!input) {
+                    alert(
+                        "Image upload is not available."
+                    );
+
+                    return;
+                }
+
+                input.value = "";
+
+                input.click();
+
+                return;
+            }
+
+
+            /*
+             * CAMERA
+             */
+
+            const cameraButton =
+                target.closest("#aiCameraButton");
+
+            if (cameraButton) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                closeMenu();
+
+                const cameraInput =
+                    getElement("aiCameraInput");
+
+                const touchDevice =
+                    navigator.maxTouchPoints > 0 ||
+                    "ontouchstart" in window;
+
+                const mobileBrowser =
+                    /Android|iPhone|iPad|iPod|Mobile/i.test(
+                        navigator.userAgent || ""
+                    );
+
+
+                /*
+                 * PHONE / TABLET
+                 */
+
+                if (
+                    cameraInput &&
+                    (touchDevice || mobileBrowser)
+                ) {
+
+                    cameraInput.value = "";
+
+                    cameraInput.click();
+
+                    return;
+                }
+
+
+                /*
+                 * LAPTOP / DESKTOP
+                 */
+
+                if (
+                    typeof openAICamera ===
+                    "function"
+                ) {
+
+                    openAICamera();
+
+                    return;
+                }
+
+
+                /*
+                 * FALLBACK
+                 */
+
+                if (cameraInput) {
+
+                    cameraInput.value = "";
+
+                    cameraInput.click();
+
+                    return;
+                }
+
+
+                alert(
+                    "Camera is not available on this device."
+                );
+
+                return;
+            }
+
+
+            /*
+             * Click outside menu
+             */
+
+            const menu =
+                getElement("aiAttachMenu");
+
+            if (
+                menu &&
+                !menu.hidden &&
+                !target.closest("#aiAttachMenu")
+            ) {
+                closeMenu();
+            }
+
+        },
+        true
+    );
+
+
+    /*
+     * Make sure file inputs always react.
+     */
+
+    document.addEventListener(
+        "change",
+        function (event) {
+
+            const target = event.target;
+
+            if (
+                !(target instanceof HTMLInputElement)
+            ) {
+                return;
+            }
+
+            if (
+                target.id !== "aiImageInput" &&
+                target.id !== "aiCameraInput"
+            ) {
+                return;
+            }
+
+            const file =
+                target.files &&
+                target.files.length
+                    ? target.files[0]
+                    : null;
+
+            if (!file) {
+                return;
+            }
+
+            if (
+                typeof setAIImage ===
+                "function"
+            ) {
+                setAIImage(file);
+            }
+
+        },
+        true
+    );
+
+})();
+
+/* STUDYANTE_MOBILE_ATTACHMENT_FIX_END */
