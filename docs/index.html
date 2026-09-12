@@ -2773,6 +2773,188 @@ body.studyante-dark
 /* STUDYANTE_DASHBOARD_2D_FIX_END */
 </style>
 
+
+<style>
+/* STUDYANTE_RECENT_STYLE_V2_START */
+
+.studyante-recent-flashcards {
+    display: grid !important;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 16px !important;
+}
+
+.studyante-recent-flashcard {
+    position: relative !important;
+
+    min-height: 170px !important;
+
+    padding: 22px !important;
+
+    border-radius: 18px !important;
+
+    border: 1px solid #dbe2ea !important;
+
+    background: #ffffff !important;
+
+    box-shadow: none !important;
+
+    overflow: hidden !important;
+
+    cursor: pointer !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+.studyante-recent-flashcard:hover {
+    transform: none !important;
+
+    border-color: #2563eb !important;
+
+    box-shadow: none !important;
+}
+
+.studyante-recent-flashcard-icon {
+    display: none !important;
+}
+
+.studyante-recent-flashcard h3 {
+    margin: 0 0 14px !important;
+
+    font-size: 21px !important;
+    font-weight: 700 !important;
+
+    color: #111827 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.studyante-recent-flashcard p {
+    margin: 0 0 15px !important;
+
+    font-size: 13px !important;
+
+    color: #64748b !important;
+}
+
+
+/* fake study progress */
+
+.studyante-recent-flashcard::before {
+    content: "";
+
+    display: block;
+
+    width: 70% !important;
+    height: 9px !important;
+
+    position: absolute !important;
+
+    left: 22px !important;
+    top: 70px !important;
+
+    border-radius: 999px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            #22c55e 0%,
+            #22c55e 45%,
+            #334155 45%,
+            #334155 100%
+        ) !important;
+}
+
+
+/* Continue button */
+
+.studyante-recent-flashcard::after {
+    content: "Continue";
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 95px !important;
+    height: 38px !important;
+
+    margin-top: auto !important;
+
+    border-radius: 20px !important;
+
+    background: #3155f5 !important;
+
+    color: #ffffff !important;
+
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+
+
+/* DARK MODE */
+
+body.studyante-dark
+.studyante-recent-flashcard {
+    background: #1f2146 !important;
+
+    border-color: #33365d !important;
+}
+
+body.studyante-dark
+.studyante-recent-flashcard h3 {
+    color: #f8fafc !important;
+}
+
+body.studyante-dark
+.studyante-recent-flashcard p {
+    color: #cbd5e1 !important;
+}
+
+body.studyante-dark
+.studyante-recent-flashcard:hover {
+    background: #25284f !important;
+
+    border-color: #4f67ff !important;
+}
+
+
+/* RECENT HEADER */
+
+.studyante-dashboard-block-header h2 {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+}
+
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+    .studyante-recent-flashcards {
+        grid-template-columns: 1fr !important;
+    }
+
+    .studyante-recent-flashcard {
+        min-height: 150px !important;
+        padding: 18px !important;
+    }
+
+    .studyante-recent-flashcard::before {
+        left: 18px !important;
+        top: 64px !important;
+        width: 72% !important;
+    }
+}
+
+/* STUDYANTE_RECENT_STYLE_V2_END */
+</style>
+
 </head>
 
 <body>
