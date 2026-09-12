@@ -2377,6 +2377,76 @@ body.studyante-admin-page #studyanteAdminPage {
 /* STUDYANTE_ADMIN_SPACE_FIX_END */
 </style>
 
+
+<style>
+/* STUDYANTE_ADMIN_MAIN_SPACE_FIX_START */
+
+/* Remove the empty normal-page area while Admin is open */
+body.studyante-admin-page main {
+    display: none !important;
+}
+
+/* Admin begins directly below the top area */
+body.studyante-admin-page #studyanteAdminPage {
+    display: block !important;
+    position: relative !important;
+
+    top: auto !important;
+    bottom: auto !important;
+
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+
+    min-height: 100vh !important;
+    height: auto !important;
+
+    transform: none !important;
+}
+
+/* Normal sidebar open */
+body.studyante-admin-page:not(.sidebar-closed) #studyanteAdminPage {
+    margin-left: 220px !important;
+    width: calc(100% - 220px) !important;
+}
+
+/* Sidebar closed */
+body.studyante-admin-page.sidebar-closed #studyanteAdminPage {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+.studyante-admin-wrap {
+    margin: 0 !important;
+    padding: 75px 24px 30px !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.studyante-admin-header {
+    margin-top: 0 !important;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+
+    body.studyante-admin-page:not(.sidebar-closed) #studyanteAdminPage {
+        margin-left: 110px !important;
+        width: calc(100% - 110px) !important;
+    }
+
+    body.studyante-admin-page.sidebar-closed #studyanteAdminPage {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    .studyante-admin-wrap {
+        padding: 65px 14px 24px !important;
+    }
+}
+
+/* STUDYANTE_ADMIN_MAIN_SPACE_FIX_END */
+</style>
+
 </head>
 
 <body>
