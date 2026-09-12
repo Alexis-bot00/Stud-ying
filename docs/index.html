@@ -1169,6 +1169,407 @@ document.addEventListener(
 
 <!-- STUDYANTE_MOBILE_FINAL_END -->
 
+
+<!-- STUDYANTE_LAYOUT_V2_START -->
+<style>
+
+/* =========================================
+   STUDYante RESPONSIVE LAYOUT
+========================================= */
+
+html,
+body {
+    margin: 0 !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    overflow-x: hidden !important;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+.sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+
+    width: 220px !important;
+    height: 100vh !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    z-index: 1000 !important;
+}
+
+
+/* Main area */
+main,
+.main-content {
+    margin-left: 220px !important;
+
+    width: calc(100% - 220px) !important;
+    max-width: calc(100% - 220px) !important;
+
+    min-height: 100vh !important;
+}
+
+
+/* Profile always right */
+.studyante-top-profile-wrap {
+    position: fixed !important;
+
+    top: 8px !important;
+    right: 15px !important;
+
+    z-index: 10000 !important;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 150px !important;
+        min-width: 150px !important;
+        max-width: 150px !important;
+
+        padding: 8px !important;
+    }
+
+
+    .studyante-logo {
+        width: 90px !important;
+    }
+
+
+    .sidebar a,
+    .sidebar button {
+        font-size: 11px !important;
+        padding: 8px 6px !important;
+    }
+
+
+    main,
+    .main-content {
+        margin-left: 150px !important;
+
+        width: calc(100% - 150px) !important;
+        max-width: calc(100% - 150px) !important;
+
+        padding: 10px 15px !important;
+    }
+
+
+    /* SEARCH BAR */
+    .search-container,
+    .search-wrapper,
+    .search-bar,
+    .student-search,
+    .top-search {
+        position: fixed !important;
+
+        top: 8px !important;
+
+        left: calc(150px + ((100vw - 150px) / 2)) !important;
+
+        transform: translateX(-50%) !important;
+
+        width: 230px !important;
+        max-width: 230px !important;
+
+        z-index: 9000 !important;
+    }
+
+
+    input[placeholder*="Search students"],
+    input[placeholder*="Search Students"],
+    input[placeholder*="search students"] {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: 32px !important;
+
+        font-size: 11px !important;
+    }
+
+}
+
+
+/* =========================================
+   PHONE
+========================================= */
+
+@media (max-width: 600px) {
+
+    /* SIDEBAR */
+    .sidebar {
+        width: 105px !important;
+        min-width: 105px !important;
+        max-width: 105px !important;
+
+        height: 100vh !important;
+
+        padding: 7px 5px !important;
+
+        border-right: 1px solid rgba(128,128,128,.25) !important;
+    }
+
+
+    /* LOGO */
+    .studyante-brand {
+        padding: 8px 3px 15px !important;
+        text-align: center !important;
+    }
+
+    .studyante-logo {
+        width: 75px !important;
+        max-width: 75px !important;
+    }
+
+
+    /* SIDEBAR LINKS */
+    .sidebar a,
+    .sidebar button {
+        display: flex !important;
+        align-items: center !important;
+
+        width: 100% !important;
+
+        font-size: 9px !important;
+
+        padding: 8px 4px !important;
+
+        white-space: normal !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* CHAT HISTORY SEPARATION */
+    .sidebar-bottom-controls,
+    .chat-history,
+    .history-section,
+    .chat-history-container {
+        border-top: 1px solid rgba(128,128,128,.25) !important;
+
+        margin-top: 15px !important;
+        padding-top: 12px !important;
+    }
+
+
+    /* MAIN CONTENT */
+    main,
+    .main-content {
+        margin-left: 105px !important;
+
+        width: calc(100% - 105px) !important;
+        max-width: calc(100% - 105px) !important;
+
+        min-width: 0 !important;
+
+        padding: 55px 10px 10px !important;
+    }
+
+
+    /* =====================================
+       SMALL SEARCH BAR
+    ===================================== */
+
+    .search-container,
+    .search-wrapper,
+    .search-bar,
+    .student-search,
+    .top-search {
+        position: fixed !important;
+
+        top: 8px !important;
+
+        left: calc(105px + ((100vw - 105px) / 2)) !important;
+
+        transform: translateX(-50%) !important;
+
+        width: 150px !important;
+        max-width: 150px !important;
+
+        height: 30px !important;
+
+        z-index: 9000 !important;
+
+        margin: 0 !important;
+    }
+
+
+    input[placeholder*="Search students"],
+    input[placeholder*="Search Students"],
+    input[placeholder*="search students"] {
+        width: 150px !important;
+        max-width: 150px !important;
+
+        height: 28px !important;
+
+        font-size: 9px !important;
+
+        padding-left: 25px !important;
+        padding-right: 5px !important;
+    }
+
+
+    /* Hide search button on mobile */
+    .search-container button,
+    .search-wrapper button,
+    .search-bar button,
+    .student-search button,
+    .top-search button {
+        display: none !important;
+    }
+
+
+    /* =====================================
+       PROFILE RIGHT
+    ===================================== */
+
+    .studyante-top-profile-wrap {
+        position: fixed !important;
+
+        top: 7px !important;
+        right: 6px !important;
+
+        margin: 0 !important;
+
+        z-index: 10000 !important;
+    }
+
+
+    .studyante-top-profile-button {
+        width: 31px !important;
+        min-width: 31px !important;
+        max-width: 31px !important;
+
+        height: 31px !important;
+
+        padding: 0 !important;
+
+        border-radius: 50% !important;
+    }
+
+
+    /* PROFILE DROPDOWN */
+    .studyante-profile-dropdown,
+    .studyante-top-profile-menu {
+        position: fixed !important;
+
+        top: 45px !important;
+        right: 6px !important;
+        left: auto !important;
+
+        width: 220px !important;
+        max-width: calc(100vw - 115px) !important;
+
+        z-index: 10001 !important;
+    }
+
+
+    /* CONTENT */
+    .dashboard,
+    .dashboard-content,
+    .page-content,
+    .content,
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+
+    /* CARDS */
+    .dashboard-grid,
+    .cards,
+    .card-grid,
+    .grid {
+        grid-template-columns: 1fr !important;
+
+        width: 100% !important;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL PHONE
+========================================= */
+
+@media (max-width: 400px) {
+
+    .sidebar {
+        width: 95px !important;
+        min-width: 95px !important;
+        max-width: 95px !important;
+    }
+
+
+    .studyante-logo {
+        width: 68px !important;
+    }
+
+
+    main,
+    .main-content {
+        margin-left: 95px !important;
+
+        width: calc(100% - 95px) !important;
+        max-width: calc(100% - 95px) !important;
+
+        padding-top: 50px !important;
+    }
+
+
+    .search-container,
+    .search-wrapper,
+    .search-bar,
+    .student-search,
+    .top-search {
+        left: calc(95px + ((100vw - 95px) / 2)) !important;
+
+        width: 125px !important;
+        max-width: 125px !important;
+    }
+
+
+    input[placeholder*="Search students"],
+    input[placeholder*="Search Students"],
+    input[placeholder*="search students"] {
+        width: 125px !important;
+        max-width: 125px !important;
+
+        height: 26px !important;
+
+        font-size: 8px !important;
+    }
+
+
+    .studyante-top-profile-button {
+        width: 28px !important;
+        min-width: 28px !important;
+        height: 28px !important;
+    }
+
+}
+
+</style>
+<!-- STUDYANTE_LAYOUT_V2_END -->
+
 </head>
 
 <body>
