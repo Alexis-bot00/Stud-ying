@@ -2100,6 +2100,101 @@ main,
 </style>
 <!-- STUDYANTE_MOBILE_SEARCH_FINAL_END -->
 
+
+<!-- STUDYANTE_SEARCH_ADJUST_START -->
+<style>
+
+/* TABLET */
+@media (max-width: 900px) {
+
+    .search-container,
+    .search-wrapper,
+    .student-search,
+    .search-bar,
+    .top-search {
+        width: 260px !important;
+        max-width: 260px !important;
+
+        /* move slightly right */
+        left: 185px !important;
+        right: auto !important;
+
+        transform: none !important;
+    }
+
+}
+
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+    .search-container,
+    .search-wrapper,
+    .student-search,
+    .search-bar,
+    .top-search {
+        /* slightly bigger */
+        width: 165px !important;
+        max-width: 165px !important;
+
+        /* slightly more to the right */
+        left: 140px !important;
+        right: auto !important;
+
+        transform: none !important;
+    }
+
+    input[placeholder*="Search students"],
+    input[placeholder*="Search Students"],
+    input[placeholder*="search students"] {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: 30px !important;
+        font-size: 9px !important;
+    }
+
+}
+
+
+/* SMALL PHONE */
+@media (max-width: 430px) {
+
+    .search-container,
+    .search-wrapper,
+    .student-search,
+    .search-bar,
+    .top-search {
+        width: 145px !important;
+        max-width: 145px !important;
+
+        left: 128px !important;
+        right: auto !important;
+    }
+
+}
+
+
+/* SIDEBAR CLOSED:
+   search can use more space */
+@media (max-width: 600px) {
+
+    body.sidebar-closed .search-container,
+    body.sidebar-closed .search-wrapper,
+    body.sidebar-closed .student-search,
+    body.sidebar-closed .search-bar,
+    body.sidebar-closed .top-search {
+        left: 60px !important;
+
+        width: 190px !important;
+        max-width: 190px !important;
+    }
+
+}
+
+</style>
+<!-- STUDYANTE_SEARCH_ADJUST_END -->
+
 </head>
 
 <body>
