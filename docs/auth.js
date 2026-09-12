@@ -104,6 +104,10 @@
         JSON.stringify(data.user)
       );
 
+      studyanteApplyUserProfile(
+        data.user
+      );
+
 
       const userName =
         document.getElementById(
