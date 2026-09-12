@@ -1570,6 +1570,226 @@ main,
 </style>
 <!-- STUDYANTE_LAYOUT_V2_END -->
 
+
+<!-- STUDYANTE_MOBILE_STACK_START -->
+<style>
+
+/* PHONE + TABLET FIX */
+@media (max-width: 900px) {
+
+    /* SIDEBAR */
+    .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+
+        width: 125px !important;
+        min-width: 125px !important;
+        max-width: 125px !important;
+
+        height: 100vh !important;
+
+        padding: 10px 7px !important;
+
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+
+        z-index: 9999 !important;
+    }
+
+    .studyante-logo {
+        width: 82px !important;
+        max-width: 82px !important;
+    }
+
+    /* STACK SIDEBAR ITEMS VERTICALLY */
+    .sidebar nav,
+    .sidebar .nav-menu,
+    .sidebar .sidebar-menu {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+
+    .sidebar a,
+    .sidebar button,
+    .sidebar .nav-item,
+    .sidebar .sidebar-item {
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin: 0 0 6px 0 !important;
+
+        padding: 8px 5px !important;
+
+        font-size: 10px !important;
+        line-height: 1.25 !important;
+
+        white-space: normal !important;
+
+        text-align: left !important;
+    }
+
+
+    /* CHAT HISTORY SEPARATE SECTION */
+    .chat-history,
+    .history-section,
+    .chat-history-container {
+        display: block !important;
+
+        border-top: 1px solid rgba(128,128,128,.35) !important;
+
+        margin-top: 18px !important;
+        padding-top: 12px !important;
+    }
+
+
+    /* MAIN CONTENT */
+    main,
+    .main-content {
+        margin-left: 125px !important;
+
+        width: calc(100% - 125px) !important;
+        max-width: calc(100% - 125px) !important;
+
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+
+        min-width: 0 !important;
+    }
+
+
+    /* SMALL SEARCH BAR */
+    .search-container,
+    .search-wrapper,
+    .search-bar,
+    .student-search,
+    .top-search {
+        position: fixed !important;
+
+        top: 8px !important;
+
+        left: calc(125px + 20px) !important;
+
+        transform: none !important;
+
+        width: 120px !important;
+        max-width: 120px !important;
+        min-width: 120px !important;
+
+        margin: 0 !important;
+
+        z-index: 9000 !important;
+    }
+
+    input[placeholder*="Search students"],
+    input[placeholder*="Search Students"],
+    input[placeholder*="search students"] {
+        width: 120px !important;
+        max-width: 120px !important;
+        min-width: 120px !important;
+
+        height: 28px !important;
+
+        font-size: 9px !important;
+
+        padding-left: 22px !important;
+        padding-right: 5px !important;
+    }
+
+    /* HIDE SEARCH BUTTON ON SMALL DEVICES */
+    .search-container button,
+    .search-wrapper button,
+    .search-bar button,
+    .student-search button,
+    .top-search button {
+        display: none !important;
+    }
+
+
+    /* PROFILE */
+    .studyante-top-profile-wrap {
+        position: fixed !important;
+
+        top: 7px !important;
+        right: 7px !important;
+
+        z-index: 10000 !important;
+    }
+
+    .studyante-top-profile-button {
+        width: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
+
+        height: 30px !important;
+
+        padding: 0 !important;
+    }
+}
+
+
+/* SMALL PHONE */
+@media (max-width: 480px) {
+
+    .sidebar {
+        width: 110px !important;
+        min-width: 110px !important;
+        max-width: 110px !important;
+    }
+
+    main,
+    .main-content {
+        margin-left: 110px !important;
+
+        width: calc(100% - 110px) !important;
+        max-width: calc(100% - 110px) !important;
+    }
+
+    .studyante-logo {
+        width: 72px !important;
+    }
+
+    .sidebar a,
+    .sidebar button,
+    .sidebar .nav-item,
+    .sidebar .sidebar-item {
+        font-size: 9px !important;
+
+        margin-bottom: 7px !important;
+    }
+
+    .search-container,
+    .search-wrapper,
+    .search-bar,
+    .student-search,
+    .top-search {
+        left: 122px !important;
+
+        width: 95px !important;
+        max-width: 95px !important;
+        min-width: 95px !important;
+    }
+
+    input[placeholder*="Search students"],
+    input[placeholder*="Search Students"],
+    input[placeholder*="search students"] {
+        width: 95px !important;
+        max-width: 95px !important;
+        min-width: 95px !important;
+
+        height: 26px !important;
+
+        font-size: 8px !important;
+    }
+}
+
+</style>
+<!-- STUDYANTE_MOBILE_STACK_END -->
+
 </head>
 
 <body>
