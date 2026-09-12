@@ -1500,6 +1500,7 @@
 
   function initializeStudyanteTopProfileMenu() {
 
+    installStudyanteAccountSettings();
     installStudyanteTopProfileMenu();
 
     if (
