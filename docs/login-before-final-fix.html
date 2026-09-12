@@ -1,0 +1,507 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>STUDYante | Login</title>
+
+  <link
+    rel="stylesheet"
+    href="login.css"
+  >
+
+  <script
+    src="login.js"
+    defer
+  ></script>
+    <link rel="icon" type="image/png" href="assets/studyante-logo.png">
+</head>
+
+<body>
+
+  <main class="auth-page">
+
+    <section class="auth-left">
+
+      <div class="logo">
+        <span class="logo-red">
+          Study
+        </span><span class="logo-blue">ing</span>
+      </div>
+
+      <div class="hero-content">
+
+        <div class="hero-badge">
+          Your personal study space
+        </div>
+
+        <h1>
+          Study smarter.<br>
+          Learn better.
+        </h1>
+
+        <p>
+          Upload your lessons, create notes,
+          flashcards, practice tests and study
+          games with AI.
+        </p>
+
+        <div class="feature-list">
+
+          <div class="feature">
+
+            <div class="feature-icon red">
+              ðŸ“š
+            </div>
+
+            <div>
+              <strong>
+                Your own library
+              </strong>
+
+              <span>
+                Your files and study materials
+                stay inside your account.
+              </span>
+            </div>
+
+          </div>
+
+
+          <div class="feature">
+
+            <div class="feature-icon blue">
+              âœ¦
+            </div>
+
+            <div>
+              <strong>
+                Studying AI
+              </strong>
+
+              <span>
+                Ask questions based on your
+                uploaded lessons.
+              </span>
+            </div>
+
+          </div>
+
+
+          <div class="feature">
+
+            <div class="feature-icon red">
+              ðŸ§ 
+            </div>
+
+            <div>
+              <strong>
+                Practice your lessons
+              </strong>
+
+              <span>
+                Create flashcards, tests and
+                study games.
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="copyright">
+        Â© 2026 STUDYante
+      </div>
+
+    </section>
+
+
+    <section class="auth-right">
+
+      <div class="auth-card">
+
+        <div class="mobile-logo">
+          <span class="logo-red">
+            Study
+          </span><span class="logo-blue">ing</span>
+        </div>
+
+
+        <section
+          id="loginView"
+          class="auth-view"
+        >
+
+          <div class="auth-header">
+
+            <h2>
+              Welcome back
+            </h2>
+
+            <p>
+              Login to continue to your
+              Studying account.
+            </p>
+
+          </div>
+
+
+          <form
+            id="loginForm"
+            class="auth-form"
+          >
+
+            <div class="form-group">
+
+              <label for="loginEmail">
+                Email
+              </label>
+
+              <input
+                type="email"
+                id="loginEmail"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="loginPassword">
+                Password
+              </label>
+
+              <div class="password-wrapper">
+
+                <input
+                  type="password"
+                  id="loginPassword"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                >
+
+                <button
+                  type="button"
+                  class="password-toggle"
+                  data-target="loginPassword"
+                >
+                  Show
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="submit"
+              id="loginButton"
+              class="auth-button"
+            >
+              Login
+            </button>
+
+
+            <div
+              id="loginMessage"
+              class="form-message"
+            ></div>
+
+          </form>
+
+
+          <div class="auth-switch">
+
+            <span>
+              Don't have an account?
+            </span>
+
+            <button
+              type="button"
+              id="showRegister"
+            >
+              Create account
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <section
+          id="registerView"
+          class="auth-view hidden"
+        >
+
+          <div class="auth-header">
+
+            <h2>
+              Create your account
+            </h2>
+
+            <p>
+              Create your own personal
+              Studying workspace.
+            </p>
+
+          </div>
+
+
+          <form
+            id="registerForm"
+            class="auth-form"
+          >
+
+            <div class="form-group">
+
+              <label for="registerName">
+                Full Name
+              </label>
+
+              <input
+                type="text"
+                id="registerName"
+                placeholder="Enter your name"
+                autocomplete="name"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="registerEmail">
+                Email
+              </label>
+
+              <input
+                type="email"
+                id="registerEmail"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="registerPassword">
+                Password
+              </label>
+
+              <div class="password-wrapper">
+
+                <input
+                  type="password"
+                  id="registerPassword"
+                  placeholder="At least 6 characters"
+                  minlength="6"
+                  autocomplete="new-password"
+                  required
+                >
+
+                <button
+                  type="button"
+                  class="password-toggle"
+                  data-target="registerPassword"
+                >
+                  Show
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="confirmPassword">
+                Confirm Password
+              </label>
+
+              <div class="password-wrapper">
+
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  placeholder="Repeat your password"
+                  minlength="6"
+                  autocomplete="new-password"
+                  required
+                >
+
+                <button
+                  type="button"
+                  class="password-toggle"
+                  data-target="confirmPassword"
+                >
+                  Show
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="submit"
+              id="registerButton"
+              class="auth-button"
+            >
+              Create Account
+            </button>
+
+
+            <div
+              id="registerMessage"
+              class="form-message"
+            ></div>
+
+          </form>
+
+
+          <div class="auth-switch">
+
+            <span>
+              Already have an account?
+            </span>
+
+            <button
+              type="button"
+              id="showLogin"
+            >
+              Login
+            </button>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+  </main>
+
+    <script src="brand.js"></script>
+
+<script id="studyante-brand-fix">
+document.addEventListener("DOMContentLoaded", function () {
+
+    const selectors = [
+        ".brand",
+        ".logo",
+        ".brand-name",
+        ".sidebar-brand",
+        ".sidebar-logo",
+        ".navbar-brand",
+        ".app-brand",
+        ".login-brand",
+        ".auth-brand"
+    ];
+
+    function cleanText(element) {
+        return (element.textContent || "")
+            .replace(/\s+/g, "")
+            .toLowerCase();
+    }
+
+    let found = false;
+
+    selectors.forEach(function (selector) {
+
+        document
+            .querySelectorAll(selector)
+            .forEach(function (element) {
+
+                if (found) {
+                    return;
+                }
+
+                const text =
+                    cleanText(element);
+
+                if (
+                    text === "studying"
+                ) {
+
+                    element.innerHTML =
+                        '<img src="assets/studyante-logo.png" ' +
+                        'alt="STUDYante" ' +
+                        'class="studyante-logo">';
+
+                    element.classList.add(
+                        "studyante-brand"
+                    );
+
+                    found = true;
+                }
+            });
+    });
+
+
+    if (!found) {
+
+        const elements =
+            document.querySelectorAll(
+                "h1,h2,a,div"
+            );
+
+        elements.forEach(
+            function (element) {
+
+                if (found) {
+                    return;
+                }
+
+                const text =
+                    cleanText(element);
+
+                const rect =
+                    element
+                        .getBoundingClientRect();
+
+                if (
+                    text === "studying" &&
+                    rect.top < 180
+                ) {
+
+                    element.innerHTML =
+                        '<img src="assets/studyante-logo.png" ' +
+                        'alt="STUDYante" ' +
+                        'class="studyante-logo">';
+
+                    element.classList.add(
+                        "studyante-brand"
+                    );
+
+                    found = true;
+                }
+            }
+        );
+    }
+
+});
+</script>
+
+</body>
+
+</html>
+
+
+

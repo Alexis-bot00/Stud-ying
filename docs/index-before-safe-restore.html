@@ -13,7 +13,7 @@
 
   <link
     rel="stylesheet"
-    href="style.css?v=20260912-markdown1"
+    href="style.css"
   >
 <style id="studying-hide-ai-provider">
 #providerSection,
@@ -142,8 +142,6 @@
 
 </style>
 
-  <link rel="stylesheet" href="community.css?v=20260912-globalusers1">
-  <link rel="stylesheet" href="theme.css?v=20260908-sidebar1">
 </head>
 
 <body>
@@ -165,9 +163,8 @@
       <a href="#library" data-page="library">
         ðŸ“š My Library
       </a>
-
       <a href="#community" data-page="community">
-        &#127760; Community Notes
+        🌐 Community Notes
       </a>
 
       <a href="#ai" data-page="ai">
@@ -177,20 +174,13 @@
 
     </nav>
 
-
-
-
-    </div>
-
-
-
     <div class="sidebar-chat-history">
       <div class="chat-history-panel">
-
+      
                 <div class="chat-history-header">
-
+      
                   <h3>Chat History</h3>
-
+      
                   <button
                     id="newChatButton"
                     class="new-chat-btn"
@@ -198,9 +188,9 @@
                   >
                     + New Chat
                   </button>
-
+      
                 </div>
-
+      
                 <div
                   id="chatHistoryList"
                   class="chat-history-list"
@@ -209,83 +199,14 @@
                     Loading chats...
                   </div>
                 </div>
-    <div class="sidebar-bottom-controls">
-
-
-
-<div class="sidebar-user-panel">
-
-        <!-- STUDYANTE_BOTTOM_LOGOUT_REMOVED -->
-
-    </div>
-
-
+      
               </div>
     </div>
 
   </aside>
 
 
-
-
-  <!-- STUDYANTE_GLOBAL_USER_SEARCH_START -->
-
-  <div
-    id="studyanteGlobalSearch"
-    class="studyante-global-search"
-  >
-
-    <div class="studyante-global-search-box">
-
-      <span
-        class="studyante-global-search-icon"
-        aria-hidden="true"
-      >
-        &#128269;
-      </span>
-
-      <input
-        id="communityUserSearchInput"
-        type="search"
-        placeholder="Search students..."
-        autocomplete="off"
-        aria-label="Search STUDYante students"
-      >
-
-      <button
-        id="communityUserSearchButton"
-        type="button"
-        class="studyante-global-search-button"
-      >
-        Search
-      </button>
-
-    </div>
-
-    <div
-      id="communityUserSearchPanel"
-      class="studyante-global-search-panel"
-      hidden
-    >
-
-      <div
-        id="communityUserSearchStatus"
-        class="community-user-search-status"
-        hidden
-      ></div>
-
-      <div
-        id="communityUserResults"
-        class="community-user-results"
-      ></div>
-
-    </div>
-
-  </div>
-
-  <!-- STUDYANTE_GLOBAL_USER_SEARCH_END -->
-
-<main>
+  <main>
 
     <section
       id="dashboard"
@@ -300,19 +221,44 @@
         <p>What are we studying today?</p>
       </div>
 
-      </header>
+      <div class="topbar-right">
+
+        <div class="profile">
+
+          <div class="avatar">
+            A
+          </div>
+
+          <div>
+            <strong>Student</strong>
+            <small>BSIT Student</small>
+          </div>
+
+        </div>
+
+        <button
+          id="logoutButton"
+          class="logout-btn"
+          type="button"
+        >
+          Logout
+        </button>
+
+      </div>
+
+    </header>
 
 
+    
 
 
-
-
+    
     </section>
 
     <section
       id="upload"
       class="panel studyante-page"
-     hidden>
+    >
 
       <div class="section-title">
         <h2>Upload Study Material</h2>
@@ -584,7 +530,7 @@
     <section
       id="library"
       class="panel studyante-page"
-     hidden>
+    >
 
       <div class="library-header">
 
@@ -671,8 +617,9 @@
     </section>
 
 
+    
 
-<section
+    <section
       id="community"
       class="panel studyante-page"
       hidden
@@ -681,10 +628,10 @@
       <div class="community-header">
 
         <div class="section-title">
-          <h2>&#127760; Community Notes</h2>
+          <h2>🌐 Community Notes</h2>
 
           <p>
-            Explore study materials shared by students and approved by STUDYante.
+            Discover study materials shared and approved by STUDYante.
           </p>
         </div>
 
@@ -693,36 +640,38 @@
           type="button"
           class="secondary-btn"
         >
-          Refresh
+          🔄 Refresh
         </button>
 
       </div>
-<div
+
+
+      <div
         id="communityStatus"
         class="library-status"
       >
         Loading community materials...
       </div>
 
+
       <div
         id="communityGrid"
-        class="community-grid"
+        class="library-grid community-grid"
       ></div>
 
 
       <div
-        id="communityAdmin"
-        class="community-admin"
+        id="communityAdminPanel"
+        class="community-admin-panel"
         hidden
       >
 
-        <div class="community-admin-header">
-
+        <div class="community-admin-heading">
           <div>
-            <h2>Admin Review</h2>
+            <h2>🛡️ Admin Review</h2>
 
             <p>
-              Approve or reject submitted study materials.
+              Review study materials submitted by students.
             </p>
           </div>
 
@@ -731,29 +680,31 @@
             type="button"
             class="secondary-btn"
           >
-            Refresh
+            🔄 Refresh
           </button>
-
         </div>
+
 
         <div
           id="communityPendingStatus"
           class="library-status"
-        ></div>
+        >
+          Loading pending submissions...
+        </div>
+
 
         <div
           id="communityPendingGrid"
-          class="community-grid"
+          class="library-grid community-grid"
         ></div>
 
       </div>
 
     </section>
-
 <section
       id="ai"
       class="panel studyante-page"
-     hidden>
+    >
 
       <div class="section-title">
         <h2>&#x1F916; STUDYante AI</h2>
@@ -820,14 +771,14 @@
             <input
               id="aiImageInput"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               hidden
             >
 
             <input
               id="aiCameraInput"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               capture="environment"
               hidden
             >
@@ -1193,324 +1144,9 @@
 
   </div>
 
-
-  <!-- STUDYANTE_ACCOUNT_SETTINGS_MODAL_START -->
-
-  <div
-    id="accountSettingsModal"
-    class="studyante-account-modal"
-    hidden
-  >
-
-    <div class="studyante-account-card">
-
-      <div class="studyante-account-header">
-
-        <div>
-          <h2>Account Settings</h2>
-          <p>
-            Update your STUDYante profile and password.
-          </p>
-        </div>
-
-        <button
-          id="closeAccountSettings"
-          class="studyante-account-close"
-          type="button"
-          aria-label="Close account settings"
-        >
-          &#10005;
-        </button>
-
-      </div>
-
-
-      <section class="studyante-account-section">
-
-        <h3>Profile</h3>
-
-        <div class="studyante-profile-photo-editor">
-
-          <div class="studyante-settings-avatar">
-
-            <img
-              id="settingsProfilePreview"
-              alt="Profile picture preview"
-              hidden
-            >
-
-            <span
-              id="settingsProfileInitial"
-            >
-              S
-            </span>
-
-          </div>
-
-          <div class="studyante-photo-buttons">
-
-            <label
-              for="settingsProfilePicture"
-              class="secondary-btn studyante-photo-label"
-            >
-              Change Photo
-            </label>
-
-            <input
-              id="settingsProfilePicture"
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              hidden
-            >
-
-            <button
-              id="removeSettingsProfilePicture"
-              type="button"
-              class="secondary-btn"
-            >
-              Remove
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <label class="studyante-settings-label">
-          Profile Name
-
-          <input
-            id="settingsProfileName"
-            type="text"
-            autocomplete="name"
-            maxlength="80"
-            placeholder="Your name"
-          >
-        </label>
-
-
-        <label class="studyante-settings-label">
-          Email
-
-          <input
-            id="settingsProfileEmail"
-            type="email"
-            autocomplete="email"
-            placeholder="Your email"
-          >
-        </label>
-
-
-        <div
-          id="profileSettingsMessage"
-          class="studyante-settings-message"
-        ></div>
-
-
-        <button
-          id="saveProfileSettings"
-          type="button"
-          class="primary-btn studyante-settings-save"
-        >
-          Save Profile
-        </button>
-
-      </section>
-
-
-      <section class="studyante-account-section">
-
-        <h3>Change Password</h3>
-
-        <label class="studyante-settings-label">
-          Current Password
-
-          <input
-            id="settingsCurrentPassword"
-            type="password"
-            autocomplete="current-password"
-            placeholder="Enter current password"
-          >
-        </label>
-
-
-        <label class="studyante-settings-label">
-          New Password
-
-          <input
-            id="settingsNewPassword"
-            type="password"
-            minlength="6"
-            autocomplete="new-password"
-            placeholder="At least 6 characters"
-          >
-        </label>
-
-
-        <label class="studyante-settings-label">
-          Confirm New Password
-
-          <input
-            id="settingsConfirmPassword"
-            type="password"
-            minlength="6"
-            autocomplete="new-password"
-            placeholder="Repeat new password"
-          >
-        </label>
-
-
-        <div
-          id="passwordSettingsMessage"
-          class="studyante-settings-message"
-        ></div>
-
-
-        <button
-          id="changeAccountPassword"
-          type="button"
-          class="primary-btn studyante-settings-save"
-        >
-          Change Password
-        </button>
-
-      </section>
-
-    </div>
-
-  </div>
-
-  <!-- STUDYANTE_ACCOUNT_SETTINGS_MODAL_END -->
-
-  <script src="navigation.js?v=20260912-independent1"></script>
-<script src="auth.js?v=20260912-profile-reflect1"></script>
-    <script src="ai-markdown.js?v=20260912-markdown-direct2"></script>
-<script src="script.js?v=20260912-markdown-direct2"></script>
-
-  <script src="community.js?v=20260912-profile1"></script>
-  <script src="theme.js?v=20260908-theme1"></script>
-
-  <!-- STUDYANTE_TOP_PROFILE_MENU_START -->
-
-  <div class="studyante-top-profile-wrap">
-
-    <button
-      id="studyanteTopProfileButton"
-      class="studyante-top-profile-button"
-      type="button"
-      aria-label="Open profile menu"
-      aria-expanded="false"
-    >
-      <span class="studyante-top-avatar">
-
-        <img
-          id="topProfileAvatarImage"
-          alt="Profile picture"
-          hidden
-        >
-
-        <span id="topProfileAvatarInitial">
-          S
-        </span>
-
-      </span>
-    </button>
-
-
-    <div
-      id="studyanteProfileDropdown"
-      class="studyante-profile-dropdown"
-      hidden
-    >
-
-      <div class="studyante-profile-dropdown-header">
-
-        <div class="studyante-profile-dropdown-avatar">
-
-          <img
-            id="dropdownProfileAvatarImage"
-            alt="Profile picture"
-            hidden
-          >
-
-          <span id="dropdownProfileAvatarInitial">
-            S
-          </span>
-
-        </div>
-
-        <div class="studyante-profile-dropdown-user">
-
-          <strong id="dropdownProfileName">
-            Student
-          </strong>
-
-          <small id="dropdownProfileEmail">
-            student@example.com
-          </small>
-
-        </div>
-
-      </div>
-
-
-      <div class="studyante-profile-dropdown-divider"></div>
-
-
-      <button
-        id="dropdownAccountSettings"
-        class="studyante-profile-menu-item"
-        type="button"
-      >
-        <span class="studyante-profile-menu-icon">
-          &#9881;
-        </span>
-
-        <span>
-          Account Settings
-        </span>
-      </button>
-
-
-      <button
-        id="dropdownThemeToggle"
-        class="studyante-profile-menu-item"
-        type="button"
-      >
-        <span class="studyante-profile-menu-icon">
-          &#9788;
-        </span>
-
-        <span id="dropdownThemeText">
-          Dark Mode
-        </span>
-      </button>
-
-
-      <div class="studyante-profile-dropdown-divider"></div>
-
-
-      <button
-        id="dropdownLogoutButton"
-        class="studyante-profile-menu-item studyante-profile-menu-logout"
-        type="button"
-      >
-        <span class="studyante-profile-menu-icon">
-          &#10162;
-        </span>
-
-        <span>
-          Log out
-        </span>
-      </button>
-
-    </div>
-
-  </div>
-
-  <!-- STUDYANTE_TOP_PROFILE_MENU_END -->
+<script src="auth.js"></script> 
+  <script src="script.js"></script>
 
 </body>
 
 </html>
-
