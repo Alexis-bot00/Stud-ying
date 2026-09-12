@@ -5347,6 +5347,83 @@ body.studyante-admin-page #studyanteAdminPage {
 
 <!-- STUDYANTE_SUPER_ADMIN_UI_END -->
 
+
+<!-- STUDYANTE_ADMIN_NAVIGATION_FIX_START -->
+
+<script>
+(() => {
+
+    function exitStudyanteAdminMode() {
+
+        document.body.classList.remove(
+            "studyante-admin-page"
+        );
+
+        const adminPage =
+            document.getElementById(
+                "studyanteAdminPage"
+            );
+
+        if (adminPage) {
+            adminPage.hidden = true;
+            adminPage.style.display = "none";
+        }
+
+        const main =
+            document.querySelector("main");
+
+        if (main) {
+            main.style.removeProperty("display");
+        }
+
+        const adminNav =
+            document.getElementById(
+                "studyanteAdminNav"
+            );
+
+        if (adminNav) {
+            adminNav.classList.remove(
+                "active"
+            );
+        }
+    }
+
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            const link =
+                event.target.closest(
+                    ".sidebar a[data-page]"
+                );
+
+            if (!link) {
+                return;
+            }
+
+            if (
+                link.id ===
+                "studyanteAdminNav"
+            ) {
+                return;
+            }
+
+            exitStudyanteAdminMode();
+
+        },
+        true
+    );
+
+
+    window.studyanteExitAdminMode =
+        exitStudyanteAdminMode;
+
+})();
+</script>
+
+<!-- STUDYANTE_ADMIN_NAVIGATION_FIX_END -->
+
 </body>
 
 </html>
