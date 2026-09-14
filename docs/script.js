@@ -32,6 +32,27 @@ let flashcards = [];
 let currentFlashcard = 0;
 let currentFlashcardSetName = "";
 
+/* ==========================================================
+   STUDYANTE_FLASHCARD_SHUFFLE
+   ========================================================== */
+
+function studyanteShuffleFlashcards(cards) {
+  const shuffled = Array.isArray(cards)
+    ? [...cards]
+    : [];
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(
+      Math.random() * (i + 1)
+    );
+
+    [shuffled[i], shuffled[j]] =
+      [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled;
+}
+
 let manualCardCount = 0;
 
 const $ = id => document.getElementById(id);
@@ -1414,10 +1435,10 @@ function displayGenerated(
 
   if (type === "flashcards") {
     flashcards =
-      Array.isArray(
-        data.flashcards
-      )
-        ? data.flashcards
+      Array.isArray(data.flashcards)
+        ? studyanteShuffleFlashcards(
+            data.flashcards
+          )
         : [];
 
     currentFlashcard = 0;
@@ -2194,9 +2215,12 @@ function renderFlashcard(
 }
 
 function openSavedFlashcards(set) {
-  flashcards = Array.isArray(set.flashcards)
-    ? [...set.flashcards]
-    : [];
+  flashcards =
+    Array.isArray(set.flashcards)
+      ? studyanteShuffleFlashcards(
+          set.flashcards
+        )
+      : [];
 
   currentFlashcard = 0;
 
