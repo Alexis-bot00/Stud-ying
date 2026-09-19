@@ -3626,10 +3626,6 @@ function isStudyanteAdmin(userId) {
         return false;
     }
 
-    if (user.role === "admin") {
-        return true;
-    }
-
     const adminEmails =
         String(process.env.ADMIN_EMAILS || "")
             .split(",")
@@ -5546,23 +5542,16 @@ app.patch(
         const targetId =
             req.params.id;
 
-        const role =
-            String(
-                req.body?.role || ""
-            ).toLowerCase();
+        const requestedRole = String(req.body?.role || "").toLowerCase();
 
-        if (
-            role !== "admin" &&
-            role !== "student"
-        ) {
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    message:
-                        "Role must be admin or student."
-                });
+        if (requestedRole === "admin") {
+            return res.status(403).json({
+                success: false,
+                message: "Only the STUDYante owner can be an administrator."
+            });
         }
+
+        const role = "student";
 
         if (
             targetId === req.user.id &&

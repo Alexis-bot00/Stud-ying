@@ -5071,23 +5071,6 @@ body.studyante-admin-page #studyanteAdminPage {
                         <div class="studyante-admin-actions">
 
                             <button
-                                class="studyante-admin-btn studyante-admin-btn-primary"
-                                data-action="role"
-                                data-id="${escapeHTML(user.id)}"
-                                data-role="${
-                                    user.role === "admin"
-                                        ? "student"
-                                        : "admin"
-                                }"
-                            >
-                                ${
-                                    user.role === "admin"
-                                        ? "Demote"
-                                        : "Make Admin"
-                                }
-                            </button>
-
-                            <button
                                 class="studyante-admin-btn studyante-admin-btn-warning"
                                 data-action="suspend"
                                 data-id="${escapeHTML(user.id)}"

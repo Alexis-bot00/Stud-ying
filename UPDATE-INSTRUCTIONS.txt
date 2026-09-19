@@ -1,0 +1,28 @@
+STUDYante Website + App Update
+
+This version connects the Expo app to the same STUDYante accounts and Railway backend used by the website.
+
+Included app features:
+- Login and registration
+- STUDYante dashboard and original logo
+- My Library
+- Community Notes
+- STUDYante AI chat
+- User profile and logout
+- Owner-only Admin dashboard
+
+IMPORTANT ADMIN SETTING
+In Railway, ADMIN_EMAILS must contain only the owner's email address. The backend now checks this private setting directly. Regular users cannot become Admin through a stored role or by manually opening an Admin URL.
+
+POWERSHELL INSTALL
+
+1. Stop the current Expo server with Ctrl+C.
+2. Extract STUDYante-Updated.zip.
+3. Replace the existing Sudying folder with the extracted Sudying folder, or copy its files over your current folder.
+4. Run:
+
+cd "C:\Users\Alexis Dustin\Desktop\Alexis data\MyPortfolio\Sudying\STUDYante-App"
+npm.cmd install
+npm.cmd run web
+
+The website backend changes must also be deployed to Railway before the owner-only Admin security change is active online.
