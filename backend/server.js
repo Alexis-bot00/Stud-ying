@@ -1,4 +1,4 @@
-import express from "express";
+﻿import express from "express";
 import cors from "cors";
 import multer from "multer";
 import dotenv from "dotenv";
@@ -463,7 +463,11 @@ const allowedExtensions =
     ".pdf",
     ".docx",
     ".pptx",
-    ".txt"
+    ".txt",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".webp"
   ]);
 
 const storage =
@@ -535,7 +539,7 @@ const upload =
       ) {
         return callback(
           new Error(
-            "Only PDF, DOCX, PPTX and TXT files are allowed."
+            "Only PDF, DOCX, PPTX, TXT, JPG, PNG and WEBP files are allowed."
           )
         );
       }
@@ -600,6 +604,20 @@ async function extractText(
       )
       .toLowerCase();
 
+  const imageTypes = {
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".webp": "image/webp"
+  };
+
+  if (imageTypes[extension]) {
+    return askGeminiWithImage(
+      "Read this study material image carefully. Transcribe all readable text, including headings, tables, dates and labels. Preserve the order. Do not invent missing text. Return only the extracted study material.",
+      filePath,
+      imageTypes[extension]
+    );
+  }
   if (
     extension === ".txt"
   ) {
@@ -6611,8 +6629,9 @@ app.listen(
       `Ollama: ${OLLAMA_MODEL}`
     );
     console.log(
-      "Ready âœ…"
+      "Ready Ã¢Å“â€¦"
     );
     console.log("");
   }
 );
+
