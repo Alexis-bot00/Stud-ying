@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Platform, Pressable, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -79,13 +79,13 @@ function Card({ icon, title, text, color, tap }: any) { return <Pressable style=
 
 function Library({ api }: { api: any }) {
   const [data, setData] = useState<any>({}), [busy, setBusy] = useState(true), [error, setError] = useState('');
-  const load = () => { setBusy(true); api('/api/library').then(setData).catch((e: any) => setError(e.message)).finally(() => setBusy(false)); }; useEffect(load, []);
+  const load = () => { setBusy(true); api('/api/library').then(setData).catch((e: any) => setError(e.message)).finally(() => setBusy(false)); }; useEffect(() => { load(); }, []);
   const items = [...(data.files || []).map((x: any) => ({ ...x, kind: 'File' })), ...(data.flashcardSets || []).map((x: any) => ({ ...x, kind: 'Flashcards' })), ...(data.studyMaterials || []).map((x: any) => ({ ...x, kind: x.type || 'Study material' }))];
   return <Page title="My Library" sub="Your files, flashcards, notes, tests, and games." refresh={load}>{busy ? <ActivityIndicator color={C.blue} /> : error ? <Notice text={error} /> : items.length ? items.map((x: any, i: number) => <Row key={x.id || i} icon={x.kind === 'File' ? 'document-text-outline' : 'albums-outline'} title={x.name || x.title || 'Study material'} meta={x.kind} />) : <Empty text="Your library is empty. Upload a lesson to begin." />}</Page>;
 }
 function Community({ api }: { api: any }) {
   const [items, setItems] = useState<any[]>([]), [busy, setBusy] = useState(true), [error, setError] = useState('');
-  const load = () => api('/api/community').then((d: any) => setItems([...(d.files || []), ...(d.flashcardSets || [])])).catch((e: any) => setError(e.message)).finally(() => setBusy(false)); useEffect(load, []);
+  const load = () => api('/api/community').then((d: any) => setItems([...(d.files || []), ...(d.flashcardSets || [])])).catch((e: any) => setError(e.message)).finally(() => setBusy(false)); useEffect(() => { load(); }, []);
   return <Page title="Community Notes" sub="Materials approved for STUDYante learners." refresh={load}>{busy ? <ActivityIndicator color={C.blue} /> : error ? <Notice text={error} /> : items.length ? items.map((x, i) => <Row key={x.id || i} icon={x.type === 'file' ? 'document-outline' : 'layers-outline'} title={x.name} meta={`By ${x.author || 'STUDYante User'}`} />) : <Empty text="No approved community materials yet." />}</Page>;
 }
 function AI({ api }: { api: any }) {
@@ -117,3 +117,4 @@ const s = StyleSheet.create({
   nav: { position: 'absolute', left: 0, right: 0, bottom: 0, minHeight: 82, flexDirection: 'row', backgroundColor: C.white, borderTopWidth: 1, borderTopColor: C.line, paddingBottom: 10 }, navItem: { flex: 1, minWidth: 54, alignItems: 'center', justifyContent: 'center' }, navLabel: { color: C.muted, fontSize: 10, marginTop: 4, fontWeight: '700' }, navActive: { color: C.blue },
   authSafe: { flex: 1, backgroundColor: C.bg }, authWrap: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }, authCard: { width: '100%', maxWidth: 430, backgroundColor: C.white, borderRadius: 24, borderWidth: 1, borderColor: C.line, padding: 25 }, authLogo: { width: 210, height: 65, alignSelf: 'center' }, authTitle: { textAlign: 'center', color: C.navy, fontWeight: '900', fontSize: 25, marginTop: 15 }, authSub: { textAlign: 'center', color: C.muted, marginTop: 5, marginBottom: 20 }, input: { height: 52, borderRadius: 14, borderWidth: 1, borderColor: C.line, paddingHorizontal: 15, color: C.ink, marginBottom: 11, backgroundColor: '#FBFCFF' }, primary: { height: 52, borderRadius: 14, backgroundColor: C.blue, alignItems: 'center', justifyContent: 'center', marginTop: 4 }, primaryText: { color: C.white, fontWeight: '900' }, switchText: { color: C.blue, textAlign: 'center', fontWeight: '700', marginTop: 18 }, error: { color: C.red, marginBottom: 8, textAlign: 'center' },
 });
+
