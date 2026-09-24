@@ -467,6 +467,10 @@ const allowedExtensions =
     ".jpg",
     ".jpeg",
     ".png",
+    ".webp",
+    ".jpg",
+    ".jpeg",
+    ".png",
     ".webp"
   ]);
 
@@ -616,6 +620,28 @@ async function extractText(
       "Read this study material image carefully. Transcribe all readable text, including headings, tables, dates and labels. Preserve the order. Do not invent missing text. Return only the extracted study material.",
       filePath,
       imageTypes[extension]
+    );
+  }
+  if (
+    [".jpg", ".jpeg", ".png", ".webp"]
+      .includes(extension)
+  ) {
+    const imageMimeTypes = {
+      ".jpg": "image/jpeg",
+      ".jpeg": "image/jpeg",
+      ".png": "image/png",
+      ".webp": "image/webp"
+    };
+
+    return await askGeminiWithImage(
+      `Read this study-material image carefully.
+
+Extract all readable text exactly and describe useful educational
+information shown in diagrams, tables, labels, charts, or illustrations.
+
+Return only the complete lesson content. Do not add an introduction.`,
+      filePath,
+      imageMimeTypes[extension]
     );
   }
   if (
@@ -6634,4 +6660,5 @@ app.listen(
     console.log("");
   }
 );
+
 
