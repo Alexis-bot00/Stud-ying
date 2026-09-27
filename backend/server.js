@@ -884,13 +884,27 @@ Maximum allowed is ${MAX_FLASHCARDS} flashcards.
 
 Cover different parts of the lesson.
 
+For every flashcard:
+- The "question" must contain a definition, description, meaning, function, or clue.
+- The "answer" must contain the exact term, name, word, or concept being defined.
+- Do not place the term itself inside the question.
+- Do not reverse this format.
+- Keep the definition clear and understandable.
+- Avoid duplicate terms.
+
+Example:
+{
+  "question": "The smallest unit of information used by a computer.",
+  "answer": "Bit"
+}
+
 Return ONLY valid JSON:
 
 {
   "flashcards": [
     {
-      "question": "Question",
-      "answer": "Answer"
+      "question": "Definition or description",
+      "answer": "Exact term"
     }
   ]
 }
@@ -6660,5 +6674,6 @@ app.listen(
     console.log("");
   }
 );
+
 
 
