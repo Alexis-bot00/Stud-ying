@@ -3279,7 +3279,114 @@ app.post(
 
             let lesson = "";
 
-            const libraryId =
+            let libraryIds = [];
+    const rawLibraryIds =
+        req.body.libraryIds;
+
+    if (
+        Array.isArray(
+            rawLibraryIds
+        )
+    ) {
+        libraryIds =
+            rawLibraryIds;
+    } else if (
+        typeof rawLibraryIds ===
+            "string" &&
+        rawLibraryIds.trim()
+    ) {
+        try {
+            const parsed =
+                JSON.parse(
+                    rawLibraryIds
+                );
+
+            libraryIds =
+                Array.isArray(
+                    parsed
+                )
+                    ? parsed
+                    : [];
+        } catch {
+            libraryIds =
+                rawLibraryIds
+                    .split(",")
+                    .map(
+                        id =>
+                            id.trim()
+                    )
+                    .filter(Boolean);
+        }
+    }
+
+    libraryIds = [
+        ...new Set(
+            libraryIds
+                .map(
+                    id =>
+                        String(id)
+                            .trim()
+                )
+                .filter(Boolean)
+        )
+    ];
+
+    if (
+        libraryIds.length >
+        0
+    ) {
+        const library =
+            readLibrary();
+
+        const items =
+            libraryIds.map(
+                id =>
+                    library.files.find(
+                        file =>
+                            file.id ===
+                                id &&
+                            file.userId ===
+                                req.user.id
+                    )
+            );
+
+        if (
+            items.some(
+                item =>
+                    !item
+            )
+        ) {
+            throw new Error(
+                "One or more uploaded files were not found."
+            );
+        }
+
+        const lesson =
+            items
+                .map(
+                    (
+                        item,
+                        index
+                    ) =>
+                        `SOURCE ${index + 1}: ${item.name}\n\n${item.text || ""}`
+                )
+                .join(
+                    "\n\n--------------------\n\n"
+                );
+
+        return {
+            lesson,
+            name:
+                items
+                    .map(
+                        item =>
+                            item.name
+                    )
+                    .join(", ")
+        };
+    }
+
+    const libraryId =
                 String(
                     req.body.libraryId ||
                     ""
@@ -6742,6 +6849,7 @@ app.listen(
     console.log("");
   }
 );
+
 
 
 

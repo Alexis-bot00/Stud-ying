@@ -647,7 +647,10 @@ function SwipeStudyCard({
 function UploadMaterial({ api, done }: { api: any; done: () => void }) {
   const [asset, setAsset] =
     useState<DocumentPicker.DocumentPickerAsset | null>(null);
+  const [assets, setAssets] =
+    useState<DocumentPicker.DocumentPickerAsset[]>([]);
   const [libraryId, setLibraryId] = useState<string | null>(null);
+  const [libraryIds, setLibraryIds] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [result, setResult] = useState<any>(null);
@@ -676,45 +679,74 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
         'image/webp',
       ],
       copyToCacheDirectory: true,
-      multiple: false,
+      multiple: true,
     });
 
-    if (!picked.canceled) {
+    if (!picked.canceled && picked.assets.length > 0) {
+      setAssets(picked.assets);
       setAsset(picked.assets[0]);
       setLibraryId(null);
+      setLibraryIds([]);
       setResult(null);
       setType(null);
       setMessage('');
     }
   }
 
-  function attachFile(form: FormData) {
-    if (!asset) return;
-    if (Platform.OS === 'web' && asset.file) {
-      form.append('file', asset.file);
+  function attachFile(
+    form: FormData,
+    selectedAsset: DocumentPicker.DocumentPickerAsset | null = asset
+  ) {
+    if (!selectedAsset) return;
+
+    if (Platform.OS === 'web' && selectedAsset.file) {
+      form.append('file', selectedAsset.file);
     } else {
-      form.append('file', new ExpoFile(asset.uri) as any, asset.name);
+      form.append(
+        'file',
+        new ExpoFile(selectedAsset.uri) as any,
+        selectedAsset.name
+      );
     }
   }
 
   async function upload() {
-    if (!asset || busy) return;
+    if (!assets.length || busy) return;
+
     setBusy(true);
     setMessage('');
+
     try {
-      const form = new FormData();
-      attachFile(form);
-      const saved = await api('/api/library', {
-        method: 'POST',
-        body: form,
-      });
+      const uploadedIds: string[] = [];
 
-      const savedFile = saved.file || saved.data?.file || saved.data;
-      const id = savedFile?.id || savedFile?._id ||
-        saved.libraryId || saved.fileId || saved.id;
+      for (const selectedAsset of assets) {
+        const form = new FormData();
+        attachFile(form, selectedAsset);
 
-      setLibraryId(id ? String(id) : null);
-      setMessage('File saved. Choose what to generate below.');
+        const saved = await api('/api/library', {
+          method: 'POST',
+          body: form,
+        });
+
+        const savedFile = saved.file || saved.data?.file || saved.data;
+        const id = savedFile?.id || savedFile?._id ||
+          saved.libraryId || saved.fileId || saved.id;
+
+        if (!id) {
+          throw new Error(
+            `Could not save ${selectedAsset.name}.`
+          );
+        }
+
+        uploadedIds.push(String(id));
+      }
+
+      setLibraryIds(uploadedIds);
+      setLibraryId(uploadedIds[0] || null);
+      setMessage(
+        `${uploadedIds.length} file${uploadedIds.length === 1 ? '' : 's'} saved. ` +
+        'Choose what to generate below.'
+      );
     } catch (error: any) {
       setMessage(error.message || 'Upload failed.');
     } finally {
@@ -739,7 +771,9 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
       form.append('type', nextType);
       form.append('provider', 'gemini');
 
-      if (libraryId) {
+      if (libraryIds.length > 0) {
+        form.append('libraryIds', JSON.stringify(libraryIds));
+      } else if (libraryId) {
         form.append('libraryId', libraryId);
       } else {
         attachFile(form);
@@ -790,16 +824,20 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
           <Ionicons name="cloud-upload-outline" size={42} color={C.blue} />
         </View>
         <Text style={s.uploadTitle}>
-          {asset ? asset.name : 'Choose your study material'}
+          {assets.length > 1
+            ? `${assets.length} files selected`
+            : asset
+              ? asset.name
+              : 'Choose your study material'}
         </Text>
         <Text style={s.uploadText}>
-          {asset
-            ? `${Math.max(1, Math.round((asset.size || 0) / 1024))} KB selected`
-            : 'PDF, DOCX, TXT, JPG, PNG, or WEBP. Maximum size: 20 MB.'}
+          {assets.length > 0
+            ? assets.map(item => item.name).join(', ')
+            : 'PDF, DOCX, PPTX, TXT, JPG, PNG, or WEBP. Maximum size: 20 MB each.'}
         </Text>
         <Pressable style={s.outline} onPress={chooseFile} disabled={busy}>
           <Text style={s.outlineText}>
-            {asset ? 'Choose Another File' : 'Choose File'}
+            {assets.length ? 'Choose Other Files' : 'Choose Files'}
           </Text>
         </Pressable>
         <Pressable
@@ -5407,6 +5445,7 @@ const darkStyles: any = StyleSheet.create(
     })
   ) as Record<string, any>
 );
+
 
 
 
