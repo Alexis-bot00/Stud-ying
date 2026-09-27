@@ -1,4 +1,5 @@
-﻿import AsyncStorage from '@react-native-async-storage/async-storage';
+﻿import Markdown from 'react-native-markdown-display';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEffect, useRef, useState } from 'react';
 import { Modal, Alert, ActivityIndicator, Animated, Image, Linking, PanResponder, Platform, Pressable, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -8,13 +9,15 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAudioPlayer } from 'expo-audio';
 import * as Speech from 'expo-speech';
 import * as FileSystem from 'expo-file-system/legacy';
+import { File as ExpoFile } from 'expo-file-system';
+import { fetch as expoFetch } from 'expo/fetch';
 import * as Sharing from 'expo-sharing';
 
 const API = 'https://stud-ying-production.up.railway.app';
 const WEBSITE = 'https://alexis-bot00.github.io/Stud-ying/';
 const C = { blue: '#185ABD', red: '#E53945', navy: '#14213D', ink: '#24324A', muted: '#73809A', bg: '#F3F6FC', white: '#FFFFFF', line: '#E3E8F2', softBlue: '#EAF1FF', softRed: '#FFF0F1' };
 type User = { id: string; name: string; email: string; profilePicture?: string };
-type Screen = 'dashboard' | 'upload' | 'library' | 'community' | 'ai' | 'profile' | 'admin';
+type Screen = 'dashboard' | 'upload' | 'create' | 'library' | 'community' | 'ai' | 'profile' | 'admin';
 
 function savedToken() { return Platform.OS === 'web' && typeof window !== 'undefined' ? window.localStorage.getItem('studyingToken') || '' : ''; }
 function saveToken(token: string) { if (Platform.OS !== 'web' || typeof window === 'undefined') return; token ? window.localStorage.setItem('studyingToken', token) : window.localStorage.removeItem('studyingToken'); }
@@ -46,15 +49,58 @@ export default function StudyanteApp() {
 
   async function api(path: string, options: RequestInit = {}) {
     const multipart = options.body instanceof FormData;
-    const response = await fetch(`${API}${path}`, { ...options, headers: { ...(multipart ? {} : { 'Content-Type': 'application/json' }), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(options.headers || {}) } });
+    const transport: typeof fetch =
+      multipart && Platform.OS !== 'web'
+        ? (expoFetch as unknown as typeof fetch)
+        : fetch;
+    const response = await transport(`${API}${path}`, { ...options, headers: { ...(multipart ? {} : { 'Content-Type': 'application/json' }), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(options.headers || {}) } });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.message || 'Request failed.');
     return data;
   }
 
   useEffect(() => {
-    if (!token) { setLoading(false); return; }
-    Promise.all([api('/api/auth/me'), api('/api/admin/me')]).then(([me, owner]) => { setUser(me.user); setAdmin(owner.isAdmin === true); }).catch(() => { saveToken(''); setToken(''); }).finally(() => setLoading(false));
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    async function openAccount() {
+      try {
+        const [me, owner] = await Promise.all([
+          api('/api/auth/me'),
+          api('/api/admin/me'),
+        ]);
+
+        setUser(me.user);
+        setAdmin(owner.isAdmin === true);
+
+        await AsyncStorage.setItem(
+          'studyanteOfflineUser',
+          JSON.stringify({
+            user: me.user,
+            isAdmin: owner.isAdmin === true,
+          })
+        );
+      } catch {
+        const saved = await AsyncStorage.getItem(
+          'studyanteOfflineUser'
+        );
+
+        if (saved) {
+          const offlineAccount = JSON.parse(saved);
+          setUser(offlineAccount.user);
+          setAdmin(offlineAccount.isAdmin === true);
+        } else {
+          saveToken('');
+          setToken('');
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    openAccount();
   }, [token]);
 
   if (loading) return <Center text="Opening STUDYante..." />;
@@ -65,6 +111,7 @@ export default function StudyanteApp() {
     <View style={s.header}></View>
     {screen === 'dashboard' && <Dashboard user={user} admin={admin} go={setScreen} />}
     {screen === 'upload' && <UploadMaterial api={api} done={() => setScreen('library')} />}
+    {screen === 'create' && <ManualCreator api={api} done={() => setScreen('library')} back={() => setScreen('dashboard')} />}
     {screen === 'library' && <Library api={api} token={token} />}
     {screen === 'community' && <Community api={api} />}
     {screen === 'ai' && <AI api={api} />}
@@ -103,9 +150,10 @@ function Dashboard({ user, admin, go }: { user: User; admin: boolean; go: (x: Sc
   return <><Image source={require('../../assets/images/studyante-logo.png')} style={s.homeLogo} resizeMode="contain" />
 
 <Text style={s.eyebrow}>STUDY SMARTER. LEARN BETTER.</Text><Text style={s.title}>Hello, {user.name.split(' ')[0]}!</Text><Text style={s.sub}>Upload lessons, create study materials, and learn with STUDYante AI.</Text>
-    <View style={s.hero}><View style={s.heroIcon}><Ionicons name="sparkles" size={25} color={C.white} /></View><Text style={s.heroTitle}>Your study space is ready.</Text><Text style={s.heroCopy}>Your website and app now use the same STUDYante account and backend.</Text><Pressable style={s.heroButton} onPress={() => go('ai')}><Text style={s.heroButtonText}>Ask STUDYante AI</Text><Ionicons name="arrow-forward" size={18} color={C.blue} /></Pressable></View>
+    <View style={s.hero}><View style={s.heroIcon}><Ionicons name="school" size={25} color={C.white} /></View><Text style={s.heroTitle}>Your study space is ready.</Text><Text style={s.heroCopy}>Everything you need to study is in one place.</Text><Pressable style={s.heroButton} onPress={() => go('ai')}><Text style={s.heroButtonText}>Ask STUDYante AI</Text><Ionicons name="arrow-forward" size={18} color={C.blue} /></Pressable></View>
     <Text style={s.section}>Study tools</Text><View style={s.grid}>
       <Card icon="cloud-upload-outline" title="Upload Material" text="Add lessons and files" color={C.red} tap={() => go('upload')} />
+      <Card icon="create-outline" title="Create Flashcards and Notes" text="Type and save your own study tools" color="#22A06B" tap={() => go('create')} />
       <Card icon="library-outline" title="My Library" text="Files and flashcards" color={C.blue} tap={() => go('library')} />
       <Card icon="globe-outline" title="Community Notes" text="Approved materials" color="#6E47C8" tap={() => go('community')} />
       <Card icon="chatbubble-ellipses-outline" title="STUDYante AI" text="Ask and review" color="#E18A20" tap={() => go('ai')} />
@@ -114,6 +162,361 @@ function Dashboard({ user, admin, go }: { user: User; admin: boolean; go: (x: Sc
 }
 function Card({ icon, title, text, color, tap }: any) { return <Pressable style={s.card} onPress={tap}><View style={[s.cardIcon, { backgroundColor: `${color}18` }]}><Ionicons name={icon} size={24} color={color} /></View><View style={{ flex: 1 }}><Text style={s.cardTitle}>{title}</Text><Text style={s.cardText}>{text}</Text></View><Ionicons name="chevron-forward" size={17} color={C.muted} /></Pressable>; }
 
+
+function ManualCreator({
+  api,
+  done,
+  back,
+}: {
+  api: any;
+  done: () => void;
+  back: () => void;
+}) {
+  const [mode, setMode] =
+    useState<'notes' | 'flashcards' | null>(null);
+  const [name, setName] = useState('');
+  const [notes, setNotes] = useState('');
+  const [cards, setCards] = useState([
+    { question: '', answer: '' },
+  ]);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState('');
+
+  async function save() {
+    const cleanName = name.trim();
+
+    if (!cleanName || !mode || busy) {
+      setMessage('Please enter a title.');
+      return;
+    }
+
+    setBusy(true);
+    setMessage('');
+
+    try {
+      if (mode === 'notes') {
+        const cleanNotes = notes.trim();
+
+        if (!cleanNotes) {
+          throw new Error('Please enter your notes.');
+        }
+
+        await api('/api/library/study-materials', {
+          method: 'POST',
+          body: JSON.stringify({
+            type: 'notes',
+            name: cleanName,
+            folderId: null,
+            data: {
+              notes: cleanNotes,
+            },
+          }),
+        });
+      } else {
+        const flashcards = cards
+          .map(card => ({
+            question: card.question.trim(),
+            answer: card.answer.trim(),
+          }))
+          .filter(card =>
+            card.question && card.answer
+          );
+
+        if (!flashcards.length) {
+          throw new Error(
+            'Complete at least one definition and term.'
+          );
+        }
+
+        await api('/api/library/flashcards', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: cleanName,
+            folderId: null,
+            flashcards,
+          }),
+        });
+      }
+
+      done();
+    } catch (error: any) {
+      setMessage(
+        error.message || 'Could not save your study material.'
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Page
+      title="Create Study Material"
+      sub="Write and save your own notes or flashcards."
+    >
+      <Pressable
+        accessibilityLabel="Back to Home"
+        onPress={() => {
+          if (mode) {
+            setMode(null);
+            setMessage('');
+          } else {
+            back();
+          }
+        }}
+        style={{
+          alignSelf: 'flex-start',
+          width: 40,
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 14,
+        }}
+      >
+        <Ionicons
+          name="arrow-back"
+          size={23}
+          color={C.blue}
+        />
+      </Pressable>
+
+      {!mode ? (
+        <View style={s.grid}>
+          <Pressable
+            style={s.card}
+            onPress={() => setMode('notes')}
+          >
+            <View style={[s.cardIcon, {
+              backgroundColor: C.softBlue,
+            }]}>
+              <Ionicons
+                name="document-text-outline"
+                size={25}
+                color={C.blue}
+              />
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Text style={s.cardTitle}>Create Notes</Text>
+              <Text style={s.cardText}>
+                Type and save your own study notes
+              </Text>
+            </View>
+          </Pressable>
+
+          <Pressable
+            style={s.card}
+            onPress={() => setMode('flashcards')}
+          >
+            <View style={[s.cardIcon, {
+              backgroundColor: '#E9F8F0',
+            }]}>
+              <Ionicons
+                name="albums-outline"
+                size={25}
+                color="#22A06B"
+              />
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Text style={s.cardTitle}>
+                Create Flashcards
+              </Text>
+              <Text style={s.cardText}>
+                Enter definitions and their terms
+              </Text>
+            </View>
+          </Pressable>
+        </View>
+      ) : (
+        <View style={[s.uploadCard, {
+          alignItems: 'stretch',
+        }]}>
+          <Text style={s.cardTitle}>
+            {mode === 'notes'
+              ? 'Create Notes'
+              : 'Create Flashcards'}
+          </Text>
+
+          <TextInput
+            value={name}
+            onChangeText={setName}
+            placeholder={
+              mode === 'notes'
+                ? 'Notes title'
+                : 'Flashcard set name'
+            }
+            placeholderTextColor={C.muted}
+            style={{
+              borderWidth: 1,
+              borderColor: C.line,
+              borderRadius: 12,
+              padding: 12,
+              marginTop: 14,
+              color: C.ink,
+              backgroundColor: C.white,
+            }}
+          />
+
+          {mode === 'notes' ? (
+            <TextInput
+              value={notes}
+              onChangeText={setNotes}
+              placeholder="Write your notes here..."
+              placeholderTextColor={C.muted}
+              multiline
+              textAlignVertical="top"
+              style={{
+                minHeight: 260,
+                borderWidth: 1,
+                borderColor: C.line,
+                borderRadius: 12,
+                padding: 14,
+                marginTop: 12,
+                color: C.ink,
+                backgroundColor: C.white,
+              }}
+            />
+          ) : (
+            <>
+              {cards.map((card, index) => (
+                <View
+                  key={index}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: C.line,
+                    borderRadius: 14,
+                    padding: 12,
+                    marginTop: 14,
+                  }}
+                >
+                  <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}>
+                    <Text style={s.cardTitle}>
+                      Card {index + 1}
+                    </Text>
+
+                    {cards.length > 1 && (
+                      <Pressable
+                        accessibilityLabel="Remove card"
+                        onPress={() =>
+                          setCards(previous =>
+                            previous.filter(
+                              (_, cardIndex) =>
+                                cardIndex !== index
+                            )
+                          )
+                        }
+                        style={{ padding: 6 }}
+                      >
+                        <Ionicons
+                          name="trash-outline"
+                          size={20}
+                          color={C.red}
+                        />
+                      </Pressable>
+                    )}
+                  </View>
+
+                  <TextInput
+                    value={card.question}
+                    onChangeText={value =>
+                      setCards(previous =>
+                        previous.map((entry, cardIndex) =>
+                          cardIndex === index
+                            ? {
+                                ...entry,
+                                question: value,
+                              }
+                            : entry
+                        )
+                      )
+                    }
+                    placeholder="Definition or explanation"
+                    placeholderTextColor={C.muted}
+                    multiline
+                    style={{
+                      borderWidth: 1,
+                      borderColor: C.line,
+                      borderRadius: 10,
+                      padding: 11,
+                      marginTop: 10,
+                      color: C.ink,
+                      backgroundColor: C.white,
+                    }}
+                  />
+
+                  <TextInput
+                    value={card.answer}
+                    onChangeText={value =>
+                      setCards(previous =>
+                        previous.map((entry, cardIndex) =>
+                          cardIndex === index
+                            ? {
+                                ...entry,
+                                answer: value,
+                              }
+                            : entry
+                        )
+                      )
+                    }
+                    placeholder="Term"
+                    placeholderTextColor={C.muted}
+                    style={{
+                      borderWidth: 1,
+                      borderColor: C.line,
+                      borderRadius: 10,
+                      padding: 11,
+                      marginTop: 9,
+                      color: C.ink,
+                      backgroundColor: C.white,
+                    }}
+                  />
+                </View>
+              ))}
+
+              <Pressable
+                style={[s.outline, {
+                  marginTop: 14,
+                  width: '100%',
+                  maxWidth: undefined,
+                }]}
+                onPress={() =>
+                  setCards(previous => [
+                    ...previous,
+                    { question: '', answer: '' },
+                  ])
+                }
+              >
+                <Text style={s.outlineText}>
+                  + Add Flashcard
+                </Text>
+              </Pressable>
+            </>
+          )}
+
+          {!!message && <Notice text={message} />}
+
+          <Pressable
+            style={[s.primary, { marginTop: 16 }]}
+            onPress={save}
+            disabled={busy}
+          >
+            {busy ? (
+              <ActivityIndicator color={C.white} />
+            ) : (
+              <Text style={s.primaryText}>
+                Save to My Library
+              </Text>
+            )}
+          </Pressable>
+        </View>
+      )}
+    </Page>
+  );
+}
 
 type MaterialType = 'notes' | 'flashcards' | 'test' | 'game';
 
@@ -196,8 +599,8 @@ function SwipeStudyCard({
         style={{
           minHeight: expanded ? 400 : 240,
           width: '100%',
-          backgroundColor: '#141D2B',
-          borderColor: '#536179',
+          backgroundColor: s === darkStyles ? '#141D2B' : C.white,
+          borderColor: s === darkStyles ? '#536179' : C.line,
           borderWidth: 1,
           borderRadius: 22,
           padding: 24,
@@ -219,13 +622,13 @@ function SwipeStudyCard({
           STILL LEARNING
         </Animated.Text>
         <Text style={{
-          color: C.white, fontSize: 11, fontWeight: '900',
+          color: s === darkStyles ? C.white : C.navy, fontSize: 11, fontWeight: '900',
           marginBottom: 12,
         }}>
           {showAnswer ? 'ANSWER' : 'QUESTION'}
         </Text>
         <Text style={{
-          color: C.white, textAlign: 'center',
+          color: s === darkStyles ? C.white : C.navy, textAlign: 'center',
           fontSize: 20, fontWeight: '800', lineHeight: 29,
         }}>
           {showAnswer ? answer : question}
@@ -267,6 +670,7 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
         'application/pdf',
         'text/plain',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
         'image/jpeg',
         'image/png',
         'image/webp',
@@ -289,11 +693,7 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
     if (Platform.OS === 'web' && asset.file) {
       form.append('file', asset.file);
     } else {
-      form.append('file', {
-        uri: asset.uri,
-        name: asset.name,
-        type: asset.mimeType || 'application/octet-stream',
-      } as any);
+      form.append('file', new ExpoFile(asset.uri) as any, asset.name);
     }
   }
 
@@ -627,7 +1027,7 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
 
       {result && type === 'flashcards' && (
         <View style={{ marginTop: 20, width: '100%' }}>
-          <Text style={[s.section, { textAlign: 'center' }]}>
+          <Text style={[s.section, { textAlign: 'center', color: s === darkStyles ? '#F8FAFC' : C.navy }]}>
             Flashcard {cards.length ? cardIndex + 1 : 0} of {cards.length}
           </Text>
 
@@ -738,10 +1138,7 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
               )}
               <View style={{ flexDirection: 'row', gap: 12, marginTop: 8 }}>
                 <Pressable
-                  style={[s.outline, {
-                    flex: 1, width: undefined, marginTop: 0,
-                    justifyContent: 'center',
-                  }]}
+                  style={[s.outline, { flex: 1, flexBasis: 0, width: '100%', minWidth: 0, maxWidth: '100%', marginTop: 0, alignSelf: 'stretch', justifyContent: 'center' }]}
                   onPress={() => {
                     setCardIndex(index => (index - 1 + cards.length) % cards.length);
                     setShowBack(false);
@@ -751,7 +1148,7 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
                 </Pressable>
 
                 <Pressable
-                  style={[s.primary, { flex: 1, marginTop: 0 }]}
+                  style={[s.primary, { flex: 1, flexBasis: 0, width: '100%', minWidth: 0, maxWidth: '100%', marginTop: 0, alignSelf: 'stretch' }]}
                   onPress={() => {
                     setCardIndex(index => (index + 1) % cards.length);
                     setShowBack(false);
@@ -774,9 +1171,14 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
           {questions.length ? questions.map((item, index) => (
             <View key={index}
               style={[s.uploadCard, { marginBottom: 12 }]}>
-              <Text style={s.cardTitle}>
-                {index + 1}. {String(item.question || '')}
-              </Text>
+              <Text style={[s.cardTitle, {
+                  width: '100%',
+                  maxWidth: '100%',
+                  alignSelf: 'stretch',
+                  textAlign: 'left',
+                }]}>
+                  {index + 1}. {String(item.question || '')}
+                </Text>
               {(item.choices || []).map((choice: string, choiceIndex: number) => {
                 const picked = selected[index] === choiceIndex;
                 const correct = Number(item.answer ?? 0) === choiceIndex;
@@ -789,7 +1191,15 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
                     onPress={() => setSelected(previous => ({
                       ...previous, [index]: choiceIndex,
                     }))}
-                    style={[s.outline, { marginTop: 8, padding: 12 },
+                    style={[s.outline, {
+                      width: '100%',
+                      minWidth: '100%',
+                      maxWidth: '100%',
+                      alignSelf: 'stretch',
+                      alignItems: 'flex-start',
+                      marginTop: 8,
+                      padding: 12,
+                    },
                       picked && { backgroundColor: C.softBlue },
                       reveal && correct && {
                         borderColor: '#2E9D67',
@@ -800,8 +1210,14 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
                         backgroundColor: C.softRed,
                       }]}
                   >
-                    <Text style={s.outlineText}>
-                      {String.fromCharCode(65 + choiceIndex)}. {String(choice)}
+                    <Text style={[s.outlineText, {
+                          width: '100%',
+                          minWidth: '100%',
+                          maxWidth: '100%',
+                          textAlign: 'left',
+                          alignSelf: 'stretch',
+                        }]}>
+                          {String.fromCharCode(65 + choiceIndex)}. {String(choice)}
                     </Text>
                   </Pressable>
                 );
@@ -830,12 +1246,24 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
         </View>
       )}
       {result && type === 'game' && (
-        <MillionaireGame questions={questions} />
+        <MillionaireGame
+          questions={questions}
+          generating={busy}
+          onPlayAgain={() => generate('game')}
+        />
       )}
     </Page>
   );
 }
-function MillionaireGame({ questions }: { questions: any[] }) {
+function MillionaireGame({
+  questions,
+  generating,
+  onPlayAgain,
+}: {
+  questions: any[];
+  generating: boolean;
+  onPlayAgain: () => void;
+}) {
   const [soundOn, setSoundOn] = useState(true);
   const [voiceOn, setVoiceOn] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
@@ -863,10 +1291,33 @@ function MillionaireGame({ questions }: { questions: any[] }) {
     player.play();
   }
   const prizes = [
-    100, 200, 300, 500, 1000, 2000, 4000, 8000,
-    16000, 32000, 64000, 125000, 250000, 500000, 1000000,
+    100,
+    200,
+    300,
+    500,
+    1000,
+    2000,
+    3000,
+    5000,
+    7500,
+    10000,
+    15000,
+    25000,
+    50000,
+    75000,
+    100000,
+    150000,
+    200000,
+    250000,
+    300000,
+    400000,
+    500000,
+    600000,
+    750000,
+    900000,
+    1000000,
   ];
-  const total = Math.min(15, questions.length);
+  const total = Math.min(25, questions.length);
   const [round, setRound] = useState(0);
   const [lastTick, setLastTick] = useState(30);
   const [seconds, setSeconds] = useState(30);
@@ -875,6 +1326,7 @@ function MillionaireGame({ questions }: { questions: any[] }) {
   const [used, setUsed] = useState({
     fifty: false, audience: false, friend: false,
   });
+  const [fiftyActive, setFiftyActive] = useState(false);
   const [hint, setHint] = useState('');
 
   const question = questions[round];
@@ -882,6 +1334,10 @@ function MillionaireGame({ questions }: { questions: any[] }) {
     ? question.choices : [];
   const correct = Number(question?.answer ?? 0);
   const other = answers.findIndex((_, index) => index !== correct);
+
+  useEffect(() => {
+    setFiftyActive(false);
+  }, [round]);
 
   useEffect(() => {
     if (voiceOn && ended === 'no' && question) {
@@ -949,227 +1405,526 @@ function MillionaireGame({ questions }: { questions: any[] }) {
     setEnded('no');
     setHint('');
     setUsed({ fifty: false, audience: false, friend: false });
+    setFiftyActive(false);
   }
 
   const gold = '#F5CB67';
+  const gameBlue = '#17104A';
+  const answerBlue = '#241A6B';
+  const borderBlue = '#8494D6';
+
   return (
     <View style={{
-      marginTop: 20, padding: 18,
-      borderRadius: 20, backgroundColor: '#111A33',
+      marginTop: 20,
+      padding: 16,
+      borderRadius: 20,
+      backgroundColor: gameBlue,
+      borderWidth: 1,
+      borderColor: '#43398A',
     }}>
       <Text style={{
-        color: gold, fontWeight: '900',
-        fontSize: 23, textAlign: 'center',
+        color: gold,
+        fontWeight: '900',
+        fontSize: 24,
+        textAlign: 'center',
       }}>
-        STUDYante Millionaire
+        STUDYante Challenge
       </Text>
-      <Text style={{ color: C.white, textAlign: 'center' }}>
-        Virtual money · Based on your uploaded lesson
-      </Text>
-      <View style={{
-        flexDirection: 'row', flexWrap: 'wrap',
-        justifyContent: 'center', gap: 10, marginTop: 12,
+
+      <Text style={{
+        color: '#D8D9FF',
+        textAlign: 'center',
+        marginTop: 3,
       }}>
-        <Pressable
-          onPress={() => {
-            setVoiceOn(value => !value);
-            if (voiceOn) Speech.stop();
-          }}
-          style={{
-            padding: 10, borderRadius: 12,
-            borderWidth: 1, borderColor: '#F5CB67',
-          }}
-        >
-          <Text style={{ color: '#F5CB67' }}>
-            Read questions: {voiceOn ? 'On' : 'Off'}
-          </Text>
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            if (musicOn) {
-              backgroundMusic.pause();
-            } else {
-              backgroundMusic.play();
-            }
-            setMusicOn(value => !value);
-          }}
-          style={{
-            padding: 10, borderRadius: 12,
-            borderWidth: 1, borderColor: '#F5CB67',
-          }}
-        >
-          <Text style={{ color: '#F5CB67' }}>
-            Music: {musicOn ? 'On' : 'Off'}
-          </Text>
-        </Pressable>
-      </View>
-      <Pressable
-        onPress={() => setSoundOn(value => !value)}
-        style={{ alignSelf: 'flex-end', padding: 8 }}
-      >
-        <Text style={{ color: C.white }}>
-          Sound: {soundOn ? 'On' : 'Off'}
-        </Text>
-      </Pressable>
+        25 questions · Virtual study challenge
+      </Text>
 
       {!total ? (
-        <Text style={{ color: C.white, marginTop: 20 }}>
+        <Text style={{
+          color: C.white,
+          textAlign: 'center',
+          marginTop: 24,
+        }}>
           No questions were returned.
         </Text>
       ) : (
-        <>
-          <Text style={{
-            color: gold, textAlign: 'center',
-            marginTop: 20, fontWeight: '900',
+        <View style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          alignItems: 'flex-start',
+          gap: 14,
+          marginTop: 18,
+        }}>
+          <View style={{
+            flex: 1,
+            flexGrow: 1,
+            minWidth: 280,
           }}>
-            Question {round + 1}/{total}
-            {' · '}₱{prizes[round].toLocaleString()}
-          </Text>
-          <Text style={{
-            color: seconds <= 10 ? '#FF7788' : C.white,
-            textAlign: 'center', marginTop: 8,
-          }}>
-            {seconds} seconds
-          </Text>
-          <Text style={{
-            color: C.white, textAlign: 'center',
-            fontSize: 18, fontWeight: '800',
-            padding: 20, marginTop: 15,
-            borderWidth: 1, borderRadius: 15,
-            borderColor: '#687AAD',
-          }}>
-            {String(question?.question || '')}
-          </Text>
-
-          {answers.map((answer, index) => {
-            const hidden = used.fifty &&
-              index !== correct && index !== other;
-
-            return (
-              <Pressable
-                key={index}
-                disabled={hidden || choice !== null || ended !== 'no'}
-                onPress={() => {
-                  setChoice(index);
-                  if (index === correct && soundOn) {
-                    Speech.stop();
-                    Speech.speak('You got the correct answer!', {
-                      language: 'en-US',
-                      rate: 0.9,
-                    });
-                  }
-                  playSound(index === correct ? correctSound : wrongSound);
-                  if (index !== correct) setEnded('lost');
-                }}
-                style={{
-                  marginTop: 9, padding: 14, borderRadius: 12,
-                  borderWidth: 1,
-                  borderColor: choice !== null && index === correct
-                    ? '#38D890' : '#687AAD',
-                  backgroundColor: '#263355',
-                  opacity: hidden ? 0.25 : 1,
-                }}
-              >
-                <Text style={{ color: C.white, fontWeight: '700' }}>
-                  {String.fromCharCode(65 + index)}. {String(answer)}
-                </Text>
-              </Pressable>
-            );
-          })}
-
-          {ended === 'no' && choice === null && (
-            <>
+            <View style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 8,
+              marginBottom: 12,
+            }}>
               <View style={{
-                flexDirection: 'row', flexWrap: 'wrap',
-                gap: 8, marginTop: 16,
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                gap: 8,
               }}>
                 <Pressable
-                  disabled={used.fifty}
-                  onPress={() => setUsed(previous => ({
-                    ...previous, fifty: true,
-                  }))}
-                  style={{ padding: 12, borderRadius: 12, borderWidth: 1, borderColor: gold, opacity: used.fifty ? 0.4 : 1 }}
-                >
-                  <Text style={{ color: gold }}>50:50</Text>
-                </Pressable>
-                <Pressable
-                  disabled={used.audience}
+                  disabled={used.fifty || choice !== null}
                   onPress={() => {
                     setUsed(previous => ({
-                      ...previous, audience: true,
+                      ...previous,
+                      fifty: true,
                     }));
-                    setHint('Simulated audience favors ' +
-                      String.fromCharCode(65 + correct) + '.');
+                    setFiftyActive(true);
                   }}
-                  style={{ padding: 12, borderRadius: 12, borderWidth: 1, borderColor: gold, opacity: used.audience ? 0.4 : 1 }}
+                  style={{
+                    minWidth: 62,
+                    paddingHorizontal: 12,
+                    paddingVertical: 10,
+                    alignItems: 'center',
+                    borderRadius: 25,
+                    borderWidth: 2,
+                    borderColor: gold,
+                    backgroundColor: '#29206D',
+                    opacity: used.fifty ? 0.35 : 1,
+                  }}
                 >
-                  <Text style={{ color: gold }}>Ask Audience</Text>
+                  <Text style={{ color: gold, fontWeight: '900' }}>
+                    50:50
+                  </Text>
                 </Pressable>
+
                 <Pressable
-                  disabled={used.friend}
+                  disabled={used.audience || choice !== null}
                   onPress={() => {
                     setUsed(previous => ({
-                      ...previous, friend: true,
+                      ...previous,
+                      audience: true,
                     }));
-                    setHint('Simulated friend suggests ' +
-                      String.fromCharCode(65 + correct) + '.');
+                    setHint(
+                      'Audience favors ' +
+                      String.fromCharCode(65 + correct) + '.'
+                    );
                   }}
-                  style={{ padding: 12, borderRadius: 12, borderWidth: 1, borderColor: gold, opacity: used.friend ? 0.4 : 1 }}
+                  style={{
+                    minWidth: 62,
+                    paddingHorizontal: 12,
+                    paddingVertical: 10,
+                    alignItems: 'center',
+                    borderRadius: 25,
+                    borderWidth: 2,
+                    borderColor: gold,
+                    backgroundColor: '#29206D',
+                    opacity: used.audience ? 0.35 : 1,
+                  }}
                 >
-                  <Text style={{ color: gold }}>Phone Friend</Text>
+                  <Text style={{ color: gold, fontWeight: '900' }}>
+                    Audience
+                  </Text>
+                </Pressable>
+
+                <Pressable
+                  disabled={used.friend || choice !== null}
+                  onPress={() => {
+                    setUsed(previous => ({
+                      ...previous,
+                      friend: true,
+                    }));
+                    setHint(
+                      'Friend suggests ' +
+                      String.fromCharCode(65 + correct) + '.'
+                    );
+                  }}
+                  style={{
+                    minWidth: 62,
+                    paddingHorizontal: 12,
+                    paddingVertical: 10,
+                    alignItems: 'center',
+                    borderRadius: 25,
+                    borderWidth: 2,
+                    borderColor: gold,
+                    backgroundColor: '#29206D',
+                    opacity: used.friend ? 0.35 : 1,
+                  }}
+                >
+                  <Text style={{ color: gold, fontWeight: '900' }}>
+                    Friend
+                  </Text>
                 </Pressable>
               </View>
-              {!!hint && (
-                <Text style={{ color: C.white, marginTop: 10 }}>
-                  {hint}
-                </Text>
-              )}
-              <Pressable
-                style={[s.outline, {
-                  width: '100%', maxWidth: '100%', alignSelf: 'stretch',
-                  marginTop: 12,
-                }]}
-                onPress={() => setEnded('walked')}
-              >
-                <Text style={s.outlineText}>Walk Away</Text>
-              </Pressable>
-            </>
-          )}
 
-          {ended === 'no' && choice === correct && (
-            <Pressable
-              style={[s.primary, { marginTop: 16 }]}
-              onPress={next}
-            >
-              <Text style={s.primaryText}>Next Question</Text>
-            </Pressable>
-          )}
-
-          {ended !== 'no' && (
-            <>
               <Text style={{
-                color: gold, textAlign: 'center',
-                fontWeight: '900', marginTop: 18,
+                color: seconds <= 10 ? '#FF7788' : C.white,
+                fontWeight: '900',
+                fontSize: 18,
               }}>
-                {ended === 'won' ? 'You won!' :
-                  ended === 'walked' ? 'You walked away.' : 'Game over.'}
-                {'  '}Virtual winnings: ₱{winnings.toLocaleString()}
+                {seconds}s
               </Text>
-              <Pressable
-                style={[s.primary, { marginTop: 14 }]}
-                onPress={restart}
-              >
-                <Text style={s.primaryText}>Play Again</Text>
-              </Pressable>
-            </>
-          )}
+            </View>
 
-          <Text style={{
-            color: '#B7C4E4', textAlign: 'center', marginTop: 18,
+            <View style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: 115,
+              padding: 20,
+              borderWidth: 2,
+              borderColor: borderBlue,
+              borderRadius: 18,
+              backgroundColor: '#201663',
+            }}>
+              <Text style={{
+                color: gold,
+                fontSize: 13,
+                fontWeight: '900',
+                marginBottom: 8,
+              }}>
+                QUESTION {round + 1} OF {total}
+              </Text>
+
+              <Text style={{
+                color: C.white,
+                textAlign: 'center',
+                fontSize: 19,
+                lineHeight: 27,
+                fontWeight: '900',
+              }}>
+                {String(question?.question || '')}
+              </Text>
+            </View>
+
+            <View style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: 10,
+              marginTop: 14,
+            }}>
+              {answers.map((answer, index) => {
+                const hidden = fiftyActive &&
+                  index !== correct &&
+                  index !== other;
+
+                const selected = choice === index;
+                const correctAnswer =
+                  choice !== null && index === correct;
+                const wrongAnswer =
+                  selected && index !== correct;
+
+                return (
+                  <Pressable
+                    key={index}
+                    disabled={
+                      hidden ||
+                      choice !== null ||
+                      ended !== 'no'
+                    }
+                    onPress={() => {
+                      setChoice(index);
+
+                      if (index === correct && soundOn) {
+                        Speech.stop();
+                        Speech.speak(
+                          'You got the correct answer!',
+                          {
+                            language: 'en-US',
+                            rate: 0.9,
+                          }
+                        );
+                      }
+
+                      playSound(
+                        index === correct
+                          ? correctSound
+                          : wrongSound
+                      );
+
+                      if (index !== correct) {
+                        setEnded('lost');
+                      }
+                    }}
+                    style={{
+                      width: '48%',
+                      minWidth: 235,
+                      flexGrow: 1,
+                      minHeight: 58,
+                      paddingHorizontal: 16,
+                      paddingVertical: 14,
+                      justifyContent: 'center',
+                      borderWidth: 2,
+                      borderColor: correctAnswer
+                        ? '#38D890'
+                        : wrongAnswer
+                          ? '#FF5263'
+                          : borderBlue,
+                      borderRadius: 15,
+                      backgroundColor: correctAnswer
+                        ? '#17664D'
+                        : wrongAnswer
+                          ? '#7A2336'
+                          : answerBlue,
+                      opacity: hidden ? 0.12 : 1,
+                    }}
+                  >
+                    <Text style={{
+                      color: C.white,
+                      fontWeight: '800',
+                      fontSize: 15,
+                    }}>
+                      {hidden
+                        ? ''
+                        : `${String.fromCharCode(65 + index)}: ${String(answer)}`}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+
+            {!!hint && (
+              <Text style={{
+                color: gold,
+                textAlign: 'center',
+                fontWeight: '800',
+                marginTop: 12,
+              }}>
+                {hint}
+              </Text>
+            )}
+
+            {ended === 'no' && choice === null && (
+              <Pressable
+                onPress={() => setEnded('walked')}
+                style={{
+                  alignSelf: 'center',
+                  paddingHorizontal: 20,
+                  paddingVertical: 11,
+                  marginTop: 16,
+                  borderWidth: 1,
+                  borderColor: '#9CA9D7',
+                  borderRadius: 12,
+                }}
+              >
+                <Text style={{
+                  color: C.white,
+                  fontWeight: '800',
+                }}>
+                  Walk Away
+                </Text>
+              </Pressable>
+            )}
+
+            {ended === 'no' && choice === correct && (
+              <Pressable
+                onPress={next}
+                style={{
+                  alignItems: 'center',
+                  padding: 15,
+                  marginTop: 16,
+                  borderRadius: 13,
+                  backgroundColor: '#E79B24',
+                }}
+              >
+                <Text style={{
+                  color: '#17104A',
+                  fontWeight: '900',
+                }}>
+                  Next Question
+                </Text>
+              </Pressable>
+            )}
+
+            {ended !== 'no' && (
+              <View style={{
+                alignItems: 'center',
+                marginTop: 18,
+              }}>
+                <Text style={{
+                  color: gold,
+                  textAlign: 'center',
+                  fontSize: 18,
+                  fontWeight: '900',
+                }}>
+                  {ended === 'won'
+                    ? 'You completed the challenge!'
+                    : ended === 'walked'
+                      ? 'You walked away.'
+                      : 'Game over.'}
+                </Text>
+
+                <Text style={{
+                  color: C.white,
+                  textAlign: 'center',
+                  marginTop: 5,
+                }}>
+                  Virtual winnings: ₱{winnings.toLocaleString()}
+                </Text>
+
+                <Pressable
+                  onPress={onPlayAgain}
+                  disabled={generating}
+                  style={{
+                    paddingHorizontal: 24,
+                    paddingVertical: 13,
+                    marginTop: 14,
+                    borderRadius: 12,
+                    backgroundColor: '#E79B24',
+                    opacity: generating ? 0.5 : 1,
+                  }}
+                >
+                  {generating ? (
+                    <ActivityIndicator color="#17104A" />
+                  ) : (
+                    <Text style={{
+                      color: '#17104A',
+                      fontWeight: '900',
+                    }}>
+                      Generate New Questions
+                    </Text>
+                  )}
+                </Pressable>
+              </View>
+            )}
+
+            <View style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: 8,
+              marginTop: 16,
+            }}>
+              <Pressable
+                onPress={() => {
+                  setVoiceOn(value => !value);
+                  if (voiceOn) Speech.stop();
+                }}
+                style={{ padding: 8 }}
+              >
+                <Text style={{ color: '#C8CEEC' }}>
+                  Voice: {voiceOn ? 'On' : 'Off'}
+                </Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => {
+                  if (musicOn) {
+                    backgroundMusic.pause();
+                  } else {
+                    backgroundMusic.play();
+                  }
+                  setMusicOn(value => !value);
+                }}
+                style={{ padding: 8 }}
+              >
+                <Text style={{ color: '#C8CEEC' }}>
+                  Music: {musicOn ? 'On' : 'Off'}
+                </Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => setSoundOn(value => !value)}
+                style={{ padding: 8 }}
+              >
+                <Text style={{ color: '#C8CEEC' }}>
+                  Sound: {soundOn ? 'On' : 'Off'}
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+
+          <View style={{
+            width: 235,
+            flexGrow: 0,
+            flexShrink: 1,
+            minWidth: 210,
+            maxHeight: 570,
+            padding: 10,
+            borderWidth: 1,
+            borderColor: '#514798',
+            borderRadius: 15,
+            backgroundColor: '#0D0A2F',
+            display: choice === correct ? 'flex' : 'none',
           }}>
-            Checkpoints: Q5 ₱1,000 · Q10 ₱32,000
-          </Text>
-        </>
+            <Text style={{
+              color: C.white,
+              textAlign: 'center',
+              fontWeight: '900',
+              marginBottom: 7,
+            }}>
+              PRIZE LADDER
+            </Text>
+
+            <ScrollView
+              nestedScrollEnabled
+              showsVerticalScrollIndicator
+            >
+              {prizes
+                .slice(0, total)
+                .map((prize, index) => ({
+                  prize,
+                  index,
+                }))
+                .reverse()
+                .map(({ prize, index }) => {
+                  const current =
+                    index === round &&
+                    choice === correct &&
+                    ended === 'no';
+
+                  const earned = index < round;
+
+                  const checkpoint =
+                    index === 4 ||
+                    index === 9 ||
+                    index === 24;
+
+                  return (
+                    <View
+                      key={index}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        marginBottom: 2,
+                        borderRadius: 14,
+                        backgroundColor: current
+                          ? '#E79B24'
+                          : 'transparent',
+                      }}
+                    >
+                      <Text style={{
+                        width: 30,
+                        color: current
+                          ? '#17104A'
+                          : earned
+                            ? gold
+                            : C.white,
+                        fontWeight: '900',
+                      }}>
+                        {index + 1}
+                      </Text>
+
+                      <Text style={{
+                        color: current
+                          ? '#17104A'
+                          : earned
+                            ? gold
+                            : C.white,
+                        fontWeight: checkpoint || current
+                          ? '900'
+                          : '700',
+                      }}>
+                        ◆ ₱{prize.toLocaleString()}
+                      </Text>
+                    </View>
+                  );
+                })}
+            </ScrollView>
+          </View>
+        </View>
       )}
     </View>
   );
@@ -1190,6 +1945,7 @@ function Library({ api, token }: { api: any; token: string }) {
   const [error, setError] = useState('');
   const [openSet, setOpenSet] = useState<any>(null);
   const [openMaterial, setOpenMaterial] = useState<any>(null);
+  const [movingItem, setMovingItem] = useState<any>(null);
   const [fileError, setFileError] = useState('');
   const [openingFile, setOpeningFile] = useState(false);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -1200,13 +1956,39 @@ function Library({ api, token }: { api: any; token: string }) {
   const [ratings, setRatings] =
     useState<Record<number, 'known' | 'learning'>>({});
 
-  const load = () => {
+  const load = async () => {
     setBusy(true);
     setError('');
-    api('/api/library')
-      .then(setData)
-      .catch((e: any) => setError(e.message))
-      .finally(() => setBusy(false));
+
+    try {
+      const latestData = await api('/api/library');
+
+      setData(latestData);
+
+      await AsyncStorage.setItem(
+        'studyanteOfflineLibrary',
+        JSON.stringify(latestData)
+      );
+    } catch (error: any) {
+      try {
+        const saved = await AsyncStorage.getItem(
+          'studyanteOfflineLibrary'
+        );
+
+        if (saved) {
+          setData(JSON.parse(saved));
+          setError('Offline mode: showing your saved study materials.');
+        } else {
+          setError(
+            'No offline materials yet. Connect to the internet once to save them.'
+          );
+        }
+      } catch {
+        setError(error.message || 'Could not open My Library.');
+      }
+    } finally {
+      setBusy(false);
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -1283,6 +2065,49 @@ function Library({ api, token }: { api: any; token: string }) {
     }
   }
 
+  async function moveLibraryItem(
+    item: any,
+    nextFolderId: string | null
+  ) {
+    if (!item?.id || saving) return;
+
+    const itemType =
+      item.kind === 'File'
+        ? 'file'
+        : item.kind === 'Flashcards'
+          ? 'flashcards'
+          : 'material';
+
+    setSaving(true);
+    setLibraryMessage('');
+
+    try {
+      await api(
+        `/api/library/move/${itemType}/${item.id}`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({
+            folderId: nextFolderId,
+          }),
+        }
+      );
+
+      setMovingItem(null);
+      setLibraryMessage(
+        nextFolderId
+          ? 'Moved to folder.'
+          : 'Moved to No Folder.'
+      );
+
+      await load();
+    } catch (error: any) {
+      setLibraryMessage(
+        error.message || 'Could not move this item.'
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
   async function openPrivateFile(item: any) {
     if (!token || openingFile) return;
 
@@ -1330,7 +2155,14 @@ function Library({ api, token }: { api: any; token: string }) {
     return (
       <Page title={openMaterial.name || 'Study Material'} sub="Saved in My Library">
         <Pressable
-          style={[s.outline, { marginTop: 0, marginBottom: 20 }]}
+          style={{
+          alignSelf: 'flex-start',
+          width: 40,
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 12,
+        }}
           onPress={() => {
             setOpenMaterial(null);
             setAnswers({});
@@ -1346,6 +2178,26 @@ function Library({ api, token }: { api: any; token: string }) {
               {formatStudyNotes(openMaterial.data?.notes || 'No notes found.')}
             </Text>
           </View>
+        ) : kind === 'game' ? (
+          <MillionaireGame
+            key={
+              String(openMaterial.id || openMaterial._id || 'saved-game') +
+              '-' +
+              String(openMaterial.gameSession || 0)
+            }
+            questions={questions}
+            generating={false}
+            onPlayAgain={() => {
+              setOpenMaterial((previous: any) => previous
+                ? {
+                    ...previous,
+                    gameSession:
+                      Number(previous.gameSession || 0) + 1,
+                  }
+                : previous
+              );
+            }}
+          />
         ) : (
           <>
             {questions.map((item, index) => {
@@ -1358,9 +2210,14 @@ function Library({ api, token }: { api: any; token: string }) {
               return (
                 <View key={index}
                   style={[s.uploadCard, { marginBottom: 12, width: '100%' }]}>
-                  <Text style={s.cardTitle}>
-                    {index + 1}. {String(item.question || '')}
-                  </Text>
+                  <Text style={[s.cardTitle, {
+                  width: '100%',
+                  maxWidth: '100%',
+                  alignSelf: 'stretch',
+                  textAlign: 'left',
+                }]}>
+                  {index + 1}. {String(item.question || '')}
+                </Text>
 
                   {(item.choices || []).map(
                     (choice: string, choiceIndex: number) => (
@@ -1372,7 +2229,11 @@ function Library({ api, token }: { api: any; token: string }) {
                           [index]: choiceIndex,
                         }))}
                         style={[s.outline, {
-                          width: '100%', maxWidth: undefined,
+                          width: '100%',
+                          minWidth: '100%',
+                          maxWidth: '100%',
+                          alignSelf: 'stretch',
+                          alignItems: 'flex-start',
                           marginTop: 9,
                           borderColor: reveal && choiceIndex === correct
                             ? '#24945D'
@@ -1382,7 +2243,13 @@ function Library({ api, token }: { api: any; token: string }) {
                             : picked === choiceIndex ? C.softBlue : C.white,
                         }]}
                       >
-                        <Text style={s.outlineText}>
+                        <Text style={[s.outlineText, {
+                          width: '100%',
+                          minWidth: '100%',
+                          maxWidth: '100%',
+                          textAlign: 'left',
+                          alignSelf: 'stretch',
+                        }]}>
                           {String.fromCharCode(65 + choiceIndex)}. {String(choice)}
                         </Text>
                       </Pressable>
@@ -1409,7 +2276,7 @@ function Library({ api, token }: { api: any; token: string }) {
             )}
 
             {kind === 'test' && submitted && (
-              <Text style={[s.section, { textAlign: 'center' }]}>
+              <Text style={[s.section, { textAlign: 'center', color: s === darkStyles ? '#F8FAFC' : C.navy }]}>
                 Score: {questions.filter((item, index) =>
                   answers[index] === Number(item.answer ?? 0)
                 ).length} / {questions.length}
@@ -1426,7 +2293,14 @@ function Library({ api, token }: { api: any; token: string }) {
     return (
       <Page title={openSet.name || 'Flashcards'} sub="Tap the card to flip it.">
         <Pressable
-          style={[s.outline, { marginTop: 0, marginBottom: 20 }]}
+          style={{
+          alignSelf: 'flex-start',
+          width: 40,
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 12,
+        }}
           onPress={() => {
             setOpenSet(null);
             setCardIndex(0);
@@ -1438,7 +2312,7 @@ function Library({ api, token }: { api: any; token: string }) {
 
         {cards.length ? (
           <>
-            <Text style={[s.section, { textAlign: 'center' }]}>
+            <Text style={[s.section, { textAlign: 'center', color: s === darkStyles ? '#F8FAFC' : C.navy }]}>
               Flashcard {cardIndex + 1} of {cards.length}
             </Text>
 
@@ -1477,7 +2351,13 @@ function Library({ api, token }: { api: any; token: string }) {
             <View style={{ flexDirection: 'row', gap: 12, marginTop: 16 }}>
               <Pressable
                 style={[s.outline, {
-                  flex: 1, width: 0, minWidth: 0, marginTop: 0,
+                  flex: 1,
+                  flexBasis: 0,
+                  width: '100%',
+                  minWidth: 0,
+                  maxWidth: '100%',
+                  marginTop: 0,
+                  alignSelf: 'stretch',
                   justifyContent: 'center',
                 }]}
                 onPress={() => {
@@ -1490,7 +2370,7 @@ function Library({ api, token }: { api: any; token: string }) {
                 <Text style={s.outlineText}>Previous</Text>
               </Pressable>
               <Pressable
-                style={[s.primary, { flex: 1, width: 0, minWidth: 0, marginTop: 0 }]}
+                style={[s.primary, { flex: 1, flexBasis: 0, width: '100%', minWidth: 0, maxWidth: '100%', marginTop: 0, alignSelf: 'stretch' }]}
                 onPress={() => {
                   setCardIndex(index => (index + 1) % cards.length);
                   setShowAnswer(false);
@@ -1541,21 +2421,7 @@ function Library({ api, token }: { api: any; token: string }) {
       sub="Your files and personal study tools."
       refresh={load}
     >
-      <View style={{
-        flexDirection: 'row', flexWrap: 'wrap',
-        gap: 8, marginBottom: 16,
-      }}>
-        <Pressable style={[s.outline, { marginTop: 0, width: 220, maxWidth: '100%' }]}
-          onPress={() => { setAddingFolder(value => !value); setLibraryMessage(''); }}>
-          <Text style={s.outlineText}>+ New Folder</Text>
-        </Pressable>
-        <Pressable style={[s.primary, { marginTop: 0, width: 220, maxWidth: '100%' }]}
-          onPress={() => { setCreatingCards(value => !value); setLibraryMessage(''); }}>
-          <Text style={s.primaryText}>
-            {creatingCards ? 'Cancel' : '+ Create Flashcards'}
-          </Text>
-        </Pressable>
-      </View>
+      
 
       {addingFolder && (
         <View style={[s.uploadCard, { marginBottom: 16, alignItems: 'stretch' }]}>
@@ -1596,7 +2462,30 @@ function Library({ api, token }: { api: any; token: string }) {
             </Text>
           </Pressable>
         ))}
-      </ScrollView>
+              <Pressable
+          accessibilityLabel="Create new folder"
+          onPress={() => {
+            setAddingFolder(value => !value);
+            setLibraryMessage('');
+          }}
+          style={{
+            width: 42,
+            height: 42,
+            borderRadius: 21,
+            borderWidth: 1,
+            borderColor: C.blue,
+            backgroundColor: addingFolder ? C.blue : C.white,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Ionicons
+            name={addingFolder ? 'close' : 'add'}
+            size={24}
+            color={addingFolder ? C.white : C.blue}
+          />
+        </Pressable>
+</ScrollView>
 
       {!!libraryMessage && <Notice text={libraryMessage} />}
 
@@ -1646,6 +2535,87 @@ function Library({ api, token }: { api: any; token: string }) {
         </View>
       )}
 
+      {!!movingItem && (
+        <View style={[s.uploadCard, {
+          marginBottom: 16,
+          alignItems: 'stretch',
+          padding: 16,
+        }]}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+            <Text style={s.cardTitle}>Move to Folder</Text>
+
+            <Pressable
+              onPress={() => setMovingItem(null)}
+              accessibilityLabel="Close folder choices"
+              style={{ padding: 6 }}
+            >
+              <Ionicons
+                name="close"
+                size={22}
+                color={C.muted}
+              />
+            </Pressable>
+          </View>
+
+          <Text style={[s.cardText, { marginTop: 5 }]}>
+            {movingItem.name ||
+              movingItem.title ||
+              'Library item'}
+          </Text>
+
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              gap: 8,
+              paddingTop: 14,
+              paddingBottom: 4,
+            }}
+          >
+            <Pressable
+              disabled={saving}
+              onPress={() =>
+                moveLibraryItem(movingItem, null)
+              }
+              style={[s.outline, {
+                marginTop: 0,
+                width: 'auto',
+                minWidth: 110,
+                paddingHorizontal: 14,
+              }]}
+            >
+              <Text style={s.outlineText}>No Folder</Text>
+            </Pressable>
+
+            {(data.folders || []).map((entry: any) => (
+              <Pressable
+                key={entry.id}
+                disabled={saving}
+                onPress={() =>
+                  moveLibraryItem(
+                    movingItem,
+                    String(entry.id)
+                  )
+                }
+                style={[s.outline, {
+                  marginTop: 0,
+                  width: 'auto',
+                  minWidth: 100,
+                  paddingHorizontal: 14,
+                }]}
+              >
+                <Text style={s.outlineText}>
+                  {entry.name}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+      )}
       {!creatingCards && (
         <>
       <Text style={s.toolSectionTitle}>My uploaded materials</Text>
@@ -1657,49 +2627,79 @@ function Library({ api, token }: { api: any; token: string }) {
       ) : error ? (
         <Notice text={error} />
       ) : visibleItems.length ? (
-        visibleItems.map((x: any, i: number) =>
-          x.kind === 'Flashcards' ? (
+        visibleItems.map((x: any, i: number) => (
+          <View
+            key={x.id || i}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 8,
+            }}
+          >
             <Pressable
-              key={x.id || i}
+              style={{ flex: 1, minWidth: 0 }}
               onPress={() => {
-                setOpenSet(x);
-                setRatings({});
-                setExpanded(false);
-                setCardIndex(0);
-                setShowAnswer(false);
+                if (x.kind === 'Flashcards') {
+                  setOpenSet(x);
+                  setRatings({});
+                  setExpanded(false);
+                  setCardIndex(0);
+                  setShowAnswer(false);
+                } else if (x.kind !== 'File') {
+                  setOpenMaterial(x);
+                  setAnswers({});
+                  setSubmitted(false);
+                } else {
+                  openPrivateFile(x);
+                }
               }}
             >
               <Row
-                icon="albums-outline"
-                title={x.name || 'Flashcards'}
-                meta={`${(x.flashcards || []).length} cards · Tap to study`}
+                icon={
+                  x.kind === 'File'
+                    ? 'document-text-outline'
+                    : 'albums-outline'
+                }
+                title={
+                  x.name ||
+                  x.title ||
+                  (x.kind === 'File'
+                    ? 'File'
+                    : 'Study material')
+                }
+                meta={
+                  x.kind === 'Flashcards'
+                    ? `${(x.flashcards || []).length} cards · Tap to study`
+                    : x.kind === 'File'
+                      ? 'File · Tap to open'
+                      : `${x.kind} · Tap to open`
+                }
               />
             </Pressable>
-          ) : x.kind !== 'File' ? (
+
             <Pressable
-              key={x.id || i}
-              onPress={() => {
-                setOpenMaterial(x);
-                setAnswers({});
-                setSubmitted(false);
+              accessibilityLabel="Move to folder"
+              onPress={() => setMovingItem(x)}
+              style={{
+                width: 44,
+                height: 44,
+                marginBottom: 10,
+                borderRadius: 14,
+                borderWidth: 1,
+                borderColor: C.line,
+                backgroundColor: C.white,
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              <Row
-                icon="albums-outline"
-                title={x.name || x.title || 'Study material'}
-                meta={`${x.kind} · Tap to open`}
+              <Ionicons
+                name="folder-open-outline"
+                size={21}
+                color={C.blue}
               />
             </Pressable>
-          ) : (
-            <Pressable key={x.id || i} onPress={() => openPrivateFile(x)}>
-              <Row
-                icon="document-text-outline"
-                title={x.name || x.title || 'File'}
-                meta="File · Tap to open"
-              />
-            </Pressable>
-          )
-        )
+          </View>
+        ))
       ) : (
         <Empty text="Nothing is saved here yet." />
       )}
@@ -1788,12 +2788,12 @@ function Community({ api }: { api: any }) {
       <Modal visible transparent animationType="fade"
         onRequestClose={() => setOpened(null)}>
         <View style={{
-          flex: 1, backgroundColor: 'rgba(0,0,0,0.72)',
+          flex: 1, backgroundColor: s === darkStyles ? 'rgba(0,0,0,0.72)' : 'rgba(15,23,42,0.25)',
           justifyContent: 'center', padding: 16,
         }}>
           <ScrollView contentContainerStyle={{
             width: '100%', maxWidth: 950, alignSelf: 'center',
-            padding: 20, backgroundColor: '#151E30',
+            padding: 20, backgroundColor: s === darkStyles ? '#151E30' : C.white,
             borderRadius: 20,
           }}>
             <View style={{
@@ -1801,19 +2801,19 @@ function Community({ api }: { api: any }) {
               justifyContent: 'space-between', gap: 12,
             }}>
               <View style={{ flex: 1 }}>
-                <Text style={{ color: 'white', fontSize: 23, fontWeight: '800' }}>
+                <Text style={{ color: s === darkStyles ? C.white : C.navy, fontSize: 23, fontWeight: '800' }}>
                   {opened.name || 'Community Material'}
                 </Text>
-                <Text style={{ color: '#ABB8D0', marginTop: 5 }}>
+                <Text style={{ color: s === darkStyles ? '#ABB8D0' : C.muted, marginTop: 5 }}>
                   By {opened.author || 'STUDYante User'}
                 </Text>
               </View>
               <Pressable onPress={() => { setOpened(null); setError(''); }}
-                style={{ padding: 12, borderRadius: 10, backgroundColor: '#263349' }}>
-                <Text style={{ color: 'white', fontWeight: '800' }}>Close</Text>
+                style={{ padding: 12, borderRadius: 10, backgroundColor: s === darkStyles ? '#263349' : C.softBlue }}>
+                <Text style={{ color: s === darkStyles ? C.white : C.blue, fontWeight: '800' }}>Close</Text>
               </Pressable>
             </View>
-        <Pressable accessibilityLabel='Back to Community Notes' style={[s.outline, { width: 52, maxWidth: 52, marginBottom: 20, alignSelf: 'flex-start' }]}
+        <Pressable accessibilityLabel='Back to Community Notes' style={{ alignSelf: 'flex-start', width: 40, height: 40, alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}
           onPress={() => {
             setOpened(null);
             setError('');
@@ -1869,10 +2869,8 @@ function Community({ api }: { api: any }) {
                     </Text>
                   </Pressable>
 
-                  <View style={{ flexDirection: 'row', gap: 12, marginTop: 12 }}>
-                    <Pressable style={[s.outline, {
-                      width: '48%', maxWidth: undefined, minWidth: 0,
-                    }]} onPress={() => {
+                  <View style={{ flexDirection: 'row', gap: 12, marginTop: 12, justifyContent: 'space-between' }}>
+                    <Pressable style={[s.outline, { flex: undefined, width: '48%', maxWidth: '100%', minWidth: 0, marginTop: 0 }]} onPress={() => {
                       setCardIndex(index =>
                         (index - 1 + cards.length) % cards.length
                       );
@@ -1880,9 +2878,7 @@ function Community({ api }: { api: any }) {
                     }}>
                       <Text style={s.outlineText}>Previous</Text>
                     </Pressable>
-                    <Pressable style={[s.primary, {
-                      width: '48%', minWidth: 0,
-                    }]} onPress={() => {
+                    <Pressable style={[s.primary, { flex: 1, flexBasis: 0, width: '100%', maxWidth: '100%', minWidth: 0, marginTop: 0 }]} onPress={() => {
                       setCardIndex(index => (index + 1) % cards.length);
                       setShowAnswer(false);
                     }}>
@@ -1974,6 +2970,7 @@ function AI({ api }: { api: any }) {
           'application/pdf',
           'text/plain',
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
           'image/*',
         ],
         copyToCacheDirectory: true,
@@ -2092,11 +3089,45 @@ function AI({ api }: { api: any }) {
   async function send() {
     if (busy || (!question.trim() && !attachment)) return;
 
+    const selectedAttachment = attachment;
+    const selectedKind = attachmentKind;
+
     const q = question.trim() || (
-      attachmentKind === 'image'
+      selectedKind === 'image'
         ? 'Please explain this photo.'
         : 'Please summarize this file.'
     );
+
+    const attachmentName = selectedAttachment
+      ? (
+          selectedKind === 'image'
+            ? (selectedAttachment as ImagePicker.ImagePickerAsset).fileName
+            : (selectedAttachment as DocumentPicker.DocumentPickerAsset).name
+        ) || (selectedKind === 'image' ? 'Camera photo' : 'Study file')
+      : '';
+
+    const streamId = 'stream-' + Date.now();
+
+    setMessages(current => [
+      ...current,
+      {
+        id: 'user-' + Date.now(),
+        role: 'user',
+        content: selectedAttachment
+          ? q + '\nAttached: ' + attachmentName
+          : q,
+      },
+      {
+        id: streamId,
+        role: 'assistant',
+        content: '',
+        streaming: true,
+      },
+    ]);
+
+    setQuestion('');
+    setAttachment(null);
+    setAttachmentKind(null);
     setBusy(true);
     setAttachmentError('');
 
@@ -2104,20 +3135,25 @@ function AI({ api }: { api: any }) {
       const form = new FormData();
       form.append('question', q);
       form.append('provider', 'gemini');
-      if (chatId) form.append('chatId', chatId);
 
-      if (attachment && attachmentKind) {
-        const name = (attachmentKind === 'image' ? (attachment as ImagePicker.ImagePickerAsset).fileName : (attachment as DocumentPicker.DocumentPickerAsset).name) ||
-          (attachmentKind === 'image' ? 'camera.jpg' : 'lesson.pdf');
-        const mime = attachment.mimeType ||
-          (attachmentKind === 'image'
-            ? 'image/jpeg' : 'application/octet-stream');
+      if (chatId) {
+        form.append('chatId', chatId);
+      }
 
-        if (Platform.OS === 'web' && attachment.file) {
-          form.append(attachmentKind, attachment.file, name);
+      if (selectedAttachment && selectedKind) {
+        const name = attachmentName ||
+          (selectedKind === 'image' ? 'camera.jpg' : 'lesson.pdf');
+
+        const mime = selectedAttachment.mimeType ||
+          (selectedKind === 'image'
+            ? 'image/jpeg'
+            : 'application/octet-stream');
+
+        if (Platform.OS === 'web' && selectedAttachment.file) {
+          form.append(selectedKind, selectedAttachment.file, name);
         } else {
-          form.append(attachmentKind, {
-            uri: attachment.uri,
+          form.append(selectedKind, {
+            uri: selectedAttachment.uri,
             name,
             type: mime,
           } as any);
@@ -2129,26 +3165,66 @@ function AI({ api }: { api: any }) {
         body: form,
       });
 
-      setQuestion('');
-      setAttachment(null);
-      setAttachmentKind(null);
       setChatId(result.chatId || '');
-      setMessages(current => [
-        ...current,
-        {
-          role: 'user',
-          content: attachment
-            ? q + '\nAttached: ' + ((attachmentKind === 'image' ? (attachment as ImagePicker.ImagePickerAsset).fileName : (attachment as DocumentPicker.DocumentPickerAsset).name) || 'Photo')
-            : q,
-        },
-        {
-          role: 'assistant',
-          content: cleanAIText(result.answer),
-        },
-      ]);
+
+      const completeAnswer = cleanAIText(
+        String(result.answer || 'No response was returned.')
+      );
+
+      const words = completeAnswer.match(/\S+\s*/g) ||
+        [completeAnswer];
+
+      let visibleAnswer = '';
+
+      for (let index = 0; index < words.length; index += 3) {
+        visibleAnswer += words.slice(index, index + 3).join('');
+
+        setMessages(current =>
+          current.map(message =>
+            message.id === streamId
+              ? {
+                  ...message,
+                  content: visibleAnswer,
+                  streaming: true,
+                }
+              : message
+          )
+        );
+
+        await new Promise(resolve => setTimeout(resolve, 18));
+      }
+
+      setMessages(current =>
+        current.map(message =>
+          message.id === streamId
+            ? {
+                ...message,
+                content: completeAnswer,
+                streaming: false,
+              }
+            : message
+        )
+      );
+
       await loadChats();
     } catch (error: any) {
-      setAttachmentError(error.message || 'Could not send to STUDYante AI.');
+      const errorMessage =
+        error.message || 'Could not send to STUDYante AI.';
+
+      setMessages(current =>
+        current.map(message =>
+          message.id === streamId
+            ? {
+                ...message,
+                content: errorMessage,
+                streaming: false,
+                error: true,
+              }
+            : message
+        )
+      );
+
+      setAttachmentError(errorMessage);
     } finally {
       setBusy(false);
     }
@@ -2182,201 +3258,664 @@ function AI({ api }: { api: any }) {
   }
 
   return (
-    <Page title="STUDYante AI" sub="Your chats are shared with the website.">
-      <Pressable style={s.newChatButton} onPress={newChat}>
-        <Ionicons name="add-circle-outline" size={20} color={C.blue} />
-        <Text style={s.newChatText}>New Chat</Text>
-      </Pressable>
+    <Page title="STUDYante AI" sub="Ask questions, upload lessons, and continue previous chats.">
+      <View style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'stretch',
+        gap: 14,
+        marginTop: 18,
+        width: '100%',
+      }}>
+        {historyOpen && (
+          <View style={{
+            width: 270,
+            maxWidth: '100%',
+            flexGrow: 0,
+            flexShrink: 1,
+            minHeight: 520,
+            maxHeight: 720,
+            backgroundColor: C.white,
+            borderWidth: 1,
+            borderColor: C.line,
+            borderRadius: 18,
+            padding: 12,
+          }}>
+            <Pressable
+              style={[s.primary, {
+                width: '100%',
+                maxWidth: undefined,
+                marginTop: 0,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+              }]}
+              onPress={newChat}
+            >
+              <Ionicons name="add" size={20} color={C.white} />
+              <Text style={s.primaryText}>New Chat</Text>
+            </Pressable>
 
-      <Pressable
-        onPress={() => setHistoryOpen(value => !value)}
-        style={[s.newChatButton, { marginTop: 12 }]}
-      >
-        <Ionicons name="time-outline" size={20} color={C.blue} />
-        <Text style={s.newChatText}>
-          {historyOpen ? 'Hide History' : 'Chat History'}
-        </Text>
-      </Pressable>
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: 18,
+              marginBottom: 8,
+              paddingHorizontal: 5,
+            }}>
+              <Text style={s.cardTitle}>Chat History</Text>
 
-      {historyOpen && (
+              <Pressable
+                onPress={loadChats}
+                accessibilityLabel="Refresh chat history"
+                style={{ padding: 7 }}
+              >
+                <Ionicons name="refresh" size={19} color={C.blue} />
+              </Pressable>
+            </View>
+
+            {!!historyError && <Notice text={historyError} />}
+
+            <ScrollView
+              nestedScrollEnabled
+              showsVerticalScrollIndicator={false}
+              style={{ flex: 1 }}
+            >
+              {chats.length === 0 && (
+                <Text style={{
+                  color: C.muted,
+                  textAlign: 'center',
+                  marginTop: 24,
+                }}>
+                  No previous chats
+                </Text>
+              )}
+
+              {chats.map((chat: any) => (
+                <View
+                  key={chat.id}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    borderBottomWidth: 1,
+                    borderBottomColor: C.line,
+                  }}
+                >
+                  <Pressable
+                    onPress={() => {
+                      setHistoryOpen(false);
+                      openChat(chat.id);
+                    }}
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 9,
+                      paddingVertical: 13,
+                      paddingHorizontal: 5,
+                    }}
+                  >
+                    <Ionicons
+                      name="chatbubble-outline"
+                      size={18}
+                      color={C.blue}
+                    />
+
+                    <Text
+                      style={{ color: C.ink, flex: 1 }}
+                      numberOfLines={1}
+                    >
+                      {chat.title || 'Conversation'}
+                    </Text>
+                  </Pressable>
+
+                  <Pressable
+                    onPress={() => deleteChat(chat.id)}
+                    accessibilityLabel="Delete chat"
+                    style={{ padding: 10 }}
+                  >
+                    <Ionicons
+                      name="trash-outline"
+                      size={18}
+                      color={C.red}
+                    />
+                  </Pressable>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
         <View style={{
+          flex: 1,
+          flexGrow: 1,
+          flexBasis: 560,
+          minWidth: 280,
+          minHeight: 520,
+          maxHeight: 720,
           backgroundColor: C.white,
           borderWidth: 1,
           borderColor: C.line,
-          borderRadius: 16,
-          padding: 12,
-          marginTop: 10,
-          maxHeight: 330,
+          borderRadius: 18,
+          overflow: 'hidden',
         }}>
-          <Pressable onPress={loadChats} style={{ padding: 8 }}>
-            <Text style={{ color: C.blue, fontWeight: '700' }}>
-              Refresh History
-            </Text>
-          </Pressable>
+          <View style={{
+            minHeight: 62,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: 14,
+            paddingVertical: 10,
+            borderBottomWidth: 1,
+            borderBottomColor: C.line,
+          }}>
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 10,
+              flex: 1,
+            }}>
+              <Pressable
+                onPress={() => setHistoryOpen(value => !value)}
+                accessibilityLabel="Open chat history"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: C.softBlue,
+                }}
+              >
+                <Ionicons
+                  name={historyOpen ? 'close' : 'menu'}
+                  size={23}
+                  color={C.blue}
+                />
+              </Pressable>
 
-          {!!historyError && <Notice text={historyError} />}
+              <View style={{ flex: 1 }}>
+                <Text style={s.cardTitle}>STUDYante AI</Text>
+                <Text
+                  style={{ color: C.muted, fontSize: 12 }}
+                  numberOfLines={1}
+                >
+                  Your study assistant
+                </Text>
+              </View>
+            </View>
 
-          <ScrollView nestedScrollEnabled>
-            {chats.map((chat: any) => (
-              <View key={chat.id} style={{
+            <Pressable
+              onPress={newChat}
+              accessibilityLabel="Start new chat"
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: C.blue,
+              }}
+            >
+              <Ionicons name="add" size={24} color={C.white} />
+            </Pressable>
+          </View>
+
+          {!!historyError && !historyOpen && (
+            <View style={{ paddingHorizontal: 14, paddingTop: 8 }}>
+              <Notice text={historyError} />
+            </View>
+          )}
+
+          <ScrollView
+            nestedScrollEnabled
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              flexGrow: 1,
+              paddingHorizontal: 14,
+              paddingVertical: 18,
+            }}
+            style={{ flex: 1 }}
+          >
+            {messages.length === 0 && (
+              <View style={{
+                flex: 1,
+                minHeight: 300,
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 24,
+              }}>
+                <View style={{
+                  width: 58,
+                  height: 58,
+                  borderRadius: 18,
+                  backgroundColor: C.softBlue,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <Ionicons
+                    name="school-outline"
+                    size={30}
+                    color={C.blue}
+                  />
+                </View>
+
+                <Text style={[s.section, {
+                  marginTop: 16,
+                  marginBottom: 6,
+                  textAlign: 'center',
+                }]}>
+                  How can I help you study?
+                </Text>
+
+                <Text style={{
+                  color: C.muted,
+                  textAlign: 'center',
+                  lineHeight: 20,
+                  maxWidth: 430,
+                }}>
+                  Ask a question or upload a file, document, or picture.
+                </Text>
+              </View>
+            )}
+
+            {messages.map((message, index) => (
+              <View
+                key={message.id || index}
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent:
+                    message.role === 'user' ? 'flex-end' : 'flex-start',
+                  marginBottom: 16,
+                }}
+              >
+                {message.role !== 'user' && (
+                  <View style={{
+                    width: 34,
+                    height: 34,
+                    borderRadius: 11,
+                    marginRight: 9,
+                    backgroundColor: C.blue,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <Ionicons
+                      name="school-outline"
+                      size={19}
+                      color={C.white}
+                    />
+                  </View>
+                )}
+
+                <View style={{
+                  maxWidth: '82%',
+                  paddingHorizontal: 15,
+                  paddingVertical: 12,
+                  borderRadius: 18,
+                  backgroundColor:
+                    message.role === 'user' ? C.blue : C.softBlue,
+                  borderBottomRightRadius:
+                    message.role === 'user' ? 5 : 18,
+                  borderBottomLeftRadius:
+                    message.role === 'user' ? 18 : 5,
+                }}>
+                  {!!message.imageUri && (
+                    <Image
+                      source={{ uri: message.imageUri }}
+                      style={{
+                        width: 240,
+                        maxWidth: '100%',
+                        height: 220,
+                        borderRadius: 12,
+                        marginBottom: 10,
+                      }}
+                      resizeMode="contain"
+                    />
+                  )}
+
+                  {message.role === 'user' ? (
+                    <Text style={{
+                      color: C.white,
+                      fontSize: 15,
+                      lineHeight: 22,
+                    }}>
+                      {cleanAIText(message.content)}
+                    </Text>
+                  ) : (
+                    <Markdown
+                      style={{
+                        body: {
+                          color: C.ink,
+                          fontSize: 15,
+                          lineHeight: 23,
+                        },
+                        heading1: {
+                          color: C.navy,
+                          fontSize: 23,
+                          fontWeight: '900',
+                          marginTop: 14,
+                          marginBottom: 8,
+                        },
+                        heading2: {
+                          color: C.navy,
+                          fontSize: 20,
+                          fontWeight: '900',
+                          marginTop: 13,
+                          marginBottom: 7,
+                        },
+                        heading3: {
+                          color: C.navy,
+                          fontSize: 17,
+                          fontWeight: '800',
+                          marginTop: 11,
+                          marginBottom: 6,
+                        },
+                        paragraph: {
+                          color: C.ink,
+                          fontSize: 15,
+                          lineHeight: 23,
+                          marginTop: 3,
+                          marginBottom: 9,
+                        },
+                        strong: {
+                          color: C.ink,
+                          fontWeight: '900',
+                        },
+                        bullet_list: {
+                          marginTop: 4,
+                          marginBottom: 9,
+                        },
+                        ordered_list: {
+                          marginTop: 4,
+                          marginBottom: 9,
+                        },
+                        list_item: {
+                          color: C.ink,
+                          marginBottom: 5,
+                        },
+                        link: {
+                          color: C.blue,
+                          textDecorationLine: 'underline',
+                        },
+                        code_inline: {
+                          color: C.ink,
+                          backgroundColor: C.white,
+                          borderRadius: 5,
+                          paddingHorizontal: 5,
+                        },
+                        fence: {
+                          color: C.ink,
+                          backgroundColor: C.white,
+                          borderWidth: 1,
+                          borderColor: C.line,
+                          borderRadius: 10,
+                          padding: 12,
+                          marginVertical: 8,
+                        },
+                      }}
+                    >
+                      {String(message.content || '')}
+                    </Markdown>
+                  )}
+                </View>
+              </View>
+            ))}
+
+            {busy && (
+              <View style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                borderBottomWidth: 1,
-                borderBottomColor: C.line,
+                gap: 9,
+                marginBottom: 12,
+              }}>
+                <View style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 11,
+                  backgroundColor: C.blue,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <Ionicons
+                    name="school-outline"
+                    size={19}
+                    color={C.white}
+                  />
+                </View>
+
+                <ActivityIndicator color={C.blue} />
+              </View>
+            )}
+          </ScrollView>
+
+          {!!attachmentError && (
+            <View style={{ paddingHorizontal: 12 }}>
+              <Notice text={attachmentError} />
+            </View>
+          )}
+
+          {!!attachment && (
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: 12,
+              marginBottom: 7,
+              paddingHorizontal: 12,
+              paddingVertical: 9,
+              backgroundColor: C.softBlue,
+              borderRadius: 12,
+            }}>
+              <Ionicons
+                name={attachmentKind === 'image'
+                  ? 'image-outline'
+                  : 'document-outline'}
+                size={20}
+                color={C.blue}
+              />
+
+              <Text
+                style={{
+                  color: C.ink,
+                  flex: 1,
+                  marginHorizontal: 8,
+                }}
+                numberOfLines={1}
+              >
+                {(attachmentKind === 'image'
+                  ? (attachment as ImagePicker.ImagePickerAsset).fileName
+                  : (attachment as DocumentPicker.DocumentPickerAsset).name
+                ) || 'Camera photo'}
+              </Text>
+
+              <Pressable
+                onPress={() => {
+                  setAttachment(null);
+                  setAttachmentKind(null);
+                }}
+                accessibilityLabel="Remove attachment"
+              >
+                <Ionicons
+                  name="close-circle"
+                  size={23}
+                  color={C.red}
+                />
+              </Pressable>
+            </View>
+          )}
+
+          <View style={{
+            position: 'relative',
+            zIndex: 30,
+            paddingHorizontal: 12,
+            paddingTop: 8,
+            paddingBottom: 12,
+            borderTopWidth: 1,
+            borderTopColor: C.line,
+          }}>
+            {menuOpen && (
+              <View style={{
+                position: 'absolute',
+                left: 12,
+                bottom: 74,
+                width: 235,
+                maxWidth: '90%',
+                padding: 7,
+                borderRadius: 16,
+                backgroundColor: C.white,
+                borderWidth: 1,
+                borderColor: C.line,
+                elevation: 10,
+                zIndex: 40,
               }}>
                 <Pressable
                   onPress={() => {
-                    setHistoryOpen(false);
-                    openChat(chat.id);
+                    setMenuOpen(false);
+                    attachFile();
                   }}
                   style={{
-                    flex: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 10,
-                    paddingVertical: 13,
+                    gap: 11,
+                    padding: 12,
+                    borderRadius: 11,
                   }}
                 >
-                  <Ionicons name="chatbubble-outline"
-                    size={19} color={C.blue} />
-                  <Text style={{ color: C.ink, flex: 1 }}
-                    numberOfLines={1}>
-                    {chat.title || 'Conversation'}
-                  </Text>
+                  <Ionicons
+                    name="document-attach-outline"
+                    size={22}
+                    color={C.blue}
+                  />
+                  <Text style={s.cardTitle}>Upload file or image</Text>
                 </Pressable>
+
                 <Pressable
-                  onPress={() => deleteChat(chat.id)}
-                  accessibilityLabel="Delete chat"
-                  style={{ padding: 12 }}
+                  onPress={() => {
+                    setMenuOpen(false);
+                    takePhoto();
+                  }}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 11,
+                    padding: 12,
+                    borderRadius: 11,
+                  }}
                 >
-                  <Ionicons name="trash-outline"
-                    size={19} color={C.red} />
+                  <Ionicons
+                    name="camera-outline"
+                    size={22}
+                    color={C.blue}
+                  />
+                  <Text style={s.cardTitle}>Camera</Text>
+                </Pressable>
+
+                <Pressable
+                  onPress={() => {
+                    setMenuOpen(false);
+                    generateImage();
+                  }}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 11,
+                    padding: 12,
+                    borderRadius: 11,
+                  }}
+                >
+                  <Ionicons
+                    name="image-outline"
+                    size={22}
+                    color={C.blue}
+                  />
+                  <Text style={s.cardTitle}>Generate Image</Text>
                 </Pressable>
               </View>
-            ))}
-          </ScrollView>
-        </View>
-      )}
-
-      {!!historyError && !historyOpen && <Notice text={historyError} />}
-      <View style={s.chat}>
-        {messages.map((message, index) => (
-          <View
-            key={message.id || index}
-            style={[
-              s.bubble,
-              message.role === 'user' ? s.userBubble : s.aiBubble
-            ]}
-          >
-            {!!message.imageUri && (
-              <Image
-                source={{ uri: message.imageUri }}
-                style={{ width: 260, height: 260, borderRadius: 12, marginBottom: 10 }}
-                resizeMode="contain"
-              />
             )}
-            <Text
-              style={[
-                s.bubbleText,
-                message.role === 'user' && { color: C.white }
-              ]}
-            >
-              {cleanAIText(message.content)}
-            </Text>
+
+            <View style={{
+              width: '100%',
+              minHeight: 56,
+              maxHeight: 130,
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 7,
+              paddingVertical: 6,
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: C.line,
+              backgroundColor: C.softBlue,
+            }}>
+              <Pressable
+                onPress={() => setMenuOpen(value => !value)}
+                accessibilityLabel={
+                  menuOpen ? 'Close AI actions' : 'Open AI actions'
+                }
+                style={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: 21,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Ionicons
+                  name={menuOpen ? 'close' : 'add'}
+                  size={26}
+                  color={C.blue}
+                />
+              </Pressable>
+
+              <TextInput
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  minHeight: 42,
+                  maxHeight: 110,
+                  paddingHorizontal: 7,
+                  paddingVertical: 10,
+                  color: C.ink,
+                  fontSize: 15,
+                }}
+                placeholder="Message STUDYante AI..."
+                placeholderTextColor={C.muted}
+                value={question}
+                onChangeText={setQuestion}
+                multiline
+                submitBehavior="submit"
+                onSubmitEditing={() => {
+                  if (!busy && (question.trim() || attachment)) {
+                    send();
+                  }
+                }}
+              />
+
+              <Pressable
+                onPress={send}
+                disabled={busy || (!question.trim() && !attachment)}
+                accessibilityLabel="Send message"
+                style={{
+                  width: 43,
+                  height: 43,
+                  borderRadius: 22,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: C.blue,
+                  opacity:
+                    busy || (!question.trim() && !attachment) ? 0.45 : 1,
+                }}
+              >
+                <Ionicons
+                  name="arrow-up"
+                  size={23}
+                  color={C.white}
+                />
+              </Pressable>
+            </View>
           </View>
-        ))}
-
-        {busy && (
-          <ActivityIndicator
-            color={C.blue}
-            style={{ alignSelf: 'flex-start' }}
-          />
-        )}
-      </View>
-
-      {!!attachmentError && <Notice text={attachmentError} />}
-
-      {!!attachment && (
-        <View style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: 12,
-          marginBottom: 8,
-          backgroundColor: C.softBlue,
-          borderRadius: 12,
-        }}>
-          <Text style={{ color: C.ink, flex: 1 }} numberOfLines={1}>
-            {attachmentKind === 'image' ? 'Photo: ' : 'File: '}
-            {(attachmentKind === 'image' ? (attachment as ImagePicker.ImagePickerAsset).fileName : (attachment as DocumentPicker.DocumentPickerAsset).name) || 'Camera photo'}
-          </Text>
-          <Pressable onPress={() => {
-            setAttachment(null);
-            setAttachmentKind(null);
-          }} accessibilityLabel="Remove attachment">
-            <Ionicons name="close-circle" size={24} color={C.red} />
-          </Pressable>
         </View>
-      )}
-
-      <View style={{ position: 'relative', zIndex: 20 }}>
-      {menuOpen && (
-        <View style={[s.uploadCard, {
-          position: 'absolute',
-          bottom: 66,
-          left: 0,
-          zIndex: 30,
-          elevation: 8,
-          alignItems: 'stretch',
-          width: 245,
-          maxWidth: '100%',
-          padding: 8,
-        }]}>
-          <Pressable onPress={() => {
-            setMenuOpen(false);
-            attachFile();
-          }} style={{ padding: 12 }}>
-            <Text style={s.cardTitle}>Upload file or image</Text>
-          </Pressable>
-          <Pressable onPress={() => {
-            setMenuOpen(false);
-            takePhoto();
-          }} style={{ padding: 12 }}>
-            <Text style={s.cardTitle}>Camera</Text>
-          </Pressable>
-<Pressable onPress={() => {
-            setMenuOpen(false);
-            generateImage();
-          }} style={{ padding: 12 }}>
-            <Text style={s.cardTitle}>Generate Image</Text>
-          </Pressable>
-</View>
-      )}
-      <View style={s.composer}>
-        <Pressable
-          onPress={() => setMenuOpen(value => !value)}
-          accessibilityLabel={menuOpen ? 'Close AI actions' : 'Open AI actions'}
-          style={{
-            width: 42, height: 42, borderRadius: 21,
-            borderWidth: 1, borderColor: C.blue,
-            alignItems: 'center', justifyContent: 'center',
-            marginRight: 8,
-          }}>
-          <Ionicons name={menuOpen ? 'close' : 'add'}
-            size={25} color={C.blue} />
-        </Pressable>
-        <TextInput
-          style={s.composerInput}
-          placeholder="Ask STUDYante AI..."
-          placeholderTextColor={C.muted}
-          value={question}
-          onChangeText={setQuestion}
-          multiline
-        />
-        <Pressable style={s.send} onPress={send} disabled={busy}>
-          <Ionicons name="send" size={20} color={C.white} />
-        </Pressable>
-      </View>
       </View>
     </Page>
   );
@@ -2487,7 +4026,7 @@ function AI({ api }: { api: any }) {
             <Pressable onPress={() => {
               setSettings(false);
               setMessage('');
-            }} style={{ alignSelf: 'flex-start', padding: 10 }}>
+            }} style={{ alignSelf: 'flex-start', width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
               <Ionicons name="arrow-back" size={24} color={C.blue} />
             </Pressable>
 
@@ -3342,8 +4881,90 @@ function Row({ icon, title, meta }: any) { return <View style={s.row}><View styl
 function Empty({ text }: { text: string }) { return <View style={s.empty}><Ionicons name="folder-open-outline" size={40} color={C.muted} /><Text style={s.emptyText}>{text}</Text></View>; }
 function Notice({ text }: { text: string }) { return <View style={s.notice}><Ionicons name="information-circle-outline" size={20} color={C.blue} /><Text style={s.noticeText}>{text}</Text></View>; }
 function Center({ text }: { text: string }) { return <SafeAreaView style={s.center}><ActivityIndicator size="large" color={C.blue} /><Text style={s.centerText}>{text}</Text></SafeAreaView>; }
-function Nav({ active, go, admin }: { active: Screen; go: (x: Screen) => void; admin: boolean }) { const insets = useSafeAreaInsets(); const tabs: [Screen, any, string][] = [['dashboard', 'home', 'Home'], ['library', 'library', 'Library'], ['community', 'globe', 'Community'], ['profile', 'person', 'Account']]; return <View style={[s.nav, { paddingBottom: Math.max(insets.bottom, 12), minHeight: 70 + Math.max(insets.bottom, 12) }]}>{tabs.map(([id, icon, label]) => <Pressable key={id} style={s.navItem} onPress={() => go(id)}><Ionicons name={active === id ? icon : `${icon}-outline`} size={21} color={active === id ? C.blue : C.muted} /><Text style={[s.navLabel, active === id && s.navActive]}>{label}</Text></Pressable>)}</View>; }
+function Nav({
+  active,
+  go,
+  admin,
+}: {
+  active: Screen;
+  go: (x: Screen) => void;
+  admin: boolean;
+}) {
+  const insets = useSafeAreaInsets();
 
+  const tabs: [Screen, any, string][] = [
+    ['dashboard', 'home', 'Home'],
+    ['library', 'library', 'Library'],
+    ['ai', 'sparkles', 'AI'],
+    ['community', 'globe', 'Community'],
+    ['profile', 'person', 'Account'],
+  ];
+
+  return (
+    <View style={[
+      s.nav,
+      {
+        paddingBottom: Math.max(insets.bottom, 12),
+        minHeight: 72 + Math.max(insets.bottom, 12),
+      },
+    ]}>
+      {tabs.map(([id, icon, label]) => {
+        const selected = active === id;
+        const isAI = id === 'ai';
+
+        if (isAI) {
+          return (
+            <Pressable
+              key={id}
+              style={s.navAiItem}
+              onPress={() => go(id)}
+              accessibilityLabel="Open STUDYante AI"
+            >
+              <View style={[
+                s.navAiButton,
+                selected && s.navAiButtonActive,
+              ]}>
+                <Ionicons
+                  name="school"
+                  size={28}
+                  color={C.white}
+                />
+              </View>
+
+              <Text style={[
+                s.navAiLabel,
+                selected && s.navActive,
+              ]}>
+                AI
+              </Text>
+            </Pressable>
+          );
+        }
+
+        return (
+          <Pressable
+            key={id}
+            style={s.navItem}
+            onPress={() => go(id)}
+          >
+            <Ionicons
+              name={selected ? icon : `${icon}-outline`}
+              size={21}
+              color={selected ? C.blue : C.muted}
+            />
+
+            <Text style={[
+              s.navLabel,
+              selected && s.navActive,
+            ]}>
+              {label}
+            </Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
 let s: any = StyleSheet.create({
   homeLogo: {
     width: 235,
@@ -3355,7 +4976,7 @@ let s: any = StyleSheet.create({
 
   safe: { flex: 1, backgroundColor: C.white }, shell: { flex: 1, backgroundColor: C.bg }, content: { width: '100%', maxWidth: 900, alignSelf: 'center', padding: 20, paddingBottom: 135 }, center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: C.bg }, centerText: { marginTop: 14, color: C.muted },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }, logo: { width: 175, height: 52 }, avatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: C.blue, alignItems: 'center', justifyContent: 'center' }, avatarText: { color: C.white, fontWeight: '900' },
-  eyebrow: { color: C.red, fontSize: 11, letterSpacing: 1.4, fontWeight: '900' }, title: { color: C.navy, fontSize: 29, fontWeight: '900', marginTop: 6 }, sub: { color: C.muted, fontSize: 14, lineHeight: 21, marginTop: 5 },
+  eyebrow: { color: '#1877F2', fontSize: 11, letterSpacing: 1.4, fontWeight: '900' }, title: { color: C.navy, fontSize: 29, fontWeight: '900', marginTop: 6 }, sub: { color: C.muted, fontSize: 14, lineHeight: 21, marginTop: 5 },
   hero: { backgroundColor: C.blue, borderRadius: 24, padding: 22, marginTop: 22 }, heroIcon: { width: 47, height: 47, borderRadius: 15, backgroundColor: C.red, alignItems: 'center', justifyContent: 'center' }, heroTitle: { color: C.white, fontSize: 24, fontWeight: '900', marginTop: 18 }, heroCopy: { color: '#DCE7FF', lineHeight: 21, marginTop: 7 }, heroButton: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: C.white, borderRadius: 12, paddingHorizontal: 15, paddingVertical: 11, marginTop: 18 }, heroButtonText: { color: C.blue, fontWeight: '800' },
   section: { color: C.navy, fontSize: 19, fontWeight: '900', marginTop: 28, marginBottom: 12 }, grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 }, card: { minWidth: 250, width: '48%', flexGrow: 1, flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: C.white, borderWidth: 1, borderColor: C.line, borderRadius: 18, padding: 15 }, cardIcon: { width: 46, height: 46, borderRadius: 14, alignItems: 'center', justifyContent: 'center' }, cardTitle: { color: C.ink, fontWeight: '800' }, cardText: { color: C.muted, fontSize: 12, marginTop: 3 },
   uploadCard: {
@@ -3685,7 +5306,68 @@ let s: any = StyleSheet.create({
     color: C.blue,
     fontWeight: '800',
   },
-  nav: { position: 'absolute', left: 0, right: 0, bottom: 0, flexDirection: 'row', alignItems: 'flex-start', backgroundColor: C.white, borderTopWidth: 1, borderTopColor: C.line, paddingTop: 10 }, navItem: { flex: 1, minWidth: 54, height: 58, alignItems: 'center', justifyContent: 'center' }, navLabel: { color: C.muted, fontSize: 11, marginTop: 3, fontWeight: '700' }, navActive: { color: C.blue },
+  nav: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: C.white,
+    borderTopWidth: 1,
+    borderTopColor: C.line,
+    paddingTop: 10,
+    overflow: 'visible',
+  },
+  navItem: {
+    flex: 1,
+    minWidth: 48,
+    height: 58,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navAiItem: {
+    flex: 1,
+    minWidth: 58,
+    height: 64,
+    marginTop: -31,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  navAiButton: {
+    width: 62,
+    height: 62,
+    borderRadius: 31,
+    backgroundColor: C.blue,
+    borderWidth: 5,
+    borderColor: C.bg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 10,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.22,
+    shadowRadius: 7,
+  },
+  navAiButtonActive: {
+    backgroundColor: '#1877F2',
+    transform: [{ scale: 1.06 }],
+  },
+  navAiLabel: {
+    color: C.muted,
+    fontSize: 11,
+    fontWeight: '800',
+    marginTop: 2,
+  },
+  navLabel: {
+    color: C.muted,
+    fontSize: 11,
+    marginTop: 3,
+    fontWeight: '700',
+  },
+  navActive: {
+    color: C.blue,
+  },
   authSafe: { flex: 1, backgroundColor: C.bg }, authWrap: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }, authCard: { width: '100%', maxWidth: 430, backgroundColor: C.white, borderRadius: 24, borderWidth: 1, borderColor: C.line, padding: 25 }, authLogo: { width: 210, height: 65, alignSelf: 'center' }, authTitle: { textAlign: 'center', color: C.navy, fontWeight: '900', fontSize: 25, marginTop: 15 }, authSub: { textAlign: 'center', color: C.muted, marginTop: 5, marginBottom: 20 }, input: { height: 52, borderRadius: 14, borderWidth: 1, borderColor: C.line, paddingHorizontal: 15, color: C.ink, marginBottom: 11, backgroundColor: '#FBFCFF' }, primary: { height: 52, borderRadius: 14, backgroundColor: C.blue, alignItems: 'center', justifyContent: 'center', marginTop: 4 }, primaryText: { color: C.white, fontWeight: '900' }, switchText: { color: C.blue, textAlign: 'center', fontWeight: '700', marginTop: 18 }, error: { color: C.red, marginBottom: 8, textAlign: 'center' },
 });
 
@@ -3725,6 +5407,46 @@ const darkStyles: any = StyleSheet.create(
     })
   ) as Record<string, any>
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

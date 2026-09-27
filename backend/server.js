@@ -4462,6 +4462,74 @@ app.post(
 
 
 app.patch(
+  "/api/library/move/:kind/:id",
+  requireAuth,
+  (req, res) => {
+    const library = readLibrary();
+    const kind = String(req.params.kind || "").toLowerCase();
+    const id = String(req.params.id || "");
+    const requestedFolderId =
+      String(req.body.folderId || "").trim() || null;
+
+    if (!Array.isArray(library.folders)) {
+      library.folders = [];
+    }
+
+    if (
+      requestedFolderId &&
+      !library.folders.some(folder =>
+        String(folder.id) === requestedFolderId &&
+        folder.userId === req.user.id
+      )
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Folder not found."
+      });
+    }
+
+    const collections = {
+      file: "files",
+      flashcards: "flashcardSets",
+      material: "studyMaterials"
+    };
+
+    const collectionName = collections[kind];
+
+    if (!collectionName) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Library item type."
+      });
+    }
+
+    if (!Array.isArray(library[collectionName])) {
+      library[collectionName] = [];
+    }
+
+    const item = library[collectionName].find(entry =>
+      String(entry.id) === id &&
+      entry.userId === req.user.id
+    );
+
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: "Library item not found."
+      });
+    }
+
+    item.folderId = requestedFolderId;
+    writeLibrary(library);
+
+    return res.json({
+      success: true,
+      item
+    });
+  }
+);
+
+app.patch(
   "/api/library/study-materials/:id",
   requireAuth,
   (req, res) => {
@@ -6674,6 +6742,7 @@ app.listen(
     console.log("");
   }
 );
+
 
 
 
