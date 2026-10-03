@@ -11,6 +11,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
+import { createFriendsRouter } from './cappy-friends.js';
+import { createScheduleScanRouter } from './schedule-scan.js';
+import { createStudyCircleRouter } from './study-circle.js';
 
 dotenv.config();
 
@@ -6817,6 +6820,15 @@ app.post(
 );
 
 /* STUDYANTE_FORGOT_PASSWORD_END */
+
+app.use('/api/cappy/friends', createFriendsRouter({ requireAuth, readUsers, directory: libraryFolder }));
+app.use('/api/cappy/circles', createStudyCircleRouter({ requireAuth, readUsers, readLibrary, directory: libraryFolder }));
+app.use('/api/schedule/scan', createScheduleScanRouter({ requireAuth, extract: async ({ imageBase64, mimeType, prompt }) => {
+  if (!GEMINI_API_KEY) throw Object.assign(new Error('Missing Gemini key'), { status: 503 });
+  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  const response = await ai.models.generateContent({ model: GEMINI_MODEL, contents: [{ role: 'user', parts: [{ text: prompt }, { inlineData: { data: imageBase64, mimeType } }] }], config: { responseMimeType: 'application/json', temperature: 0, httpOptions: { timeout: 60000 } } });
+  return response.text;
+} }));
 
 app.listen(
   PORT,
