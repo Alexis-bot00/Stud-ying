@@ -1,4 +1,5 @@
 import express from "express";
+import { recordPresence, publicPresence } from './presence.js';
 import cors from "cors";
 import multer from "multer";
 import dotenv from "dotenv";
@@ -5719,6 +5720,15 @@ app.get(
    GET ALL USERS
 ---------------------------------------------------------- */
 
+app.post('/api/presence/heartbeat', requireAuth, (req, res) => {
+  const users = readUsers();
+  const user = users.find(user => user.id === req.user.id);
+  if (!user || user.suspended) return res.status(403).json({ message: 'Account unavailable.' });
+  recordPresence(user);
+  writeUsers(users);
+  return res.json({ success: true });
+});
+
 app.get(
     "/api/admin/users",
     requireAuth,
@@ -5734,7 +5744,7 @@ app.get(
 
         let users =
             readUsers()
-                .map(studyantePublicUser);
+                .map(user => ({ ...studyantePublicUser(user), ...publicPresence(user) }));
 
         if (search) {
             users =
