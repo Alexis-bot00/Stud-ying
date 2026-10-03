@@ -1,4 +1,4 @@
-﻿import express from "express";
+import express from "express";
 import cors from "cors";
 import multer from "multer";
 import dotenv from "dotenv";
@@ -6464,6 +6464,16 @@ function studyanteHashResetCode(code) {
 }
 
 function studyanteGetMailTransporter() {
+    if (process.env.RESEND_API_KEY && process.env.RESET_EMAIL_FROM) {
+        return {
+            async sendMail(options) {
+                const response = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ from: process.env.RESET_EMAIL_FROM, to: [options.to], subject: options.subject, text: options.text, html: options.html }), signal: AbortSignal.timeout(20000) });
+                if (!response.ok) throw new Error(`Reset email provider rejected the request (${response.status}).`);
+                return { accepted: [options.to] };
+            },
+            async verify() {}, close() {},
+        };
+    }
     const host =
         process.env.SMTP_HOST ||
         "smtp.gmail.com";
@@ -6485,6 +6495,7 @@ function studyanteGetMailTransporter() {
         host,
         port,
         secure: port === 465,
+        connectionTimeout: 15000, greetingTimeout: 15000, socketTimeout: 20000,
         auth: {
             user,
             pass
@@ -6492,9 +6503,7 @@ function studyanteGetMailTransporter() {
     });
 }
 
-app.post(
-    "/api/auth/forgot-password",
-    async (req, res) => {
+async function studyanteSendResetCode(req, res) {
         try {
 
             console.log("[FORGOT DEBUG] Request received", {
@@ -6593,7 +6602,7 @@ app.post(
                 process.env.SMTP_FROM ||
                 process.env.SMTP_USER;
 
-            await transporter.sendMail({
+            const delivery = await transporter.sendMail({
                 from,
                 to: email,
 
@@ -6639,12 +6648,15 @@ app.post(
                 `
             });
 
+            if (!delivery.accepted?.length) throw new Error('The email provider did not accept the reset message.');
+
             return res.json({
                 success: true,
                 message: genericMessage
             });
 
         } catch (error) {
+            studyantePasswordResetCodes.delete(String(req.body?.email || "").trim().toLowerCase());
             console.error(
                 "Forgot password error:",
                 error
@@ -6657,7 +6669,24 @@ app.post(
             });
         }
     }
-);
+app.post('/api/auth/forgot-password', studyanteSendResetCode);
+
+app.post('/api/admin/users/:id/password-reset', requireAuth, requireStudyanteAdmin, async (req, res) => {
+  const user = readUsers().find(user => user.id === req.params.id);
+  if (!user) return res.status(404).json({ message: 'User not found.' });
+  req.body = { email: user.email };
+  await studyanteSendResetCode(req, res);
+  studyanteAdminLog(req, 'ASSIST_PASSWORD_RESET', { userId: user.id, result: res.statusCode });
+});
+
+app.get('/api/admin/email-status', requireAuth, requireStudyanteAdmin, async (req, res) => {
+  if (process.env.RESEND_API_KEY && process.env.RESET_EMAIL_FROM) return res.json({ ready: true, message: 'HTTPS reset email is configured. Send a reset to test delivery; provider acceptance and inbox delivery still need verification.' });
+  const transporter = studyanteGetMailTransporter();
+  if (!transporter) return res.json({ ready: false, message: 'Reset emails are not configured. In Railway, set RESEND_API_KEY and RESET_EMAIL_FROM to a verified sender. SMTP is available only on Railway Pro or above.' });
+  try { await transporter.verify(); return res.json({ ready: true, message: 'Email server connection and login succeeded. Check the recipient inbox and spam folder; delivery still needs verification.' }); }
+  catch (error) { return res.json({ ready: false, message: error.code === 'EAUTH' ? 'Email login failed. Check the sender account and SMTP app password in Railway.' : 'Could not connect to the email server. Check SMTP_HOST, SMTP_PORT and your provider’s connection restrictions.' }); }
+  finally { transporter.close(); }
+});
 
 app.post(
     "/api/auth/reset-password",
