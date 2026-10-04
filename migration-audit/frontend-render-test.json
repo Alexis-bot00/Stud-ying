@@ -1,0 +1,7 @@
+{
+  "EXPO_PUBLIC_API_URL": "https://studyante-backend-test.onrender.com",
+  "EXPO_NO_DOTENV": "1",
+  "platform": "web",
+  "outputDirectory": "dist/render-phase5",
+  "localPort": 4175
+}

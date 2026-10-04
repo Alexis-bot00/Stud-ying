@@ -1,0 +1,197 @@
+[
+    {
+        "from":  "STUDYante-App/src/app/index.before-account-settings.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-account-settings.tsx",
+        "sha256":  "FDCCAD19B550DCF055258BBD11321667BF3572D636F7F05ED3CD324C2D18ED1D"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-ai-attachments-final.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-ai-attachments-final.tsx",
+        "sha256":  "E5E24F27ADEBFB2584A7BDCECE5D71330C8D43C7EEA521E97350816A265B5D2F"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-ai-attachments.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-ai-attachments.tsx",
+        "sha256":  "E5E24F27ADEBFB2584A7BDCECE5D71330C8D43C7EEA521E97350816A265B5D2F"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-ai-file-camera.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-ai-file-camera.tsx",
+        "sha256":  "E5E24F27ADEBFB2584A7BDCECE5D71330C8D43C7EEA521E97350816A265B5D2F"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-ai-images.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-ai-images.tsx",
+        "sha256":  "A9E883B6C7E78D77DAE5D529F283FBC89A296D5A2E5F467EA43A657C1C9FD4A7"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-ai-menu-position.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-ai-menu-position.tsx",
+        "sha256":  "0D9525D25625C8068C05E61F4D90FF0265BC726375F82717E49589AAC28C2918"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-ai-plus-menu.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-ai-plus-menu.tsx",
+        "sha256":  "1DDF7EDFCD3FE635A7A0A240438AA59C021849118321E293552117DA1CF67AAB"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-applause.tsx.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-applause.tsx.txt",
+        "sha256":  "434C6A27F56F3F20642A932B083A9B4030383884B586676B363474A2F6714DB4"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-button-fix.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-button-fix.tsx",
+        "sha256":  "EBE1061055BD3949B8061CEA36167517D743677F62A462717BA0EE6157E691D1"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-card-layout.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-card-layout.txt",
+        "sha256":  "0D7455B824B5CC8EADA674A44C0504BDFDEE6555A8A42DD58F0B98B474708669"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-community-button-width.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-community-button-width.txt",
+        "sha256":  "3868A649B34A10662855182019DE60D476460BEB59B246C078EF64E7F6D90D2B"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-community-controls.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-community-controls.txt",
+        "sha256":  "32D8C0E8742C178651DB008A512BC20C4B650B3C1D1111A2FD398970C7EEDDB5"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-community-popup.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-community-popup.tsx",
+        "sha256":  "2A88F7F01BC1C673A0D05A97F68204ED2C9B2497E8552A31374C3AE8F64738CF"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-community-reader.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-community-reader.txt",
+        "sha256":  "5B116C1F1B358826837BA050B322B058D02B10481DC0B2D8CA6F834F3DD76B10"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-community-swipe.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-community-swipe.txt",
+        "sha256":  "0D7455B824B5CC8EADA674A44C0504BDFDEE6555A8A42DD58F0B98B474708669"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-correct-answer-voice.tsx.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-correct-answer-voice.tsx.txt",
+        "sha256":  "8A019B2E2C0A35E772FC3267A05819B854761B518F030EB0546FE94CA1174BCD"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-easier-swipe.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-easier-swipe.txt",
+        "sha256":  "F109601332D068C59CFB49AA05BAD128C2029C2420BBC4C023E3A796CE19D810"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-folder-button-fix.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-folder-button-fix.tsx",
+        "sha256":  "F7CE8C85512EDBBEDB5FAB99DD7AB48E0C14E0BB2B535D72C5554C165B63A60F"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-four-navigation.tsx.bak",
+        "to":  "migration-audit/frontend-source-backups/index.before-four-navigation.tsx.bak",
+        "sha256":  "0BD6DC632BE3B6E488AA01390397576A25748004B03ED395F9D45FFDE4ECC3F8"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-four-tabs.tsx.bak",
+        "to":  "migration-audit/frontend-source-backups/index.before-four-tabs.tsx.bak",
+        "sha256":  "0BD6DC632BE3B6E488AA01390397576A25748004B03ED395F9D45FFDE4ECC3F8"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-header-fix.tsx.bak",
+        "to":  "migration-audit/frontend-source-backups/index.before-header-fix.tsx.bak",
+        "sha256":  "CC6055C4AA71152FF29AE2129DFF54D335746528D0F7CDCE4B1C0347DCC9BF80"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-library-button-fix.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-library-button-fix.tsx",
+        "sha256":  "EBE1061055BD3949B8061CEA36167517D743677F62A462717BA0EE6157E691D1"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-library-folders.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-library-folders.tsx",
+        "sha256":  "9D5148673DACF9C0E32F626F9B08C4DF61FD1FCD17F0F3BF31E860713D456EF4"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-library-swipe.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-library-swipe.txt",
+        "sha256":  "CE4F5352971859DE326E6CCC10BDB00F19F3C63FEE664822EB522F7C971F28A0"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-logo-left.tsx.bak",
+        "to":  "migration-audit/frontend-source-backups/index.before-logo-left.tsx.bak",
+        "sha256":  "5613D06221911A2D6EAC8DFF4EEC756F3456899D9F09688B76E41D65A0FFA161"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-remove-a.tsx.bak",
+        "to":  "migration-audit/frontend-source-backups/index.before-remove-a.tsx.bak",
+        "sha256":  "FB9003F81021E92DC2648B6177D1084E50676DE471FF7EFAD9C882BD5756114D"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-settings-layout.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-settings-layout.tsx",
+        "sha256":  "A74456E82D84617B26B509FF5C45F82F905A28077BDAFD9AB5FBB670B41A989E"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-theme-and-picture.tsx",
+        "to":  "migration-audit/frontend-source-backups/index.before-theme-and-picture.tsx",
+        "sha256":  "30BCCDD18F9568A3890CF6A161969CFB51A776AE2F416C7B2EAA00CABFCE9407"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.before-website-swipe.txt",
+        "to":  "migration-audit/frontend-source-backups/index.before-website-swipe.txt",
+        "sha256":  "4C7A3B433F761724DAECCF22E027431295C6D505267701547756F66A832584B9"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.bak",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.bak",
+        "sha256":  "2B8E879AD5AD03E50C2F8D3EDF1516C9F345E556B7FEA402B8579D2E9E3B8BF4"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.before-folder-plus",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.before-folder-plus",
+        "sha256":  "3952BC19557A65F949CE2870D04A828988F3D8ADFAC8CC2570F79EAF004C8CC0"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.before-manual-creator",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.before-manual-creator",
+        "sha256":  "FA0F22F94BF98494F70D870626FAD260B718D828CAB7F89B18C1D2A2B3970913"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.before-move-buttons",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.before-move-buttons",
+        "sha256":  "55F8FC96A62A0D9658091E7E06ED60E6EFF53D740791E5FBFC7D75457E0F2F73"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.before-move-function",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.before-move-function",
+        "sha256":  "75A726377962996641CDA9AD28A01FCD72BE1C299C53EAC0B61CBF9C126C07A6"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.before-move-panel",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.before-move-panel",
+        "sha256":  "1EB3609D08E4CBFBC9659F4EF9545DB4ADDBBFCB821C0971F783ABC4E72A6211"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.before-remove-library-buttons",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.before-remove-library-buttons",
+        "sha256":  "FBDA90C3A8DD380B0DD3E0D0FF63F7519728F270EC192F10AAA590939333C02B"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.folder-backup",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.folder-backup",
+        "sha256":  "3952BC19557A65F949CE2870D04A828988F3D8ADFAC8CC2570F79EAF004C8CC0"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.multiple-files.bak",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.multiple-files.bak",
+        "sha256":  "47F7142296C5B93195D782AC70E5558E8AD57EEA74A0360FA96257D5A42E5780"
+    },
+    {
+        "from":  "STUDYante-App/src/app/index.tsx.theme-backup",
+        "to":  "migration-audit/frontend-source-backups/index.tsx.theme-backup",
+        "sha256":  "3D48ED491526D062683E9E74CF7FB398DFB86774D635455B5E12DDEAC485B5D8"
+    }
+]

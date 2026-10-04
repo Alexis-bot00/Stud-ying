@@ -1,8 +1,9 @@
-﻿import Markdown from 'react-native-markdown-display';
+import Markdown from 'react-native-markdown-display';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createAccountCache } from '../components/account-cache';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEffect, useRef, useState } from 'react';
-import { Modal, Alert, ActivityIndicator, Animated, Image, Linking, PanResponder, Platform, Pressable, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native';
+import { AppState, Modal, Alert, ActivityIndicator, Animated, Image, KeyboardAvoidingView, Linking, PanResponder, Platform, Pressable, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -12,23 +13,70 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { File as ExpoFile } from 'expo-file-system';
 import { fetch as expoFetch } from 'expo/fetch';
 import * as Sharing from 'expo-sharing';
+import { CappyOnboarding, CappyTasks, CappySchedule, CappyBudget, CappyGrades, CappyFriends, CappyMascot, CappyPreferences, cappyPalette, usePlanner } from '../components/cappy';
+import { syncReminders } from '../components/cappy-notifications';
+import { StudyanteHome } from '../components/studyante-home';
+import { ScheduleScan } from '../components/schedule-scan';
+import { SchoolCalendar } from '../components/school-calendar';
+import { PasswordRecovery } from '../components/password-recovery';
 
-const API = 'https://stud-ying-production.up.railway.app';
+const API = (process.env.EXPO_PUBLIC_API_URL || 'https://stud-ying-production.up.railway.app').replace(/\/$/, '');
 const WEBSITE = 'https://alexis-bot00.github.io/Stud-ying/';
-const C = { blue: '#185ABD', red: '#E53945', navy: '#14213D', ink: '#24324A', muted: '#73809A', bg: '#F3F6FC', white: '#FFFFFF', line: '#E3E8F2', softBlue: '#EAF1FF', softRed: '#FFF0F1' };
+const C = cappyPalette;
+const accountCache = createAccountCache(AsyncStorage);
 type User = { id: string; name: string; email: string; profilePicture?: string };
-type Screen = 'dashboard' | 'upload' | 'create' | 'library' | 'community' | 'ai' | 'profile' | 'admin';
+type Screen = 'dashboard' | 'upload' | 'create' | 'library' | 'community' | 'ai' | 'profile' | 'admin' | 'tasks' | 'schedule' | 'budget' | 'grades' | 'friends';
 
 function savedToken() { return Platform.OS === 'web' && typeof window !== 'undefined' ? window.localStorage.getItem('studyingToken') || '' : ''; }
 function saveToken(token: string) { if (Platform.OS !== 'web' || typeof window === 'undefined') return; token ? window.localStorage.setItem('studyingToken', token) : window.localStorage.removeItem('studyingToken'); }
 
 export default function StudyanteApp() {
+  const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const [token, setToken] = useState(savedToken);
   const [user, setUser] = useState<User | null>(null);
   const [admin, setAdmin] = useState(false);
   const [screen, setScreen] = useState<Screen>('dashboard');
+  const [circleNoteId, setCircleNoteId] = useState('');
   const [loading, setLoading] = useState(Boolean(token));
   const [darkMode, setDarkMode] = useState(false);
+  const [setupReady, setSetupReady] = useState(false);
+  const [onboarded, setOnboarded] = useState(false);
+  const planner = usePlanner(user?.id || 'guest');
+
+  useEffect(() => {
+    if (!token || !user) return;
+    const heartbeat = () => {
+      const active = Platform.OS === 'web' ? typeof document !== 'undefined' && document.visibilityState === 'visible' : AppState.currentState === 'active';
+      if (active) api('/api/presence/heartbeat', { method: 'POST', body: '{}' }).catch(() => {});
+    };
+    heartbeat();
+    const timer = setInterval(heartbeat, 30000);
+    const subscription = AppState.addEventListener('change', heartbeat);
+    if (Platform.OS === 'web') document.addEventListener('visibilitychange', heartbeat);
+    return () => { clearInterval(timer); subscription.remove(); if (Platform.OS === 'web') document.removeEventListener('visibilitychange', heartbeat); };
+  }, [token, user?.id]);
+
+  useEffect(() => {
+    let live = true;
+    Promise.all([AsyncStorage.getItem('cappy-onboarded'), AsyncStorage.getItem('cappy-auth-token')]).then(([setup, nativeToken]) => {
+      if (!live) return;
+      setOnboarded(setup === 'true');
+      if (Platform.OS !== 'web' && nativeToken) { setLoading(true); setToken(nativeToken); }
+      setSetupReady(true);
+    }).catch(() => { if (live) setSetupReady(true); });
+    return () => { live = false; };
+  }, []);
+
+  useEffect(() => {
+    if (!user || !planner.ready || Platform.OS === 'web') return;
+    syncReminders(planner.data).catch(() => {});
+  }, [user?.id, planner.ready]);
+
+  function chooseTheme(value: boolean) {
+    setDarkMode(value);
+    AsyncStorage.setItem('studyanteDarkMode', String(value)).catch(() => {});
+  }
 
   useEffect(() => {
     AsyncStorage.getItem('studyanteDarkMode')
@@ -55,66 +103,63 @@ export default function StudyanteApp() {
         : fetch;
     const response = await transport(`${API}${path}`, { ...options, headers: { ...(multipart ? {} : { 'Content-Type': 'application/json' }), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(options.headers || {}) } });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.message || 'Request failed.');
+    if (!response.ok) {
+      const missingFeature = response.status === 404 && !data.message && (path.startsWith('/api/cappy/') || path === '/api/schedule/scan');
+      throw Object.assign(new Error(data.message || (missingFeature ? path === '/api/schedule/scan' ? 'Photo scheduling is unavailable right now. You can still add classes manually.' : path.endsWith('/capybara') ? 'Your jacket could not be saved because this server does not have the Circle jacket update yet.' : path.includes('/materials') ? 'This server does not have the Circle sharing update yet.' : path.endsWith('/notes/import') ? 'This server does not have the Circle file upload update yet.' : 'This Circle action is missing from the server. The Circle backend needs to be updated.' : response.status === 401 ? 'Please sign in again.' : `Could not complete this request (${response.status}). Please try again.`)), { status: response.status });
+    }
     return data;
   }
 
   useEffect(() => {
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
+    let live = true;
+    if (!token) { setLoading(false); return; }
     async function openAccount() {
       try {
-        const [me, owner] = await Promise.all([
-          api('/api/auth/me'),
-          api('/api/admin/me'),
-        ]);
-
-        setUser(me.user);
-        setAdmin(owner.isAdmin === true);
-
-        await AsyncStorage.setItem(
-          'studyanteOfflineUser',
-          JSON.stringify({
-            user: me.user,
-            isAdmin: owner.isAdmin === true,
-          })
-        );
-      } catch {
-        const saved = await AsyncStorage.getItem(
-          'studyanteOfflineUser'
-        );
-
-        if (saved) {
-          const offlineAccount = JSON.parse(saved);
-          setUser(offlineAccount.user);
-          setAdmin(offlineAccount.isAdmin === true);
-        } else {
-          saveToken('');
-          setToken('');
-        }
-      } finally {
-        setLoading(false);
-      }
+        const [me, owner] = await Promise.all([api('/api/auth/me'), api('/api/admin/me')]);
+        if (!live) return;
+        await accountCache.bind(me.user.id, token);
+        await accountCache.write('user', me.user.id, me.user);
+        if (!live) return;
+        setUser(me.user); setAdmin(owner.isAdmin === true);
+      } catch (error: any) {
+        if (!live) return;
+        const id = error?.status === 401 || error?.status === 403 ? null : await accountCache.restore(token);
+        const saved = id ? await accountCache.read<User>('user', id) : null;
+        if (!live) return;
+        if (saved && saved.id === id) { setUser(saved); setAdmin(false); }
+        else { await accountCache.logout(id || undefined); if (!live) return; saveToken(''); setToken(''); setUser(null); setAdmin(false); }
+      } finally { if (live) setLoading(false); }
     }
-
     openAccount();
+    return () => { live = false; };
   }, [token]);
 
-  if (loading) return <Center text="Opening STUDYante..." />;
-  if (!token || !user) return <Auth done={(t, u) => { saveToken(t); setUser(u); setToken(t); }} />;
-  const logout = () => { saveToken(''); setToken(''); setUser(null); setAdmin(false); };
+  if (!setupReady || loading) return <SafeAreaView style={{ flex: 1, backgroundColor: C.bg, alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+    <StatusBar barStyle="dark-content" backgroundColor={C.bg} />
+    <Image source={require('../../assets/images/studyante-splash.png')} accessibilityLabel="STUDYante — A little more possible" style={{ width: '100%', maxWidth: 320, height: 107 }} resizeMode="contain" />
+    <ActivityIndicator color={C.blue} style={{ marginTop: 24 }} />
+    <Text style={{ color: C.muted, fontSize: 13, textAlign: 'center', marginTop: 14 }}>Getting your study space ready…</Text>
+  </SafeAreaView>;
+  if (!onboarded && !token) return <CappyOnboarding dark={darkMode} setDark={chooseTheme} done={() => setOnboarded(true)} signIn={() => { setOnboarded(true); AsyncStorage.setItem('cappy-onboarded', 'true').catch(() => {}); }} />;
+  if (!token || !user) return <Auth done={async (t, u) => { await accountCache.bind(u.id, t); await accountCache.write('user', u.id, u); saveToken(t); await AsyncStorage.setItem('cappy-auth-token', t); setUser(u); setToken(t); }} />;
+  const logout = async () => { saveToken(''); const clearing = accountCache.logout(user.id); setToken(''); setUser(null); setAdmin(false); setScreen('dashboard'); await Promise.all([clearing, planner.flush().catch(() => {}), syncReminders({ ...planner.data, notifyAt: false, notifyBefore: false }).catch(() => {})]); };
 
-  return <SafeAreaView style={s.safe}><StatusBar barStyle={darkMode ? "light-content" : "dark-content"} /><View style={s.shell}><ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-    <View style={s.header}></View>
-    {screen === 'dashboard' && <Dashboard user={user} admin={admin} go={setScreen} />}
+  return <SafeAreaView style={s.safe}><StatusBar barStyle={darkMode ? "light-content" : "dark-content"} /><KeyboardAvoidingView style={s.shell} behavior={Platform.OS === 'ios' ? 'padding' : undefined}><ScrollView contentContainerStyle={[s.content, { paddingHorizontal: width < 400 ? 12 : 20, paddingBottom: 135 + insets.bottom, paddingTop: Platform.OS === 'android' ? Math.max(insets.top, 20) : 20 }]} keyboardShouldPersistTaps="handled" automaticallyAdjustKeyboardInsets showsVerticalScrollIndicator={false}>
+    {screen !== 'dashboard' && <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 18 }}><Pressable accessibilityLabel="Back to Cappy home" onPress={() => setScreen('dashboard')} style={{ padding: 10 }}><Ionicons name="arrow-back" size={24} color={C.blue} /></Pressable><Pressable accessibilityLabel="Open account" onPress={() => setScreen('profile')} style={{ padding: 10 }}><Ionicons name="settings-outline" size={24} color={C.blue} /></Pressable></View>}
+    {!!planner.error && <Notice text={planner.error} />}
+    {screen === 'dashboard' && <StudyanteHome store={planner} user={user} go={setScreen} dark={darkMode} />}
+    {screen === 'tasks' && <CappyTasks store={planner} dark={darkMode} />}
+    {screen === 'schedule' && <CappySchedule store={planner} dark={darkMode} calendar={<SchoolCalendar api={api} store={planner} dark={darkMode} />} scan={<ScheduleScan api={api} store={planner} dark={darkMode} />} />}
+    {screen === 'budget' && <CappyBudget store={planner} dark={darkMode} />}
+    {screen === 'grades' && <CappyGrades store={planner} dark={darkMode} />}
+    {screen === 'friends' && <CappyFriends api={api} dark={darkMode} noteId={circleNoteId} />}
+    {screen === 'library' && <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>{(['upload', 'create', 'grades', 'ai', 'community'] as Screen[]).map((id, index) => <Pressable key={id} onPress={() => setScreen(id)} style={{ backgroundColor: darkMode ? '#293F5A' : C.softBlue, padding: 13, borderRadius: 22 }}><Text style={{ color: darkMode ? '#D7E9FF' : C.blue, fontWeight: '800' }}>{['Upload', 'Create', 'Grades', 'STUDYante AI', 'Community'][index]}</Text></Pressable>)}</View>}
     {screen === 'upload' && <UploadMaterial api={api} done={() => setScreen('library')} />}
     {screen === 'create' && <ManualCreator api={api} done={() => setScreen('library')} back={() => setScreen('dashboard')} />}
-    {screen === 'library' && <Library api={api} token={token} />}
+    {screen === 'library' && <Library key={user.id} userId={user.id} api={api} token={token} onStudy={id => { setCircleNoteId(id); setScreen('friends'); }} />}
     {screen === 'community' && <Community api={api} />}
     {screen === 'ai' && <AI api={api} />}
+    {screen === 'profile' && <CappyPreferences store={planner} dark={darkMode} />}
     {screen === 'profile' && <Profile user={user} admin={admin} logout={logout} go={setScreen}
       darkMode={darkMode} toggleDarkMode={toggleDarkMode}
       api={api} updated={(nextUser, nextToken) => {
@@ -125,23 +170,26 @@ export default function StudyanteApp() {
         }
       }} />}
     {screen === 'admin' && admin && <Admin api={api} />}
-  </ScrollView><Nav active={screen} go={setScreen} admin={admin} /></View></SafeAreaView>;
+  </ScrollView><Nav active={screen} go={setScreen} admin={admin} /></KeyboardAvoidingView></SafeAreaView>;
 }
 
-function Auth({ done }: { done: (token: string, user: User) => void }) {
+function Auth({ done }: { done: (token: string, user: User) => void | Promise<void> }) {
+  const [recovering, setRecovering] = useState(false);
   const [register, setRegister] = useState(false), [name, setName] = useState(''), [email, setEmail] = useState(''), [password, setPassword] = useState(''), [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
   async function submit() {
     if (!email.trim() || !password || (register && !name.trim())) return setMessage('Please complete all fields.');
     setBusy(true); setMessage('');
-    try { const r = await fetch(`${API}/api/auth/${register ? 'register' : 'login'}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name.trim(), email: email.trim(), password }) }); const d = await r.json().catch(() => ({})); if (!r.ok || !d.token) throw new Error(d.message || 'Could not continue.'); done(d.token, d.user); } catch (e: any) { setMessage(e.message); } finally { setBusy(false); }
+    try { const r = await fetch(`${API}/api/auth/${register ? 'register' : 'login'}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name.trim(), email: email.trim(), password }) }); const d = await r.json().catch(() => ({})); if (!r.ok || !d.token) throw new Error(d.message || 'Could not continue.'); await done(d.token, d.user); } catch (e: any) { setMessage(e.message); } finally { setBusy(false); }
   }
+  if (recovering) return <PasswordRecovery apiUrl={API} initialEmail={email} back={resetEmail => { setRecovering(false); setMessage(''); setPassword(''); if (resetEmail) setEmail(resetEmail); }} />;
   return <SafeAreaView style={s.authSafe}><ScrollView contentContainerStyle={s.authWrap} keyboardShouldPersistTaps="handled"><View style={s.authCard}>
-    <Image source={require('../../assets/images/studyante-logo.png')} style={s.authLogo} resizeMode="contain" /><Text style={s.authTitle}>{register ? 'Create your account' : 'Welcome back'}</Text><Text style={s.authSub}>Your personal study space</Text>
+    <View style={{ alignItems: 'center' }}><CappyMascot size={115} /><Text style={[s.authTitle, { fontSize: 32 }]}>STUDYante</Text></View><Text style={s.authTitle}>{register ? 'Make room for your next chapter' : 'Welcome back, friend'}</Text><Text style={s.authSub}>A little more organized. A lot more you.</Text>
     {register && <TextInput style={s.input} placeholder="Full name" placeholderTextColor={C.muted} value={name} onChangeText={setName} />}
     <TextInput style={s.input} placeholder="Email address" placeholderTextColor={C.muted} autoCapitalize="none" value={email} onChangeText={setEmail} />
     <TextInput style={s.input} placeholder="Password" placeholderTextColor={C.muted} secureTextEntry value={password} onChangeText={setPassword} onSubmitEditing={submit} />
     {!!message && <Text style={s.error}>{message}</Text>}<Pressable style={s.primary} onPress={submit} disabled={busy}>{busy ? <ActivityIndicator color="white" /> : <Text style={s.primaryText}>{register ? 'Create Account' : 'Log In'}</Text>}</Pressable>
+    {!register && <Pressable accessibilityRole="button" disabled={busy} onPress={() => { setMessage(''); setRecovering(true); }}><Text style={s.switchText}>Forgot password?</Text></Pressable>}
     <Pressable onPress={() => { setRegister(!register); setMessage(''); }}><Text style={s.switchText}>{register ? 'Already have an account? Log in' : 'New to STUDYante? Create an account'}</Text></Pressable>
   </View></ScrollView></SafeAreaView>;
 }
@@ -150,8 +198,15 @@ function Dashboard({ user, admin, go }: { user: User; admin: boolean; go: (x: Sc
   return <><Image source={require('../../assets/images/studyante-logo.png')} style={s.homeLogo} resizeMode="contain" />
 
 <Text style={s.eyebrow}>STUDY SMARTER. LEARN BETTER.</Text><Text style={s.title}>Hello, {user.name.split(' ')[0]}!</Text><Text style={s.sub}>Upload lessons, create study materials, and learn with STUDYante AI.</Text>
-    <View style={s.hero}><View style={s.heroIcon}><Ionicons name="school" size={25} color={C.white} /></View><Text style={s.heroTitle}>Your study space is ready.</Text><Text style={s.heroCopy}>Everything you need to study is in one place.</Text><Pressable style={s.heroButton} onPress={() => go('ai')}><Text style={s.heroButtonText}>Ask STUDYante AI</Text><Ionicons name="arrow-forward" size={18} color={C.blue} /></Pressable></View>
-    <Text style={s.section}>Study tools</Text><View style={s.grid}>
+    <View style={s.hero}>
+      <View pointerEvents="none" style={s.heroOrbit} />
+      <View pointerEvents="none" style={s.heroOrbitSmall} />
+      <View style={s.heroTop}><View style={s.heroIcon}><Ionicons name="sparkles" size={25} color={C.white} /></View><Text style={s.heroTag}>YOUR NEXT LIGHTBULB MOMENT</Text></View>
+      <Text style={s.heroTitle}>Big ideas.{'\n'}Small study steps.</Text>
+      <Text style={s.heroCopy}>Turn a tricky lesson into something that clicks. Your AI study buddy is ready.</Text>
+      <Pressable style={({ pressed }) => [s.heroButton, pressed && s.pressed]} onPress={() => go('ai')}><Text style={s.heroButtonText}>Let’s figure it out</Text><Ionicons name="arrow-forward" size={18} color={C.blue} /></Pressable>
+    </View>
+    <View style={s.sectionHeading}><Text style={[s.section, { marginTop: 0, marginBottom: 0 }]}>Make it a study day</Text><Ionicons name="flash" size={20} color={C.red} /></View><View style={s.grid}>
       <Card icon="cloud-upload-outline" title="Upload Material" text="Add lessons and files" color={C.red} tap={() => go('upload')} />
       <Card icon="create-outline" title="Create Flashcards and Notes" text="Type and save your own study tools" color="#22A06B" tap={() => go('create')} />
       <Card icon="library-outline" title="My Library" text="Files and flashcards" color={C.blue} tap={() => go('library')} />
@@ -160,7 +215,10 @@ function Dashboard({ user, admin, go }: { user: User; admin: boolean; go: (x: Sc
       {admin && <Card icon="shield-checkmark-outline" title="Admin" text="Private owner controls" color={C.navy} tap={() => go('admin')} />}
     </View></>;
 }
-function Card({ icon, title, text, color, tap }: any) { return <Pressable style={s.card} onPress={tap}><View style={[s.cardIcon, { backgroundColor: `${color}18` }]}><Ionicons name={icon} size={24} color={color} /></View><View style={{ flex: 1 }}><Text style={s.cardTitle}>{title}</Text><Text style={s.cardText}>{text}</Text></View><Ionicons name="chevron-forward" size={17} color={C.muted} /></Pressable>; }
+function Card({ icon, title, text, color, tap }: any) {
+  const { width } = useWindowDimensions();
+  return <Pressable accessibilityRole="button" style={({ pressed }) => [s.card, { width: width < 600 ? '100%' : '48%', minWidth: 0, borderLeftColor: color, borderLeftWidth: 4 }, pressed && s.pressed]} onPress={tap}><View style={[s.cardIcon, { backgroundColor: `${color}18` }]}><Ionicons name={icon} size={25} color={color} /></View><View style={{ flex: 1, minWidth: 0 }}><Text style={s.cardTitle}>{title}</Text><Text style={s.cardText}>{text}</Text></View><View style={[s.cardArrow, { backgroundColor: `${color}12` }]}><Ionicons name="arrow-forward" size={17} color={color} /></View></Pressable>;
+}
 
 
 function ManualCreator({
@@ -1466,7 +1524,7 @@ function MillionaireGame({
         fontSize: 24,
         textAlign: 'center',
       }}>
-        STUDYante Challenge
+        Cappy Challenge
       </Text>
 
       <Text style={{
@@ -1967,7 +2025,7 @@ function MillionaireGame({
     </View>
   );
 }
-function Library({ api, token }: { api: any; token: string }) {
+function Library({ api, token, userId, onStudy }: { api: any; token: string; userId: string; onStudy: (id: string) => void }) {
   const [folder, setFolder] = useState('all');
   const [addingFolder, setAddingFolder] = useState(false);
   const [folderName, setFolderName] = useState('');
@@ -2003,18 +2061,13 @@ function Library({ api, token }: { api: any; token: string }) {
 
       setData(latestData);
 
-      await AsyncStorage.setItem(
-        'studyanteOfflineLibrary',
-        JSON.stringify(latestData)
-      );
+      await accountCache.write('library', userId, latestData);
     } catch (error: any) {
       try {
-        const saved = await AsyncStorage.getItem(
-          'studyanteOfflineLibrary'
-        );
+        const saved = error?.status === 401 || error?.status === 403 ? null : await accountCache.read<any>('library', userId);
 
         if (saved) {
-          setData(JSON.parse(saved));
+          setData(saved);
           setError('Offline mode: showing your saved study materials.');
         } else {
           setError(
@@ -2212,6 +2265,7 @@ function Library({ api, token }: { api: any; token: string }) {
 
         {kind === 'notes' ? (
           <View style={s.uploadCard}>
+            <Pressable accessibilityRole="button" accessibilityLabel="Invite friends to study these notes" onPress={() => onStudy(openMaterial.id)} style={[s.primary, { marginBottom: 16 }]}><Text style={s.primaryText}>Invite friends in Study Circle</Text></Pressable>
             <Text style={[s.cardText, { lineHeight: 24 }]}>
               {formatStudyNotes(openMaterial.data?.notes || 'No notes found.')}
             </Text>
@@ -2660,10 +2714,9 @@ function Library({ api, token }: { api: any; token: string }) {
       {openingFile && <ActivityIndicator color={C.blue} />}
       {!!fileError && <Notice text={fileError} />}
 
+      {!!error && <Notice text={error} />}
       {busy ? (
         <ActivityIndicator color={C.blue} />
-      ) : error ? (
-        <Notice text={error} />
       ) : visibleItems.length ? (
         visibleItems.map((x: any, i: number) => (
           <View
@@ -2982,6 +3035,10 @@ function cleanAIText(value: string) {
 }
 
 function AI({ api }: { api: any }) {
+  const { width, height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const compact = width < 700;
+  const chatHeight = compact ? Math.max(280, height - insets.top - insets.bottom - 260) : 620;
   const welcome = {
     role: 'assistant',
     content: 'Hi! What would you like to study today?'
@@ -3001,15 +3058,14 @@ function AI({ api }: { api: any }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
 
-  async function attachFile() {
+  async function attachFile(kind: 'file' | 'image' = 'file') {
     try {
       const picked = await DocumentPicker.getDocumentAsync({
-        type: [
+        type: kind === 'image' ? ['image/*'] : [
           'application/pdf',
           'text/plain',
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-          'image/*',
         ],
         copyToCacheDirectory: true,
         multiple: false,
@@ -3139,7 +3195,7 @@ function AI({ api }: { api: any }) {
     const attachmentName = selectedAttachment
       ? (
           selectedKind === 'image'
-            ? (selectedAttachment as ImagePicker.ImagePickerAsset).fileName
+            ? (selectedAttachment as ImagePicker.ImagePickerAsset).fileName || (selectedAttachment as DocumentPicker.DocumentPickerAsset).name
             : (selectedAttachment as DocumentPicker.DocumentPickerAsset).name
         ) || (selectedKind === 'image' ? 'Camera photo' : 'Study file')
       : '';
@@ -3190,11 +3246,7 @@ function AI({ api }: { api: any }) {
         if (Platform.OS === 'web' && selectedAttachment.file) {
           form.append(selectedKind, selectedAttachment.file, name);
         } else {
-          form.append(selectedKind, {
-            uri: selectedAttachment.uri,
-            name,
-            type: mime,
-          } as any);
+          form.append(selectedKind, new ExpoFile(selectedAttachment.uri) as any, name);
         }
       }
 
@@ -3298,7 +3350,7 @@ function AI({ api }: { api: any }) {
   return (
     <Page title="STUDYante AI" sub="Ask questions, upload lessons, and continue previous chats.">
       <View style={{
-        flexDirection: 'row',
+        flexDirection: compact ? 'column' : 'row',
         flexWrap: 'wrap',
         alignItems: 'stretch',
         gap: 14,
@@ -3307,12 +3359,11 @@ function AI({ api }: { api: any }) {
       }}>
         {historyOpen && (
           <View style={{
-            width: 270,
+            width: compact ? '100%' : 270,
             maxWidth: '100%',
             flexGrow: 0,
             flexShrink: 1,
-            minHeight: 520,
-            maxHeight: 720,
+            height: compact ? Math.min(300, chatHeight) : chatHeight,
             backgroundColor: C.white,
             borderWidth: 1,
             borderColor: C.line,
@@ -3427,12 +3478,13 @@ function AI({ api }: { api: any }) {
         )}
 
         <View style={{
-          flex: 1,
+          flex: compact ? undefined : 1,
           flexGrow: 1,
-          flexBasis: 560,
-          minWidth: 280,
-          minHeight: 520,
-          maxHeight: 720,
+          flexBasis: compact ? undefined : 0,
+          width: compact ? '100%' : undefined,
+          minWidth: 0,
+          maxWidth: '100%',
+          height: chatHeight,
           backgroundColor: C.white,
           borderWidth: 1,
           borderColor: C.line,
@@ -3509,6 +3561,7 @@ function AI({ api }: { api: any }) {
 
           <ScrollView
             nestedScrollEnabled
+            keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               flexGrow: 1,
@@ -3590,6 +3643,8 @@ function AI({ api }: { api: any }) {
 
                 <View style={{
                   maxWidth: '82%',
+                  minWidth: 0,
+                  flexShrink: 1,
                   paddingHorizontal: 15,
                   paddingVertical: 12,
                   borderRadius: 18,
@@ -3701,6 +3756,23 @@ function AI({ api }: { api: any }) {
                 </View>
               </View>
             ))}
+
+            {messages.length === 1 && messages[0].content === welcome.content && !busy && (
+              <View style={{ gap: 10, marginTop: 8 }}>
+                <Text style={s.promptLabel}>START WITH A LITTLE CURIOSITY</Text>
+                {[
+                  ['bulb-outline', 'Explain something simply', 'Help me understand a topic. Ask me what I am studying, then explain it simply with an example.'],
+                  ['albums-outline', 'Turn a lesson into flashcards', 'Help me make flashcards. Ask me to share my lesson or topic first.'],
+                  ['help-circle-outline', 'Quiz me on what I know', 'Quiz me on a topic. Ask me what subject and difficulty I want first.'],
+                ].map(([icon, label, prompt]) => (
+                  <Pressable key={label} accessibilityRole="button" onPress={() => setQuestion(prompt)} style={({ pressed }) => [s.promptCard, pressed && s.pressed]}>
+                    <View style={s.promptIcon}><Ionicons name={icon as any} size={20} color={C.blue} /></View>
+                    <Text style={[s.cardTitle, { flex: 1, minWidth: 0 }]}>{label}</Text>
+                    <Ionicons name="arrow-forward" size={17} color={C.blue} />
+                  </Pressable>
+                ))}
+              </View>
+            )}
 
             {busy && (
               <View style={{
@@ -3826,8 +3898,10 @@ function AI({ api }: { api: any }) {
                     size={22}
                     color={C.blue}
                   />
-                  <Text style={s.cardTitle}>Upload file or image</Text>
+                  <View style={{flex:1}}><Text style={s.cardTitle}>Upload document</Text><Text style={{color:C.muted,fontSize:11,marginTop:3}}>PDF, Word, PowerPoint or TXT</Text></View>
                 </Pressable>
+
+                <Pressable accessibilityRole="button" accessibilityLabel="Choose photo" onPress={()=>{setMenuOpen(false);attachFile('image');}} style={{flexDirection:'row',alignItems:'center',gap:11,padding:12,borderRadius:11}}><Ionicons name="images-outline" size={22} color={C.blue}/><Text style={s.cardTitle}>Choose photo</Text></Pressable>
 
                 <Pressable
                   onPress={() => {
@@ -4155,7 +4229,14 @@ function AI({ api }: { api: any }) {
       </View>
     </Page>
   );
-}function Admin({ api }: { api: any }) {
+}
+function presenceDuration(seconds: number) {
+  const value = Math.max(0, Math.floor(seconds));
+  if (value < 60) return `${value} second${value === 1 ? '' : 's'}`;
+  if (value < 3600) { const minutes = Math.floor(value / 60); return `${minutes} minute${minutes === 1 ? '' : 's'}`; }
+  const hours = Math.floor(value / 3600); return `${hours} hour${hours === 1 ? '' : 's'}`;
+}
+function Admin({ api }: { api: any }) {
   const [tab, setTab] =
     useState<'overview' | 'users' | 'materials' | 'announcements' | 'logs'>(
       'overview',
@@ -4171,6 +4252,14 @@ function AI({ api }: { api: any }) {
   const [announcementMessage, setAnnouncementMessage] = useState('');
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
+  const [presenceNow, setPresenceNow] = useState(Date.now());
+
+  useEffect(() => {
+    if (tab !== 'users') return;
+    loadUsers();
+    const timer = setInterval(() => { setPresenceNow(Date.now()); loadUsers(); }, 15000);
+    return () => clearInterval(timer);
+  }, [tab]);
 
   async function confirmAction(text: string) {
     if (Platform.OS === 'web') {
@@ -4214,6 +4303,7 @@ function AI({ api }: { api: any }) {
         await api('/api/admin/users');
 
       setUsers(data.users || []);
+      setPresenceNow(Date.now());
     } catch (error: any) {
       setMessage(error.message);
     }
@@ -4595,6 +4685,7 @@ function AI({ api }: { api: any }) {
 
       {tab === 'users' && (
         <View>
+          <Pressable accessibilityRole="button" disabled={busy} style={[s.adminResetButton, busy && { opacity: 0.5 }]} onPress={async () => { setBusy(true); try { const result = await api('/api/admin/email-status'); setMessage(result.message); } catch (e: any) { setMessage(e.message); } finally { setBusy(false); } }}><Text style={s.adminResetButtonText}>Check reset email service</Text></Pressable>
           {users.length === 0 ? (
             <Empty text="No users found." />
           ) : (
@@ -4603,6 +4694,7 @@ function AI({ api }: { api: any }) {
                 key={user.id}
                 style={s.adminItem}
               >
+                <Pressable accessibilityRole="button" accessibilityLabel={`Send password reset to ${user.name}`} disabled={busy} style={[s.adminResetButton, busy && { opacity: 0.5 }]} onPress={async () => { if (!(await confirmAction(`Send a password reset code to ${user.email}? The user chooses their own new password.`))) return; setBusy(true); try { const result = await api(`/api/admin/users/${encodeURIComponent(user.id)}/password-reset`, { method: 'POST', body: '{}' }); setMessage(result.message); } catch (e: any) { setMessage(e.message); } finally { setBusy(false); } }}><Text style={s.adminResetButtonText}>Send password reset</Text></Pressable>
                 <View style={s.adminItemTop}>
                   <View style={{ flex: 1 }}>
                     <Text
@@ -4615,6 +4707,14 @@ function AI({ api }: { api: any }) {
                       style={s.adminItemMeta}
                     >
                       {user.email}
+                    </Text>
+
+                    <Text style={[s.adminItemMeta, { color: user.online ? '#36765A' : C.muted }]}>
+                      {user.online
+                        ? `● Online · ${presenceDuration(user.onlineSeconds || 0)}`
+                        : user.lastSeenAt
+                          ? `○ Offline · Last seen ${presenceDuration((presenceNow - Date.parse(user.lastSeenAt)) / 1000)} ago`
+                          : '○ Offline · No activity recorded yet'}
                     </Text>
 
                     <Text
@@ -4929,13 +5029,14 @@ function Nav({
   admin: boolean;
 }) {
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
 
   const tabs: [Screen, any, string][] = [
-    ['dashboard', 'home', 'Home'],
-    ['library', 'library', 'Library'],
-    ['ai', 'sparkles', 'AI'],
-    ['community', 'globe', 'Community'],
-    ['profile', 'person', 'Account'],
+    ['dashboard', 'home', 'Today'],
+    ['tasks', 'checkmark-circle', 'To-dos'],
+    ['schedule', 'calendar', 'Week'],
+    ['library', 'book', 'Desk'],
+    ['friends', 'people', 'Circle'],
   ];
 
   return (
@@ -4947,8 +5048,8 @@ function Nav({
       },
     ]}>
       {tabs.map(([id, icon, label]) => {
-        const selected = active === id;
-        const isAI = id === 'ai';
+        const selected = active === id || (id === 'library' && ['upload', 'create', 'grades', 'ai', 'community'].includes(active));
+        const isAI = false;
 
         if (isAI) {
           return (
@@ -4993,6 +5094,7 @@ function Nav({
 
             <Text style={[
               s.navLabel,
+              { fontSize: width < 360 ? 9 : 11 },
               selected && s.navActive,
             ]}>
               {label}
@@ -5008,14 +5110,28 @@ let s: any = StyleSheet.create({
     width: 235,
     height: 78,
     alignSelf: 'flex-start',
-    marginLeft: -35,
+    marginLeft: 0,
     marginBottom: 18,
   },
 
   safe: { flex: 1, backgroundColor: C.white }, shell: { flex: 1, backgroundColor: C.bg }, content: { width: '100%', maxWidth: 900, alignSelf: 'center', padding: 20, paddingBottom: 135 }, center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: C.bg }, centerText: { marginTop: 14, color: C.muted },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }, logo: { width: 175, height: 52 }, avatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: C.blue, alignItems: 'center', justifyContent: 'center' }, avatarText: { color: C.white, fontWeight: '900' },
   eyebrow: { color: '#1877F2', fontSize: 11, letterSpacing: 1.4, fontWeight: '900' }, title: { color: C.navy, fontSize: 29, fontWeight: '900', marginTop: 6 }, sub: { color: C.muted, fontSize: 14, lineHeight: 21, marginTop: 5 },
-  hero: { backgroundColor: C.blue, borderRadius: 24, padding: 22, marginTop: 22 }, heroIcon: { width: 47, height: 47, borderRadius: 15, backgroundColor: C.red, alignItems: 'center', justifyContent: 'center' }, heroTitle: { color: C.white, fontSize: 24, fontWeight: '900', marginTop: 18 }, heroCopy: { color: '#DCE7FF', lineHeight: 21, marginTop: 7 }, heroButton: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: C.white, borderRadius: 12, paddingHorizontal: 15, paddingVertical: 11, marginTop: 18 }, heroButtonText: { color: C.blue, fontWeight: '800' },
+  hero: { backgroundColor: '#1548A6', borderRadius: 28, padding: 24, marginTop: 22, overflow: 'hidden' },
+  heroOrbit: { position: 'absolute', width: 240, height: 240, borderRadius: 120, borderWidth: 38, borderColor: '#FFFFFF0D', top: -70, right: -100 },
+  heroOrbitSmall: { position: 'absolute', width: 140, height: 140, borderRadius: 70, backgroundColor: '#5C8AFF25', bottom: -65, right: 30 },
+  heroTop: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  heroTag: { flex: 1, color: '#C7D9FF', fontSize: 10, lineHeight: 16, letterSpacing: 1.4, fontWeight: '800' },
+  heroIcon: { width: 47, height: 47, borderRadius: 16, backgroundColor: '#F1765B', alignItems: 'center', justifyContent: 'center' },
+  heroTitle: { color: C.white, fontSize: 32, lineHeight: 38, fontWeight: '900', marginTop: 22, letterSpacing: -0.8 },
+  heroCopy: { color: '#DCE7FF', lineHeight: 22, marginTop: 10, maxWidth: 420 },
+  heroButton: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 16, backgroundColor: C.white, borderRadius: 14, paddingHorizontal: 18, paddingVertical: 14, marginTop: 22 }, heroButtonText: { color: C.blue, fontWeight: '800' },
+  sectionHeading: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 28, marginBottom: 12 },
+  pressed: { opacity: 0.8, transform: [{ scale: 0.98 }] },
+  cardArrow: { width: 32, height: 32, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
+  promptLabel: { color: C.muted, fontSize: 10, letterSpacing: 1.2, fontWeight: '800', marginBottom: 4 },
+  promptCard: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 12, backgroundColor: C.white, borderWidth: 1, borderColor: C.line, borderRadius: 16 },
+  promptIcon: { width: 36, height: 36, borderRadius: 12, backgroundColor: C.softBlue, alignItems: 'center', justifyContent: 'center' },
   section: { color: C.navy, fontSize: 19, fontWeight: '900', marginTop: 28, marginBottom: 12 }, grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 }, card: { minWidth: 250, width: '48%', flexGrow: 1, flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: C.white, borderWidth: 1, borderColor: C.line, borderRadius: 18, padding: 15 }, cardIcon: { width: 46, height: 46, borderRadius: 14, alignItems: 'center', justifyContent: 'center' }, cardTitle: { color: C.ink, fontWeight: '800' }, cardText: { color: C.muted, fontSize: 12, marginTop: 3 },
   uploadCard: {
     alignItems: 'center',
@@ -5191,6 +5307,7 @@ let s: any = StyleSheet.create({
   },
   toolCard: {
     width: '47%',
+    minWidth: 140,
     flexGrow: 1,
     minHeight: 125,
     backgroundColor: C.white,
@@ -5359,7 +5476,7 @@ let s: any = StyleSheet.create({
   },
   navItem: {
     flex: 1,
-    minWidth: 48,
+    minWidth: 0,
     height: 58,
     alignItems: 'center',
     justifyContent: 'center',
@@ -5406,16 +5523,18 @@ let s: any = StyleSheet.create({
   navActive: {
     color: C.blue,
   },
+  adminResetButton: { alignSelf: 'flex-start', minHeight: 44, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 12, backgroundColor: C.blue, alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
+  adminResetButtonText: { color: C.white, fontSize: 12, fontWeight: '700' },
   authSafe: { flex: 1, backgroundColor: C.bg }, authWrap: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }, authCard: { width: '100%', maxWidth: 430, backgroundColor: C.white, borderRadius: 24, borderWidth: 1, borderColor: C.line, padding: 25 }, authLogo: { width: 210, height: 65, alignSelf: 'center' }, authTitle: { textAlign: 'center', color: C.navy, fontWeight: '900', fontSize: 25, marginTop: 15 }, authSub: { textAlign: 'center', color: C.muted, marginTop: 5, marginBottom: 20 }, input: { height: 52, borderRadius: 14, borderWidth: 1, borderColor: C.line, paddingHorizontal: 15, color: C.ink, marginBottom: 11, backgroundColor: '#FBFCFF' }, primary: { height: 52, borderRadius: 14, backgroundColor: C.blue, alignItems: 'center', justifyContent: 'center', marginTop: 4 }, primaryText: { color: C.white, fontWeight: '900' }, switchText: { color: C.blue, textAlign: 'center', fontWeight: '700', marginTop: 18 }, error: { color: C.red, marginBottom: 8, textAlign: 'center' },
 });
 
 const lightStyles = s;
 const darkColors: Record<string, string> = {
-  [C.white]: '#1C273B',
-  [C.bg]: '#111827',
-  [C.softBlue]: '#243451',
-  [C.softRed]: '#472A38',
-  '#FBFCFF': '#223149',
+  [C.white]: '#352920',
+  [C.bg]: '#261D18',
+  [C.softBlue]: '#4B3829',
+  [C.softRed]: '#533A29',
+  '#FBFCFF': '#352920',
 };
 
 const darkStyles: any = StyleSheet.create(
@@ -5432,12 +5551,14 @@ const darkStyles: any = StyleSheet.create(
           (key === 'borderColor' || key === 'borderTopColor') &&
           value === C.line
         ) {
-          style[key] = '#40506B';
+          style[key] = '#594434';
         } else if (key === 'color') {
           if (value === C.navy || value === C.ink) {
-            style[key] = '#F4F7FF';
+            style[key] = '#FFF3DE';
           } else if (value === C.muted) {
-            style[key] = '#B8C6DD';
+            style[key] = '#C5B09A';
+          } else if (value === C.blue) {
+            style[key] = '#E2B481';
           }
         }
       }
