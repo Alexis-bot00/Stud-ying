@@ -16,6 +16,9 @@ import { createFriendsRouter } from './cappy-friends.js';
 import { createScheduleScanRouter } from './schedule-scan.js';
 import { createSchoolCalendarRouter } from './school-calendar.js';
 import { createStudyCircleRouter } from './study-circle.js';
+import { resolveGenerationLesson } from './generation-lesson.js';
+import { createRuntimeStore } from './storage/runtime.js';
+import os from 'node:os';
 
 dotenv.config();
 
@@ -35,10 +38,12 @@ const MAX_QUESTIONS = 100;
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 
-const uploadFolder = path.resolve(process.cwd(), "uploads");
+const uploadFolder = (process.env.STORAGE_DRIVER || "file") === "supabase" ? fs.mkdtempSync(path.join(os.tmpdir(), "studyante-uploads-")) : path.resolve(process.cwd(), "uploads");
 const libraryFolder = path.resolve(process.cwd(), "library");
 const libraryFilesFolder = path.join(libraryFolder, "files");
 const libraryIndexFile = path.join(libraryFolder, "index.json");
+const store = createRuntimeStore({ directory: libraryFolder });
+app.use(store.middleware);
 
 const usersFile = path.join(
   libraryFolder,
@@ -58,14 +63,14 @@ fs.mkdirSync(
   }
 );
 
-fs.mkdirSync(
+if (store.driver === "file") fs.mkdirSync(
   libraryFilesFolder,
   {
     recursive: true
   }
 );
 
-if (!fs.existsSync(libraryIndexFile)) {
+if (store.driver === "file" && !fs.existsSync(libraryIndexFile)) {
   fs.writeFileSync(
     libraryIndexFile,
     JSON.stringify(
@@ -80,7 +85,7 @@ if (!fs.existsSync(libraryIndexFile)) {
   );
 }
 
-if (!fs.existsSync(usersFile)) {
+if (store.driver === "file" && !fs.existsSync(usersFile)) {
   fs.writeFileSync(
     usersFile,
     JSON.stringify(
@@ -95,7 +100,7 @@ if (!fs.existsSync(usersFile)) {
 function readUsers() {
   try {
     const data = JSON.parse(
-      fs.readFileSync(
+      store.read(
         usersFile,
         "utf8"
       )
@@ -110,7 +115,7 @@ function readUsers() {
 }
 
 function writeUsers(users) {
-  fs.writeFileSync(
+  store.write(
     usersFile,
     JSON.stringify(
       users,
@@ -153,7 +158,7 @@ const chatsFile = path.join(
     "chats.json"
 );
 
-if (!fs.existsSync(chatsFile)) {
+if (store.driver === "file" && !fs.existsSync(chatsFile)) {
     fs.writeFileSync(
         chatsFile,
         JSON.stringify(
@@ -170,7 +175,7 @@ function readChats() {
     try {
         const chats =
             JSON.parse(
-                fs.readFileSync(
+                store.read(
                     chatsFile,
                     "utf8"
                 )
@@ -191,7 +196,7 @@ function readChats() {
 function writeChats(
     chats
 ) {
-    fs.writeFileSync(
+    store.write(
         chatsFile,
         JSON.stringify(
             chats,
@@ -358,7 +363,7 @@ function claimLegacyLibrary(
 function readLibrary() {
   try {
     const raw =
-      fs.readFileSync(
+      store.read(
         libraryIndexFile,
         "utf8"
       );
@@ -416,7 +421,7 @@ function readLibrary() {
 function writeLibrary(
   data
 ) {
-  fs.writeFileSync(
+  store.write(
     libraryIndexFile,
     JSON.stringify(
       data,
@@ -443,6 +448,7 @@ function removeFile(
   if (!filePath) {
     return;
   }
+  if (store.driver === "supabase" && path.dirname(filePath) === libraryFilesFolder) return store.removeLibraryFile(filePath);
 
   try {
     if (
@@ -1367,6 +1373,7 @@ async function askProvider(
   apiKey,
   jsonMode = false
 ) {
+  if (app.locals.askProvider) return app.locals.askProvider(...arguments);
   return askGemini(
     prompt,
     jsonMode
@@ -1376,72 +1383,13 @@ async function askProvider(
 async function getLesson(
   req
 ) {
-  const libraryId =
-    String(
-      req.body.libraryId ||
-      ""
-    ).trim();
-
-  if (
-    libraryId
-  ) {
-    const library =
-      readLibrary();
-
-    const item =
-      library.files.find(
-        file =>
-          file.id ===
-            libraryId &&
-          file.userId ===
-            req.user.id
-      );
-
-    if (
-      !item
-    ) {
-      throw new Error(
-        "The selected library file was not found."
-      );
-    }
-
-    return {
-      lesson:
-        item.text,
-
-      name:
-        item.name
-    };
-  }
-
-  if (
-    !req.file
-  ) {
-    throw new Error(
-      "Please upload a study material."
-    );
-  }
-
-  const raw =
-    await extractText(
-      req.file.path,
-      req.file.originalname
-    );
-
-  return {
-    lesson:
-      prepareText(
-        raw
-      ),
-
-    name:
-      req.file.originalname
-  };
+  return resolveGenerationLesson(req, { readLibrary, extractText, prepareText });
 }
 
 app.post(
   "/api/auth/register",
-  async (
+  store.bind,
+async (
     req,
     res
   ) => {
@@ -1598,7 +1546,8 @@ app.post(
 
 app.post(
   "/api/auth/login",
-  async (
+  store.bind,
+async (
     req,
     res
   ) => {
@@ -1721,7 +1670,8 @@ app.post(
 app.get(
   "/api/auth/me",
   requireAuth,
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -1775,7 +1725,8 @@ app.get(
 
 app.get(
   "/",
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -1804,7 +1755,8 @@ app.get(
 app.get(
   "/api/library",
   requireAuth,
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -1914,7 +1866,8 @@ app.get(
 app.post(
   "/api/library/folders",
   requireAuth,
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -2002,7 +1955,8 @@ app.post(
 app.delete(
   "/api/library/folders/:id",
   requireAuth,
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -2132,7 +2086,8 @@ app.post(
   upload.single(
     "file"
   ),
-  async (
+  store.bind,
+async (
     req,
     res
   ) => {
@@ -2214,19 +2169,7 @@ app.post(
       const storedName =
         `${id}${extension}`;
 
-      const permanentPath =
-        path.join(
-          libraryFilesFolder,
-          storedName
-        );
 
-      fs.renameSync(
-        req.file.path,
-        permanentPath
-      );
-
-      temporaryPath =
-        null;
 
       const item = {
         id,
@@ -2252,6 +2195,9 @@ app.post(
 
         text
       };
+
+      await store.saveLibraryFile(item, req.file.path);
+      temporaryPath = null;
 
       library.files
         .push(
@@ -2296,7 +2242,8 @@ app.post(
 app.patch(
   "/api/library/files/:id",
   requireAuth,
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -2377,7 +2324,8 @@ app.patch(
 app.get(
   "/api/library/:id/file",
   requireAuth,
-  (
+  store.bind,
+async (
     req,
     res
   ) => {
@@ -2407,38 +2355,15 @@ app.get(
         });
     }
 
-    const filePath =
-      path.join(
-        libraryFilesFolder,
-        item.storedName
-      );
-
-    if (
-      !fs.existsSync(
-        filePath
-      )
-    ) {
-      return res
-        .status(404)
-        .json({
-          success:
-            false,
-
-          message:
-            "Saved file is missing."
-        });
-    }
-
-    res.sendFile(
-      filePath
-    );
+    try { await store.sendLibraryFile(item, req.user, res); } catch { res.status(404).json({ success: false, message: "Saved file is missing." }); }
   }
 );
 
 app.delete(
   "/api/library/:id",
   requireAuth,
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -2500,7 +2425,8 @@ app.delete(
 app.post(
   "/api/library/flashcards",
   requireAuth,
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -2640,7 +2566,8 @@ app.post(
 app.patch(
   "/api/library/flashcards/:id",
   requireAuth,
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -2754,7 +2681,8 @@ app.patch(
 app.delete(
   "/api/library/flashcards/:id",
   requireAuth,
-  (
+  store.bind,
+(
     req,
     res
   ) => {
@@ -2816,7 +2744,8 @@ app.post(
   upload.single(
     "file"
   ),
-  async (
+  store.bind,
+async (
     req,
     res
   ) => {
@@ -3094,7 +3023,8 @@ app.post(
 app.get(
     "/api/chats",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
         const chats =
             readChats()
                 .filter(
@@ -3141,7 +3071,8 @@ app.get(
 app.get(
     "/api/chats/:id",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
         const chat =
             readChats()
                 .find(
@@ -3175,7 +3106,8 @@ app.get(
 app.delete(
     "/api/chats/:id",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
         const chats =
             readChats();
 
@@ -3247,7 +3179,8 @@ app.post(
             maxCount: 1
         }
     ]),
-    async (
+    store.bind,
+async (
         req,
         res
     ) => {
@@ -3382,7 +3315,7 @@ app.post(
             );
         }
 
-        const lesson =
+        lesson =
             items
                 .map(
                     (
@@ -3395,16 +3328,7 @@ app.post(
                     "\n\n--------------------\n\n"
                 );
 
-        return {
-            lesson,
-            name:
-                items
-                    .map(
-                        item =>
-                            item.name
-                    )
-                    .join(", ")
-        };
+
     }
 
     const libraryId =
@@ -3690,7 +3614,8 @@ app.use(
 
 /* ===== STUDYANTE_IMAGE_GENERATION_ROUTE ===== */
 
-app.post("/api/generate-image", requireAuth, async (req, res) => {
+app.post("/api/generate-image", requireAuth, store.bind,
+async (req, res) => {
     try {
         const prompt = String(req.body?.prompt || "").trim();
 
@@ -3848,7 +3773,8 @@ function requireStudyanteAdmin(req, res, next) {
 app.post(
     "/api/community/submit/file/:id",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
 
@@ -3891,7 +3817,8 @@ app.post(
 app.post(
     "/api/community/submit/flashcards/:id",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
 
@@ -3938,7 +3865,8 @@ app.post(
 app.get(
     "/api/community",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
         const users = readUsers();
@@ -4011,7 +3939,8 @@ app.get(
     "/api/admin/community/pending",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
         const users = readUsers();
@@ -4081,7 +4010,8 @@ app.post(
     "/api/admin/community/:type/:id/approve",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
 
@@ -4160,7 +4090,8 @@ app.post(
     "/api/admin/community/:type/:id/reject",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
 
@@ -4226,7 +4157,8 @@ app.post(
 app.post(
     "/api/community/flashcards/:id/copy",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
 
@@ -4304,7 +4236,8 @@ app.post(
 app.get(
     "/api/community/status",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const user =
             getCommunityUser(req.user.id);
@@ -4336,7 +4269,8 @@ app.get(
 app.get(
     "/api/community/file/:id/content",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library =
             readLibrary();
@@ -4394,7 +4328,8 @@ app.get(
 app.post(
   "/api/library/study-materials",
   requireAuth,
-  (req, res) => {
+  store.bind,
+(req, res) => {
 
     const library =
       readLibrary();
@@ -4592,7 +4527,8 @@ app.post(
 app.patch(
   "/api/library/move/:kind/:id",
   requireAuth,
-  (req, res) => {
+  store.bind,
+(req, res) => {
     const library = readLibrary();
     const kind = String(req.params.kind || "").toLowerCase();
     const id = String(req.params.id || "");
@@ -4660,7 +4596,8 @@ app.patch(
 app.patch(
   "/api/library/study-materials/:id",
   requireAuth,
-  (req, res) => {
+  store.bind,
+(req, res) => {
 
     const library =
       readLibrary();
@@ -4739,7 +4676,8 @@ app.patch(
 app.delete(
   "/api/library/study-materials/:id",
   requireAuth,
-  (req, res) => {
+  store.bind,
+(req, res) => {
 
     const library =
       readLibrary();
@@ -4810,7 +4748,8 @@ app.delete(
 app.get(
     "/api/community/users",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const users =
             readUsers();
@@ -4921,7 +4860,8 @@ app.get(
 app.get(
     "/api/community/users/:id",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const users =
             readUsers();
@@ -5080,7 +5020,8 @@ app.patch(
     "/api/account/profile",
     requireAuth,
     imageUpload.single("profilePicture"),
-    async (req, res) => {
+    store.bind,
+async (req, res) => {
 
         let temporaryPath =
             req.file?.path || null;
@@ -5233,6 +5174,7 @@ app.patch(
                     imageBuffer.toString(
                         "base64"
                     );
+                await store.saveProfilePicture(user, imageBuffer, req.file.mimetype);
             }
 
 
@@ -5322,7 +5264,8 @@ app.patch(
 app.patch(
     "/api/account/password",
     requireAuth,
-    async (req, res) => {
+    store.bind,
+async (req, res) => {
 
         try {
 
@@ -5477,13 +5420,13 @@ const studyanteAnnouncementFile =
 
 function studyanteReadJSON(file, fallback = []) {
     try {
-        if (!fs.existsSync(file)) {
+        if (!store.exists(file)) {
             return fallback;
         }
 
         const data =
             JSON.parse(
-                fs.readFileSync(file, "utf8")
+                store.read(file, "utf8")
             );
 
         return data;
@@ -5499,7 +5442,7 @@ function studyanteReadJSON(file, fallback = []) {
 
 
 function studyanteWriteJSON(file, data) {
-    fs.writeFileSync(
+    store.write(
         file,
         JSON.stringify(data, null, 2),
         "utf8"
@@ -5595,7 +5538,8 @@ function studyanteAdminLog(
 app.get(
     "/api/admin/me",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const users = readUsers();
 
@@ -5638,7 +5582,8 @@ app.get(
     "/api/admin/dashboard",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const users = readUsers();
         const library = readLibrary();
@@ -5737,7 +5682,8 @@ app.get(
    GET ALL USERS
 ---------------------------------------------------------- */
 
-app.post('/api/presence/heartbeat', requireAuth, (req, res) => {
+app.post('/api/presence/heartbeat', requireAuth, store.bind,
+(req, res) => {
   const users = readUsers();
   const user = users.find(user => user.id === req.user.id);
   if (!user || user.suspended) return res.status(403).json({ message: 'Account unavailable.' });
@@ -5750,7 +5696,8 @@ app.get(
     "/api/admin/users",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const search =
             String(
@@ -5800,7 +5747,8 @@ app.patch(
     "/api/admin/users/:id/role",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const targetId =
             req.params.id;
@@ -5884,7 +5832,8 @@ app.patch(
     "/api/admin/users/:id/suspension",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const targetId =
             req.params.id;
@@ -5964,7 +5913,8 @@ app.delete(
     "/api/admin/users/:id",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const targetId =
             req.params.id;
@@ -6033,7 +5983,8 @@ app.get(
     "/api/admin/materials",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
         const users = readUsers();
@@ -6133,7 +6084,8 @@ app.delete(
     "/api/admin/materials/:type/:id",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
 
@@ -6224,7 +6176,8 @@ app.patch(
     "/api/admin/materials/:type/:id/unpublish",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const library = readLibrary();
 
@@ -6299,7 +6252,8 @@ app.patch(
 app.get(
     "/api/announcements",
     requireAuth,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const announcements =
             studyanteReadJSON(
@@ -6319,7 +6273,8 @@ app.post(
     "/api/admin/announcements",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const title =
             String(
@@ -6395,7 +6350,8 @@ app.delete(
     "/api/admin/announcements/:id",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const announcements =
             studyanteReadJSON(
@@ -6459,7 +6415,8 @@ app.get(
     "/api/admin/logs",
     requireAuth,
     requireStudyanteAdmin,
-    (req, res) => {
+    store.bind,
+(req, res) => {
 
         const logs =
             studyanteReadJSON(
@@ -6698,7 +6655,8 @@ async function studyanteSendResetCode(req, res) {
     }
 app.post('/api/auth/forgot-password', studyanteSendResetCode);
 
-app.post('/api/admin/users/:id/password-reset', requireAuth, requireStudyanteAdmin, async (req, res) => {
+app.post('/api/admin/users/:id/password-reset', requireAuth, requireStudyanteAdmin, store.bind,
+async (req, res) => {
   const user = readUsers().find(user => user.id === req.params.id);
   if (!user) return res.status(404).json({ message: 'User not found.' });
   req.body = { email: user.email };
@@ -6706,7 +6664,8 @@ app.post('/api/admin/users/:id/password-reset', requireAuth, requireStudyanteAdm
   studyanteAdminLog(req, 'ASSIST_PASSWORD_RESET', { userId: user.id, result: res.statusCode });
 });
 
-app.get('/api/admin/email-status', requireAuth, requireStudyanteAdmin, async (req, res) => {
+app.get('/api/admin/email-status', requireAuth, requireStudyanteAdmin, store.bind,
+async (req, res) => {
   if (process.env.RESEND_API_KEY && process.env.RESET_EMAIL_FROM) return res.json({ ready: true, message: 'HTTPS reset email is configured. Send a reset to test delivery; provider acceptance and inbox delivery still need verification.' });
   const transporter = studyanteGetMailTransporter();
   if (!transporter) return res.json({ ready: false, message: 'Reset emails are not configured. In Railway, set RESEND_API_KEY and RESET_EMAIL_FROM to a verified sender. SMTP is available only on Railway Pro or above.' });
@@ -6717,7 +6676,8 @@ app.get('/api/admin/email-status', requireAuth, requireStudyanteAdmin, async (re
 
 app.post(
     "/api/auth/reset-password",
-    async (req, res) => {
+    store.bind,
+async (req, res) => {
         try {
             const email =
                 String(req.body?.email || "")
@@ -6877,8 +6837,8 @@ app.post(
 
 /* STUDYANTE_FORGOT_PASSWORD_END */
 
-app.use('/api/cappy/friends', createFriendsRouter({ requireAuth, readUsers, directory: libraryFolder }));
-app.use('/api/cappy/circles', createStudyCircleRouter({ requireAuth, readUsers, readLibrary, directory: libraryFolder }));
+app.use('/api/cappy/friends', createFriendsRouter({ requireAuth, readUsers, directory: libraryFolder, store: store.driver === 'supabase' ? store : undefined }));
+app.use('/api/cappy/circles', createStudyCircleRouter({ requireAuth, readUsers, readLibrary, directory: libraryFolder, store: store.driver === 'supabase' ? store : undefined }));
 app.use('/api/schedule/scan', createScheduleScanRouter({ requireAuth, extract: async ({ imageBase64, mimeType, prompt }) => {
   if (!GEMINI_API_KEY) throw Object.assign(new Error('Missing Gemini key'), { status: 503 });
   const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
@@ -6893,7 +6853,7 @@ app.use('/api/schedule/calendar', createSchoolCalendarRouter({ requireAuth, uplo
   return response.text;
 } }));
 
-app.listen(
+if (process.env.STUDYANTE_NO_LISTEN !== "1") app.listen(
   PORT,
   () => {
     console.log("");
@@ -6929,3 +6889,5 @@ app.listen(
 
 
 
+
+export default app;

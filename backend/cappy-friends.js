@@ -5,14 +5,16 @@ import crypto from 'node:crypto';
 
 export const friendCode = id => crypto.createHash('sha256').update(`cappy:${id}`).digest('hex').slice(0, 10).toUpperCase();
 
-export function createFriendsRouter({ requireAuth, readUsers, directory }) {
+export function createFriendsRouter({ requireAuth, readUsers, directory, store }) {
   const router = express.Router();
   const file = path.join(directory, 'cappy-friends.json');
   function read() {
+    if (store) return JSON.parse(store.read(file));
     if (!fs.existsSync(file)) return { links: [], messages: [] };
     return JSON.parse(fs.readFileSync(file, 'utf8'));
   }
   function write(data) {
+    if (store) return store.write(file, JSON.stringify(data, null, 2));
     fs.mkdirSync(directory, { recursive: true });
     const temporary = `${file}.tmp`;
     fs.writeFileSync(temporary, JSON.stringify(data, null, 2), 'utf8');

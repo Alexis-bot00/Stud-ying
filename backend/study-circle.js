@@ -31,10 +31,24 @@ export function validateMaterial(b) {
   } else throw bad(400, 'Unsupported material type.');
   return { title, materialType, content };
 }
-export function createStudyCircleRouter({ requireAuth, readUsers, readLibrary, directory }) {
+export function libraryMaterial(library, userId, resourceId, resourceType) {
+  const n = [...(library.studyMaterials || []), ...(library.flashcardSets || []).map(m => ({...m,type:'flashcards'}))].find(m => m.id === resourceId && m.userId === userId && (!resourceType || m.type === resourceType));
+  if (!n) throw bad(404,'Choose a material from your own Library.');
+  const question = q => {
+    const options = q.choices || q.options || [];
+    const answer = typeof q.answer === 'number' ? options[q.answer] : q.answer;
+    return { type:options.length?'multiple-choice':'identification',question:q.question,answer,options };
+  };
+  if (n.type === 'notes') return {materialType:'notes',title:n.name,content:{notes:n.data?.notes}};
+  if (n.type === 'flashcards') return {materialType:'flashcards',title:n.name,content:{cards:(n.flashcards || n.data?.flashcards || []).map(c => ({front:c.question || c.front,back:c.answer || c.back}))}};
+  if (n.type === 'test') return {materialType:'tests',title:n.name,content:{questions:(n.data?.questions || []).map(question)}};
+  if (n.type === 'game') return {materialType:'games',title:n.name,content:{kind:'quick-quiz',pairs:(n.data?.game || []).map(q => {const normalized=question(q);return {front:normalized.question,back:normalized.answer};})}};
+  throw bad(400,'This Library material cannot be shared.');
+}
+export function createStudyCircleRouter({ requireAuth, readUsers, readLibrary, directory, store }) {
   const router = express.Router(), file = path.join(directory, 'study-circles.json');
   const read = () => {
-    const d = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : { sessions: [] };
+    const d = store ? JSON.parse(store.read(file)) : fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : { sessions: [] };
     for (const s of d.sessions) if (!s.circleName) {
       s.circleName = s.title || 'Study Circle'; s.creatorId = s.ownerId; s.subject = ''; s.description = ''; s.privacy = 'private';
       s.members = [{ userId: s.ownerId, role: 'creator', joinedAt: s.createdAt }, ...(s.invites || []).filter(i => i.status === 'accepted').map(i => ({ userId: i.userId, role: 'member', joinedAt: s.createdAt }))];
@@ -44,7 +58,7 @@ export function createStudyCircleRouter({ requireAuth, readUsers, readLibrary, d
     }
     return d;
   };
-  const write = d => { fs.mkdirSync(directory, { recursive: true }); fs.writeFileSync(file + '.tmp', JSON.stringify(d)); fs.renameSync(file + '.tmp', file); };
+  const write = d => { if (store) return store.write(file, JSON.stringify(d)); fs.mkdirSync(directory, { recursive: true }); fs.writeFileSync(file + '.tmp', JSON.stringify(d)); fs.renameSync(file + '.tmp', file); };
   let usersById = new Map();
   const profile = userId => { const u = usersById.get(userId); return { userId, name: u?.name || 'Classmate', ...publicPresence(u || {}) }; };
   const member = (s, u) => s.members.some(m => m.userId === u);
@@ -65,6 +79,11 @@ export function createStudyCircleRouter({ requireAuth, readUsers, readLibrary, d
   router.post('/:id/invitations', wrap((req,res) => { const d = read(), s = find(d,req,true), email = str(req.body.email,320).toLowerCase(), u = readUsers().find(u => u.email?.toLowerCase() === email); if (!u) throw bad(404,'No account found for that email.'); if (member(s,u.id)) throw bad(409,'Already a member.'); s.invites = (s.invites || []).filter(i => i.userId !== u.id); s.invites.push({ userId: u.id, status: 'pending' }); write(d); res.json({ success: true }); }));
   router.post('/:id/respond', wrap((req,res) => { const d = read(), s = d.sessions.find(s => s.id === req.params.id), i = s?.invites?.find(i => i.userId === req.user.id && i.status === 'pending'); if (!i) throw bad(404,'Invitation not found.'); if (!['accepted','declined'].includes(req.body.status)) throw bad(400,'Accept or decline.'); i.status = req.body.status; if (i.status === 'accepted' && !member(s,req.user.id)) s.members.push({ userId: req.user.id, role: 'member', joinedAt: stamp() }); write(d); res.json({ success: true }); }));
   router.get('/:id', wrap((req,res) => { const s = find(read(),req); res.json({ session: { ...summary(s,req.user.id), currentUserId: req.user.id, participants: s.members.map(m => ({ ...m, ...profile(m.userId) })), messages: s.messages.map(m => ({ ...m, name: profile(m.senderUserId).name })), materials: s.materials, activity: s.activity.slice(-100).map(a => ({ ...a, name: profile(a.userId).name })), requests: s.creatorId === req.user.id ? s.requests.filter(r => r.status === 'pending').map(r => ({ ...r, name: profile(r.userId).name })) : [] } }); }));
+  router.patch('/:id/capybara', wrap((req,res) => {
+    const d = read(), s = find(d,req), { jacketColor } = req.body;
+    if (!['blue','green','pink','purple','orange','yellow','red','black','cream'].includes(jacketColor)) throw bad(400,'Choose a valid jacket color.');
+    s.members.find(m => m.userId === req.user.id).capybara = { jacketColor }; write(d); res.json({ success: true, capybara: { jacketColor } });
+  }));
   router.patch('/:id', wrap((req,res) => { const d = read(), s = find(d,req,true); Object.assign(s,metadata(req.body)); write(d); res.json({ success: true }); }));
   router.delete('/:id/members/:userId', wrap((req,res) => { const d = read(), s = find(d,req,true); if (req.params.userId === s.creatorId) throw bad(400,'Cannot remove the Creator.'); s.members = s.members.filter(m => m.userId !== req.params.userId); write(d); res.json({ success: true }); }));
   router.post('/:id/messages', wrap((req,res) => { const d = read(), s = find(d,req), message = str(req.body.message ?? req.body.text); const last = s.messages.filter(m => m.senderUserId === req.user.id).at(-1); if (last && Date.now() - Date.parse(last.createdAt) < 1000) throw bad(429,'Please wait a moment.'); s.messages.push({ id: uid(), circleId: s.id, senderUserId: req.user.id, message, createdAt: stamp() }); write(d); res.status(201).json({ success: true }); }));
@@ -73,7 +92,7 @@ export function createStudyCircleRouter({ requireAuth, readUsers, readLibrary, d
     // Check membership before accepting or parsing a file.
     try { find(read(),req); } catch (error) { return next(error); }
     noteUpload.single('file')(req,res,error => error ? next(bad(400,'Choose one Note file under 8 MB.')) : next());
-  }, async (req,res,next) => {
+  }, ...(store ? [store.bind] : []), async (req,res,next) => {
     try {
       if (!req.file) throw bad(400,'Choose a Note file to upload.');
       const extension = path.extname(req.file.originalname).toLowerCase();
@@ -90,7 +109,7 @@ export function createStudyCircleRouter({ requireAuth, readUsers, readLibrary, d
       res.json({ title: path.basename(req.file.originalname,extension).slice(0,160), notes: str(notes,200000), filename: req.file.originalname });
     } catch (error) { next(error); }
   });
-  router.post('/:id/materials', wrap((req,res) => { const d = read(), s = find(d,req); let b = req.body; if (b.resourceId) { const n = (readLibrary().studyMaterials || []).find(n => n.id === b.resourceId && n.userId === req.user.id && n.type === 'notes'); if (!n) throw bad(404,'Choose your own Library Note.'); b = { materialType: 'notes', title: n.name, content: { notes: n.data?.notes } }; } const m = { ...validateMaterial(b), id: uid(), circleId: s.id, resourceId: req.body.resourceId || null, addedByUserId: req.user.id, createdAt: stamp(), updatedAt: stamp() }; s.materials.push(m); log(s,req.user.id,'added',m); write(d); res.status(201).json({ material: m }); }));
+  router.post('/:id/materials', wrap((req,res) => { const d = read(), s = find(d,req); let b = req.body; if (b.resourceId) { b = libraryMaterial(readLibrary(),req.user.id,b.resourceId,b.resourceType); } const m = { ...validateMaterial(b), id: uid(), circleId: s.id, resourceId: req.body.resourceId || null, addedByUserId: req.user.id, createdAt: stamp(), updatedAt: stamp() }; s.materials.push(m); log(s,req.user.id,'added',m); write(d); res.status(201).json({ material: m }); }));
   router.put('/:id/materials/:materialId', wrap((req,res) => { const d = read(), s = find(d,req), m = s.materials.find(m => m.id === req.params.materialId); if (!m) throw bad(404,'Material not found.'); const b = validateMaterial(req.body); if (b.materialType !== m.materialType) throw bad(400,'Cannot change material type.'); Object.assign(m,b,{ updatedAt: stamp() }); delete m.results; log(s,req.user.id,req.body.replace ? 'replaced' : 'edited',m); write(d); res.json({ material: m }); }));
   router.delete('/:id/materials/:materialId', wrap((req,res) => { const d = read(), s = find(d,req), m = s.materials.find(m => m.id === req.params.materialId); if (!m) throw bad(404,'Material not found.'); s.materials = s.materials.filter(x => x.id !== m.id); log(s,req.user.id,'deleted',m); write(d); res.json({ success: true }); }));
   router.post('/:id/materials/:materialId/start', wrap((req,res) => { const d = read(), s = find(d,req), m = s.materials.find(m => m.id === req.params.materialId && m.materialType === 'games'); if (!m) throw bad(404,'Game not found.'); log(s,req.user.id,'started',m); write(d); res.json({ success: true }); }));

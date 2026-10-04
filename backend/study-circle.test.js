@@ -4,7 +4,16 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import express from 'express';
-import { createStudyCircleRouter } from './study-circle.js';
+import { createStudyCircleRouter, libraryMaterial } from './study-circle.js';
+test('Library sharing converts existing sets, tests and games without changing originals',()=>{
+  const library={flashcardSets:[{id:'deck',userId:'alice',name:'Deck',flashcards:[{question:'Front',answer:'Back'}]}],studyMaterials:[{id:'test',userId:'alice',name:'Test',type:'test',data:{questions:[{question:'Pick B',choices:['A','B'],answer:1}]}},{id:'game',userId:'alice',name:'Game',type:'game',data:{game:[{question:'Pick A',choices:['A','B'],answer:0}]}}]};
+  const original=JSON.stringify(library);
+  assert.deepEqual(libraryMaterial(library,'alice','deck','flashcards').content.cards,[{front:'Front',back:'Back'}]);
+  assert.equal(libraryMaterial(library,'alice','test','test').content.questions[0].answer,'B');
+  assert.deepEqual(libraryMaterial(library,'alice','game','game').content,{kind:'quick-quiz',pairs:[{front:'Pick A',back:'A'}]});
+  assert.throws(()=>libraryMaterial(library,'bob','deck','flashcards'));
+  assert.equal(JSON.stringify(library),original);
+});
 async function fixture(fn, legacy) {
   const directory=fs.mkdtempSync(path.join(os.tmpdir(),'circle-v2-'));
   const users=['alice','bob','charlie',...Array.from({length:130},(_,i)=>'user'+i)].map(id=>({id,name:id,email:id+'@example.com'}));
@@ -17,6 +26,20 @@ async function fixture(fn, legacy) {
   const join=async(circle,user)=>{await request(user,'/'+circle+'/requests',{});const r=(await request('alice','/'+circle)).data.session.requests.find(r=>r.userId===user);return request('alice','/'+circle+'/requests/'+r.id,{status:'accepted'});};
   try{await fn({request,create,join,library,directory});}finally{await new Promise(r=>server.close(r));fs.rmSync(directory,{recursive:true,force:true});}
 }
+test('members customize only their own capybara and settings stay inside their Circle',()=>fixture(async({request,create,join})=>{
+  const id=await create(), other=await create();
+  const value={jacketColor:'green',userId:'alice'};
+  assert.equal((await request('bob','/'+id+'/capybara',value,'PATCH')).status,403);
+  await join(id,'bob');
+  assert.equal((await request('bob','/'+id+'/capybara',value,'PATCH')).status,200);
+  const room=(await request('alice','/'+id)).data.session;
+  assert.deepEqual(room.participants.find(m=>m.userId==='bob').capybara,{jacketColor:'green'});
+  for(const jacketColor of ['orange','yellow','red','black']) {assert.equal((await request('bob','/'+id+'/capybara',{jacketColor},'PATCH')).status,200);assert.equal((await request('alice','/'+id)).data.session.participants.find(m=>m.userId==='bob').capybara.jacketColor,jacketColor);}
+  assert.equal(room.participants.find(m=>m.userId==='alice').capybara,undefined);
+  assert.equal((await request('alice','/'+other)).data.session.participants[0].capybara,undefined);
+  assert.equal((await request('bob','/'+id+'/capybara',{...value,jacketColor:'invalid'},'PATCH')).status,400);
+}));
+
 test('creator naming, case-insensitive discovery, pending consent and creator-only approval',()=>fixture(async({request,create,join})=>{
   assert.equal((await request('unknown')).status,401);
   assert.equal((await request('alice','',{circleName:'',privacy:'public'})).status,400);
