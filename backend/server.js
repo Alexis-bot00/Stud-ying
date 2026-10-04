@@ -14,6 +14,7 @@ import nodemailer from "nodemailer";
 import crypto from "crypto";
 import { createFriendsRouter } from './cappy-friends.js';
 import { createScheduleScanRouter } from './schedule-scan.js';
+import { createSchoolCalendarRouter } from './school-calendar.js';
 import { createStudyCircleRouter } from './study-circle.js';
 
 dotenv.config();
@@ -3217,10 +3218,26 @@ app.delete(
 );
 
 
+const chatUpload = multer({
+    storage,
+    limits: { fileSize: MAX_FILE_SIZE },
+    fileFilter(req, file, callback) {
+        const extension = path.extname(file.originalname).toLowerCase();
+        const imageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+        const documents = new Set([".pdf", ".docx", ".pptx", ".txt"]);
+        const valid = file.fieldname === "image"
+            ? imageTypes.has(file.mimetype) && [".jpg", ".jpeg", ".png", ".webp"].includes(extension)
+            : file.fieldname === "file" && documents.has(extension);
+        callback(valid ? null : new Error(file.fieldname === "image"
+            ? "Choose a JPG, PNG or WEBP photo."
+            : "Choose a PDF, Word (DOCX), PowerPoint (PPTX) or TXT document."), valid);
+    }
+});
+
 app.post(
     "/api/chat",
     requireAuth,
-    imageUpload.fields([
+    chatUpload.fields([
         {
             name: "file",
             maxCount: 1
@@ -6866,6 +6883,13 @@ app.use('/api/schedule/scan', createScheduleScanRouter({ requireAuth, extract: a
   if (!GEMINI_API_KEY) throw Object.assign(new Error('Missing Gemini key'), { status: 503 });
   const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
   const response = await ai.models.generateContent({ model: GEMINI_MODEL, contents: [{ role: 'user', parts: [{ text: prompt }, { inlineData: { data: imageBase64, mimeType } }] }], config: { responseMimeType: 'application/json', temperature: 0, httpOptions: { timeout: 60000 } } });
+  return response.text;
+} }));
+
+app.use('/api/schedule/calendar', createSchoolCalendarRouter({ requireAuth, upload, extractText, extractActivities: async prompt => {
+  if (!GEMINI_API_KEY) throw Object.assign(new Error('Missing Gemini key'), { status: 503 });
+  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  const response = await ai.models.generateContent({ model: GEMINI_MODEL, contents: prompt, config: { responseMimeType: 'application/json', temperature: 0, httpOptions: { timeout: 60000 } } });
   return response.text;
 } }));
 
