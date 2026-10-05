@@ -4,7 +4,36 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { PGlite } from '@electric-sql/pglite';
 import fs from 'node:fs/promises';
+import { EventEmitter } from 'node:events';
+import { createRuntimeStore } from './runtime.js';
 let results={};
+test('Supabase root GET and HEAD liveness do not read private documents',()=>{
+  const store=createRuntimeStore({repository:{driver:'supabase',readDocuments(){throw Error('Liveness must not read storage');}}});
+  for(const method of ['GET','HEAD']){
+    let continued=false,bound=false;
+    const req={method,path:'/'},res=new EventEmitter();
+    store.middleware(req,res,()=>{continued=true;store.bind(req,res,()=>{bound=true;});});
+    assert.equal(continued,true);assert.equal(bound,true);
+  }
+});
+test('Supabase liveness bypasses a pending API transaction without bypassing API persistence',async()=>{
+  let resolveRead,reads=0,apiFinished=false;
+  const pending=new Promise(resolve=>{resolveRead=resolve;});
+  const store=createRuntimeStore({repository:{driver:'supabase',readDocuments(){reads++;return pending;}}});
+  const response=new EventEmitter();let finish;
+  const finished=new Promise(resolve=>{finish=resolve;});
+  response.end=()=>{apiFinished=true;finish();};
+  store.middleware({method:'GET',path:'/api/library'},response,()=>{
+    assert.equal(store.read('users.json'),'[]');response.end();
+  });
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(reads,1);assert.equal(apiFinished,false);
+  let healthy=false;
+  store.middleware({method:'GET',path:'/'},new EventEmitter(),()=>{healthy=true;});
+  assert.equal(healthy,true);assert.equal(reads,1);
+  resolveRead({'users.json':{payload:[]},'index.json':{payload:{files:[]}}});
+  await finished;assert.equal(apiFinished,true);
+});
 for(const driver of ['file','supabase'])test(`active Express synthetic HTTP parity: ${driver}`,()=>{
   const child=spawnSync(process.execPath,[fileURLToPath(new URL('./parity-scenario.js',import.meta.url)),'--scenario',driver],{encoding:'utf8',timeout:120000,env:{...process.env,SUPABASE_URL:'',SUPABASE_SERVICE_ROLE_KEY:'',SUPABASE_DB_URL:'',NODE_OPTIONS:''}});
   assert.equal(child.status,0,child.stderr);

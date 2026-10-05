@@ -32,6 +32,10 @@ export function createRuntimeStore({ env = process.env, directory = path.resolve
     },
     middleware(req, res, next) {
       if (repo.driver === 'file') return next();
+      // The existing root route is a process-liveness response with no data
+      // access. Health probes must not join the serialized document queue:
+      // an AI request or slow database read could otherwise unroute the service.
+      if ((req.method === 'GET' || req.method === 'HEAD') && req.path === '/') return next();
       diagnosticStage('storage_queued');
       // Serialize this process; atomic checksum validation rejects cross-process
       // conflicts instead of silently losing requests or retrying AI/email writes.
