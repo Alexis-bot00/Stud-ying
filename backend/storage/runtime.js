@@ -3,6 +3,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { createRepository, checksum, documentNames } from './repository.js';
+import { diagnosticStage } from '../diagnostics.js';
 
 const defaults = { 'users.json': [], 'index.json': { folders: [], files: [], flashcardSets: [], studyMaterials: [] }, 'chats.json': [], 'admin-logs.json': [], 'announcements.json': [], 'cappy-friends.json': { links: [], messages: [] }, 'study-circles.json': { sessions: [] } };
 export function createRuntimeStore({ env = process.env, directory = path.resolve('library'), repository } = {}) {
@@ -11,12 +12,12 @@ export function createRuntimeStore({ env = process.env, directory = path.resolve
   const namespace = env.STORAGE_NAMESPACE || '';
   if (namespace && !/^synthetic_[a-z0-9_]+$/.test(namespace)) throw new Error('Only clearly marked synthetic namespaces are allowed');
   const nameOf = file => { const name = path.basename(file); if (!documentNames.has(name)) throw new Error('Invalid document'); return name; };
-  const state = () => { const value = context.getStore(); if (!value) throw new Error('Storage access outside a request'); return value; };
+  const state = () => { const value = context.getStore(); if (!value) { diagnosticStage('storage_context_missing'); throw new Error('Storage access outside a request'); } return value; };
   let tail = Promise.resolve();
   const snapshots = new WeakMap();
   const store = {
     driver: repo.driver,
-    bind(req, res, next) { const snapshot = snapshots.get(req); if (snapshot) return context.run(snapshot, next); next(); },
+    bind(req, res, next) { diagnosticStage('storage_bind'); const snapshot = snapshots.get(req); if (snapshot) return context.run(snapshot, next); next(); },
     read(file) {
       const name = nameOf(file);
       if (repo.driver === 'file') return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : JSON.stringify(defaults[name]);
@@ -31,6 +32,7 @@ export function createRuntimeStore({ env = process.env, directory = path.resolve
     },
     middleware(req, res, next) {
       if (repo.driver === 'file') return next();
+      diagnosticStage('storage_queued');
       // Serialize this process; atomic checksum validation rejects cross-process
       // conflicts instead of silently losing requests or retrying AI/email writes.
       const previous = tail; let unlock; tail = new Promise(resolve => { unlock = resolve; });
@@ -39,6 +41,7 @@ export function createRuntimeStore({ env = process.env, directory = path.resolve
         const documents = await repo.readDocuments(namespace, defaults);
         const snapshot = { documents, originalFiles: structuredClone(documents['index.json'].payload.files || []), dirty: new Set(), removals: [] };
         snapshots.set(req, snapshot);
+        diagnosticStage('storage_context_ready');
         const end = res.end.bind(res); let ending = false;
         res.once('close', () => { if (!ending) release(); });
         res.end = function(...args) {
@@ -48,7 +51,8 @@ export function createRuntimeStore({ env = process.env, directory = path.resolve
               if (snapshot.dirty.size) await repo.commitDocuments(namespace, [...snapshot.dirty].map(name => ({ name, payload: documents[name].payload, expectedChecksum: documents[name].checksum, checksum: checksum(Buffer.from(JSON.stringify(documents[name].payload))) })));
               for (const object of snapshot.removals) await repo.deleteObject(object.bucket, object.key);
               end(...args);
-            } catch {
+            } catch (error) {
+              diagnosticStage('storage_failed', error);
               // Uploaded objects are safe to clean only when document commit
               // was rejected with certainty; otherwise leave recoverable orphans.
               if (!res.headersSent) {
@@ -60,13 +64,15 @@ export function createRuntimeStore({ env = process.env, directory = path.resolve
           return res;
         };
         context.run(snapshot, next);
-      }).catch(() => { release(); res.status(503).json({ success: false, message: 'Storage is temporarily unavailable. Please try again.' }); });
+      }).catch(error => { diagnosticStage('storage_failed', error); release(); res.status(503).json({ success: false, message: 'Storage is temporarily unavailable. Please try again.' }); });
     },
     async saveLibraryFile(item, temporaryPath) {
+      diagnosticStage('object_write_begin');
       if (repo.driver === 'file') { fs.renameSync(temporaryPath, path.join(directory, 'files', item.storedName)); return; }
       const bucket = ['.jpg','.jpeg','.png','.webp'].includes(item.extension.toLowerCase()) ? 'images' : 'documents';
       const key = `${namespace ? namespace + '/' : ''}${encodeURIComponent(item.userId)}/${encodeURIComponent(item.id)}/${item.storedName}`;
       await repo.putObject(bucket, key, fs.readFileSync(temporaryPath));
+      diagnosticStage('object_write_complete');
       const index = state().documents['index.json'].payload;
       (index._storageObjects ||= {})[item.storedName] = { bucket, key };
       fs.unlinkSync(temporaryPath);

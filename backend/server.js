@@ -19,8 +19,10 @@ import { createStudyCircleRouter } from './study-circle.js';
 import { resolveGenerationLesson } from './generation-lesson.js';
 import { createRuntimeStore } from './storage/runtime.js';
 import os from 'node:os';
+import { diagnosticMiddleware, diagnosticStage, installDiagnosticProcessLogging, instrumentDiagnosticUpload } from './diagnostics.js';
 
 dotenv.config();
+installDiagnosticProcessLogging();
 
 const app = express();
 
@@ -36,6 +38,7 @@ const MAX_FLASHCARDS = 50;
 const MAX_QUESTIONS = 100;
 
 app.use(cors());
+app.use(diagnosticMiddleware);
 app.use(express.json({ limit: "10mb" }));
 
 const uploadFolder = (process.env.STORAGE_DRIVER || "file") === "supabase" ? fs.mkdtempSync(path.join(os.tmpdir(), "studyante-uploads-")) : path.resolve(process.cwd(), "uploads");
@@ -263,6 +266,7 @@ function requireAuth(
   res,
   next
 ) {
+  diagnosticStage('auth_enter');
   try {
     const authorization =
       req.headers.authorization;
@@ -295,6 +299,7 @@ function requireAuth(
       id: decoded.id,
       email: decoded.email
     };
+    diagnosticStage('auth_verified');
 
     next();
 
@@ -1190,11 +1195,15 @@ async function askOllama(
 }
 
 
+instrumentDiagnosticUpload(upload);
+instrumentDiagnosticUpload(imageUpload);
+
 async function askGemini(
   prompt,
   apiKeyOrJsonMode = false,
   possibleJsonMode = false
 ) {
+  diagnosticStage('gemini_begin');
   let jsonMode = false;
 
   if (
@@ -1245,6 +1254,7 @@ async function askGemini(
       );
     }
 
+    diagnosticStage('gemini_complete');
     return text;
 
   } catch (error) {
@@ -1310,6 +1320,7 @@ async function askGeminiWithImage(
         GEMINI_API_KEY
     });
 
+  diagnosticStage('gemini_begin');
   const base64Image =
     fs.readFileSync(
       imagePath,
@@ -2221,6 +2232,7 @@ async (
     } catch (
       error
     ) {
+      diagnosticStage('storage_failed', error);
       res
         .status(500)
         .json({
@@ -3165,6 +3177,8 @@ const chatUpload = multer({
             : "Choose a PDF, Word (DOCX), PowerPoint (PPTX) or TXT document."), valid);
     }
 });
+
+instrumentDiagnosticUpload(chatUpload);
 
 app.post(
     "/api/chat",
@@ -6842,14 +6856,18 @@ app.use('/api/cappy/circles', createStudyCircleRouter({ requireAuth, readUsers, 
 app.use('/api/schedule/scan', createScheduleScanRouter({ requireAuth, extract: async ({ imageBase64, mimeType, prompt }) => {
   if (!GEMINI_API_KEY) throw Object.assign(new Error('Missing Gemini key'), { status: 503 });
   const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  diagnosticStage('gemini_begin');
   const response = await ai.models.generateContent({ model: GEMINI_MODEL, contents: [{ role: 'user', parts: [{ text: prompt }, { inlineData: { data: imageBase64, mimeType } }] }], config: { responseMimeType: 'application/json', temperature: 0, httpOptions: { timeout: 60000 } } });
+  diagnosticStage('gemini_complete');
   return response.text;
 } }));
 
 app.use('/api/schedule/calendar', createSchoolCalendarRouter({ requireAuth, upload, extractText, extractActivities: async prompt => {
   if (!GEMINI_API_KEY) throw Object.assign(new Error('Missing Gemini key'), { status: 503 });
   const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  diagnosticStage('gemini_begin');
   const response = await ai.models.generateContent({ model: GEMINI_MODEL, contents: prompt, config: { responseMimeType: 'application/json', temperature: 0, httpOptions: { timeout: 60000 } } });
+  diagnosticStage('gemini_complete');
   return response.text;
 } }));
 

@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { diagnosticStage } from '../diagnostics.js';
 
 export const documentNames = new Set(['users.json', 'index.json', 'chats.json', 'admin-logs.json', 'announcements.json', 'cappy-friends.json', 'study-circles.json']);
 export const buckets = new Set(['documents', 'images', 'circle-files', 'attachments', 'profile-images', 'migration-archive']);
@@ -67,22 +68,26 @@ export function createRepository({ env = process.env, directory = path.resolve('
     if (!allowNetwork) throw new Error('Supabase network access is disabled');
     const response = await fetchImpl(base + route, { method, headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': binary ? 'application/octet-stream' : 'application/json', ...(binary ? { 'x-upsert': 'false' } : {}) }, ...(body === undefined ? {} : { body: binary ? body : JSON.stringify(body) }), signal: AbortSignal.timeout(30000) });
     // Never echo provider bodies, keys, payloads or URLs into error logs.
-    if (!response.ok) throw Object.assign(new Error(`Supabase request failed (${response.status})`), { status: response.status });
+    if (!response.ok) { const error = Object.assign(new Error(`Supabase request failed (${response.status})`), { status: response.status }); diagnosticStage('repository_failed', error); throw error; }
     return response;
   }
   return {
     driver,
     async readDocuments(namespace, defaults) {
+      diagnosticStage('documents_read_begin');
       const names = [...documentNames].map(name => namespace ? `${namespace}/${name}` : name);
       const filter = names.map(n => `"${n}"`).join(',');
       const rows = await (await request(`/rest/v1/source_documents?name=in.(${encodeURIComponent(filter)})&select=name,payload,checksum`)).json();
+      diagnosticStage('documents_read_complete');
       return Object.fromEntries([...documentNames].map(name => {
         const row = rows.find(r => r.name === (namespace ? `${namespace}/${name}` : name));
         return [name, row ? { payload: row.payload, checksum: row.checksum } : { payload: clone(defaults[name]), checksum: null }];
       }));
     },
     async commitDocuments(namespace, changes) {
+      diagnosticStage('documents_commit_begin');
       await request('/rest/v1/rpc/commit_studyante_documents', { method:'POST',body:{p_namespace:namespace,p_changes:changes} });
+      diagnosticStage('documents_commit_complete');
     },
     async deleteObject(bucket,key) {
       objectPath(bucket,key); await request(`/storage/v1/object/${bucket}`,{method:'DELETE',body:{prefixes:[key]}});
