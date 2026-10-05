@@ -11,6 +11,7 @@ import { useAudioPlayer } from 'expo-audio';
 import * as Speech from 'expo-speech';
 import * as FileSystem from 'expo-file-system/legacy';
 import { attachUploadFile } from '../lib/upload-file';
+import { apiFailure, compareAuthenticatedTransports, sendAuthenticatedRequest } from '../lib/api-transport';
 import { fetch as expoFetch } from 'expo/fetch';
 import * as Sharing from 'expo-sharing';
 import { CappyOnboarding, CappyTasks, CappySchedule, CappyBudget, CappyGrades, CappyFriends, CappyMascot, CappyPreferences, cappyPalette, usePlanner } from '../components/cappy';
@@ -96,16 +97,13 @@ export default function StudyanteApp() {
   }
 
   async function api(path: string, options: RequestInit = {}) {
-    const multipart = options.body instanceof FormData;
-    const transport: typeof fetch =
-      multipart && Platform.OS !== 'web'
-        ? (expoFetch as unknown as typeof fetch)
-        : fetch;
-    const response = await transport(`${API}${path}`, { ...options, headers: { ...(multipart ? {} : { 'Content-Type': 'application/json' }), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(options.headers || {}) } });
+    const response = await sendAuthenticatedRequest(API, path, token, options, {
+      globalFetch: fetch, multipartFetch: expoFetch as unknown as typeof fetch, platform: Platform.OS,
+    });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
       const missingFeature = response.status === 404 && !data.message && (path.startsWith('/api/cappy/') || path === '/api/schedule/scan');
-      throw Object.assign(new Error(data.message || (missingFeature ? path === '/api/schedule/scan' ? 'Photo scheduling is unavailable right now. You can still add classes manually.' : path.endsWith('/capybara') ? 'Your jacket could not be saved because this server does not have the Circle jacket update yet.' : path.includes('/materials') ? 'This server does not have the Circle sharing update yet.' : path.endsWith('/notes/import') ? 'This server does not have the Circle file upload update yet.' : 'This Circle action is missing from the server. The Circle backend needs to be updated.' : response.status === 401 ? 'Please sign in again.' : `Could not complete this request (${response.status}). Please try again.`)), { status: response.status });
+      throw apiFailure(data.message || (missingFeature ? path === '/api/schedule/scan' ? 'Photo scheduling is unavailable right now. You can still add classes manually.' : path.endsWith('/capybara') ? 'Your jacket could not be saved because this server does not have the Circle jacket update yet.' : path.includes('/materials') ? 'This server does not have the Circle sharing update yet.' : path.endsWith('/notes/import') ? 'This server does not have the Circle file upload update yet.' : 'This Circle action is missing from the server. The Circle backend needs to be updated.' : response.status === 401 ? 'Please sign in again.' : `Could not complete this request (${response.status}). Please try again.`), response.status, response, data);
     }
     return data;
   }
@@ -160,8 +158,11 @@ export default function StudyanteApp() {
     {screen === 'community' && <Community api={api} />}
     {screen === 'ai' && <AI api={api} />}
     {screen === 'profile' && <CappyPreferences store={planner} dark={darkMode} />}
-    {screen === 'profile' && <Profile user={user} admin={admin} logout={logout} go={setScreen}
+    {screen === 'profile' && <Profile key={user.id} user={user} admin={admin} logout={logout} go={setScreen}
       darkMode={darkMode} toggleDarkMode={toggleDarkMode}
+      transportProbe={API === 'https://studyante-backend-test.onrender.com' ? () => compareAuthenticatedTransports(API, token, {
+        globalFetch: fetch, multipartFetch: expoFetch as unknown as typeof fetch, platform: Platform.OS,
+      }) : undefined}
       api={api} updated={(nextUser, nextToken) => {
         setUser(nextUser);
         if (nextToken) {
@@ -4020,7 +4021,7 @@ function AI({ api }: { api: any }) {
     </Page>
   );
 }function Profile({
-  user, admin, logout, go, api, updated, darkMode, toggleDarkMode,
+  user, admin, logout, go, api, updated, darkMode, toggleDarkMode, transportProbe,
 }: {
   user: User;
   admin: boolean;
@@ -4030,6 +4031,7 @@ function AI({ api }: { api: any }) {
   darkMode: boolean;
   toggleDarkMode: () => void;
   updated: (user: User, token?: string) => void;
+  transportProbe?: () => ReturnType<typeof compareAuthenticatedTransports>;
 }) {
   const [settings, setSettings] = useState(false);
   const [name, setName] = useState(user.name);
@@ -4040,6 +4042,32 @@ function AI({ api }: { api: any }) {
   const [message, setMessage] = useState('');
   const [picture, setPicture] =
     useState<DocumentPicker.DocumentPickerAsset | null>(null);
+  const [probeBusy, setProbeBusy] = useState(false);
+  const [probeResult, setProbeResult] = useState<Awaited<ReturnType<typeof compareAuthenticatedTransports>> | null>(null);
+  const [probeMessage, setProbeMessage] = useState('');
+  const probeActive = useRef(false);
+  const profileLive = useRef(true);
+  useEffect(() => {
+    profileLive.current = true;
+    return () => { profileLive.current = false; };
+  }, []);
+
+  async function runTransportProbe() {
+    if (!transportProbe || probeActive.current) return;
+    probeActive.current = true;
+    setProbeBusy(true);
+    setProbeResult(null);
+    setProbeMessage('');
+    try {
+      const result = await transportProbe();
+      if (profileLive.current) setProbeResult(result);
+    } catch {
+      if (profileLive.current) setProbeMessage('The read-only connection check could not finish.');
+    } finally {
+      probeActive.current = false;
+      if (profileLive.current) setProbeBusy(false);
+    }
+  }
 
   async function choosePicture() {
     try {
@@ -4198,6 +4226,20 @@ function AI({ api }: { api: any }) {
             <Pressable style={s.logout} onPress={logout}>
               <Text style={s.logoutText}>Log out</Text>
             </Pressable>
+            {transportProbe && <View style={{ width: '100%', marginTop: 20 }}>
+              <Text style={s.cardTitle}>Test connection diagnostics</Text>
+              <Text style={s.cardText}>Read-only: two connection checks. No account or study data is changed. Results contain no account information.</Text>
+              <Pressable accessibilityLabel="Run read-only connection check" style={s.outline} disabled={probeBusy} onPress={runTransportProbe}>
+                <Text style={s.outlineText}>{probeBusy ? 'Checking connection...' : 'Run read-only connection check'}</Text>
+              </Pressable>
+              {!!probeMessage && <Text style={s.cardText}>{probeMessage}</Text>}
+              {probeResult && <>
+                <Text style={s.cardText}>Fetch references: {probeResult.sameFetchImplementation ? 'same' : 'different'} (this does not prove different native transports).</Text>
+                {probeResult.rows.map(row => <Text selectable key={row.mode} style={[s.cardText, { marginTop: 10 }]}>
+                  {`${row.mode}: ${row.utcTimestamp}\n${row.method} ${row.endpoint}\nHTTP ${row.status || 'network failure'}; ${row.durationMs} ms\nRequest ID: ${row.requestId || 'unavailable'} (${row.requestIdSource || 'unavailable'})`}
+                </Text>)}
+              </>}
+            </View>}
           </>
         )}
 
