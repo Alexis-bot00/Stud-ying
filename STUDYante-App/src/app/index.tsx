@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAudioPlayer } from 'expo-audio';
 import * as Speech from 'expo-speech';
 import * as FileSystem from 'expo-file-system/legacy';
-import { File as ExpoFile } from 'expo-file-system';
+import { attachUploadFile } from '../lib/upload-file';
 import { fetch as expoFetch } from 'expo/fetch';
 import * as Sharing from 'expo-sharing';
 import { CappyOnboarding, CappyTasks, CappySchedule, CappyBudget, CappyGrades, CappyFriends, CappyMascot, CappyPreferences, cappyPalette, usePlanner } from '../components/cappy';
@@ -751,21 +751,13 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
     }
   }
 
-  function attachFile(
+  async function attachFile(
     form: FormData,
     selectedAsset: DocumentPicker.DocumentPickerAsset | null = asset
   ) {
     if (!selectedAsset) return;
 
-    if (Platform.OS === 'web' && selectedAsset.file) {
-      form.append('file', selectedAsset.file);
-    } else {
-      form.append(
-        'file',
-        new ExpoFile(selectedAsset.uri) as any,
-        selectedAsset.name
-      );
-    }
+    await attachUploadFile(form, 'file', selectedAsset);
   }
 
   async function upload() {
@@ -779,7 +771,7 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
 
       for (const selectedAsset of assets) {
         const form = new FormData();
-        attachFile(form, selectedAsset);
+        await attachFile(form, selectedAsset);
 
         const saved = await api('/api/library', {
           method: 'POST',
@@ -834,7 +826,7 @@ function UploadMaterial({ api, done }: { api: any; done: () => void }) {
       } else if (libraryId) {
         form.append('libraryId', libraryId);
       } else {
-        attachFile(form);
+        await attachFile(form);
       }
 
       if (nextType === 'flashcards') {
@@ -3243,11 +3235,7 @@ function AI({ api }: { api: any }) {
             ? 'image/jpeg'
             : 'application/octet-stream');
 
-        if (Platform.OS === 'web' && selectedAttachment.file) {
-          form.append(selectedKind, selectedAttachment.file, name);
-        } else {
-          form.append(selectedKind, new ExpoFile(selectedAttachment.uri) as any, name);
-        }
+        await attachUploadFile(form, selectedKind, { ...selectedAttachment, name, mimeType: mime });
       }
 
       const result = await api('/api/chat', {
@@ -4082,15 +4070,7 @@ function AI({ api }: { api: any }) {
       form.append('name', name.trim());
       form.append('email', email.trim());
       if (picture) {
-        if (Platform.OS === 'web' && picture.file) {
-          form.append('profilePicture', picture.file, picture.name);
-        } else {
-          form.append('profilePicture', {
-            uri: picture.uri,
-            name: picture.name,
-            type: picture.mimeType || 'image/jpeg',
-          } as any);
-        }
+        await attachUploadFile(form, 'profilePicture', { ...picture, mimeType: picture.mimeType || 'image/jpeg' });
       }
 
       const result = await api('/api/account/profile', {

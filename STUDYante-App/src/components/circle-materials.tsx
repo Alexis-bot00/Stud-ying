@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
-import { File as ExpoFile } from 'expo-file-system';
+import { attachUploadFile } from '../lib/upload-file';
 import { CircleNoteReader } from './circle-note-reader';
 const gameLabels:Record<string,{name:string;hint:string}>={'matching':{name:'Match the pairs',hint:'Match each question with its answer.'},'quick-quiz':{name:'Quick quiz',hint:'Answer short questions at your own pace.'},'word-scramble':{name:'Word scramble',hint:'Unscramble an answer using the clue.'},'group-challenge':{name:'Circle challenge',hint:'Try the same questions and compare scores.'}};
 const kinds = ['matching','quick-quiz','word-scramble','group-challenge'];
@@ -42,8 +42,7 @@ export function CircleMaterials({ api,room,type,p,refresh,noteId,onBack }:any) {
     const asset = result.assets[0];
     if (asset.size && asset.size > 8 * 1024 * 1024) throw new Error('Choose a Note file under 8 MB.');
     const body = new FormData();
-    if (Platform.OS === 'web' && asset.file) body.append('file',asset.file);
-    else body.append('file',new ExpoFile(asset.uri) as any,asset.name);
+    await attachUploadFile(body, 'file', asset);
     const imported = await api('/api/cappy/circles/'+room.id+'/notes/import',{ method:'POST',body });
     setAdding(false); setSource(''); setOpened(null); setEditor({ ...fresh(), title: imported.title, content: { notes: imported.notes } });
     setNotice('Review your uploaded Note, then save it to this Circle.');

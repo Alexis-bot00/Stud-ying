@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Platform, Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
-import { File } from 'expo-file-system';
+import { attachUploadFile } from '../lib/upload-file';
 import type { PlannerStore } from './cappy';
 import { cappyPalette, darkPalette } from './cappy';
 import { makeId, SchoolActivity, validDate } from './cappy-model';
@@ -24,7 +24,7 @@ export function SchoolCalendar({ api, store, dark }: { api: any; store: PlannerS
       if ((file.size || 0) > 8 * 1024 * 1024) { setMessage('Choose a file smaller than 8 MB.'); return; }
       setBusy(true); setMessage(''); setRows([]); setWarnings([]);
       const form = new FormData(); form.append('year', year);
-      form.append('file', Platform.OS === 'web' ? file.file! : new File(file.uri) as any, file.name);
+      await attachUploadFile(form, 'file', file);
       const result = await api('/api/schedule/calendar', { method: 'POST', body: form });
       if (!Array.isArray(result.activities)) throw new Error('No readable activities returned.');
       setRows(result.activities.map((row: any) => ({ id: makeId(), title: String(row.title || ''), start: String(row.start || ''), end: String(row.end || ''), note: String(row.note || '') })));
