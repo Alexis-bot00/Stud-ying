@@ -19,7 +19,7 @@ import { createStudyCircleRouter } from './study-circle.js';
 import { resolveGenerationLesson } from './generation-lesson.js';
 import { createRuntimeStore } from './storage/runtime.js';
 import os from 'node:os';
-import { diagnosticMiddleware, diagnosticStage, installDiagnosticProcessLogging, instrumentDiagnosticUpload } from './diagnostics.js';
+import { diagnosticMiddleware, diagnosticStage, installDiagnosticProcessLogging, instrumentDiagnosticUpload, instrumentDiagnosticParser } from './diagnostics.js';
 
 dotenv.config();
 installDiagnosticProcessLogging();
@@ -37,9 +37,9 @@ const MAX_TEXT_LENGTH = 40000;
 const MAX_FLASHCARDS = 50;
 const MAX_QUESTIONS = 100;
 
-app.use(cors());
 app.use(diagnosticMiddleware);
-app.use(express.json({ limit: "10mb" }));
+app.use(cors());
+app.use(instrumentDiagnosticParser(express.json({ limit: "10mb" })));
 
 const uploadFolder = (process.env.STORAGE_DRIVER || "file") === "supabase" ? fs.mkdtempSync(path.join(os.tmpdir(), "studyante-uploads-")) : path.resolve(process.cwd(), "uploads");
 const libraryFolder = path.resolve(process.cwd(), "library");
