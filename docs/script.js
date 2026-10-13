@@ -14,7 +14,7 @@ function cleanAIAnswer(text) {
     .trim();
 }
 
-const API_BASE = "https://stud-ying-production.up.railway.app";
+const API_BASE = "https://studyante-backend-test-v2.onrender.com";
 
 let uploadedFile = null;
 let activeLibraryId = null;
@@ -4097,7 +4097,7 @@ function setStudyingThinking(show) {
 (function () {
 
     const STUDYANTE_IMAGE_API =
-        "https://stud-ying-production.up.railway.app/api/generate-image";
+        "https://studyante-backend-test-v2.onrender.com/api/generate-image";
 
     function getStudyanteToken() {
         return (
@@ -5608,3 +5608,48 @@ function studyanteRebindGameChoices() {
 })();
 
 /* STUDYANTE_MOBILE_ATTACHMENT_FIX_END */
+
+// STUDYANTE APP TOOL LINKS
+(function () {
+  const supportedTools = ["notes", "flashcards", "test", "game"];
+
+  function openToolFromApp() {
+    const params = new URLSearchParams(window.location.search);
+    const requestedTool = params.get("tool");
+
+    if (!supportedTools.includes(requestedTool)) {
+      return;
+    }
+
+    let attempts = 0;
+
+    const timer = window.setInterval(function () {
+      attempts += 1;
+
+      const toolButton = document.querySelector(
+        '[data-type="' + requestedTool + '"]'
+      );
+
+      if (toolButton) {
+        window.clearInterval(timer);
+        toolButton.click();
+
+        const cleanUrl =
+          window.location.pathname +
+          window.location.hash;
+
+        window.history.replaceState({}, "", cleanUrl);
+      }
+
+      if (attempts >= 30) {
+        window.clearInterval(timer);
+      }
+    }, 400);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", openToolFromApp);
+  } else {
+    openToolFromApp();
+  }
+})();

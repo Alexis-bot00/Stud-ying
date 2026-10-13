@@ -1,4 +1,4 @@
-const API_BASE = "https://stud-ying-production.up.railway.app";
+const API_BASE = "https://studyante-backend-test-v2.onrender.com";
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -274,7 +274,7 @@ document.addEventListener(
           ) {
             showMessage(
               loginMessage,
-              "Cannot connect to backend. Make sure localhost:5000 is running."
+              "Cannot connect to the STUDYante backend. Please try again later."
             );
           } else {
             showMessage(
@@ -481,7 +481,7 @@ document.addEventListener(
           ) {
             showMessage(
               registerMessage,
-              "Cannot connect to backend. Make sure localhost:5000 is running."
+              "Cannot connect to the STUDYante backend. Please try again later."
             );
           } else {
             showMessage(
