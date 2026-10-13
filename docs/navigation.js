@@ -6,7 +6,13 @@
         "upload",
         "library",
         "community",
-        "ai"
+        "ai",
+        "cappy",
+        "tasks",
+        "schedule",
+        "budget",
+        "grades",
+        "circles"
     ];
 
     function getPageId(link) {
