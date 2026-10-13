@@ -1,6 +1,6 @@
 /* STUDYANTE_COMMUNITY_API_FIX_START */
 const COMMUNITY_API_BASE =
-    "https://stud-ying-production.up.railway.app";
+    "https://studyante-backend-test-v2.onrender.com";
 /* STUDYANTE_COMMUNITY_API_FIX_END */
 /* STUDYANTE_SAFE_COMMUNITY_JS */
 

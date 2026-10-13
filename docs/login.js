@@ -1,4 +1,4 @@
-const API_BASE = "https://stud-ying-production.up.railway.app";
+const API_BASE = "https://studyante-backend-test-v2.onrender.com";
 
 document.addEventListener(
   "DOMContentLoaded",

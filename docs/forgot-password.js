@@ -1,5 +1,5 @@
 (() => {
-    const API = "https://stud-ying-production.up.railway.app";
+    const API = "https://studyante-backend-test-v2.onrender.com";
 
     function createUI() {
         if (document.getElementById("studyanteForgotPasswordModal")) {

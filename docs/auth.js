@@ -1,5 +1,5 @@
 (() => {
- const AUTH_API_BASE = "https://stud-ying-production.up.railway.app";
+ const AUTH_API_BASE = "https://studyante-backend-test-v2.onrender.com";
 
   const studyingToken =
     localStorage.getItem("studyingToken");

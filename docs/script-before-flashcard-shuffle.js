@@ -14,7 +14,7 @@ function cleanAIAnswer(text) {
     .trim();
 }
 
-const API_BASE = "https://stud-ying-production.up.railway.app";
+const API_BASE = "https://studyante-backend-test-v2.onrender.com";
 
 let uploadedFile = null;
 let activeLibraryId = null;
@@ -4073,7 +4073,7 @@ function setStudyingThinking(show) {
 (function () {
 
     const STUDYANTE_IMAGE_API =
-        "https://stud-ying-production.up.railway.app/api/generate-image";
+        "https://studyante-backend-test-v2.onrender.com/api/generate-image";
 
     function getStudyanteToken() {
         return (
