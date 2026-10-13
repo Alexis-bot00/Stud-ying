@@ -2842,6 +2842,7 @@ body.studyante-dark .studyante-admin-badge {
 /* STUDYANTE_ANNOUNCEMENT_AUTO_SIZE_END */
 </style>
 
+  <link rel="stylesheet" href="cappy.css?v=20261013-1">
 </head>
 
 <body>
@@ -2868,9 +2869,13 @@ body.studyante-dark .studyante-admin-badge {
         &#127760; Community Notes
       </a>
 
-      <a href="#ai" data-page="ai">
-        🤖 STUDYante AI
-      </a>
+      <a href="#ai" data-page="ai">🤖 STUDYante AI</a>
+      <a href="#cappy" data-page="cappy">🐹 Cappy Home</a>
+      <a href="#tasks" data-page="tasks">✅ My Tasks</a>
+      <a href="#schedule" data-page="schedule">📅 Scheduler</a>
+      <a href="#budget" data-page="budget">💰 Pocket Plan</a>
+      <a href="#grades" data-page="grades">📊 My Grades</a>
+      <a href="#circles" data-page="circles">🌱 Study Circle</a>
 
 
     </nav>
@@ -6394,6 +6399,112 @@ body:not(.studyante-dark)
 
 <!-- STUDYANTE_DASHBOARD_HOME_END -->
 
+<section id="cappy" class="studyante-page cappy-page" hidden>
+  <div class="cp-heading"><span>STUDYANTE PLANNER</span><h1>Welcome to Cappy Home! 🐹</h1><p>Your little space to organize school and everyday life.</p></div>
+  <div class="cp-grid">
+    <article class="cp-card cp-welcome"><h2>One step at a time.</h2><p>Small progress is still progress. Let's make today count!</p><div class="cp-actions"><button data-go="tasks">View tasks</button><button data-go="schedule">View schedule</button></div></article>
+    <article class="cp-card"><h3>Tasks completed</h3><div class="cp-number" id="cp-task-progress">0 / 0</div><p>Keep going at your own pace.</p></article>
+    <article class="cp-card"><h3>Upcoming classes</h3><div class="cp-number" id="cp-class-count">0</div><p>Classes saved in your planner.</p></article>
+    <article class="cp-card"><h3>Budget balance</h3><div class="cp-number" id="cp-balance">₱0.00</div><p>Based on your saved income and expenses.</p></article>
+    <article class="cp-card"><h3>My subjects</h3><div class="cp-number" id="cp-subject-count">0</div><p>Subjects in your grade tracker.</p></article>
+  </div>
+  <div class="cp-card"><h2>Quick access</h2><div class="cp-quick"><button data-go="tasks">✅ My Tasks</button><button data-go="schedule">📅 Scheduler</button><button data-go="budget">💰 Pocket Plan</button><button data-go="grades">📊 My Grades</button><button data-go="circles">🌱 Study Circle</button></div></div>
+</section>
+
+<section id="tasks" class="studyante-page cappy-page" hidden>
+  <div class="cp-heading"><span>STAY ON TRACK</span><h1>My Tasks ✅</h1><p>Add your schoolwork and keep track of what you've finished.</p></div>
+  <div class="cp-card">
+    <form id="cp-task-form" class="cp-form">
+      <label>Task name<input name="title" required maxlength="120" placeholder="e.g. Review for CC 103"></label>
+      <label>Due date<input name="due" type="date"></label>
+      <button type="submit">+ Add task</button>
+    </form>
+    <div class="cp-list-tools"><h2>Your tasks</h2><span id="cp-task-total">0 tasks</span></div>
+    <div id="cp-task-list" class="cp-list"></div>
+  </div>
+</section>
+
+<section id="schedule" class="studyante-page cappy-page" hidden>
+  <div class="cp-heading"><span>PLAN YOUR WEEK</span><h1>Scheduler 📅</h1><p>Keep your class times and rooms in one place.</p></div>
+  <div class="cp-card">
+    <form id="cp-class-form" class="cp-form">
+      <label>Subject or class<input name="name" required maxlength="100" placeholder="e.g. CC 103"></label>
+      <label>Day<select name="day"><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
+      <label>Start time<input name="start" type="time" required></label>
+      <label>End time<input name="end" type="time" required></label>
+      <label>Room<input name="room" maxlength="80" placeholder="e.g. CLab 2"></label>
+      <button type="submit">+ Add class</button>
+    </form>
+    <h2>Your weekly classes</h2>
+    <div id="cp-class-list" class="cp-list"></div>
+    <hr class="cp-divider">
+    <h2>Scan a class schedule</h2>
+    <p>Choose a schedule image to send it to the existing schedule scanner.</p>
+    <form id="cp-scan-form" class="cp-form">
+      <label>Schedule image<input name="image" type="file" accept="image/*" required></label>
+      <button type="submit">Scan schedule</button>
+    </form>
+    <p id="cp-scan-status" class="cp-status" role="status"></p>
+    <div id="cp-scan-results" class="cp-list"></div>
+  </div>
+</section>
+
+<section id="budget" class="studyante-page cappy-page" hidden>
+  <div class="cp-heading"><span>BE SMART WITH MONEY</span><h1>Pocket Plan 💰</h1><p>Record your allowance, income, and expenses.</p></div>
+  <div class="cp-grid cp-budget-summary">
+    <article class="cp-card"><h3>Total income</h3><div id="cp-income" class="cp-number">₱0.00</div></article>
+    <article class="cp-card"><h3>Total expenses</h3><div id="cp-expenses" class="cp-number">₱0.00</div></article>
+    <article class="cp-card"><h3>Remaining balance</h3><div id="cp-budget-balance" class="cp-number">₱0.00</div></article>
+  </div>
+  <div class="cp-card">
+    <form id="cp-budget-form" class="cp-form">
+      <label>Description<input name="label" required maxlength="100" placeholder="e.g. Weekly allowance"></label>
+      <label>Amount (₱)<input name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00"></label>
+      <label>Type<select name="type"><option value="expense">Expense</option><option value="income">Income</option></select></label>
+      <button type="submit">+ Add record</button>
+    </form>
+    <h2>Money records</h2>
+    <div id="cp-budget-list" class="cp-list"></div>
+  </div>
+</section>
+
+<section id="grades" class="studyante-page cappy-page" hidden>
+  <div class="cp-heading"><span>KEEP LEARNING</span><h1>My Grades 📊</h1><p>Record scores and check your percentage.</p></div>
+  <div class="cp-card">
+    <form id="cp-grade-form" class="cp-form">
+      <label>Subject<input name="name" required maxlength="100" placeholder="e.g. Data Structures"></label>
+      <label>Assessment<input name="assessment" required maxlength="100" placeholder="e.g. Quiz 1"></label>
+      <label>Score earned<input name="earned" type="number" min="0" step="0.01" required placeholder="e.g. 18"></label>
+      <label>Total score<input name="total" type="number" min="0.01" step="0.01" required placeholder="e.g. 20"></label>
+      <button type="submit">+ Save score</button>
+    </form>
+    <h2>My subjects and scores</h2>
+    <div id="cp-grade-list" class="cp-list"></div>
+  </div>
+</section>
+
+<section id="circles" class="studyante-page cappy-page" hidden>
+  <div class="cp-heading"><span>LEARN TOGETHER</span><h1>Study Circle 🌱</h1><p>Discover study groups and learn with other students.</p></div>
+  <div class="cp-card">
+    <form id="cp-circle-search" class="cp-form">
+      <label>Search circles<input name="search" maxlength="100" placeholder="Search by circle name"></label>
+      <button type="submit">Search</button>
+      <button type="button" id="cp-circle-refresh" class="cp-secondary">Refresh</button>
+    </form>
+    <div id="cp-circle-status" class="cp-status" role="status">Loading Study Circles…</div>
+    <div id="cp-circle-list" class="cp-list"></div>
+  </div>
+  <div class="cp-card">
+    <h2>Create a Study Circle</h2>
+    <form id="cp-circle-create" class="cp-form">
+      <label>Circle name<input name="name" required maxlength="80" placeholder="e.g. BSIT Study Buddies"></label>
+      <label>Description<input name="description" maxlength="250" placeholder="What will your circle study?"></label>
+      <button type="submit">Create circle</button>
+    </form>
+    <p class="cp-note">You need to be signed in to use Study Circle. Circle creation and join requests depend on your existing backend permissions.</p>
+  </div>
+</section>
+<script src="cappy.js?v=20261013-1"></script>
 </body>
 
 </html>
